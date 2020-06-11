@@ -1,0 +1,17 @@
+package com.sybinal.shop.mapper;
+
+import com.sybinal.shop.model.freightPreview;
+
+public interface freightPreviewMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(freightPreview record);
+
+    int insertSelective(freightPreview record);
+
+    freightPreview selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(freightPreview record);
+
+    int updateByPrimaryKey(freightPreview record);
+}

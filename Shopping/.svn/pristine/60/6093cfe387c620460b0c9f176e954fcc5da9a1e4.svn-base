@@ -1,0 +1,43 @@
+package com.sybinal.shop.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.sybinal.shop.model.ydBase;
+
+public interface ydBaseMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(ydBase record);
+
+    int insertSelective(ydBase record);
+
+    ydBase selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(ydBase record);
+
+    int updateByPrimaryKey(ydBase record);
+    //查找义达订单
+	List<ydBase> selectOrder(@Param("id")Integer id, @Param("standby1")String standby1, @Param("getfIds")String getfIds);
+	//修改默认未0
+	void defaultHj0(@Param("ids")String hjShipperhawbcode);
+	//修改默认未1
+	int default2(@Param("id")Integer valueOf);
+	//查找默认订单
+	ydBase selectYd(@Param("strings")String string);
+	/**
+	 * 添加义达跟踪号
+	*    
+	* 项目名称：Shopping   
+	* 类描述：   
+	* 创建人：PC1   
+	* 创建时间：2020年3月7日 下午2:09:55   
+	* @version
+	 */
+	int updateYd(ydBase base);
+	/*
+	 * 删除
+	 */
+	int ydDelOrder(Integer id);
+}

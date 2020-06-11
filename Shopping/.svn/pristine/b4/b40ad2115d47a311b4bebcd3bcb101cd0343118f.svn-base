@@ -1,0 +1,11 @@
+package com.sybinal.shop.common;
+
+public class te {
+
+	public static void main(String[] args) {
+		DownloadManager downloadManager = new DownloadManager("F:/LibraryImage/2019/08/26/15/test.jpg", 8,
+				"https://images-na.ssl-images-amazon.com/images/I/515Hv6ihZsL._SL1024_.jpg");
+		System.out.println(downloadManager.getSavePath());
+		downloadManager.action();
+	}
+}

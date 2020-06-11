@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sybinal.shop.mapper.jpOrderMapper">
+  <resultMap id="BaseResultMap" type="com.sybinal.shop.model.jpOrder">
+    <result column="jp_laks" jdbcType="VARCHAR" property="jpLaks" />
+    <result column="jp_result" jdbcType="VARCHAR" property="jpResult" />
+    <result column="jp_time" jdbcType="VARCHAR" property="jpTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    jp_laks,jp_result,jp_time
+  </sql>
+  <insert id="insert" parameterType="com.sybinal.shop.model.jpOrder">
+    insert into jp_order (jp_laks, jp_result,jp_time)
+    values (#{jpLaks,jdbcType=VARCHAR}, #{jpResult,jdbcType=VARCHAR},now())
+  </insert>
+  <insert id="insertSelective" parameterType="com.sybinal.shop.model.jpOrder">
+    insert into jp_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="jpLaks != null">
+        jp_laks,
+      </if>
+      <if test="jpResult != null">
+        jp_result,
+      </if>
+      <if test="jpTime != 1">
+        jp_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="jpLaks != null">
+        #{jpLaks,jdbcType=VARCHAR},
+      </if>
+      <if test="jpResult != null">
+        #{jpResult,jdbcType=VARCHAR},
+      </if>
+      <if test="jpTime != 1">
+		now(),
+      </if>
+    </trim>
+  </insert>
+  <!-- 查找所有集拼 -->
+  <select id="selectAll" parameterType="com.sybinal.shop.model.jpOrder" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from jp_order
+  </select>
+</mapper>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sybinal.shop.mapper.logistictoidMapper">
+  <resultMap id="BaseResultMap" type="com.sybinal.shop.model.logistictoid">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="refereno" jdbcType="VARCHAR" property="refereno" />
+    <result column="logisticMethod" jdbcType="VARCHAR" property="logisticmethod" />
+    <result column="standby1" jdbcType="VARCHAR" property="standby1" />
+    <result column="standby2" jdbcType="VARCHAR" property="standby2" />
+    <result column="standby3" jdbcType="VARCHAR" property="standby3" />
+    <result column="standby4" jdbcType="VARCHAR" property="standby4" />
+    <result column="standby5" jdbcType="VARCHAR" property="standby5" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, refereno, logisticMethod, standby1, standby2, standby3, standby4, standby5
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from logistictoid
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from logistictoid
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sybinal.shop.model.logistictoid">
+    insert into logistictoid (id, refereno, logisticMethod, 
+      standby1, standby2, standby3, 
+      standby4, standby5)
+    values (#{id,jdbcType=INTEGER}, #{refereno,jdbcType=VARCHAR}, #{logisticmethod,jdbcType=VARCHAR}, 
+      #{standby1,jdbcType=VARCHAR}, #{standby2,jdbcType=VARCHAR}, #{standby3,jdbcType=VARCHAR}, 
+      #{standby4,jdbcType=VARCHAR}, #{standby5,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sybinal.shop.model.logistictoid">
+    insert into logistictoid
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="refereno != null">
+        refereno,
+      </if>
+      <if test="logisticmethod != null">
+        logisticMethod,
+      </if>
+      <if test="standby1 != null">
+        standby1,
+      </if>
+      <if test="standby2 != null">
+        standby2,
+      </if>
+      <if test="standby3 != null">
+        standby3,
+      </if>
+      <if test="standby4 != null">
+        standby4,
+      </if>
+      <if test="standby5 != null">
+        standby5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="refereno != null">
+        #{refereno,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticmethod != null">
+        #{logisticmethod,jdbcType=VARCHAR},
+      </if>
+      <if test="standby1 != null">
+        #{standby1,jdbcType=VARCHAR},
+      </if>
+      <if test="standby2 != null">
+        #{standby2,jdbcType=VARCHAR},
+      </if>
+      <if test="standby3 != null">
+        #{standby3,jdbcType=VARCHAR},
+      </if>
+      <if test="standby4 != null">
+        #{standby4,jdbcType=VARCHAR},
+      </if>
+      <if test="standby5 != null">
+        #{standby5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sybinal.shop.model.logistictoid">
+    update logistictoid
+    <set>
+      <if test="refereno != null">
+        refereno = #{refereno,jdbcType=VARCHAR},
+      </if>
+      <if test="logisticmethod != null">
+        logisticMethod = #{logisticmethod,jdbcType=VARCHAR},
+      </if>
+      <if test="standby1 != null">
+        standby1 = #{standby1,jdbcType=VARCHAR},
+      </if>
+      <if test="standby2 != null">
+        standby2 = #{standby2,jdbcType=VARCHAR},
+      </if>
+      <if test="standby3 != null">
+        standby3 = #{standby3,jdbcType=VARCHAR},
+      </if>
+      <if test="standby4 != null">
+        standby4 = #{standby4,jdbcType=VARCHAR},
+      </if>
+      <if test="standby5 != null">
+        standby5 = #{standby5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sybinal.shop.model.logistictoid">
+    update logistictoid
+    set refereno = #{refereno,jdbcType=VARCHAR},
+      logisticMethod = #{logisticmethod,jdbcType=VARCHAR},
+      standby1 = #{standby1,jdbcType=VARCHAR},
+      standby2 = #{standby2,jdbcType=VARCHAR},
+      standby3 = #{standby3,jdbcType=VARCHAR},
+      standby4 = #{standby4,jdbcType=VARCHAR},
+      standby5 = #{standby5,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 批量添加BatchAll -->
+  <insert id="BatchAll" parameterType="java.util.List">
+    insert into logistictoid (refereno, logisticMethod,standby1,standby2,standby3,standby4,standby5)
+    values 
+    <foreach collection="list" item="logs" separator=",">
+     (#{logs.refereno,jdbcType=VARCHAR}, #{logs.logisticmethod,jdbcType=VARCHAR},
+	  #{logs.standby1,jdbcType=VARCHAR},
+      #{logs.standby2,jdbcType=VARCHAR},
+      #{logs.standby3,jdbcType=VARCHAR},
+      #{logs.standby4,jdbcType=VARCHAR},
+      #{logs.standby5,jdbcType=VARCHAR})
+	</foreach>
+  </insert>
+  <!-- 根据订单查询物流 selectFids-->
+   <select id="selectFids" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    logisticMethod
+    from logistictoid
+    where refereno = #{getfIds,jdbcType=INTEGER} ORDER BY id desc limit 0,1
+  </select>
+</mapper>

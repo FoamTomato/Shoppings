@@ -1,0 +1,17 @@
+package com.sybinal.shop.service;
+
+import java.util.List;
+
+import com.sybinal.shop.model.CateList;
+import com.sybinal.shop.model.jpOrder;
+
+public interface JpService {
+	/*
+	 * 添加集拼记录
+	 */
+	int addd(jpOrder jporder);
+	/*
+	 * 查找所有的集拼单
+	 */
+	List <jpOrder> selectAll();
+}

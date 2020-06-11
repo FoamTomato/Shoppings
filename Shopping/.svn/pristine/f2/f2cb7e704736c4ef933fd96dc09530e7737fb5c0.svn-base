@@ -1,0 +1,5 @@
+package com.sybinal.shop.service;
+
+public interface PreviewService {
+
+}

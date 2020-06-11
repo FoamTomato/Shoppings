@@ -1,0 +1,19 @@
+package com.sybinal.shop.mapper;
+
+import java.util.List;
+
+import com.sybinal.shop.model.Glogistics;
+
+public interface GlogisticsMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(Glogistics record);
+
+    int insertSelective(Glogistics record);
+
+    List<Glogistics>  selectByPrimaryKey();//Integer id
+
+    int updateByPrimaryKeySelective(Glogistics record);
+
+    int updateByPrimaryKey(Glogistics record);
+}

@@ -1,0 +1,227 @@
+package com.sybinal.shop.controller.admin;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.sybinal.shop.common.sends.IMAPReceiveMailTest;
+import com.sybinal.shop.model.User;
+import com.sybinal.shop.model.emailDetailsWithBLOBs;
+import com.sybinal.shop.model.hjBase;
+import com.sybinal.shop.model.userEmail;
+import com.sybinal.shop.service.email.UserEmailServer;
+import com.sybinal.shop.service.logistics.LogisticsService;
+import com.sybinal.shop.service.user.UserService;
+
+@Controller
+@RequestMapping("email")
+public class EmailController {
+	
+	@Autowired
+	UserEmailServer userEmailServer;
+	
+	@Autowired
+	UserService userService;
+
+	@Autowired
+	LogisticsService fLogisticService;
+	//getEmail
+	@RequestMapping(value = "getEmail")
+	@ResponseBody
+	public ModelAndView selectOrderById() {
+		ModelAndView model = new ModelAndView();
+		model.setViewName("admin/email/mainsGet");
+		return model;
+	} 
+	/**
+	 * 查询所有的邮箱客服
+	 */
+	@RequestMapping(value = "Customer", method = RequestMethod.POST)
+	@ResponseBody
+	public PageInfo Customer(@RequestBody Map<String,Object> map) {
+		PageHelper.startPage(Integer.parseInt(map.get("page").toString()),Integer.parseInt(map.get("pagelength").toString()));
+		List<userEmail> List=userEmailServer.selectAllCatelist(map.get("selectText").toString());
+		PageInfo pageInfo = new PageInfo(List);
+		return pageInfo;
+	}
+	/**
+	 * 查询所有的邮箱客服2
+	 */
+	@RequestMapping(value = "Customer2", method = RequestMethod.POST)
+	@ResponseBody
+	public List<userEmail> Customer2() {
+		return userEmailServer.selectAllCatelist("");
+	}
+	/**
+	 * 查询所有的客服人员
+	 */
+	@RequestMapping(value = "user", method = RequestMethod.POST)
+	@ResponseBody
+	public List<User> user() {
+		return userService.user();
+	}
+	/**
+	 * 添加客服
+	 * add
+	 */
+	@RequestMapping(value = "add", method = RequestMethod.POST)
+	@ResponseBody
+	public int add(@RequestBody userEmail user) {
+		return userEmailServer.add(user);
+	}
+	/**
+	 * 删除客服
+	 * del
+	 */
+	@RequestMapping(value = "del", method = RequestMethod.POST)
+	@ResponseBody
+	public int del(@RequestBody userEmail user) {
+		return userEmailServer.del(user);
+	}
+	/**
+	 * 查询单个根据id
+	 * edit
+	 */
+	@RequestMapping(value = "edit", method = RequestMethod.POST)
+	@ResponseBody
+	public userEmail edit(@RequestBody userEmail user) {
+		return userEmailServer.edit(user);
+	}
+	/**
+	 * 保存修改
+	 * save
+	 */
+	@RequestMapping(value = "save", method = RequestMethod.POST)
+	@ResponseBody
+	public int save(@RequestBody userEmail user) {
+		return userEmailServer.save(user);
+	}
+	/**
+	 * 收件箱
+	 * giveEmail
+	 */
+	@RequestMapping(value = "giveEmail")
+	@ResponseBody
+	public ModelAndView giveEmail() {
+		ModelAndView model = new ModelAndView();
+		model.setViewName("admin/email/giveEmail");
+		return model;
+	}
+	/**
+	 * 接收邮件
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "get/Email", method = RequestMethod.POST)
+	@ResponseBody
+	public int Emails(@RequestBody List<userEmail> list){
+		IMAPReceiveMailTest mes=new IMAPReceiveMailTest();
+		//接收邮箱
+		int count=0;
+		List<emailDetailsWithBLOBs>p=new ArrayList<emailDetailsWithBLOBs>();
+		for(userEmail s:list) {
+			try {
+				p=mes.getEmailMessage(s);
+				/**
+				 * 判断是否接收到邮件  为空则未接收到
+				 */
+				if(p==null) {
+					count=-1;
+				}else if(!p.isEmpty()) {
+					count+=userEmailServer.addEmailContent(p);
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return count;
+	}
+	/**
+	 * 查找所有邮件的信息
+	 * get/emailList
+	 */
+	@RequestMapping(value = "get/emailList", method = RequestMethod.POST)
+	@ResponseBody
+	public PageInfo emailList(@RequestBody Map<String,Object> map){
+		PageHelper.startPage(Integer.parseInt(map.get("page").toString()),Integer.parseInt(map.get("pagelength").toString()));
+		List<emailDetailsWithBLOBs> List=userEmailServer.emailList(map);
+		PageInfo pageInfo = new PageInfo(List);
+		return pageInfo;
+	}
+	/**
+	 * 获取所有运单列表get/logticslist
+	 */
+	@RequestMapping(value = "get/logticslist", method = RequestMethod.POST)
+	@ResponseBody
+	public List<hjBase> logticslist(@RequestBody Map<String,Object> map){
+		return fLogisticService.logticslist(Integer.parseInt(map.get("id").toString()));
+	}
+	/**
+	 * 查找详情
+	 * get/emailstream
+	 */
+	@RequestMapping(value = "get/emailstream", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> emailstream(@RequestBody Map<String,Object> map){
+		Map<String,Object>result=new HashMap<String,Object>();
+		emailDetailsWithBLOBs emailstream = userEmailServer.emailstream(Integer.parseInt(map.get("id").toString()));
+		/**
+		 * 亚马逊编号正则
+		 */
+		Pattern pattern = Pattern.compile("\\d{3}-\\d{7}-\\d{7}");;
+		Matcher matcher = pattern.matcher(emailstream.getSpare1());
+		if (matcher.find()) {
+			/**
+			 * 如果标题有亚马逊编号则用编号进行匹配返回为list
+			 */
+			result.put("orderstream", fLogisticService.stream(matcher.group(0)));
+		}else {
+			Matcher matcher2 = pattern.matcher(emailstream.getText());
+			/**
+			 * 如果内容有亚马逊编号则用编号进行匹配返回为list
+			 */
+			if(matcher2.find()){
+				result.put("orderstream", fLogisticService.stream(matcher2.group(0)));
+			}else {
+				/**
+				 * 如果如果以上都没有则用邮箱匹配返回为list
+				 */
+				Pattern pattern2 = Pattern.compile("\\+.{21}");
+				Matcher matcher3 = pattern2.matcher(emailstream.getEmailPostman());
+				if(matcher3.find()){
+					/**
+					 * 去除无关数据
+					 */
+					String t=emailstream.getEmailPostman().replace(matcher3.group(0), "");
+					int c=t.lastIndexOf(">");
+					int d=t.indexOf("<")+1;
+					/**
+					 * 去除空格
+					 */
+					result.put("orderstream", fLogisticService.streamEmail(t.substring(d,c).replace(" ","")));
+				}else {
+					/**
+					 * 若都没找到则为null
+					 */
+					result.put("orderstream", null);
+				}
+			}
+		}
+		//String poststream=emailstream.getSpare1().substring(emailstream.getEmailPostman().indexOf("<")+1, emailstream.getEmailPostman().indexOf(">"));
+		result.put("emailstream", emailstream);
+		return result;
+	}
+}

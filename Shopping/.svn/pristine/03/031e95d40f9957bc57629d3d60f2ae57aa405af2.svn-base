@@ -1,0 +1,623 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+
+<div id="searchCates">
+<!-- 模态框（Modal） -->
+        <div class="modal fade" style="overflow:hidden" id="myModal_HJ"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <nobr class="Foam-title" id="myModalLabelp">
+                        
+                        </nobr>
+                    </div>
+                    <div class="modal-body" style="height:400px;display:block;overflow-y: auto;"> 
+                      <div  class="form-group F_modal_ls col-lg-6">国家英文:<input id="hj_consigneeCountryEname" style="width:157px" class="F_modal_input" type="text" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">国家中文:<input id="hj_consigneeCountryCname" style="width:157px" class="F_modal_input" type="text"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">英文:<input id="hj_invoiceEnname" class="F_modal_input" type="text" onkeyup="value=value.replace(/[^\w\.\/]/ig,'')"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">中文:<input id="hj_invoiceCnname" class="F_modal_input" type="text"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">城市:<input id="hj_CITY" class="F_modal_input"  type="text"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">省州:<input id="hj_province" class="F_modal_input"  type="text"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">公司:<input id="hj_COMPANY" class="F_modal_input"  type="text"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">单位:<input id="hj_unitCode" class="F_modal_input" type="text"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">总价:<input id="hj_invoiceUnitcharge" class="F_modal_input" type="text" disabled></div>
+                      <div  class="form-group F_modal_ls col-lg-6">币种:<input id="hj_invoiceCurrencycode" class="F_modal_input" type="text" value="USD"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">sku :<input id="hj_sku" class="F_modal_input" type="text"></div>
+                      <div  class="form-group F_modal_ls col-lg-12">数量:<input id="hj_invoiceQuantity" class="F_modal_input" type="text" value="1"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">物流:<select id="hj_shippingMethod" class="F_modal_input" style="width:190px" type="text">
+                      	  <option value="0">未匹配</option>
+                      	  <option value="cm_dd_sz">中邮小包/线下平邮(带电)</option>
+						  <option value="cm_sx_sz">中邮小包/线下平邮(普货)</option>
+						  <option value="ghxb_dd_sz">中邮小包/线下挂号(带电)</option>
+						  <option value="ghxb_sg_sz">中邮小包/线下挂号(普货)</option>
+						  <option value="cm_eub_szyjdd">中邮E邮宝/线下E邮宝(带电)</option>
+						  <option value="cm_eub_szyj">中邮E邮宝/线下E邮宝(普货)</option>
+						  <option value="cm_rb_shhm">国际专线/日本专线</option>
+						  <option value="cm_j_wbsd">欧洲经济专线挂号</option>
+						  <option value="cm_py_wbsd">欧洲经济专线平邮</option>
+						  <option value="cm_dg_shhm">德国专线</option>
+						  <option value="cm_yg_wbsd">英国专线</option>
+						  <option value="cm_spain_wbsd">西班牙专线</option>
+						  <option value="cm_it_hh">意大利专线平邮</option>
+						  <option value="cm_jna_ltzx">加拿大专线</option>
+						  <option value="xn_fg_wbsd">法国专线</option>
+						  <option value="cm_hm_yg">上海黑猫英国Hermes48经济专线</option>
+                      </select>
+                      </div>
+                      <div  class="form-group F_modal_ls col-lg-6">海关协制编号:<input id="hj_hsCode" class="F_modal_input" style="height:28px" type="text"></div>
+                      <div  class="form-group F_modal_ls col-lg-4">是否包含电池:<input id="hj_isContainsBattery" class="F_modal_input f_radio" type="checkbox"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">产品销售价格:<input id="hj_salePrice" class="F_modal_input" type="text" disabled></div>
+                      <div  class="form-group F_modal_ls col-lg-4">非液体化妆品:<input id="hj_isAneroidMarkup" class="F_modal_input f_radio" type="checkbox"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">销售结算币种:<input id="hj_saleCurrency" class="F_modal_input" type="text"></div>
+                      <div  class="form-group F_modal_ls col-lg-4">是否纯电池:<input id="hj_isOnlyBattery" class="F_modal_input f_radio" type="checkbox"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">产品中文类目:<input id="hj_categoryName" class="F_modal_input" type="text"></div>
+                      <div  class="form-group F_modal_ls col-lg-4">是否易碎:<input id="hj_isBreakable" class="F_modal_input f_radio" type="checkbox"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">产品英文类目:<input id="hj_parentEnName" class="F_modal_input" type="text"></div>
+                      <div  class="form-group F_modal_ls col-lg-4">是否带电:<input id="hj_isCharged" class="F_modal_input f_radio" type="checkbox"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">重量/g :<input id="hj_orderWeight" class="F_modal_input" style="width:222px" type="number" oninput = "value=value.replace(/[^\d]/g,'')"></div>
+                      <div  class="form-group F_modal_ls col-lg-4">是否退回:<input id="hj_isReturn" class="F_modal_input f_radio" type="checkbox"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">外包装数:<input id="hj_orderPieces" class="F_modal_input" style="width:140px" type="text"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">申报种类:<input id="hj_mailCargoType" class="F_modal_input" style="width:152px" type="text"></div>
+                      <div  class="form-group F_modal_ls" style="width: 31%;margin-left: 15px;"> 长  :<input id="hj_length" class="F_modal_input" style="width: 70%;" type="text"></div>
+                      <div  class="form-group F_modal_ls" style="width: 31%;"> 宽  :<input id="hj_width" class="F_modal_input" style="width: 70%;" type="text"></div>
+                      <div  class="form-group F_modal_ls" style="width: 31%;"> 高  :<input id="hj_height" class="F_modal_input" style="width: 70%;" type="text"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" id="modal-change-hj" class="btn btn-primary">
+                            	
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+</div>
+<script type="text/javascript">
+function HJaddOrder(data){
+	let prices=sj();
+	//let st8=$("#standby8").val().substr(0,$("#standby8").val().length-1)+sj();
+	
+	let das=CountryEANDC($("#FCountry").html());
+	$("#myModal_HJ").modal("show");
+	$(".Foam-title").html("环金运单   海关申报信息");
+	$("#hj_invoiceEnname").val("");
+	$("#hj_invoiceCnname").val("");
+	$("#hj_unitCode").val("pce");
+	$("#hj_invoiceUnitcharge").val(prices);
+	$("#hj_invoiceCurrencycode").val("USD");
+	$("#hj_sku").val("B07"+generateMixed(7).toUpperCase());
+	$("#hj_hsCode").val("1");
+	$("#hj_isContainsBattery").removeAttr("checked");
+	$("#hj_salePrice").val(prices);
+	$("#hj_isAneroidMarkup").removeAttr("checked");
+	$("#hj_saleCurrency").val("USD");
+	$("#hj_isOnlyBattery").removeAttr("checked");
+	$("#hj_categoryName").val("家具装饰");
+	$("#hj_isBreakable").removeAttr("checked");
+	$("#hj_parentEnName").val("Furniture decoration");
+	$("#hj_isCharged").removeAttr("checked");
+	$("#hj_invoiceQuantity").val("1");
+	$("#hj_remark").val("");
+	$("#hj_orderPieces").val("1");
+	$("#hj_mailCargoType").val("2");
+	$("#hj_consigneeCountryEname").val(das.b);
+	$("#hj_consigneeCountryCname").val(das.a);
+	$("#hj_orderWeight").val("");
+	$("#hj_length").val("");
+	$("#hj_width").val("");
+	$("#hj_height").val("");
+	$("#hj_CITY").val($("#FCity").val());
+	$("#hj_province").val($("#FProvince").val());
+	//默认物流
+	if($("#st12").val()!=null&&$("#st12").val()!=""){
+		$("#hj_shippingMethod").val($("#st12").val());
+	}else{
+		$("#hj_shippingMethod").val(0);
+	}
+	
+	if($("#company").val()!=null && $("#company").val()!=""){
+		$("#hj_COMPANY").val($("#company").val());
+	}else{
+		$("#hj_COMPANY").val("1");
+	}
+	$("#hj_isReturn").removeAttr("checked");
+
+	$("#X_logistics").css("border-color","");
+	$("#X_goods").css("border-color","");
+	$("#X_express").css("border-color","");
+	$("#modal-change-hj").html("新增");
+	$("#modal-change-hj").attr("onclick","addx_HJ('0',123,"+data+")");
+}
+function sj() {
+    //x上限，y下限     
+    var x = 11;
+    var y = 3;
+    var rand = parseInt(Math.random() * (x - y + 1) + y);
+	return rand;
+}
+
+/*
+ * 保存修改,修改订单
+ */
+function addx_HJ(status,value,datase){
+	 let datas={};
+	 if($("#hj_consigneeCountryEname").val() =="" ||
+		$("#hj_consigneeCountryCname").val() == "" ||
+		$("#hj_invoiceEnname").val() == "" ||
+		$("#hj_invoiceCnname").val() == "" ||
+		$("#hj_CITY").val() == "" ||
+		$("#hj_province").val() == "" ||
+		$("#hj_COMPANY").val() == "" ||
+		$("#hj_unitCode").val() == "" ||
+		$("#hj_invoiceUnitcharge").val() == "" ||
+		$("#hj_invoiceCurrencycode").val() == "" ||
+		$("#hj_sku").val() == "" ||
+		$("#hj_invoiceQuantity").val() == "" ||
+		$("#hj_hsCode").val() == "" ||
+		$("#hj_salePrice").val() == "" ||
+		$("#hj_saleCurrency").val() == "" ||
+		$("#hj_categoryName").val() == "" ||
+		$("#hj_parentEnName").val() == "" ||
+		$("#hj_orderWeight").val() == "" ||
+		$("#hj_length").val() == "" ||
+		$("#hj_width").val() == "" ||
+		$("#hj_height").val() == ""){
+		 toastr.error("有值为空");
+		 return false;
+		 
+	 }
+	datas["hjReferenceno"]=$("#hjid").val();
+	datas["hjShipperhawbcode"]=$("#Fid").html();
+	datas["hjShippingmethod"]=$("#hj_shippingMethod").val();//联系客服 运输物流
+	if($("#hj_shippingMethod").val().indexOf("cm")!= -1){
+		datas["hjStandy6"]="cm";//根据客服添加配送方式
+	}else if($("#hj_shippingMethod").val().indexOf("ghxb")!= -1){
+		datas["hjStandy6"]="ghxb";//根据客服添加配送方式
+	}else if($("#hj_shippingMethod").val().indexOf("kd")!= -1){
+		datas["hjStandy6"]="kd";//根据客服添加配送方式
+	}else if($("#hj_shippingMethod").val().indexOf("zx")!= -1){
+		datas["hjStandy6"]="zx";//根据客服添加配送方式
+	}
+	datas["hjCountrycode"]=$("#FCountry").html();
+	datas["hjShipzip"]=$("#FPostcode").html();
+	if($("#hj_orderWeight").val().substr(0,1)=="0"){
+		toastr.error("重量不能以0开头");
+		return false;
+	}
+	console.log($("#hj_shippingMethod").val())
+	if($("#hj_shippingMethod").val()!="cm_eub_szyjdd"&&
+		$("#hj_shippingMethod").val()!="cm_eub_szyj" &&
+		$("#hj_shippingMethod").val()!="cm_rb_shhm"){
+		if($("#hj_orderWeight").val()>3000){
+			toastr.error("重量大于3千克");
+			return false;
+		}
+	}
+	datas["hjOrderweight"]=$("#hj_orderWeight").val();//订单重量
+	datas["hjOrderpieces"]="1";//外包装件数
+	datas["hjTotalprice"]=$("#hj_invoiceUnitcharge").val();
+	datas["hjMailcargotype"]="2";
+	datas["hjLength"]=$("#hj_length").val();
+	datas["hjWidth"]=$("#hj_width").val();
+	datas["hjHeight"]=$("#hj_height").val();
+	datas["hjHeight"]=$("#hj_height").val();
+	if($("#hj_isReturn").prop("checked")==true){
+		datas["hjIsreturn"]="1";//退回
+	}else{
+		datas["hjIsreturn"]="0";
+	}
+	if($("#hj_isCharged").prop("checked")==true){
+		datas["hjIsbattery"]="1";//带电
+	}else{
+		datas["hjIsbattery"]="0";
+	}
+	
+	//收件人信息
+	datas["hjConsigneecompany"]=$("#hj_COMPANY").val();
+	datas["hjConsigneeprovince"]=$("#hj_province").val();
+	datas["hjConsigneecity"]=$("#hj_CITY").val();
+	datas["hjConsigneestreet"]=$("#FAddress").html();
+	datas["hjConsigneestreet2"]=$("#FAddress2").html();
+	datas["hjConsigneestreet3"]=$("#FAddress3").html();
+	datas["hjConsigneestreet3"]=$("#FAddress3").html();
+	datas["hjConsigneepostcode"]=$("#FPostcode").html();
+	datas["hjConsigneename"]=$("#FName").html();
+	datas["hjConsigneetelephone"]=$("#FTelephone").html();
+	datas["hjConsigneemobile"]=$("#FTelephone").html();
+	datas["hjConsigneeemail"]=$("#FEmail").html();
+	datas["hjInvoiceenname"]=$("#hj_invoiceEnname").val();
+	datas["hjInvoicecnname"]=$("#hj_invoiceCnname").val();
+	datas["hjConsigneecountryename"]=$("#hj_consigneeCountryEname").val();
+	datas["hjConsigneecountrycname"]=$("#hj_consigneeCountryCname").val();
+	if($("#hj_orderWeight").val().substr(0,1)=="0"){
+		toastr.error("重量不能以0开头");
+		return false;
+	}
+	datas["hjInvoiceweight"]=$("#hj_orderWeight").val();
+	datas["hjInvoicequantity"]=$("#hj_invoiceQuantity").val();
+	datas["hjUnitcode"]=$("#hj_unitCode").val();
+	datas["hjInvoiceunitcharge"]=$("#hj_invoiceUnitcharge").val();
+	datas["hjInvoicecurrencycode"]=$("#hj_invoiceCurrencycode").val();
+	datas["hjHscode"]=$("#hj_hsCode").val();
+	datas["hjSku"]=$("#hj_sku").val();
+	if($("#hj_isContainsBattery").prop("checked")==true){
+		datas["hjIscontainsbattery"]="1";//是否包含电池
+	}else{
+		datas["hjIscontainsbattery"]="0";
+	}
+	if($("#hj_isAneroidMarkup").prop("checked")==true){
+		datas["hjIsaneroidmarkup"]="1";//是否属于非液体化妆品
+	}else{
+		datas["hjIsaneroidmarkup"]="0";
+	}
+	if($("#hj_isOnlyBattery").prop("checked")==true){
+		datas["hjIsonlybattery"]="1";//是否为纯电池
+	}else{
+		datas["hjIsonlybattery"]="0";
+	}
+	if($("#hj_isBreakable").prop("checked")==true){
+		datas["hjIsbreakable"]="1";//是否易碎
+	}else{
+		datas["hjIsbreakable"]="0";
+	}
+	if($("#hj_isCharged").prop("checked")==true){
+		datas["hjIscharged"]="1";//是否带电
+	}else{
+		datas["hjIscharged"]="0";
+	}
+	datas["hjSaleprice"]=$("#hj_salePrice").val();
+	datas["hjSalecurrency"]=$("#hj_saleCurrency").val();
+	datas["hjCategoryname"]=$("#hj_categoryName").val();
+	datas["hjParentenname"]=$("#hj_parentEnName").val();
+	datas["hjStandy10"]=datase;
+	/* if($("#X_logistics").val()==null||$("#X_logistics").val()==""){
+		$("#X_logistics").css("border-color","red");
+		return false;
+	} */
+	console.log(datas)
+	if(status==1){
+		datas["id"]=value;
+		//查看运单
+		$.ajax({
+			type : "post",
+			contentType : "application/json;charset=utf-8", 
+			url :'${pageContext.request.contextPath}/Logistics/editHJLogistics?${_csrf.parameterName}=${_csrf.token}',
+			data:JSON.stringify(datas),
+			dataType : 'json',
+			success : function(data) {
+				$("#logis").html("");addHtml();selHtml();
+				toastr.success("修改成功");
+			},
+			error : function(json) {
+				toastr.error("修改失败");
+			}
+		});  
+	}else{
+	//保存修改
+	$.ajax({
+		type : "post",
+		contentType : "application/json;charset=utf-8", 
+		url :'${pageContext.request.contextPath}/Logistics/addHJLogistics?${_csrf.parameterName}=${_csrf.token}',
+		data:JSON.stringify(datas),
+		dataType : 'json',
+		success : function(data) {
+			$("#logis").html("");addHtml();selHtml();
+			toastr.success("添加成功");
+		},
+		error : function(json) {
+			toastr.error("添加失败");
+		}
+	}); 
+	}
+}
+//删除运单
+function	delete_HJ(value,values){
+	let resl="是否删除  '"+values+"'请谨慎操作!!!";
+	swal({
+		  title: "您正在进行删除操作",
+		  text: resl,
+		  type: "warning",
+		  showCancelButton: true,
+		  confirmButtonColor: "#DD6B55",
+		  confirmButtonText: "确认",
+		  cancelButtonText: "取消",
+		  closeOnConfirm: true,//设置为true就可以取消弹窗了
+		  closeOnCancel: false
+		},
+		function(isConfirm){
+		  if (isConfirm) {
+			  let datas={};
+				datas["id"]=value;
+				datas["hjShipperhawbcode"]=values;
+				//保存修改
+				$.ajax({
+					type : "post",
+					contentType : "application/json;charset=utf-8", 
+					url :'${pageContext.request.contextPath}/Logistics/delHJLogistics?${_csrf.parameterName}=${_csrf.token}',
+					data:JSON.stringify(datas),
+					dataType : 'json',
+					success : function(data) {
+						toastr.success("删除成功");
+						$("#logis").html("");addHtml();selHtml();
+					},
+					error : function(json) {
+						toastr.error("删除失败");
+					}
+				});  
+		  } else {
+			    swal("已取消", "请继续您的操作 :)", "error");
+		  }
+		});
+ 	
+}
+//查询普通运单
+function selHtml(){
+	let datas={};
+	datas["xFIds"]=$("#Fid").html();
+	//保存修改
+	$.ajax({
+		type : "post",
+		contentType : "application/json;charset=utf-8", 
+		url :'${pageContext.request.contextPath}/Logistics/selLogi?${_csrf.parameterName}=${_csrf.token}',
+		data:JSON.stringify(datas),
+		dataType : 'json',
+		success : function(data) {
+			for(let a=0;a<data.length;a++){
+				let c,b,d="";
+				if(data[a].xFrieght!=""){
+					c=data[a].xFrieght;
+				}
+				if(data[a].xStandby1==1){
+					d="checked";
+				}
+				$("#logis").append('<div class="F_setting col-lg-12">'
+				+'<div class="F_logistics_body2">'
+				+'	<div class="d-flex flex-column">' 
+				+'		<div class="F_logistics_item1">'  
+				+'   		<div class="d-flex flex-row">' 
+				+'   				<div class="F_logistics_item2" style="width:100%">'
+				+'   					<input type="radio" '+d+'   value="'+data[a].id+'" name="Hjradio" onclick="radioslo(1)">运单号：<nobr class="F_logistics_item4" style="font-weight:900;margin-right:25px">'+data[a].xExpress+'</nobr>'
+				+'   					<nobr style="float:right;margin-right:150px">'
+				+'   						<a onclick="selectOrder('+data[a].id+')">查看</a> |'
+				+'   						<a onclick="geteveryone()">打印</a> |'
+				+'   						<a onclick="deleteX('+data[a].id+','+data[a].xFIds+')">删除</a>'
+				+'   					</nobr>'
+				+'   				</div>   	'
+				+'   				<div class="F_logistics_item2">'
+				+'   					<nobr>物流</nobr>'
+				+'   					<nobr style="margin-left:10px">发货:'+timeStamp2String(data[a].xDataTime)+'</nobr>'
+				/* +'   						<nobr>运费：￥'+c+'</nobr>' */
+				+'   				</div>'
+				+'   	   	</div>  '
+				+' 	  	</div>   '
+				+'</div>'
+				+'</div>'
+				+'</div>')
+				}
+			$("#myModal_YT").modal("hide");
+		},
+		error : function(json) {
+			toastr.error("查询失败");
+		}
+	});  
+}
+var chars = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+
+function generateMixed(n) {
+     var res = "";
+     for(var i = 0; i < n ; i ++) {
+         var id = Math.ceil(Math.random()*35);
+         res += chars[id];
+     }
+     return res;
+
+}
+function addHtml(){
+	let datas={};
+	datas["hjShipperhawbcode"]=$("#Fid").html();
+	datas["hjStandy10"]=$("#useid").val();
+	$.ajax({
+		type : "post",
+		contentType : "application/json;charset=utf-8", 
+		url :'${pageContext.request.contextPath}/Logistics/seleHJALL?${_csrf.parameterName}=${_csrf.token}',
+		data:JSON.stringify(datas),
+		dataType : 'json',
+		success : function(data) {
+		
+				for(let a=0;a<data.length;a++){
+					let c,b,d="";
+					if(data[a].hjInvoicecnname!=""){
+						c=data[a].hjInvoicecnname;
+					}
+					/* if(data[a].hjShippingmethod!=""&&data[a].hjShippingmethod!=null){
+						b=data[a].hjShippingmethod;
+					} */
+					if(data[a].hjStandy2==1){
+						d="checked";
+					}
+					let stand5="'"+data[a].hjStandy5+"','"+data[a].hjShippingmethod+"'";
+					$("#logis").append('<div class="F_setting col-lg-12">'
+							+'<div class="F_logistics_body2">'
+							+'	<div class="d-flex flex-column">' 
+							+'		<div class="F_logistics_item1">'  
+							+'   		<div class="d-flex flex-row">' 
+							+'   				<div class="F_logistics_item2" style="width:100%">'
+							+'   					<input type="radio" '+d+'  name="Hjradio" value="'+data[a].id+'" onclick="radioslo(0)">运单号：<nobr class="F_logistics_item4" style="font-weight:900;margin-right:25px">'+data[a].hjShipperhawbcode+'</nobr>'
+							+'   					<nobr style="float:right;margin-right:150px">'
+							+'   						<a onclick="selectOrder_HJ('+data[a].id+')">查看</a> |'
+							+'   						<a onclick="geteveryone('+stand5+')">打印</a> |'//javascript:doPrint()
+							+'   						<a onclick="delete_HJ('+data[a].id+','+data[a].hjShipperhawbcode+')">删除</a>'
+							+'   					</nobr>'
+							+'   				</div>   	'
+							+'   				<div class="F_logistics_item2">'
+							+'   					<nobr>物流：'+zhwl(data[a].hjShippingmethod)+'</nobr><nobr>跟踪：'+data[a].hjStandy7+'</nobr>'
+							+'   					<nobr style="margin-left:10px">发货:'+timeStamp2String(data[a].hjStandy1)+'</nobr>'
+							/* +'   						<nobr>商品名：'+c+'</nobr>' */
+							+'   				</div>'
+							+'   	   	</div>  '
+							+' 	  	</div>   '
+							+'</div>'
+							+'</div>'
+							+'</div>')
+					}
+				$("#myModal_HJ").modal("hide");
+		},
+		error : function(json) {
+			toastr.error("查询失败");
+		}
+	});  
+}
+
+//查看运单
+function selectOrder_HJ(value){
+
+ 	let datas={};
+	datas["id"]=value;
+	//查看运单
+	$.ajax({
+		type : "post",
+		contentType : "application/json;charset=utf-8", 
+		url :'${pageContext.request.contextPath}/Logistics/ckHJLogistics?${_csrf.parameterName}=${_csrf.token}',
+		data:JSON.stringify(datas),
+		dataType : 'json',
+		success : function(data) {
+			HJaddOrder($("#useid").val());
+			$("#hj_consigneeCountryEname").val(data.hjConsigneecountryename);
+			$("#hj_consigneeCountryCname").val(data.hjConsigneecountrycname);
+			$("#hj_invoiceEnname").val(data.hjInvoiceenname);
+			$("#hj_invoiceCnname").val(data.hjInvoicecnname);
+			$("#hj_unitCode").val(data.hjUnitcode);
+			$("#hj_invoiceUnitcharge").val(data.hjInvoiceunitcharge);
+			$("#hj_invoiceCurrencycode").val(data.hjInvoicecurrencycode);
+			$("#hj_sku").val(data.hjSku);
+			$("#hj_invoiceQuantity").val(data.hjInvoicequantity);
+			$("#hj_hsCode").val(data.hjHscode);
+			$("#hj_province").val(data.hjConsigneeprovince);
+			//默认物流
+			if(data.hjShippingmethod!=""){
+				$("#hj_shippingMethod").val(data.hjShippingmethod);
+			}else{
+				$("#hj_shippingMethod").val(0);
+			}
+			
+			if(data.hjIscontainsbattery=="1"){
+				$("#hj_isContainsBattery").click();
+			}
+			$("#hj_salePrice").val(data.hjSaleprice);
+			if(data.hjIsaneroidmarkup=="1"){
+				$("#hj_isAneroidMarkup").click();
+			}
+			$("#hj_saleCurrency").val(data.hjSalecurrency);
+			if(data.hjIsonlybattery=="1"){
+				$("#hj_isOnlyBattery").click();
+			}
+			$("#hj_categoryName").val(data.hjCategoryname);
+			if(data.hjIsbreakable=="1"){
+				$("#hj_isBreakable").click();
+			}
+			$("#hj_parentEnName").val(data.hjParentenname);
+			if(data.hjIscharged=="1"){
+				$("#hj_isCharged").click();
+			}
+			$("#hj_orderWeight").val(data.hjOrderweight);
+			if(data.hjIsreturn=="1"){
+				$("#hj_isReturn").click();
+			}
+			$("#hj_orderPieces").val(data.hjOrderpieces);
+			$("#hj_mailCargoType").val(data.hjMailcargotype);
+			$("#hj_CITY").val(data.hjConsigneecity);
+			$("#hj_COMPANY").val(data.hjConsigneecompany);
+			$("#hj_length").val(data.hjLength);
+			$("#hj_width").val(data.hjWidth);
+			$("#hj_height").val(data.hjHeight);
+			$("#modal-change-hj").html("修改");
+			$("#modal-change-hj").attr("onclick","addx_HJ('1',"+data.id+","+$("#useid").val()+")");
+		},
+		error : function(json) {
+			toastr.error("查找失败");
+		}
+	});  
+}
+//物流转换
+function zhwl(data){
+	switch(data){
+	case "cm_dd_sz":
+		return "中邮小包/线下平邮(带电)";
+	case "cm_sx_sz":
+		return "中邮小包/线下平邮(普货)";
+	case "ghxb_dd_sz":
+		return "中邮小包/线下挂号(带电)";
+	case "ghxb_sg_sz":
+		return "中邮小包/线下挂号(普货)";
+	case "cm_eub_szyjdd":
+		return "中邮E邮宝/线下E邮宝(带电)";
+	case "cm_eub_szyj":
+		return "中邮E邮宝/线下E邮宝(普货)";
+	case "cm_rb_shhm":
+		return "国际专线/日本专线";
+	case "cm_j_wbsd":
+		return "欧洲经济专线挂号";
+	case "cm_py_wbsd":
+		return "欧洲经济专线平邮";
+	case "cm_dg_shhm":
+		return "德国专线";
+	case "cm_yg_wbsd":
+		return "英国专线";
+	case "cm_spain_wbsd":
+		return "西班牙专线";
+	case "cm_it_hh":
+		return "意大利专线平邮";
+	case "cm_jna_ltzx":
+		return "加拿大专线";
+	case "xn_fg_wbsd":
+		return "法国专线";
+	case "cm_hm_yg":
+		return "上海黑猫英国Hermes48经济专线";
+	}
+	return null;
+}
+//根据国家简称填写国家英文和中文
+function CountryEANDC(abbreviation){
+	switch(abbreviation){
+	case "US":
+		return {a:"美国",b:"America"}
+		break;
+	case "CA":
+		return {a:"加拿大",b:"Canada"}
+		break;
+	case "JP":
+		return {a:"日本",b:"Japan"}
+		break;
+	case "AE":
+		return {a:"阿拉伯联合酋长国",b:"TheUnitedArabEmirates"}
+		break;
+	case "FR":
+		return {a:"法国",b:"France"}
+		break;
+	case "IT":
+		return {a:"意大利",b:"Italy"}
+		break;
+	case "ES":
+		return {a:"西班牙",b:"Spain"}
+		break;
+	case "UK":
+		return {a:"英国",b:"Britain"}
+		break;
+	case "GB":
+		return {a:"英国",b:"Britain"}
+		break;
+	case "DE":
+		return {a:"德国",b:"Germany"}
+		break;
+	case "CH":
+		return {a:"瑞士",b:"Switzerland"}
+		break;
+	case "GP":
+		return {a:"瓜德罗普",b:"Guadeloupe"}
+		break;
+	}
+}
+</script>

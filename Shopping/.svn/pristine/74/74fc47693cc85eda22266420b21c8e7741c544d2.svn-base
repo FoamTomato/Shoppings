@@ -1,0 +1,544 @@
+package com.sybinal.shop.model;
+
+import java.util.Arrays;
+import java.util.Date;
+
+public class DTfzyings {
+	private Integer id;
+
+	private String fids;
+
+	private String fsku;
+
+	private String fbrand;
+
+	private String fkind;
+
+	private String fkeys;
+
+	private String fbullet;
+
+	private String fintro;
+
+	private String fcur;
+
+	private Long fprice;
+
+	private Long fcost;
+
+	private Double ffreight;
+
+	private Double fdeclare;
+
+	private Integer fshipid;
+
+	private Integer fquantity;
+
+	private Integer fitems;
+
+	private Double fweight;
+
+	private Double flength;
+
+	private Double fwidth;
+
+	private Double fheight;
+
+	private String fbattery;
+
+	private String fspecial;
+
+	private String fstock;
+
+	private String forigin;
+
+	private String ffacturer;
+
+	private Integer fnumber;
+
+	private String fdepartment;
+
+	private String fmaterial;
+
+	private String fmetal;
+
+	private String fgem;
+
+	private String fpackages;
+
+	private String fhscode;
+
+	private String fenglish;
+
+	private String fchinese;
+
+	private String fsource;
+
+	private String fmemo;
+
+	private String frs1;
+
+	private String frs2;
+
+	private String frs3;
+
+	private String frs4;
+
+	private String frs5;
+
+	private String frs6;
+
+	private String frs7;
+
+	private String frs8;
+
+	private String frs9;
+
+	private Date frs10;
+
+	private String fpic;
+
+	private DTstock[] y;
+	
+
+	private Integer price1;
+	
+	private Integer price2;
+
+	private String updateTime1;
+	
+	private String updateTime2;
+	
+	
+	public String getUpdateTime1() {
+		return updateTime1;
+	}
+
+	public void setUpdateTime1(String updateTime1) {
+		this.updateTime1 = updateTime1;
+	}
+
+	public String getUpdateTime2() {
+		return updateTime2;
+	}
+
+	public void setUpdateTime2(String updateTime2) {
+		this.updateTime2 = updateTime2;
+	}
+
+	public Integer getPrice1() {
+		return price1;
+	}
+
+	public void setPrice1(Integer price1) {
+		this.price1 = price1;
+	}
+
+	public Integer getPrice2() {
+		return price2;
+	}
+
+	public void setPrice2(Integer price2) {
+		this.price2 = price2;
+	}
+
+	public String getFpic() {
+		return fpic;
+	}
+
+	public void setFpic(String fpic) {
+		this.fpic = fpic;
+	}
+
+	public DTstock[] getY() {
+		return y;
+	}
+
+	public void setY(DTstock[] y) {
+		this.y = y;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getFids() {
+		return fids;
+	}
+
+	public void setFids(String fids) {
+		this.fids = fids;
+	}
+
+	public String getFsku() {
+		return fsku;
+	}
+
+	public void setFsku(String fsku) {
+		this.fsku = fsku == null ? null : fsku.trim();
+	}
+
+	public String getFbrand() {
+		return fbrand;
+	}
+
+	public void setFbrand(String fbrand) {
+		this.fbrand = fbrand == null ? null : fbrand.trim();
+	}
+
+	public String getFkind() {
+		return fkind;
+	}
+
+	public void setFkind(String fkind) {
+		this.fkind = fkind == null ? null : fkind.trim();
+	}
+
+	public String getFkeys() {
+		return fkeys;
+	}
+
+	public void setFkeys(String fkeys) {
+		this.fkeys = fkeys == null ? null : fkeys.trim();
+	}
+
+	public String getFbullet() {
+		return fbullet;
+	}
+
+	public void setFbullet(String fbullet) {
+		this.fbullet = fbullet == null ? null : fbullet.trim();
+	}
+
+	public String getFintro() {
+		return fintro;
+	}
+
+	public void setFintro(String fintro) {
+		this.fintro = fintro == null ? null : fintro.trim();
+	}
+
+	public String getFcur() {
+		return fcur;
+	}
+
+	public void setFcur(String fcur) {
+		this.fcur = fcur == null ? null : fcur.trim();
+	}
+
+	public Long getFprice() {
+		return fprice;
+	}
+
+	public void setFprice(Long fprice) {
+		this.fprice = fprice;
+	}
+
+	public Long getFcost() {
+		return fcost;
+	}
+
+	public void setFcost(Long fcost) {
+		this.fcost = fcost;
+	}
+
+	public Double getFfreight() {
+		return ffreight;
+	}
+
+	public void setFfreight(Double ffreight) {
+		this.ffreight = ffreight;
+	}
+
+	public Double getFdeclare() {
+		return fdeclare;
+	}
+
+	public void setFdeclare(Double fdeclare) {
+		this.fdeclare = fdeclare;
+	}
+
+	public Integer getFshipid() {
+		return fshipid;
+	}
+
+	public void setFshipid(Integer fshipid) {
+		this.fshipid = fshipid;
+	}
+
+	public Integer getFquantity() {
+		return fquantity;
+	}
+
+	public void setFquantity(Integer fquantity) {
+		this.fquantity = fquantity;
+	}
+
+	public Integer getFitems() {
+		return fitems;
+	}
+
+	public void setFitems(Integer fitems) {
+		this.fitems = fitems;
+	}
+
+	public Double getFweight() {
+		return fweight;
+	}
+
+	public void setFweight(Double fweight) {
+		this.fweight = fweight;
+	}
+
+	public Double getFlength() {
+		return flength;
+	}
+
+	public void setFlength(Double flength) {
+		this.flength = flength;
+	}
+
+	public Double getFwidth() {
+		return fwidth;
+	}
+
+	public void setFwidth(Double fwidth) {
+		this.fwidth = fwidth;
+	}
+
+	public Double getFheight() {
+		return fheight;
+	}
+
+	public void setFheight(Double fheight) {
+		this.fheight = fheight;
+	}
+
+	public String getFbattery() {
+		return fbattery;
+	}
+
+	public void setFbattery(String fbattery) {
+		this.fbattery = fbattery == null ? null : fbattery.trim();
+	}
+
+	public String getFspecial() {
+		return fspecial;
+	}
+
+	public void setFspecial(String fspecial) {
+		this.fspecial = fspecial == null ? null : fspecial.trim();
+	}
+
+	public String getFstock() {
+		return fstock;
+	}
+
+	public void setFstock(String fstock) {
+		this.fstock = fstock == null ? null : fstock.trim();
+	}
+
+	public String getForigin() {
+		return forigin;
+	}
+
+	public void setForigin(String forigin) {
+		this.forigin = forigin == null ? null : forigin.trim();
+	}
+
+	public String getFfacturer() {
+		return ffacturer;
+	}
+
+	public void setFfacturer(String ffacturer) {
+		this.ffacturer = ffacturer == null ? null : ffacturer.trim();
+	}
+
+	public Integer getFnumber() {
+		return fnumber;
+	}
+
+	public void setFnumber(Integer fnumber) {
+		this.fnumber = fnumber;
+	}
+
+	public String getFdepartment() {
+		return fdepartment;
+	}
+
+	public void setFdepartment(String fdepartment) {
+		this.fdepartment = fdepartment == null ? null : fdepartment.trim();
+	}
+
+	public String getFmaterial() {
+		return fmaterial;
+	}
+
+	public void setFmaterial(String fmaterial) {
+		this.fmaterial = fmaterial == null ? null : fmaterial.trim();
+	}
+
+	public String getFmetal() {
+		return fmetal;
+	}
+
+	public void setFmetal(String fmetal) {
+		this.fmetal = fmetal == null ? null : fmetal.trim();
+	}
+
+	public String getFgem() {
+		return fgem;
+	}
+
+	public void setFgem(String fgem) {
+		this.fgem = fgem == null ? null : fgem.trim();
+	}
+
+	public String getFpackages() {
+		return fpackages;
+	}
+
+	public void setFpackages(String fpackages) {
+		this.fpackages = fpackages == null ? null : fpackages.trim();
+	}
+
+	public String getFhscode() {
+		return fhscode;
+	}
+
+	public void setFhscode(String fhscode) {
+		this.fhscode = fhscode == null ? null : fhscode.trim();
+	}
+
+	public String getFenglish() {
+		return fenglish;
+	}
+
+	public void setFenglish(String fenglish) {
+		this.fenglish = fenglish == null ? null : fenglish.trim();
+	}
+
+	public String getFchinese() {
+		return fchinese;
+	}
+
+	public void setFchinese(String fchinese) {
+		this.fchinese = fchinese == null ? null : fchinese.trim();
+	}
+
+	public String getFsource() {
+		return fsource;
+	}
+
+	public void setFsource(String fsource) {
+		this.fsource = fsource == null ? null : fsource.trim();
+	}
+
+	public String getFmemo() {
+		return fmemo;
+	}
+
+	public void setFmemo(String fmemo) {
+		this.fmemo = fmemo == null ? null : fmemo.trim();
+	}
+
+	public String getFrs1() {
+		return frs1;
+	}
+
+	public void setFrs1(String frs1) {
+		this.frs1 = frs1 == null ? null : frs1.trim();
+	}
+
+	public String getFrs2() {
+		return frs2;
+	}
+
+	public void setFrs2(String frs2) {
+		this.frs2 = frs2 == null ? null : frs2.trim();
+	}
+
+	public String getFrs3() {
+		return frs3;
+	}
+
+	public void setFrs3(String frs3) {
+		this.frs3 = frs3 == null ? null : frs3.trim();
+	}
+
+	public String getFrs4() {
+		return frs4;
+	}
+
+	public void setFrs4(String frs4) {
+		this.frs4 = frs4 == null ? null : frs4.trim();
+	}
+
+	public String getFrs5() {
+		return frs5;
+	}
+
+	public void setFrs5(String frs5) {
+		this.frs5 = frs5 == null ? null : frs5.trim();
+	}
+
+	public String getFrs6() {
+		return frs6;
+	}
+
+	public void setFrs6(String frs6) {
+		this.frs6 = frs6 == null ? null : frs6.trim();
+	}
+
+	public String getFrs7() {
+		return frs7;
+	}
+
+	public void setFrs7(String frs7) {
+		this.frs7 = frs7 == null ? null : frs7.trim();
+	}
+
+	public String getFrs8() {
+		return frs8;
+	}
+
+	public void setFrs8(String frs8) {
+		this.frs8 = frs8 == null ? null : frs8.trim();
+	}
+
+	public String getFrs9() {
+		return frs9;
+	}
+
+	public void setFrs9(String frs9) {
+		this.frs9 = frs9 == null ? null : frs9.trim();
+	}
+
+	public Date getFrs10() {
+		return frs10;
+	}
+
+	public void setFrs10(Date frs10) {
+		this.frs10 = frs10;
+	}
+
+	@Override
+	public String toString() {
+		return "DTfzyings [id=" + id + ", fids=" + fids + ", fsku=" + fsku + ", fbrand=" + fbrand + ", fkind=" + fkind
+				+ ", fkeys=" + fkeys + ", fbullet=" + fbullet + ", fintro=" + fintro + ", fcur=" + fcur + ", fprice="
+				+ fprice + ", fcost=" + fcost + ", ffreight=" + ffreight + ", fdeclare=" + fdeclare + ", fshipid="
+				+ fshipid + ", fquantity=" + fquantity + ", fitems=" + fitems + ", fweight=" + fweight + ", flength="
+				+ flength + ", fwidth=" + fwidth + ", fheight=" + fheight + ", fbattery=" + fbattery + ", fspecial="
+				+ fspecial + ", fstock=" + fstock + ", forigin=" + forigin + ", ffacturer=" + ffacturer + ", fnumber="
+				+ fnumber + ", fdepartment=" + fdepartment + ", fmaterial=" + fmaterial + ", fmetal=" + fmetal
+				+ ", fgem=" + fgem + ", fpackages=" + fpackages + ", fhscode=" + fhscode + ", fenglish=" + fenglish
+				+ ", fchinese=" + fchinese + ", fsource=" + fsource + ", fmemo=" + fmemo + ", frs1=" + frs1 + ", frs2="
+				+ frs2 + ", frs3=" + frs3 + ", frs4=" + frs4 + ", frs5=" + frs5 + ", frs6=" + frs6 + ", frs7=" + frs7
+				+ ", frs8=" + frs8 + ", frs9=" + frs9 + ", frs10=" + frs10 + ", fpic=" + fpic + ", y="
+				+ Arrays.toString(y) + "]";
+	}
+}

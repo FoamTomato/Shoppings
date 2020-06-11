@@ -1,0 +1,30 @@
+package com.sybinal.shop.common;
+
+import com.sybinal.shop.model.SfPrintOrderParam;
+
+/**
+ *
+ */
+public class App 
+{
+    public static void main( String[] args )
+    {
+          SfPrintOrderParam param = new SfPrintOrderParam();
+          
+          param.setMailNo("D41189475534841757698");
+          param.setLogisticsChannel("日本专线");
+          param.setJweight("6.99");
+          param.setMweight("7.2");
+          param.setPackNum("31");
+          param.setAdminUser("A185(光明)");
+          param.setTime("2019-01-17 16:24:12");
+         String s= SFOrderGenerateUtil.generateParentOrder(
+                    "F:\\Foam番茄日志\\img\\",
+                    param,
+                    "2", 
+                    false,
+                    300, 
+                    300);
+         System.out.println(s);
+    }
+}

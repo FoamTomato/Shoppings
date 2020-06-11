@@ -1,0 +1,1240 @@
+package com.sybinal.shop.controller.admin;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.apache.pdfbox.multipdf.PDFMergerUtility;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.sybinal.shop.common.HttpUtilss;
+import com.sybinal.shop.common.logisticsChange;
+import com.sybinal.shop.controller.admin.unit.TestwaterMark;
+import com.sybinal.shop.model.FLogistics;
+import com.sybinal.shop.model.User;
+import com.sybinal.shop.model.Xlogistics;
+import com.sybinal.shop.model.hjBase;
+import com.sybinal.shop.model.jpOrder;
+import com.sybinal.shop.model.logOutOf;
+import com.sybinal.shop.model.ydBase;
+import com.sybinal.shop.service.JpService;
+import com.sybinal.shop.service.logOutOfService;
+import com.sybinal.shop.service.logistics.LogisticsService;
+import com.sybinal.shop.service.logistics.hjService;
+import com.sybinal.shop.service.order.OrderService;
+import com.sybinal.shop.service.order.yidaService;
+import com.sybinal.shop.service.user.UserService;
+
+import sun.misc.BASE64Decoder;
+
+@Controller
+public class FLogisticsController{
+	@Autowired
+	OrderService orderService;
+
+	@Autowired
+	LogisticsService logisticsService;
+	
+	@Autowired
+	hjService hjServices;
+	
+	@Autowired
+	JpService jpServices;
+
+	@Autowired
+	UserService userService;
+	
+	@Autowired
+	logOutOfService logout;
+
+	@Autowired
+	yidaService yida;
+	public static String urls="http://vakind.f3322.org:11008/";
+	
+	private static Logger logger= Logger.getLogger(FLogisticsController.class);
+	/*
+	 * 查询订单
+	 *
+	 */
+	@RequestMapping(value = "/Logistics/checkTheOrder",method=RequestMethod.POST)
+	@ResponseBody
+	public PageInfo checkTheOrder(@RequestBody Map <String,String> map) {
+		  int limit=Integer.parseInt(map.get("limit"));
+		  int page=Integer.parseInt(map.get("page"));
+		  map.put("username", userService.Justiactions(FLogisticsController.username()).getStandby1());
+		  PageHelper.startPage(page,limit);
+		  List<FLogistics> List=logisticsService.checkTheOrder(map);
+		  PageInfo pageInfo = new PageInfo(List);
+		return pageInfo;
+	}
+	@RequestMapping(value = "/Logistics/username",method=RequestMethod.POST)
+	@ResponseBody
+	public static String username(){
+		//获取缓存的用户名
+		  UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		  String names= userDetails.getUsername();
+		  return names;
+	}
+	/*
+	 * 改变打印订单状态
+	 *
+	 */
+	@RequestMapping(value = "/Logistics/printStatus",method=RequestMethod.POST)
+	@ResponseBody
+	public int printStatus(@RequestBody FLogistics fLogistics) {
+		fLogistics.setStandby9(userService.Justiactions(username()).getStandby1());
+		return logisticsService.update(fLogistics);
+	}
+	/*
+	 * 根据id查询订单详情selectOrderById
+	 */
+	@RequestMapping(value = "/Logistics/selectOrderById")
+	@ResponseBody
+	public ModelAndView selectOrderById(FLogistics fLogistics) {
+		ModelAndView model = new ModelAndView();
+		/*
+		 * 获取订单详情
+		 */
+		User user=new User();
+		user.setUserName(FLogisticsController.username());
+		fLogistics.setStandby9(userService.Justiactions(username()).getStandby1());
+		model.addObject("fLogistics",logisticsService.selectOrderByIds(fLogistics));
+		model.addObject("jurisdiction", userService.jurisdiction(user));
+		model.addObject("logoutlist", logout.selectAll());
+		model.setViewName("admin/order/o_Fright");
+		return model;
+	}
+	
+	/*
+	 * 根据id查询订单详情/Logistics/saveEdit
+	 */
+	@RequestMapping(value = "/Logistics/saveEdit",method=RequestMethod.POST)
+	@ResponseBody
+	public FLogistics saveEdit(@RequestBody FLogistics fLogistics) {
+		fLogistics.setStandby9(userService.Justiactions(username()).getStandby1());
+		if(logisticsService.updateBasicInformation(fLogistics)==1) {
+		return logisticsService.selectOrderByIds(fLogistics);}
+	return null;
+	}
+	
+	/*
+	 * 添加环金运单/Logistics/addLogisticsQuantity
+	 */
+	@RequestMapping(value = "/Logistics/addHJLogistics",method=RequestMethod.POST)
+	@ResponseBody
+	public int addHJLogistics(@RequestBody hjBase hjBases) {
+	//String date=new SimpleDateFormat("yyyyMMdd").format(new Date());
+	hjBases.setHjReferenceno("HJ"+System.currentTimeMillis()+logisticsChange.randomNum(3));
+	hjBases.setHjStandy9(userService.Justiactions(username()).getStandby1());
+	logisticsService.addWeight(hjBases.getHjInvoiceweight(), hjBases.getHjShipperhawbcode(),hjBases.getHjReferenceno(),userService.Justiactions(username()).getStandby1());
+	return hjServices.addHJLogistics(hjBases);
+	}
+	/*
+	 * 添加运单/Logistics/addLogisticsQuantity
+	 */
+	@RequestMapping(value = "/Logistics/addLogisticsQuantity",method=RequestMethod.POST)
+	@ResponseBody
+	public int addLogisticsQuantity(@RequestBody Xlogistics xlogistics) {
+		
+	return logisticsService.addLogisticsQuantity(xlogistics);
+	}
+	/**
+	 * 修改集拼jps
+	 * @param xlogistics
+	 * @return
+	 */
+	@RequestMapping(value = "/Logistics/jps",method=RequestMethod.POST)
+	@ResponseBody
+	public int jps(@RequestBody Map<String,String> map) {
+	return logisticsService.jps(map.get("states"),map.get("ids"));
+	}
+	/*
+	 * 删除运单/Logistics/delLogisticsQuantity
+	 */
+	@RequestMapping(value = "/Logistics/delLogisticsQuantity",method=RequestMethod.POST)
+	@ResponseBody
+	public int delLogisticsQuantity(@RequestBody Xlogistics xlogistics) {
+		
+		return logisticsService.delLogisticsQuantity(xlogistics);
+	}
+	/*
+	 * 删除HJ运单/Logistics/editHJLogistics
+	 */
+	
+	@RequestMapping(value = "/Logistics/delHJLogistics",method=RequestMethod.POST)
+	@ResponseBody
+	public int delHJLogistics(@RequestBody hjBase hjBases) {
+		hjBases.setHjStandy9(userService.Justiactions(username()).getStandby1());
+		return hjServices.delHJLogistics(hjBases);
+	}
+	/*查询所有订单*/
+	
+	@RequestMapping(value = "/Logistics/seleHJALL",method=RequestMethod.POST)
+	@ResponseBody
+	public List<hjBase> seleHJALL(@RequestBody hjBase hjBases) {
+		hjBases.setHjStandy9(userService.Justiactions(username()).getStandby1());
+			return hjServices.selHJLogistics(hjBases);
+	}
+	/*
+	 * 查询运单/Logistics/selLogisticsQuantity
+	 */
+	@RequestMapping(value = "/Logistics/selLogisticsQuantity",method=RequestMethod.POST)
+	@ResponseBody
+	public Xlogistics selLogisticsQuantity(@RequestBody Xlogistics xlogistics) {
+			return logisticsService.selsLogisticsQuantity(xlogistics);
+	}
+	/*
+	 * 查询环金运单/Logistics/ckHJLogistics
+	 */
+	@RequestMapping(value = "/Logistics/ckHJLogistics",method=RequestMethod.POST)
+	@ResponseBody
+	public hjBase ckHJLogistics(@RequestBody hjBase hjBases) {
+		hjBases.setHjStandy9(userService.Justiactions(username()).getStandby1());
+			return hjServices.ckHJLogistics(hjBases);
+	}
+	/*
+	 * 修改运单/Logistics/editLogisticsQuantity
+	 */
+	@RequestMapping(value = "/Logistics/editLogisticsQuantity",method=RequestMethod.POST)
+	@ResponseBody
+	public int editLogisticsQuantity(@RequestBody Xlogistics xlogistics) {
+		xlogistics.setxStandby9(userService.Justiactions(username()).getStandby1());
+		return logisticsService.editLogisticsQuantity(xlogistics);
+	}
+	/*
+	 * 修改HJ运单/Logistics/editHJLogistics
+	 */
+	@RequestMapping(value = "/Logistics/editHJLogistics",method=RequestMethod.POST)
+	@ResponseBody
+	public int editHJLogistics(@RequestBody hjBase hjBases) {
+		hjBases.setHjStandy9(userService.Justiactions(username()).getStandby1());
+		return hjServices.editHJLogistics(hjBases);
+	}
+	/*
+	 * 修改运单/Logistics/editHJLogistics
+	 */
+	@RequestMapping(value = "/Logistics/selLogi",method=RequestMethod.POST)
+	@ResponseBody
+	public  List<Xlogistics> selLogi(@RequestBody Xlogistics xlogistics) {
+		
+		return logisticsService.selLogisticsQuantity(xlogistics);
+	}
+	
+	/*
+	 * 修改默认
+	 */
+	@RequestMapping(value = "/Logistics/defaultHj",method=RequestMethod.POST)
+	@ResponseBody
+	public  int defaultHj(@RequestBody hjBase hjBases) {
+		hjServices.defaultHj0(hjBases.getHjShipperhawbcode());
+		logisticsService.default0(hjBases.getHjShipperhawbcode());
+		logger.info(hjBases.getHjShipperhawbcode());
+		yida.defaultHj0(hjBases.getHjShipperhawbcode());
+		if(hjBases.getHjStandy3().equals("0")) {
+			/*
+			 * 环金
+			 */
+			int i=hjServices.defaultHj1(Integer.valueOf(hjBases.getHjStandy2()));
+			//更新跟踪号
+			logisticsService.defaultsLO(Integer.valueOf(hjBases.getHjShipperhawbcode()),username());
+			return i;
+		}else if(hjBases.getHjStandy3().equals("1")) {
+			/*
+			 * 普通
+			 */
+			return logisticsService.default1(Integer.valueOf(hjBases.getHjStandy2()));
+		}else if(hjBases.getHjStandy3().equals("2")) {
+			/*
+			 * 义达
+			 */
+			int i=yida.default2(Integer.valueOf(hjBases.getHjStandy2()));
+			//更新跟踪号
+			logisticsService.defaulData(hjBases.getHjStandy4(),username(),Integer.valueOf(hjBases.getHjShipperhawbcode()));
+			return i;
+		}
+		return 0;
+	}
+	
+	/*
+	 * 修改默认
+	 */
+	@RequestMapping(value = "/Logistics/hj_logistics_post",method=RequestMethod.POST)
+	@ResponseBody
+	public  int hj_logistics_post(@RequestBody hjBase hjBases) {
+		
+		return logisticsService.postLogistics(hjBases.getHjStandy8(),userService.Justiactions(username()).getStandby1());
+	}
+	/*
+	 * 根据条件查询订单/Logistics/selStatusOrder
+	 */
+	@RequestMapping(value = "/Logistics/selStatusOrder",method=RequestMethod.POST)
+	@ResponseBody
+	public PageInfo selStatusOrder(@RequestBody FLogistics fLogistics) {
+		 String sr=userService.Justiactions(username()).getStandby1();
+		  String uks= fLogistics.getStandby9();
+		  fLogistics.setStandby9(sr);
+		//指定格式化格式
+		if(fLogistics.getLimit()!=null) {
+			  PageHelper.startPage(fLogistics.getPage(),fLogistics.getLimit());
+		}else {
+			  PageHelper.startPage(fLogistics.getPage(),50); 
+		} 
+		  List<FLogistics> List=logisticsService.selStatusOrder(fLogistics,uks);
+		  PageInfo pageInfo = new PageInfo(List);
+		  
+		return pageInfo;
+	}
+	
+	/*
+	 * 根据唯一id查询跟踪
+	 */
+	@RequestMapping(value = "/Logistics/ij",method=RequestMethod.POST)
+	@ResponseBody
+	public String ij(@RequestBody Map <String,String> map) {
+		
+		  Gson gson=new Gson();
+		return gson.toJson(hjServices.selalls2(String.valueOf(map.get("ij")),userService.Justiactions(username()).getStandby1()));
+	}
+	/*
+	 * 获取到订单fid/Logistics/getPostId
+	 */
+	@RequestMapping(value = "/Logistics/getPostId",method=RequestMethod.POST)
+	@ResponseBody
+	public  TreeMap<String, Object> getPostId(@RequestBody List<String> map) {
+		return logisticsService.getfids(map);
+	}
+	/*
+	 * 发送同步请求
+	 */
+	@RequestMapping(value = "/Logistics/getPostYu",method=RequestMethod.POST)
+	@ResponseBody
+	public  String getPosts(@RequestBody Map<String,Object> map) {
+		Gson gson=new Gson();
+		if(Integer.parseInt(map.get("totalprice").toString())>11){
+			logger.info("价格大于11，不上传");
+			return "价格大于11，不上传";
+		};
+		//查询所有的物流及限制
+		List<logOutOf> lists=logout.selectAll();
+		final String[] result = new String[1];
+		result[0]="";
+		lists.forEach(x->{
+			if(map.get("shippingMethod").toString().equals(x.getShortName())||map.get("shippingMethod").toString().equals(x.getStandy5())){
+				if(Double.parseDouble(map.get("orderWeight").toString())>=Double.parseDouble(x.getStandy4())){
+					result[0]="重量超过"+x.getStandy4()+"kg";
+					return;
+				};
+			}
+		});
+		if(!result[0].equals("")){
+			return gson.toJson(result[0]);
+		}
+		JSONObject jsonObject = new JSONObject(gson.toJson(map.get("consignee")));
+		JSONObject jsonObject2 = new JSONObject(gson.toJson(map.get("itemArr")).substring(1, gson.toJson(map.get("itemArr")).length()-1));
+		/**
+		 * 拦截收件人名称
+		 */
+		
+		String namese=logout.namese(jsonObject.getString("consigneeName"),jsonObject2.getString("invoiceCnname"),jsonObject2.getString("invoiceEnname"));
+		if(namese!="0"){
+			return gson.toJson(namese);
+		}
+		
+		String apiurl=urls+"api/logistics/v1/track/sync/create/order";//http 请求路径
+		
+		//http请求请求
+		try {
+			String doPost = HttpUtilss.doPost(apiurl, gson.toJson(map), gson.toJson(map),EnumContentType.JSON, 30000);
+			return doPost;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.error("发送错误",e);
+		}
+		return null;
+	}
+	/*
+	 * 获取跟踪号traceNumber
+	 */
+	@RequestMapping(value = "/Logistics/traceNumber",method=RequestMethod.POST)
+	@ResponseBody
+	public  String traceNumber(@RequestBody Map<String,Object> map) {
+		Gson gson=new Gson();
+		String apiurl=urls+"api/logistics/v1/track/list";//http 请求路径
+		//http请求请求
+		try {
+			String doPost = HttpUtilss.doPost(apiurl, gson.toJson(map), gson.toJson(map),EnumContentType.JSON, 30000);
+			return doPost;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("获取跟踪号失败",e);
+			e.printStackTrace();
+		}
+		return null;
+	}
+	//跟踪号赋值setTrack
+	@RequestMapping(value = "/Logistics/setTrack",method=RequestMethod.POST)
+	@ResponseBody
+	public  int setTrack(@RequestBody Map<String,Object> map) {
+		//运单添加跟踪号
+		hjServices.updata(map.get("referenceNo").toString(),map.get("trackNum1").toString());
+		//订单添加
+		return logisticsService.updataCn(map.get("referenceNo").toString(),map.get("trackNum1").toString());
+	}
+	/*
+	 * 发送异步请求asyncPostYu
+	 */
+	@RequestMapping(value = "/Logistics/asyncPostYu",method=RequestMethod.POST)
+	@ResponseBody
+	public  String asyncPostYu(@RequestBody Map<String,Object> map) {
+		Gson gson=new Gson();
+		if(Integer.parseInt(map.get("totalprice").toString())>11){
+			logger.info("价格大于11，不上传");
+			return "价格大于11，不上传";
+		};
+		//查询所有的物流及限制
+		List<logOutOf> lists=logout.selectAll();
+		final String[] result = new String[1];
+		result[0]="";
+		lists.forEach(x->{
+			if(map.get("shippingMethod").toString().equals(x.getShortName())||map.get("shippingMethod").toString().equals(x.getStandy5())){
+				if(Double.parseDouble(map.get("orderWeight").toString())>=Double.parseDouble(x.getStandy4())){
+					result[0]="重量超过"+x.getStandy4()+"kg";
+					return;
+				};
+			}
+		});
+		if(!result[0].equals("")){
+			return gson.toJson(result[0]);
+		}
+		String apiurl=urls+"api/logistics/v1/track/create/order";//http 请求路径
+		
+		//http请求请求
+		try {
+			String doPost = HttpUtilss.doPost(apiurl, gson.toJson(map), gson.toJson(map),EnumContentType.JSON, 30000);
+			return doPost;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			logger.error("异步发送失败",e);
+			e.printStackTrace();
+		}
+		return null;
+	}
+	/*
+	 * 批量删除/Logsistics/BatchDel
+	 */
+	@RequestMapping(value = "/Logsistics/BatchDel",method=RequestMethod.POST)
+	@ResponseBody
+	public  int BatchDel(@RequestBody List<String> map,HttpServletRequest request){
+	
+		return logisticsService.batdel(map);
+	}
+	/*
+	 * 根据id获取全部图片
+	 */
+	@RequestMapping(value = "/Logistics/getpdfall",method=RequestMethod.POST)
+	@ResponseBody
+	public  String getpdfall(@RequestBody List<String> map,HttpServletRequest request) throws JSONException, IOException {
+		/*
+		 * 获取所有编号
+		 */
+		FLogistics cww=new FLogistics();
+		String das="";
+		for(int i=0;i<map.size();i++) {
+			
+			hjBase bs=hjServices.selalls(map.get(i),userService.Justiactions(username()).getStandby1());
+			das+=bs.getHjReferenceno()+",";
+		}
+		das=das.substring(0, das.length()-1);
+		System.out.println(das);
+		List<hjBase> hi=hjServices.selectallOrid(das,userService.Justiactions(username()).getStandby1());
+		Map<String,Object> maps=new HashMap<>();
+		/*
+		 * 获取路径
+		 */
+		
+		String path3 = request.getSession().getServletContext().getRealPath("/");
+		String paths="";
+        String tempPath = "resources/uploade/";
+		PDFMergerUtility mergePdf = new PDFMergerUtility();
+		/*
+		 * 拼接pdf
+		 */
+		
+		String username=userService.Justiactions(username()).getStandby1();
+		for(hjBase bjbase:hi) {
+			logisticsService.postLogistics(bjbase.getHjShipperhawbcode(),username);
+			maps.put("lableKey", bjbase.getHjStandy5());
+			String c=setLableKey(maps);
+			JSONObject jsonObj = new JSONObject(c);
+			Object jsonsI=jsonObj.get("result");
+			if(jsonsI.equals(null) || jsonsI =="") {
+				System.out.println("weikong");
+				continue;
+			}
+				JSONObject result = (JSONObject) jsonsI;
+				//循环添加要合并的pdf存放的路径，path是进行路径生成
+				mergePdf.addSource(path3+path(result.get("lableData").toString(), request,bjbase.getHjShippingmethod()));
+			
+		}
+
+		/*
+		 * 随机名称
+		 */
+		String uuid = UUID.randomUUID().toString().replace("-", "");
+		//设置合并生成pdf文件名称
+        mergePdf.setDestinationFileName(path3+ tempPath + uuid+".pdf"); 
+        //合并pdf
+        mergePdf.mergeDocuments(); 
+        Gson gson=new Gson();
+		return gson.toJson(tempPath + uuid+".pdf");
+	}
+	/*
+	 * 根据id获取跟踪号getTracking
+	 */
+	@RequestMapping(value = "/Logistics/getTracking",method=RequestMethod.POST)
+	@ResponseBody
+	public  String getTracking(@RequestBody Map<String,Object> map) {
+		Gson gson=new Gson();
+		
+		String apiurl=urls+"api/logistics/v1/track/list";//http 请求路径
+		try {
+			String doPost = HttpUtilss.doPost(apiurl, gson.toJson(map), gson.toJson(map),EnumContentType.JSON, 30000);
+			JsonObject jsonObject = new JsonParser().parse(gson.toJson(doPost)).getAsJsonObject();
+			return doPost;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/*
+	 * 根据id获取跟踪号setLableKey
+	 */
+	@RequestMapping(value = "/Logistics/setLableKey",method=RequestMethod.POST)
+	@ResponseBody
+	public  String setLableKey(@RequestBody Map<String,Object> map) {
+		/*
+		 * 添加运单的标签号
+		 */
+		Gson gson=new Gson();
+		
+		String apiurl=urls+"api/logistics/v1/track/sync/lable/download";//http 请求路径
+		//System.out.println(SignDemo.getSign(apiurl,"93a61c53-e6a3-4f13-ad0b-594498a49c45",gson.toJson(map),"POST"));
+		
+		Map<String,Object> maps=new HashMap<String,Object>();
+		maps.put("lableKey", map.get("lableKey"));
+		try {
+			String doPost = HttpUtilss.doPost(apiurl, gson.toJson(maps), gson.toJson(map),EnumContentType.JSON, 30000);
+			//System.out.println("标签获取到的："+doPost);
+			return doPost;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+     *   byte 转文件 下载到本地
+     * @param fileName
+     * @param
+     */
+	/*
+	 * 根据id获取跟踪号setLableKey
+	 */
+	@RequestMapping(value = "/Logistics/conserveFile",method=RequestMethod.POST)
+	@ResponseBody
+    public String conserveFile(@RequestBody Map<String,Object> map,HttpServletRequest request) {
+		/*
+		 * 随机名称
+		 */
+		String uuid = UUID.randomUUID().toString().replace("-", "");
+		/*
+		 * 把map转字符串
+		 */
+		String bytes=map.get("bytes").toString();
+		/* 
+		 * 获取服务器项目路径
+		 */
+		String path = request.getSession().getServletContext().getRealPath("/");
+        String rootPath =  path+File.separator;
+        InputStream inputStream = null;
+        InputStream inputStreams = null;
+        try {
+            String tempPath = "resources/uploade/";
+            String filePath = rootPath+tempPath+uuid+map.get("fileName")+".pdf";
+            // 相对路径
+            String relativePath =tempPath+uuid+map.get("fileName")+"1.pdf";
+            inputStream = new ByteArrayInputStream(bytes.getBytes());
+            // 进行解码
+            BASE64Decoder base64Decoder = new BASE64Decoder();
+            byte[] byt = base64Decoder.decodeBuffer(inputStream);
+            inputStreams = new ByteArrayInputStream(byt);
+            File folder = new File(rootPath+tempPath+File.separator); // 创建文件夹
+            if (!folder.exists()){
+                folder.mkdir();
+            }
+            File file = new File(filePath);
+            if (file.exists()) {
+                //如果文件存在，则删除文件
+                file.delete();
+            }
+            Files.copy(inputStreams, Paths.get(filePath));
+            Gson gson=new Gson();
+            //添加水印
+            TestwaterMark.waterMark(filePath, rootPath+tempPath+uuid+map.get("fileName")+"1.pdf", "P001",map.get("metho").toString());
+            return gson.toJson(relativePath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+
+            if (inputStream != null && inputStreams != null) {
+                try {
+                    inputStream.close();
+                    inputStreams.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+    /*
+	 * 添加LableKey
+	 */
+	@RequestMapping(value = "/Logistics/setLableid",method=RequestMethod.POST)
+	@ResponseBody
+    public int setLableid(@RequestBody Map<String,Object> map) {
+
+        return logisticsService.insertLableKey(map.get("id").toString(),map.get("lab").toString(),map.get("num1").toString(),map.get("id2").toString(),map.get("methosd").toString()
+        		,userService.Justiactions(username()).getStandby1());//,y
+    }
+	/*
+	 * 解密
+	 */
+	 public String path(String t,HttpServletRequest request,String methon) {
+			/*
+			 * 随机名称
+			 */
+			String uuid = UUID.randomUUID().toString().replace("-", "");
+			/*
+			 * 把map转字符串
+			 */
+			String bytes=t;
+			/*
+			 * 获取服务器项目路径
+			 */
+			String path = request.getSession().getServletContext().getRealPath("/");
+	        String rootPath =  path+File.separator;
+	        InputStream inputStream = null;
+	        InputStream inputStreams = null;
+	        try {
+	            String tempPath = "resources/uploade/";
+	            String filePath = rootPath+tempPath+uuid+".pdf";
+	            // 相对路径
+	            String relativePath =tempPath+uuid+"1.pdf";
+	            inputStream = new ByteArrayInputStream(bytes.getBytes());
+	            // 进行解码
+	            BASE64Decoder base64Decoder = new BASE64Decoder();
+	            byte[] byt = base64Decoder.decodeBuffer(inputStream);
+	            inputStreams = new ByteArrayInputStream(byt);
+	            File folder = new File(rootPath+tempPath+File.separator); // 创建文件夹
+	            if (!folder.exists()){
+	                folder.mkdir();
+	            }
+	            File file = new File(filePath);
+	            if (file.exists()) {
+	                //如果文件存在，则删除文件
+	                file.delete();
+	            }
+	            Files.copy(inputStreams, Paths.get(filePath));
+	            //添加水印
+	            TestwaterMark.waterMark(filePath, rootPath+tempPath+uuid+"1.pdf", "P001",methon);
+	            Gson gson=new Gson();
+	            return relativePath;
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        } finally {
+
+	            if (inputStream != null && inputStreams != null) {
+	                try {
+	                    inputStream.close();
+	                    inputStreams.close();
+	                } catch (IOException e) {
+	                    e.printStackTrace();
+	                }
+	            }
+	        }
+	        return null;
+	    }
+	 /*
+	  * dropinfo 生成集拼单号
+	  */
+	@RequestMapping(value = "/Logistics/dropinfo",method=RequestMethod.POST)
+	@ResponseBody
+	public String dropinfo(@RequestBody Map<String,Object> map,HttpServletRequest req) {
+		//1s1008正式1s0008测试
+		String apiurl=urls+"api/logistics/v1/track/dropinfo";//http 请求路径
+
+		String apiurl2=urls+"api/logistics/v1/track/dropinfo/summary";//http 请求路径
+		Gson gson=new Gson();
+		Map<String,Object> result=new HashMap<String,Object>();
+		
+		try {
+			String doPost = HttpUtilss.doPost(apiurl, "", "",EnumContentType.JSON, 30000);
+			Map<String,String> mapSummary=gson.fromJson(doPost, Map.class);
+			Map<String,Object> map2=new HashMap<>();
+			
+			//集拼单号,从”生成集拼单号”接口中获取
+			map2.put("dropNo", mapSummary.get("result"));
+			
+			//传入唯一编号
+			List<hjBase> y=hjServices.getNoList(map.get("referenceNoList").toString(),userService.Justiactions(username()).getStandby1());
+			if(y.size()==0){
+				return gson.toJson("未找到订单"+map.get("referenceNoList").toString());
+			}
+			for(hjBase d:y){
+				if(d.getHjStandy12().equals("1")) {
+					return gson.toJson(d.getHjShipperhawbcode()+"包含已集拼订单");
+				}
+			}
+			List<String> x=new ArrayList();
+			//存储编号
+			String bianh="";
+			for(hjBase d:y){
+				hjServices.addStandy12(d.getHjReferenceno());
+				x.add(d.getHjReferenceno());
+				logisticsService.updatajp(d.getHjShipperhawbcode(),mapSummary.get("result"),d.getHjReferenceno(),userService.Justiactions(username()).getStandby1());
+				bianh+=d.getHjReferenceno()+",";
+			}
+			//查找
+			map2.put("referenceNoList", x);
+			map2.put("grossWeight", map.get("S_weight2"));
+			map2.put("shippingMethod", map.get("S_channel"));
+			
+			//存储编号和集拼单号
+			jpOrder ords=new jpOrder();
+			
+			ords.setJpLaks(mapSummary.get("result"));
+			ords.setJpResult(bianh.substring(0, bianh.length()-1));
+			ords.setJpLength(map.get("S_num").toString());
+			ords.setJpLogistic(map.get("S_channel").toString());
+			ords.setJpAdmin(map.get("S_admin").toString());
+			ords.setJpRoughweight(map.get("S_weight2").toString());
+			ords.setJpSuttle(map.get("S_weights").toString());
+			SimpleDateFormat datt=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			ords.setJpTime(datt.parse(map.get("S_time").toString()));
+			
+			//对map利用key排序
+			Map<String, Object> resMap = sortMapByKey(map2);
+			
+			String doPost2 = HttpUtilss.doPost(apiurl2, gson.toJson(resMap), gson.toJson(resMap),EnumContentType.JSON, 30000);
+			//String s="{\"status\":\"1\",\"errormsg\":null,\"errorcode\":null,\"spenttime\":162,\"result\":{\"succList\":[\"4_1189145774647377922\",\"4_1189157442131558402\",\"4_1189158008123523073\",\"4_1189160009481814017\",\"4_1189160318211948546\",\"4_1189161485075709953\"]},\"errorlevel\":null}";
+
+			Map<Object,Object> mapSummary2=gson.fromJson(doPost2, Map.class);
+			String s2=gson.toJson(mapSummary2.get("result"));
+			Map<Object,Object> mapSummary3=gson.fromJson(s2, Map.class);
+			//所有编号
+			result.put("succList",mapSummary3.get("succList"));
+			//集拼单号
+			result.put("dropNo", mapSummary.get("result"));
+			/*
+			 * 修改提交的编号
+			 */
+			//String[] p=map.get("referenceNoList").toString().substring(1, map.get("referenceNoList").toString().length()-1).split(",");
+			//if(!mapSummary2.get("status").equals("0")){
+			ords.setJpStandby2(username());
+			jpServices.addd(ords);
+			//}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return gson.toJson(result); 
+	}
+	/**
+	 * 让 Map按key进行排序
+	 */
+	public static Map<String, Object> sortMapByKey(Map<String, Object> map) {
+		if (map == null || map.isEmpty()) {
+			return null;
+		}
+		Map<String, Object> sortMap = new TreeMap<String, Object>(new MapKeyComparator());
+		sortMap.putAll(map);
+		return sortMap;
+	}
+	/**
+	 * 测试国外接口
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/Logistics/test",method=RequestMethod.POST)
+	@ResponseBody
+		public static String test() throws Exception {
+			System.out.println(123);
+			String apiurl="https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706?applicationId=[アプリID]&keyword=%E7%A6%8F%E8%A2%8B&sort=%2BitemPrice";
+			
+			Map<String, String> head = Maps.newHashMap();
+			
+			String doPost;
+			doPost= HttpUtilss.doPost(apiurl, "", "",EnumContentType.JSON, 30000);
+			System.out.println(doPost);
+			Gson gson=new Gson();
+			return gson.toJson(doPost);
+	}
+	/*
+	 * /Logistics/ALLbatch 批量添加运单
+	 */
+	@RequestMapping(value = "/Logistics/ALLbatch",method=RequestMethod.POST)
+	@ResponseBody
+    public int ALLbatch(@RequestBody Map<String,String> map){
+			//拿到列表
+			String str=map.get("List");
+			String[] str1=str.split(",");
+
+			//String date=new SimpleDateFormat("yyyyMMdd").format(new Date());
+			FLogistics fLogistics = new FLogistics();
+			hjBase hjBases = new hjBase();
+			Gson gson=new Gson();
+			//获取到id并传值
+			for(int i=0;i<str1.length;i++) {
+				fLogistics.setId(Integer.parseInt(str1[i]));
+				fLogistics.setStandby9(userService.Justiactions(username()).getStandby1());
+				fLogistics=logisticsService.selectByPrimaryKey2(fLogistics);
+				hjBases.setHjReferenceno("HJ"+System.currentTimeMillis()+logisticsChange.randomNum(3));
+
+				hjBases.setHjShipperhawbcode(fLogistics.getfIds());
+				//如果为0 则获取自带
+				if(map.get("bat_shippingMethod")=="0"){
+					hjBases.setHjShippingmethod(fLogistics.getStandby12());
+				}else{
+					hjBases.setHjShippingmethod(map.get("bat_shippingMethod"));
+				}
+				hjBases.setHjCountrycode(fLogistics.getfCountry());
+				hjBases.setHjShipzip(fLogistics.getfPostCode());
+				hjBases.setHjOrderweight(map.get("bat_orderWeight"));
+				hjBases.setHjOrderpieces(map.get("bat_orderPieces"));
+				hjBases.setHjTotalprice(map.get("bat_invoiceUnitcharge"));
+				hjBases.setHjMailcargotype(map.get("bat_mailCargoType"));
+				hjBases.setHjLength(map.get("bat_length"));
+				hjBases.setHjWidth(map.get("bat_width"));
+				hjBases.setHjHeight(map.get("bat_height"));
+				hjBases.setHjIsreturn(map.get("bat_isReturn"));
+				hjBases.setHjIsbattery(map.get("bat_isBreakable"));
+				hjBases.setHjConsigneecompany(map.get("bat_COMPANY"));
+				//System.out.println(fLogistics.getfProvince());
+				if(!map.get("bat_invoicePrivan").equals("")){
+					hjBases.setHjConsigneeprovince(map.get("bat_invoicePrivan"));
+				}else if(fLogistics.getfProvince().equals("")) {
+					hjBases.setHjConsigneeprovince(fLogistics.getfCity());
+				}else {
+					hjBases.setHjConsigneeprovince(fLogistics.getfProvince());
+				}
+				//System.out.println(hjBases.getHjConsigneeprovince());
+				if(!map.get("bat_invoiceCity").equals("")){
+					hjBases.setHjConsigneecity(map.get("bat_invoiceCity"));
+				}else{
+					hjBases.setHjConsigneecity(fLogistics.getfCity());
+				}
+				hjBases.setHjConsignee("1");
+				hjBases.setHjConsigneestreet(fLogistics.getfAddress1());
+				hjBases.setHjConsigneestreet2(fLogistics.getfAddress2());
+				hjBases.setHjConsigneestreet3(fLogistics.getfAddress3());
+				hjBases.setHjConsigneepostcode(fLogistics.getfPostCode());
+				hjBases.setHjConsigneename(fLogistics.getfFirstName()+fLogistics.getfLastName());
+				hjBases.setHjConsigneetelephone(fLogistics.getfTelephone());
+				hjBases.setHjConsigneemobile(fLogistics.getfTelephone());
+				hjBases.setHjConsigneeemail(fLogistics.getfEmail());
+				String pi=fLogistics.getfCountry();
+				String data=logisticsChange.pd(pi);
+				if(data!=null) {
+					String[] y=data.split(",");
+					hjBases.setHjConsigneecountryename(y[1]);
+					hjBases.setHjConsigneecountrycname(y[0]);
+				}
+				hjBases.setHjInvoiceenname(map.get("bat_invoiceEnname"));
+				hjBases.setHjInvoicecnname(map.get("bat_invoiceCnname"));
+				hjBases.setHjInvoiceweight(map.get("bat_orderWeight"));
+				hjBases.setHjInvoicequantity(map.get("bat_invoiceQuantity"));
+				hjBases.setHjUnitcode(map.get("bat_unitCode"));
+				hjBases.setHjInvoiceunitcharge(map.get("bat_invoiceUnitcharge"));
+				hjBases.setHjInvoicecurrencycode(map.get("bat_invoiceCurrencycode"));
+				hjBases.setHjHscode(map.get("bat_hsCode"));
+				
+				
+				hjBases.setHjSku("B07"+logisticsChange.randomNum(7).toUpperCase());
+				
+				
+				hjBases.setHjIscontainsbattery(map.get("bat_isContainsBattery"));
+				hjBases.setHjIsaneroidmarkup(map.get("bat_isAneroidMarkup"));
+				hjBases.setHjIsonlybattery(map.get("bat_isOnlyBattery"));
+				hjBases.setHjIsbreakable(map.get("bat_isBreakable"));
+				hjBases.setHjIscharged(map.get("bat_isCharged"));
+
+				hjBases.setHjSaleprice(map.get("bat_invoiceUnitcharge"));
+				hjBases.setHjSalecurrency(map.get("bat_saleCurrency"));
+				hjBases.setHjCategoryname("家具装饰");
+				hjBases.setHjParentenname("Furniture decoration");
+				if (map.get("bat_shippingMethod").indexOf("cm")!= -1){
+						hjBases.setHjStandy6("cm");//根据客服添加配送方式
+					}else if(map.get("bat_shippingMethod").indexOf("ghxb")!= -1){
+						hjBases.setHjStandy6("ghxb");//根据客服添加配送方式
+					}else if(map.get("bat_shippingMethod").indexOf("kd")!= -1){
+						hjBases.setHjStandy6("kd");//根据客服添加配送方式
+					}else if(map.get("bat_shippingMethod").indexOf("zx")!= -1){
+						hjBases.setHjStandy6("zx");//根据客服添加配送方式
+					}else if(map.get("bat_shippingMethod").indexOf("xn")!= -1){
+						hjBases.setHjStandy6("xn");//根据客服添加配送方式法国专线
+					}
+				logisticsService.addWeight(hjBases.getHjInvoiceweight(),hjBases.getHjShipperhawbcode(),hjBases.getHjReferenceno(),userService.Justiactions(username()).getStandby1());
+				hjServices.defaultHj0(hjBases.getHjShipperhawbcode());
+				logisticsService.default0(hjBases.getHjShipperhawbcode());
+				yida.defaultHj0(hjBases.getHjShipperhawbcode());
+				
+				hjBases.setHjStandy9(userService.Justiactions(username()).getStandby1());
+				hjBases.setHjStandy10(str1[i]);
+				hjServices.insertSelective2(hjBases);
+				//System.out.println(gson.toJson(hjBases));
+			}
+			
+			return 1;
+	}
+	/**
+	 * 发送义达订单
+	 * yidaLogistics
+	 * @param string 
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "/Logistics/yidaLogistics",method=RequestMethod.POST)
+	@ResponseBody
+    public String yidaLogistics(@RequestBody Map<String,Object> map, String string) throws Exception{
+		String apiurl2="http://customer.ydhex.com/webservice/PublicService.asmx/ServiceInterfaceUTF8";
+		Gson gson=new Gson();
+		/*Map<String,Object> maps=new HashMap<String,Object>();
+
+		maps.put("paramsJson", map);
+		maps.put("appToken", "yondaeeo7tfq7gnzu6p0t3naulpm7ytpz");
+		maps.put("appKey", "ypc233783ub1rugiy39sl06banszz2qiaz1rdu618q782wtaehydzae9sa2qkhjad");
+		maps.put("serviceMethod", string);
+		logger.info(gson.toJson(maps));*/
+		String doPost=HttpUtilss.doydPost(apiurl2, gson.toJson(map),EnumContentType.URLEncoder, 30000,string);
+		return doPost;
+	}
+	/**
+	 * 添加义达
+	 */
+	@RequestMapping(value = "/Logistics/addyida",method=RequestMethod.POST)
+	@ResponseBody
+    public int addyida(@RequestBody ydBase base) throws Exception{
+		base.setYdShipperName("数独科技");
+  	  	base.setYdShipperCountrycode("CN");
+  	  	base.setYdShipperStreet("深圳龙岗坂田");
+  	  	base.setYdShipperTelephone("18911520803");
+  	  	base.setYdShipperMobile("18911520803");
+		base.setYdReferenceNo("YD"+System.currentTimeMillis()+logisticsChange.randomNum(3));
+		return yida.addOrder(base);
+	}
+	/**
+	 * 批量添加义达addyidas
+	 */
+	@RequestMapping(value = "/Logistics/addyidas",method=RequestMethod.POST)
+	@ResponseBody
+    public int addyidas(@RequestBody Map<String,Object>map) throws Exception{
+		//批量添加
+		List<ydBase> lists=new ArrayList<ydBase>();
+		//列表
+        logisticsService.selectListid(map.get("checkedCities").toString()).forEach(x->{
+    		ydBase base=new ydBase();
+    		base.setYdInvoiceEnname(map.get("invoiceEnname").toString());
+    		base.setYdInvoiceCnname(map.get("invoiceCnname").toString());
+    		base.setYdConsigneeCity(map.get("city").toString());
+    		base.setYdConsigneeProvince(map.get("province").toString());
+    		base.setYdUnitCode(map.get("unitCode").toString());
+    		base.setYdInvoiceQuantity(map.get("invoiceQuantity").toString());
+    		base.setYdShippingMethod(map.get("shippingMethod").toString());
+    		base.setYdOrderWeight(map.get("orderWeight").toString());
+    		base.setYdOrderPieces(map.get("orderPieces").toString());
+    		base.setYdMailCargoType(map.get("mailCargoType").toString());
+    		base.setYdCargotype(map.get("cargotype").toString());
+    		base.setYdOrderInfo(map.get("order_info").toString());
+    		base.setYdReturnSign(map.get("isReturn").toString());
+    		//base.setYdOrderInfo(map.get("checkedCities").toString());
+    		
+    		base.setYdShipperName("数独科技");
+      	  	base.setYdShipperCountrycode("CN");
+      	  	base.setYdShipperStreet("深圳龙岗坂田");
+      	  	base.setYdShipperTelephone("18911520803");
+      	  	base.setYdShipperMobile("18911520803");
+    		base.setYdReferenceNo("YD"+System.currentTimeMillis()+logisticsChange.randomNum(3));
+        	base.setYdSku("B07"+logisticsChange.randomNum(7).toUpperCase());
+			base.setYdInvoiceUnitcharge(String.valueOf(sj()));
+			base.setYdConsigneeName(x.getfFirstName()+x.getfLastName());
+			base.setYdConsigneeCountrycode(x.getfCountry());
+			base.setYdConsigneeProvince(x.getfProvince());
+			base.setYdConsigneeCity(x.getfCity());
+			base.setYdConsigneeStreet(x.getfAddress1());
+			//base.setYdConsigneeStreet(x.getfAddress1());
+			base.setYdConsigneePostcode(x.getfPostCode());
+			base.setYdConsigneeTelephone(x.getfTelephone());
+			base.setYdConsigneeMobile(x.getfTelephone());
+			base.setYdConsigneeEmail(x.getfEmail());
+			base.setYdStandy7("");
+			base.setYdStandy3(x.getfIds());
+			base.setYdStandy2("1");
+			
+			hjServices.defaultHj0(x.getfIds());
+			logisticsService.default0(x.getfIds());
+			yida.defaultHj0(x.getfIds());
+			
+			lists.add(base);
+        });
+		return yida.addOrders(lists);
+	}
+	/**
+	 * 随机价格
+	 */
+	public int sj() {
+	    //x上限，y下限     
+	    int x = 11;
+	    int y = 3;
+	    int rand = (int) (Math.random() * (x - y + 1) + y);
+		return rand;
+	}
+	/**
+	 * 跳转查看跟踪号/Logistics/tail
+	 */
+	@RequestMapping(value = "/Logistics/tail")
+	@ResponseBody
+    public ModelAndView tail() throws Exception{
+		ModelAndView model = new ModelAndView();
+		
+		model.setViewName("admin/tail/ydTail");
+		return model;
+	}
+	/**
+	 * 查看跟踪号tail/orderList
+	 */
+	@RequestMapping(value = "/Logistics/tail/orderList")
+	@ResponseBody
+    public List<Object> tailOrderList(@RequestBody Map<String,String>map) throws Exception{
+		//拿编号
+		String[] tailList=map.get("selectText").split(",");
+		Map<String,Object> tails=new HashMap<String,Object>();
+		//存入列表
+		List<Object> result=new ArrayList<Object>();
+		for(int i=0;i<tailList.length;i++) {
+			tails.put("tracking_number", tailList[i]);
+			result.add(yidaLogistics(tails,"gettrack"));
+		}
+		return result;
+	}
+	/**
+	 * 修改义达ydUpdateOrder
+	 */
+	@RequestMapping(value = "/Logistics/ydUpdateOrder",method=RequestMethod.POST)
+	@ResponseBody
+    public int ydUpdateOrder(@RequestBody ydBase base) throws Exception{
+		
+		return yida.ydUpdateOrder(base);
+	}
+    /**
+	 * 添加义达跟踪号
+	 */
+	@RequestMapping(value = "/Logistics/updateYd",method=RequestMethod.POST)
+	@ResponseBody
+    public int updateYd(@RequestBody ydBase base) throws Exception{
+		//更新跟踪号
+		logisticsService.defaulData(base.getYdShippingMethodNo(),username(),Integer.valueOf(base.getYdStandy3()));
+		return yida.updateYd(base);
+	}
+	/**
+	 * ydDelOrder删除义达
+	 */
+	@RequestMapping(value = "/Logistics/ydDelOrder",method=RequestMethod.POST)
+	@ResponseBody
+    public int ydDelOrder(@RequestBody ydBase base) throws Exception{
+		return yida.ydDelOrder(base);
+	}
+	/**
+	 * 批量发送义达postYds
+	 */
+	@RequestMapping(value = "/Logistics/postYds",method=RequestMethod.POST)
+	@ResponseBody
+    public List<Object> postYds(@RequestBody List<String> list) throws Exception{
+		Map<String,Object>map=new HashMap<String,Object>();
+		List<Object>liste=new ArrayList<Object>();
+		
+		yida.selectYds(logisticsService.selectIDList(list)).forEach(base2->{
+			map.put("reference_no", base2.getYdReferenceNo());
+			map.put("shipping_method", base2.getYdShippingMethod());
+			map.put("order_weight", base2.getYdOrderWeight());
+			map.put("order_pieces", base2.getYdOrderPieces());
+			map.put("cargotype", base2.getYdCargotype());
+			map.put("mail_cargo_type", base2.getYdMailCargoType());
+			map.put("return_sign", base2.getYdReturnSign());
+			map.put("order_info", base2.getYdOrderInfo());
+			//发件人信息
+			Map<String,Object>shipper=new HashMap<String,Object>();
+			shipper.put("shipper_name", base2.getYdShipperName());
+			shipper.put("shipper_countrycode", base2.getYdShipperCountrycode());
+			shipper.put("shipper_street", base2.getYdShipperStreet());
+			shipper.put("shipper_telephone", base2.getYdShipperTelephone());
+			shipper.put("shipper_mobile", base2.getYdShipperMobile());
+			//收件人信息
+			Map<String,Object>consignee=new HashMap<String,Object>();
+			consignee.put("consignee_name", base2.getYdConsigneeName());
+			consignee.put("consignee_countrycode", base2.getYdConsigneeCountrycode());
+			consignee.put("consignee_province", base2.getYdConsigneeProvince());
+			consignee.put("consignee_city", base2.getYdConsigneeCity());
+			consignee.put("consignee_street", base2.getYdConsigneeStreet());
+			consignee.put("consignee_postcode", base2.getYdConsigneePostcode());
+			consignee.put("consignee_telephone", base2.getYdConsigneeTelephone());
+			consignee.put("consignee_mobile", base2.getYdConsigneeMobile());
+			consignee.put("consignee_tariff", base2.getYdConsigneeTariff());
+			//海关申报信息
+			Map<String,Object>invoice=new HashMap<String,Object>();
+			List<Object> invoice2=new ArrayList<Object>();
+			invoice2.add(invoice);
+			invoice.put("invoice_enname", base2.getYdInvoiceEnname());
+			invoice.put("invoice_cnname", base2.getYdInvoiceCnname());
+			invoice.put("invoice_quantity", base2.getYdInvoiceQuantity());
+			invoice.put("unit_code", base2.getYdUnitCode());
+			invoice.put("invoice_unitcharge", base2.getYdInvoiceUnitcharge());
+			
+			map.put("shipper", shipper);
+			map.put("consignee", consignee);
+			map.put("invoice", invoice2);
+			try {
+				
+				Map<String,Object>result=new HashMap<String,Object>();
+				result.put("data", yidaLogistics(map,"createorder"));
+				result.put("fid", base2.getYdStandy3());
+				liste.add(result);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		
+		return liste;
+	}
+	/**
+	 * 发送义达postYd
+	 */
+	@RequestMapping(value = "/Logistics/postYd",method=RequestMethod.POST)
+	@ResponseBody
+    public String postYd(@RequestBody ydBase base) throws Exception{
+		Map<String,Object>map=new HashMap<String,Object>();
+		ydBase base2=yida.selectYd(base.getId().toString());
+		map.put("reference_no", base2.getYdReferenceNo());
+		map.put("shipping_method", base2.getYdShippingMethod());
+		map.put("order_weight", base2.getYdOrderWeight());
+		map.put("order_pieces", base2.getYdOrderPieces());
+		map.put("cargotype", base2.getYdCargotype());
+		map.put("mail_cargo_type", base2.getYdMailCargoType());
+		map.put("return_sign", base2.getYdReturnSign());
+		map.put("order_info", base2.getYdOrderInfo());
+		//发件人信息
+		Map<String,Object>shipper=new HashMap<String,Object>();
+		shipper.put("shipper_name", base2.getYdShipperName());
+		shipper.put("shipper_countrycode", base2.getYdShipperCountrycode());
+		shipper.put("shipper_street", base2.getYdShipperStreet());
+		shipper.put("shipper_telephone", base2.getYdShipperTelephone());
+		shipper.put("shipper_mobile", base2.getYdShipperMobile());
+		//收件人信息
+		Map<String,Object>consignee=new HashMap<String,Object>();
+		consignee.put("consignee_name", base2.getYdConsigneeName());
+		consignee.put("consignee_countrycode", base2.getYdConsigneeCountrycode());
+		consignee.put("consignee_province", base2.getYdConsigneeProvince());
+		consignee.put("consignee_city", base2.getYdConsigneeCity());
+		consignee.put("consignee_street", base2.getYdConsigneeStreet());
+		consignee.put("consignee_postcode", base2.getYdConsigneePostcode());
+		consignee.put("consignee_telephone", base2.getYdConsigneeTelephone());
+		consignee.put("consignee_mobile", base2.getYdConsigneeMobile());
+		consignee.put("consignee_tariff", base2.getYdConsigneeTariff());
+		//海关申报信息
+		Map<String,Object>invoice=new HashMap<String,Object>();
+		List<Object> invoice2=new ArrayList<Object>();
+		invoice2.add(invoice);
+		invoice.put("invoice_enname", base2.getYdInvoiceEnname());
+		invoice.put("invoice_cnname", base2.getYdInvoiceCnname());
+		invoice.put("invoice_quantity", base2.getYdInvoiceQuantity());
+		invoice.put("unit_code", base2.getYdUnitCode());
+		invoice.put("invoice_unitcharge", base2.getYdInvoiceUnitcharge());
+		
+		map.put("shipper", shipper);
+		map.put("consignee", consignee);
+		map.put("invoice", invoice2);
+		return yidaLogistics(map,"createorder");
+	}
+	
+	/**
+	 * 查询所有列表
+	 */
+	@RequestMapping(value = "/Logistics/orderlist",method=RequestMethod.POST)
+	@ResponseBody
+    public Map<String, Object> orderlist(@RequestBody Map<String,Object> maps) throws Exception{
+		Map<String,Object>map=new HashMap<String,Object>();
+		/*
+		 * 获取云单详情
+		 */
+		/*model.addObject("XLogistics",logisticsService.selectSA(fLogistics.getId(),fLogistics.getfIds()));
+		
+		 * 获取hj云单详情
+		 * */
+		map.put("hj",hjServices.selectHjLogice(Integer.valueOf(maps.get("fid").toString()),userService.Justiactions(username()).getStandby1(),maps.get("id").toString()));
+		map.put("yd",yida.selectOrder(Integer.valueOf(maps.get("fid").toString()),userService.Justiactions(username()).getStandby1(),maps.get("id").toString()));
+		//map.put("logoutlist", logout.selectAll());查询物流
+		//map.put("XLogistics",logisticsService.selectSA(fLogistics.getId(),fLogistics.getfIds()))自己的物流
+		return map;
+	}
+    
+    /**
+	 * 根据id查询单个
+	 */
+	@RequestMapping(value = "/Logistics/yidaSelectOne",method=RequestMethod.POST)
+	@ResponseBody
+    public ydBase yidaSelectOne(@RequestBody  ydBase base) throws Exception{
+		
+		return yida.yidaSelectOne(base);
+	}
+	/**
+	 * 义达打印lable
+	 */
+	@RequestMapping(value = "/Logistics/lable",method=RequestMethod.POST)
+	@ResponseBody
+    public String lable(@RequestBody Map<String,Object> map) throws Exception{
+		
+		return yidaLogistics(map,"getnewlabel");
+	}
+}

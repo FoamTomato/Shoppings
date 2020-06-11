@@ -1,0 +1,195 @@
+package com.sybinal.shop.controller.admin;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.sybinal.shop.model.OnlineDownloadWithBLOBs;
+import com.sybinal.shop.service.catalog.dTstocksService;
+import com.sybinal.shop.service.onlineDown.OnlineDownService;
+
+@Controller
+public class UploadController {
+
+	@Autowired
+	dTstocksService dtStocks;
+	
+	@Autowired
+	OnlineDownService onlineDownService;
+
+	/*@RequestMapping("/upload")
+	@ResponseBody
+	public List<OnlineDownloadWithBLOBs> upload(HttpServletRequest request, @RequestParam("file") MultipartFile files, Model model,
+			OnlineDownloadWithBLOBs onlineDownload) throws Exception {
+		// ExecutorService pool = Executors.newFixedThreadPool(10);
+		// 随机数实例化
+		onlineDownload.setFiles(files);
+		onlineDownload.setfOnlineUrl(files.getOriginalFilename());
+		System.out.println("显示"+files.getOriginalFilename());
+		Random rd = new Random();
+		// 设置日期格式
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		// 设置图片名称命名格式
+		SimpleDateFormat sdfs = new SimpleDateFormat("-yyyyMMddHHmmss");
+		String[] t1 = null;
+		String[] t2 = null;
+		// 拼接文件路径
+		String imageName = "F:/LibraryImage/" + sdf.format(new Date()) + "/" + onlineDownload.getfSku() + "/";
+
+		DTstock dTstock = new DTstock();
+		// 获取文件路径
+		File file = new File(imageName);
+		if (!file.exists() && !file.isDirectory()) {
+			// 文件夹创建批量
+			file.mkdirs();
+		} else {
+			System.out.println("变体创建的文件夹已存在" + file);
+		}
+		// 保存数据库的路径
+		String sqlPath = null;
+		// 定义文件保存的本地路径
+		String localPath = imageName;
+		// 定义 文件名
+		String filename = null;
+		if (!onlineDownload.getFiles().isEmpty()) {
+			// 生成uuid作为文件名称
+			String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+			// 获得文件类型（可以判断如果不是图片，禁止上传）
+			String contentType = onlineDownload.getFiles().getContentType();
+			// 获得文件后缀名
+			String suffixName = contentType.substring(contentType.indexOf("/") + 1);
+			// 得到 文件名
+			filename = uuid + "." + suffixName;
+			// 文件保存路径
+			onlineDownload.getFiles().transferTo(new File(localPath + filename));
+		}
+		// 把图片的相对路径保存至数据库
+		sqlPath = sdf.format(new Date()) + "/" + onlineDownload.getfSku() + "/" + filename;
+		System.out.println(sqlPath);
+		//dtstocks.setFimg(",," + sqlPath);
+		// 添加图片
+		System.out.println(imageName);
+		onlineDownload.setfImagesUrl("F:/LibraryImage/" +sqlPath);
+		onlineDownService.getAndset(onlineDownload);
+		//dtStocks.updateStocks(dtstocks);
+		// dtStocks.addStock(dtstocks);
+		// dtstocks.setImages(sqlPath);
+		// formationService.addFormation(dtstocks);
+		// model.addAttribute("forms", dtstocks);
+		// return selforms(request);
+		// ModelAndView models = new ModelAndView();
+		// models.setViewName("redirect:/admin/productFright?id=49604");
+		// Gson gson = new Gson();
+		// gson.toJson("path", sqlPath);
+		// 查找新添加的图片
+		return onlineDownService.select(onlineDownload.getfSku());
+	}*/
+	
+	private static Logger logs = Logger.getLogger(UploadController.class);
+	@RequestMapping(value = "/upload")
+	@ResponseBody
+	public List<OnlineDownloadWithBLOBs> uploads(HttpServletRequest request, @RequestParam("file") MultipartFile file, Model model,
+			OnlineDownloadWithBLOBs onlineDownload) throws Exception {
+		//给需要查询的内容赋值
+		
+		onlineDownload.setFiles(file);
+		
+		/*
+		 * 创建随机数
+		 */
+		
+		Random rd = new Random();
+		
+		// 设置日期格式
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		
+		// 设置图片名称命名格式
+		
+		SimpleDateFormat sdfs = new SimpleDateFormat("-yyyyMMddHHmmss");
+		
+		/*
+		 * 随机生成文件名
+		 */
+		
+		String uuid = UUID.randomUUID().toString().replace("-", "");
+		
+		/*
+		 * 创建存储路径  为项目发布路径下的/resources/upload
+		 */
+		
+		String path = request.getSession().getServletContext().getRealPath("").split("webapp")[0];
+		Map<String, String> map = new HashMap<String, String>();
+		path+="/resources/upload/"+sdf.format(new Date())+"/"+onlineDownload.getfSku()+"/";
+		logs.info(path);
+		//path = path + "resources/upload/";
+		
+		/*
+		 * 获取到路径然后在该路径下面创建文件夹
+		 */
+		
+		File filee = new File(path);
+		if (!filee.exists() && !filee.isDirectory()) {
+			// 文件夹创建批量
+			filee.mkdirs();
+		} else {
+			System.out.println("变体创建的文件夹已存在" + filee);
+		}
+		
+		FileOutputStream output = null;
+		try {
+			if (file != null) {
+					String fileType = file.getOriginalFilename().split("\\.")[1];
+					output = new FileOutputStream(path +uuid+ "." + fileType);
+					//update by laoyang
+					String url = "/resources/upload/";
+					//File1.Copy('指定要复制的文件','为新文件指定目录和文件名'[,False | True]); //最后一个参数指定是否重写现有文件
+					IOUtils.copy(file.getInputStream(), output);
+					map.put("errorCode", "0");
+					map.put("errorMsg", "success");
+					map.put("fileName",  sdf.format(new Date())+"/"+onlineDownload.getfSku()+"/" +uuid+ "." + fileType);
+			}
+		} catch (Exception e) {
+			map.put("errorCode", "-1");
+			map.put("errorMsg", "error");
+		} finally {
+			if (output != null) {
+				output.close();
+			}
+		}
+		/*
+		 * 给onlineDownload赋值数据库保存的相应路径
+		 */
+		
+		onlineDownload.setfImagesUrl(map.get("fileName"));
+		onlineDownload.setfOnlineUrl(map.get("fileName"));
+		
+		/*
+		 * 保存到数据库的地址
+		 */
+		
+		onlineDownService.getAndset(onlineDownload);
+		/*
+		 *  查找新添加的图片
+		 */
+		return onlineDownService.select(onlineDownload.getfSku());
+	}
+}

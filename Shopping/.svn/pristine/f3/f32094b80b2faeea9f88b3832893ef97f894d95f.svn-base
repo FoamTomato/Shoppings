@@ -1,0 +1,79 @@
+package com.sybinal.shop.service.excel;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.sybinal.shop.common.ExcelUtil;
+import com.sybinal.shop.model.ExcelBean;
+
+@Service
+public class ExcelServiceImpl implements ExcelService{
+	/*
+	 * 导入
+	 * (non-Javadoc)
+	 * @see com.sybinal.shop.service.excel.ExcelService#importExcelInfo(java.io.InputStream, org.springframework.web.multipart.MultipartFile)
+	 */
+	@Override
+    public void importExcelInfo(InputStream in, MultipartFile file) {
+ 
+        try{
+            List<List<Object>> listob = ExcelUtil.getBankListByExcel(in,file.getOriginalFilename());
+           // List<AzcItemInfo> azcitemList = new ArrayList<AzcItemInfo>();
+            //遍历listob数据，把数据放到List中listob.size()
+            for (int i = 0; i < 5; i++) {
+                List<Object> ob = listob.get(i);
+               // AzcItemInfo azcItemInfo =new AzcItemInfo();
+               // azcItemInfo.setId(String.valueOf(ob.get(0)));
+               // azcItemInfo.setName(String.valueOf(ob.get(1)));
+               // azcItemInfo.setItemurl(String.valueOf(ob.get(2)));
+               // azcItemInfo.setClassfy(String.valueOf(ob.get(3)));
+               // azcItemInfo.setZrf(String.valueOf(ob.get(4)));
+               // azcItemInfo.setDate(String.valueOf(ob.get(5)));
+                System.out.println(ob);
+               // azcitemList.add(azcItemInfo);
+            }
+           // azcItemInfoMapper.insertAzcItemList(azcitemList);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+	/*
+	 * 导出
+	 */
+	@Override
+    public XSSFWorkbook exportExcelInfo(String idList) {
+        XSSFWorkbook xssfWorkbook=null;
+        try {
+            //根据ID查找数据
+            String[] list = idList.split(",");
+           // List<AzcItemInfo> azcItemInfoList = new ArrayList<AzcItemInfo>();
+            for(int i=0;i<list.length;i++){
+                //AzcItemInfo azcItemInfo = azcItemInfoMapper.selectByPrimaryKey(list[i]);
+              //  azcItemInfoList.add(azcItemInfo);
+            }
+            List<ExcelBean> excel=new ArrayList<>();
+            Map<Integer,List<ExcelBean>> map=new LinkedHashMap<>();
+ 
+            //设置标题栏
+            excel.add(new ExcelBean("ID","id",0));
+            excel.add(new ExcelBean("名称","name",0));
+            excel.add(new ExcelBean("itemurl","itemurl",0));
+            excel.add(new ExcelBean("classfy","classfy",0));
+            excel.add(new ExcelBean("zrf","zrf",0));
+            excel.add(new ExcelBean("date","date",0));
+            map.put(0, excel);
+            String sheetName ="AzcItemInfo";
+           // xssfWorkbook = ExcelUtil.createExcelFile(AzcItemInfo.class, azcItemInfoList, map, sheetName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return xssfWorkbook;
+    }
+}

@@ -1,0 +1,117 @@
+package com.sybinal.shop.controller.admin;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.sybinal.shop.model.User;
+import com.sybinal.shop.model.roles;
+import com.sybinal.shop.model.userShortRole;
+import com.sybinal.shop.service.user.UserService;
+import com.sybinal.shop.service.user.roleService;
+import com.sybinal.shop.service.user.userShortRoleService;
+
+@Controller
+public class RolesController {
+	@Autowired
+	UserService userService;
+	
+	@Autowired
+	roleService rolesService;
+	
+	@Autowired
+	userShortRoleService usershortRoleService;
+	
+	@RequestMapping(value = "/admin/role", method = RequestMethod.GET)
+	public ModelAndView userManage() {
+		ModelAndView model = new ModelAndView();
+		User user=new User();
+
+		user.setUserName(FLogisticsController.username());
+		model.addObject("jurisdiction", userService.jurisdiction(user));
+		model.setViewName("admin/role/rolesMain");
+		return model;
+	}
+	/**
+	 * 查找权限名列表
+	 * @param pageInfo
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping(value = "/admin/role/selAll", method = RequestMethod.POST)
+	@ResponseBody
+	public PageInfo selAll(@RequestBody Map<String,String>map) {
+		Integer page=Integer.parseInt(map.get("page"));
+		Integer limit=Integer.parseInt(map.get("limit"));
+		roles role=new roles();
+		role.setRoleName(map.get("selectText"));
+		role.setRoleRoles(map.get("role"));
+		
+		PageHelper.startPage(page,limit);
+		PageInfo pageInfo = new PageInfo(rolesService.selAll(role));
+		return pageInfo;
+	}
+	/**
+	 * 跳转界面
+	 * admin/role/add
+	 */
+	@RequestMapping(value = "/admin/role/add", method = RequestMethod.POST)
+	public ModelAndView addrole() {
+		ModelAndView model = new ModelAndView();
+		User user=new User();
+
+		user.setUserName(FLogisticsController.username());
+		model.addObject("jurisdiction", userService.jurisdiction(user));
+
+		model.addObject("role", usershortRoleService.selAllroles());
+		model.addObject("but", "添加");
+		model.setViewName("admin/role/roleEditAdmin");
+		return model;
+	}
+	/**
+	 * 查找权限
+	 */
+	@RequestMapping(value = "/admin/role/selroles", method = RequestMethod.POST)
+	@ResponseBody
+	public List<userShortRole> selroles() {
+		return	usershortRoleService.selAllroles();
+	}
+	/**
+	 * 添加职称
+	 */
+	@RequestMapping(value = "/admin/role/adds", method = RequestMethod.POST)
+	@ResponseBody
+	public int adds(@RequestBody Map <String,String> map) {
+		roles role=new roles();
+		/*
+		 * 职称
+		 */
+		role.setRoleName(map.get("rolename"));
+		/*
+		 * 权限id
+		 */
+		role.setRoleRoles(map.get("roles"));
+		/*
+		 * 备注
+		 */
+		role.setStandy1(map.get("remark"));
+		return	rolesService.adds(role);
+	}
+	/**
+	 * 判断职称是否存在checkRolename
+	 */
+	@RequestMapping(value = "/admin/role/checkRolename", method = RequestMethod.POST)
+	@ResponseBody
+	public int checkRolename(@RequestBody Map <String,String> map) {
+		return	rolesService.checkRolename(map.get("rolename"));
+	}
+}

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sybinal.shop.mapper.rolesMapper">
+  <resultMap id="BaseResultMap" type="com.sybinal.shop.model.roles">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="standy1" jdbcType="VARCHAR" property="standy1" />
+    <result column="standy2" jdbcType="VARCHAR" property="standy2" />
+    <result column="standy3" jdbcType="VARCHAR" property="standy3" />
+    <result column="standy4" jdbcType="VARCHAR" property="standy4" />
+    <result column="standy5" jdbcType="VARCHAR" property="standy5" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.sybinal.shop.model.roles">
+    <result column="role_roles" jdbcType="LONGVARCHAR" property="roleRoles" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, role_name, standy1, standy2, standy3, standy4, standy5
+  </sql>
+  <sql id="Blob_Column_List">
+    role_roles
+  </sql>
+  <!-- 权限版块 -->
+  <select id="jurisdiction" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select role_roles from roles where role_name = (select  jurisdiction  from `user`
+    where user_name = #{name})
+  </select>
+  <!-- 查找角色名uasername -->
+  <select id="uasername"  resultMap="ResultMapWithBLOBs">
+    select  <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />  from roles
+  </select>
+  <!-- 查找权限用户selAll -->
+  <select id="selAll" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from roles
+    <where>
+    <trim prefix="(" suffix=")" prefixOverrides="and">
+    	<if test="roles.roleName != null and roles.roleName != ''">
+         and	role_name like concat('%','${roles.roleName}','%')
+      	</if>
+      	<if test="roles.roleRoles != null and roles.roleRoles != ''">
+      	and role_roles like concat('%','${roles.roleRoles}','%')
+      	</if>
+     </trim>
+    </where>
+  </select>
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from roles
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from roles
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sybinal.shop.model.roles">
+    insert into roles (id, role_name, standy1, 
+      standy2, standy3, standy4, 
+      standy5, role_roles)
+    values (#{id,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{standy1,jdbcType=VARCHAR}, 
+      #{standy2,jdbcType=VARCHAR}, #{standy3,jdbcType=VARCHAR}, #{standy4,jdbcType=VARCHAR}, 
+      #{standy5,jdbcType=VARCHAR}, #{roleRoles,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sybinal.shop.model.roles">
+    insert into roles
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="roleName != null">
+        role_name,
+      </if>
+      <if test="standy1 != null">
+        standy1,
+      </if>
+      <if test="standy2 != null">
+        standy2,
+      </if>
+      <if test="standy3 != null">
+        standy3,
+      </if>
+      <if test="standy4 != null">
+        standy4,
+      </if>
+      <if test="standy5 != null">
+        standy5,
+      </if>
+      <if test="roleRoles != null">
+        role_roles,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="standy1 != null">
+        #{standy1,jdbcType=VARCHAR},
+      </if>
+      <if test="standy2 != null">
+        #{standy2,jdbcType=VARCHAR},
+      </if>
+      <if test="standy3 != null">
+        #{standy3,jdbcType=VARCHAR},
+      </if>
+      <if test="standy4 != null">
+        #{standy4,jdbcType=VARCHAR},
+      </if>
+      <if test="standy5 != null">
+        #{standy5,jdbcType=VARCHAR},
+      </if>
+      <if test="roleRoles != null">
+        #{roleRoles,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sybinal.shop.model.roles">
+    update roles
+    <set>
+      <if test="roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="standy1 != null">
+        standy1 = #{standy1,jdbcType=VARCHAR},
+      </if>
+      <if test="standy2 != null">
+        standy2 = #{standy2,jdbcType=VARCHAR},
+      </if>
+      <if test="standy3 != null">
+        standy3 = #{standy3,jdbcType=VARCHAR},
+      </if>
+      <if test="standy4 != null">
+        standy4 = #{standy4,jdbcType=VARCHAR},
+      </if>
+      <if test="standy5 != null">
+        standy5 = #{standy5,jdbcType=VARCHAR},
+      </if>
+      <if test="roleRoles != null">
+        role_roles = #{roleRoles,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.sybinal.shop.model.roles">
+    update roles
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      standy1 = #{standy1,jdbcType=VARCHAR},
+      standy2 = #{standy2,jdbcType=VARCHAR},
+      standy3 = #{standy3,jdbcType=VARCHAR},
+      standy4 = #{standy4,jdbcType=VARCHAR},
+      standy5 = #{standy5,jdbcType=VARCHAR},
+      role_roles = #{roleRoles,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sybinal.shop.model.roles">
+    update roles
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      standy1 = #{standy1,jdbcType=VARCHAR},
+      standy2 = #{standy2,jdbcType=VARCHAR},
+      standy3 = #{standy3,jdbcType=VARCHAR},
+      standy4 = #{standy4,jdbcType=VARCHAR},
+      standy5 = #{standy5,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 职称是否存在checkRolename -->
+   <select id="checkRolename" resultType="java.lang.Integer">
+    select count(id)
+    from roles 
+    <where>
+   	 role_name =#{rolename,jdbcType=VARCHAR}
+    </where>
+  </select>
+ 
+</mapper>

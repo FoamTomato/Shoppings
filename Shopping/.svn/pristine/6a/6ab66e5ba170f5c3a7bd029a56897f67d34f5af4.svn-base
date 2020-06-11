@@ -1,0 +1,36 @@
+package com.sybinal.shop.service.logistics;
+
+import java.util.List;
+
+import com.sybinal.shop.model.FLogistics;
+import com.sybinal.shop.model.Xlogistics;
+
+
+public interface LogisticsService {
+	/*
+	 * 查询所有列表
+	 */
+	List<FLogistics> checkTheOrder();
+	/*
+	 * 根据id查询列表
+	 */
+	FLogistics selectOrderByIds(FLogistics fLogistics);
+	/*
+	 * 修改基本信息
+	 */
+	int updateBasicInformation(FLogistics fLogistics);
+	/*
+	 * 添加运单
+	 */
+	int addLogisticsQuantity(Xlogistics xlogistics);
+	/*
+	 * 查询运单的信息
+	 */
+	List<Xlogistics> selLogisticsQuantity(Xlogistics xlogistics);
+	/*
+	 * 查询运单的信息
+	 */
+	List<Xlogistics>  selectSA();
+
+
+}

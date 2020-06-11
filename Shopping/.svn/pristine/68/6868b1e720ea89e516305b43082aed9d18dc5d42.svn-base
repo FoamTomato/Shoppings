@@ -1,0 +1,21 @@
+package com.sybinal.shop.service.user;
+
+import java.util.List;
+
+import com.sybinal.shop.model.roles;
+
+/**
+ * 权限
+ * @author PC1
+ *
+ */
+public interface roleService {
+	/**
+	 * 查询所有的权限用户名称
+	 * @param role
+	 * @return
+	 */
+	public List<roles> selAll(roles role);
+		
+
+}

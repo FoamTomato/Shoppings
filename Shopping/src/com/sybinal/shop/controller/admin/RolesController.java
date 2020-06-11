@@ -1,0 +1,217 @@
+package com.sybinal.shop.controller.admin;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.sybinal.shop.model.User;
+import com.sybinal.shop.model.roles;
+import com.sybinal.shop.model.userShortRole;
+import com.sybinal.shop.service.user.UserService;
+import com.sybinal.shop.service.user.roleService;
+import com.sybinal.shop.service.user.userShortRoleService;
+
+@Controller
+public class RolesController {
+	@Autowired
+	UserService userService;
+	
+	@Autowired
+	roleService rolesService;
+	
+	@Autowired
+	userShortRoleService usershortRoleService;
+	
+	@RequestMapping(value = "/admin/role", method = RequestMethod.GET)
+	public ModelAndView userManage() {
+		ModelAndView model = new ModelAndView();
+		User user=new User();
+
+		user.setUserName(FLogisticsController.username());
+		model.addObject("jurisdiction", userService.jurisdiction(user));
+		model.setViewName("admin/role/rolesMain");
+		return model;
+	}
+	/**
+	 * 查找权限名列表
+	 * @param pageInfo
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping(value = "/admin/role/selAll", method = RequestMethod.POST)
+	@ResponseBody
+	public PageInfo selAll(@RequestBody Map<String,String>map) {
+		Integer page=Integer.parseInt(map.get("page"));
+		Integer limit=Integer.parseInt(map.get("limit"));
+		roles role=new roles();
+		role.setRoleName(map.get("selectText"));
+		role.setRoleRoles(map.get("role"));
+		
+		PageHelper.startPage(page,limit);
+		PageInfo pageInfo = new PageInfo(rolesService.selAll(role));
+		return pageInfo;
+	}
+	/**
+	 * 跳转界面
+	 * admin/role/add
+	 */
+	@RequestMapping(value = "/admin/role/add", method = RequestMethod.POST)
+	public ModelAndView addrole() {
+		ModelAndView model = new ModelAndView();
+		User user=new User();
+
+		user.setUserName(FLogisticsController.username());
+		model.addObject("jurisdiction", userService.jurisdiction(user));
+
+		model.addObject("role", usershortRoleService.selAllroles());
+		model.addObject("but", "添加");
+		model.setViewName("admin/role/roleEditAdmin");
+		return model;
+	}
+	/**
+	 * 跳转修改界面
+	 * admin/role/add
+	 */
+	@RequestMapping(value = "/admin/role/edit", method = RequestMethod.POST)
+	public ModelAndView edit(String userId) {
+		ModelAndView model = new ModelAndView();
+		User user=new User();
+		user.setUserName(FLogisticsController.username());
+		model.addObject("jurisdiction", userService.jurisdiction(user));
+		model.addObject("role", usershortRoleService.selAllroles());
+		model.addObject("but", "修改");
+		model.addObject("userId", userId);
+		model.setViewName("admin/role/roleEdit");
+		return model;
+	}
+	/**
+	 * 查找需要修改的职称edits
+	 */
+	@RequestMapping(value = "/admin/role/edits", method = RequestMethod.POST)
+	@ResponseBody
+	public roles edits(@RequestBody Map <String,String> map) {
+		return rolesService.edits(map.get("userId"));
+	}
+	/**
+	 * 修改职称
+	 */
+	@RequestMapping(value = "/admin/role/update", method = RequestMethod.POST)
+	@ResponseBody
+	public int update(@RequestBody Map <String,String> map) {
+		roles role=new roles();
+		role.setId(Integer.parseInt(map.get("id")));
+		role.setStandy1(map.get("remark"));
+		role.setRoleRoles(map.get("roles"));
+		if(map.get("rolename")!="") {
+			role.setRoleName(map.get("rolename"));
+		}
+		return rolesService.update(role);
+	}
+	/**
+	 * 查找权限
+	 */
+	@RequestMapping(value = "/admin/role/selroles", method = RequestMethod.POST)
+	@ResponseBody
+	public List<userShortRole> selroles() {
+		return	usershortRoleService.selAllroles();
+	}
+	/**
+	 * 添加职称
+	 */
+	@RequestMapping(value = "/admin/role/adds", method = RequestMethod.POST)
+	@ResponseBody
+	public int adds(@RequestBody Map <String,String> map) {
+		roles role=new roles();
+		/*
+		 * 职称
+		 */
+		role.setRoleName(map.get("rolename"));
+		/*
+		 * 权限id
+		 */
+		role.setRoleRoles(map.get("roles"));
+		/*
+		 * 备注
+		 */
+		role.setStandy1(map.get("remark"));
+		return	rolesService.adds(role);
+	}
+	/**
+	 * 获取所有职称节点nodes
+	 */
+	@RequestMapping(value = "/admin/role/nodes", method = RequestMethod.POST)
+	@ResponseBody
+	public List<Map<Object, Object>> nodes(@RequestBody userShortRole cate) {
+		List<userShortRole> rolePart=usershortRoleService.selAllroles();
+		List<Map<Object, Object>> list = new ArrayList<Map<Object, Object>>();
+		for(userShortRole roleParts:rolePart) {
+			Map<Object, Object> map = new HashMap<>();
+			map.put("name", roleParts.getName());
+			map.put("id", roleParts.getId());
+			map.put("pid", roleParts.getStandy1());
+			
+			list.add(map);
+		}
+		return	RolesController.test(list, 0, "pid");
+	}
+	
+	 /**
+     * explain: 遍历递归优化
+     * <p>demand: 无
+     * @version:  1.0
+     * @author: Zing
+     * @date: 2018年12月01日
+     * @param list 遍历的集合
+     * @param pid 关联父集合的id(当然也按照你们公司的规定)
+     * @param name 关系父集合id名
+     * @return
+     */
+    public static List<Map<Object, Object>> test(List<Map<Object, Object>> list,int pid,String name){
+            List<Map<Object, Object>> maplist1 = new ArrayList<>();
+            List<Map<Object, Object>> maplist2 = new ArrayList<>();
+            for(Map<Object, Object> map :list) {
+                if(map.get(name).toString().equals(String.valueOf(pid))) {
+                    maplist1.add(map);
+                }else {
+                    maplist2.add(map);
+                }
+            }
+            List<Map<Object, Object>> result = new ArrayList<>();
+            for(Map<Object, Object> map :maplist1) {
+                List<Map<Object, Object>>  te=new ArrayList<>();
+                te= RolesController.test(maplist2,Integer.parseInt(map.get("id").toString()),"pid");
+                if(te.size()!=0) {
+                	map.put("childen", te);
+                };
+            	result.add(map);
+            }
+            return result;
+    }
+	/**
+	 * 判断职称是否存在checkRolename
+	 */
+	@RequestMapping(value = "/admin/role/checkRolename", method = RequestMethod.POST)
+	@ResponseBody
+	public int checkRolename(@RequestBody Map <String,String> map) {
+		return	rolesService.checkRolename(map.get("rolename"));
+	}
+	/**
+	 * 删除职称
+	 */
+	@RequestMapping(value = "/admin/role/del", method = RequestMethod.POST)
+	@ResponseBody
+	public int del(@RequestBody Map <String,String> map) {
+		return	rolesService.del(map.get("id"));
+	}
+}

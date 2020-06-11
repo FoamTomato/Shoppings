@@ -1,0 +1,49 @@
+package com.sybinal.shop.service;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.sybinal.shop.mapper.jpOrderMapper;
+import com.sybinal.shop.model.jpOrder;
+@Service
+public class JpServiceImpl implements JpService {
+
+	@Autowired
+	jpOrderMapper jpOrderMapper1;
+	@Override
+	public int addd(jpOrder jporder) {
+		// TODO Auto-generated method stub
+		return jpOrderMapper1.insertSelective(jporder);
+	}
+	@Override
+	public List<jpOrder> selectAll(Map <String,String> map) {
+		// TODO Auto-generated method stub
+		String[] split = map.get("selectText").split(",");
+        List<String> strings = Arrays.asList(split);
+		return jpOrderMapper1.selectAll(map,strings);
+	}
+	@Override
+	public jpOrder selectIds(String string,String username) {
+		// TODO Auto-generated method stub
+		return jpOrderMapper1.selectByPrimaryKey(Integer.parseInt(string),username);
+	}
+	@Override
+	public int dellist(String string,String string2) {
+		// TODO Auto-generated method stub
+		String[] split = string.split(",");
+        List<String> strings = Arrays.asList(split);
+		return jpOrderMapper1.deleteByPrimaryKeys(strings,string2);
+	}
+	@Override
+	public List<jpOrder> selectPrint(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		String[] split = map.get("idList").split(",");
+        List<String> strings = Arrays.asList(split);
+		return jpOrderMapper1.selectPrint(strings,map.get("usen"));
+	}
+
+}

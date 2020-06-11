@@ -1,0 +1,31 @@
+package com.sybinal.shop.service.excel;
+
+import java.io.InputStream;
+
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.web.multipart.MultipartFile;
+
+public interface ExcelService {
+
+    public int importExcelInfo(InputStream in, MultipartFile file);
+
+	XSSFWorkbook exportExcelInfo(String idList);//String idList
+	//导出集拼
+	XSSFWorkbook exportExcelInfo2(String idList);//String idList
+	//导出邮政
+	XSSFWorkbook exportExcelInfo3(String idList);
+	//导出集拼（根据集拼的id导出）
+	XSSFWorkbook exportExcelOutof(String idList);
+	/**
+	 * 运费预览
+	 * @param in
+	 * @param file
+	 */
+	public int importExcelPreivew(InputStream in, MultipartFile file);
+	/**
+	 * 导出差值
+	 * @param list
+	 * @return
+	 */
+	public XSSFWorkbook exportTables(String list); 
+}

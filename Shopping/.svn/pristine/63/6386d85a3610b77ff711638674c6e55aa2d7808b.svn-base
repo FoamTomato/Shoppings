@@ -1,0 +1,54 @@
+package com.sybinal.shop.service.email;
+
+import java.util.List;
+import java.util.Map;
+
+import com.sybinal.shop.model.emailDetailsWithBLOBs;
+import com.sybinal.shop.model.userEmail;
+
+public interface UserEmailServer {
+	/**
+	 * 查找客服邮箱
+	 * @param object 
+	 */
+	List<userEmail> selectAllCatelist(String object);
+
+	/**
+	 * 添加客服
+	 * add
+	 */
+	int add(userEmail user);
+	/**
+	 * 添加客服
+	 * del
+	 */
+	int del(userEmail user);
+	/**
+	 * 查询单个根据id
+	 * edit
+	 */
+	userEmail edit(userEmail user);
+	/**
+	 * 保存修改
+	 * save
+	 */
+	int save(userEmail user);
+	/**
+	 * 添加信件内容
+	 * @param list
+	 * @param list2 
+	 */
+	int addEmailContent(List<emailDetailsWithBLOBs> list);
+	/**
+	 * 查找所有邮件的信息
+	 * @param map 
+	 * @return
+	 */
+	List<emailDetailsWithBLOBs> emailList(Map<String, Object> map);
+	/**
+	 * 查找详情
+	 * get/emailstream
+	 */
+	emailDetailsWithBLOBs emailstream(int parseInt);
+	
+}

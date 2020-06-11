@@ -1,0 +1,18 @@
+package com.sybinal.shop.common;
+
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@EnableWebSecurity
+public class csrfButton extends WebSecurityConfigurerAdapter {
+
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		// http.csrf().disable();
+		http.csrf().disable();
+		// System.out.println("zip" + http);
+//关闭打开的csrf保护
+
+	}
+}

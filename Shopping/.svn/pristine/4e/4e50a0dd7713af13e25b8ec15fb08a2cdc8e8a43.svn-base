@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sybinal.shop.mapper.OnlineDownloadMapper">
+  <resultMap id="BaseResultMap" type="com.sybinal.shop.model.OnlineDownload">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="f_sku" jdbcType="VARCHAR" property="fSku" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.sybinal.shop.model.OnlineDownloadWithBLOBs">
+    <result column="f_images_url" jdbcType="LONGVARCHAR" property="fImagesUrl" />
+    <result column="f_online_url" jdbcType="LONGVARCHAR" property="fOnlineUrl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, f_sku
+  </sql>
+  <sql id="Blob_Column_List">
+    f_images_url, f_online_url
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from online_download
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByImagesTolast" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from online_download where id>=(SELECT id from online_download where f_sku like concat('${sku}') limit 0,1)
+  </select>
+  
+  <select id="select" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from online_download where f_sku like concat('${sku}') 
+  </select>
+  <!-- 查询在线地址 -->
+  <select id="selectOnline" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from online_download where f_sku like concat('${fSku}') and f_images_url =#{fImagesUrl}
+  </select>
+  <!-- 查找唯一的图片值 -->
+  <select id="ImagesUnique" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  	select distinct f_online_url from online_download where f_sku like concat('${sku}') 
+  </select>
+  <!-- 根据在线和sku查找所有本地 -->
+   <select id="selectlo"  parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  	SELECT f_images_url,f_sku from online_download where  f_online_url =#{getfOnlineUrl} and f_sku=#{getfSku}
+  </select>
+  <!-- 查找所有的本地图片路径，根据在线路径 -->
+  <select id="ImageLocal" resultMap="ResultMapWithBLOBs">
+  	select  * from  online_download where statue != "1" and  f_online_url = concat('${f_online_url}') LIMIT 0,1 
+  </select>
+  <select id="selectALLImages" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from online_download 
+  </select>
+  
+  <!-- 删除主图 -->
+  <update id="delete">
+  update online_download
+  	<set>
+		statue = 1
+    </set>
+    where f_sku=#{fSku} and f_images_url =#{fImagesUrl}
+  </update>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from online_download
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sybinal.shop.model.OnlineDownloadWithBLOBs">
+    insert into online_download (id, f_sku, f_images_url, 
+      f_online_url)
+    values (#{id,jdbcType=INTEGER}, #{fSku,jdbcType=VARCHAR}, #{fImagesUrl,jdbcType=LONGVARCHAR}, 
+      #{fOnlineUrl,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sybinal.shop.model.OnlineDownloadWithBLOBs">
+    insert into online_download 
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+    	statue,
+      <if test="id != null">
+        id,
+      </if>
+      <if test="fSku != null">
+        f_sku,
+      </if>
+      <if test="fImagesUrl != null">
+        f_images_url,
+      </if>
+      <if test="fOnlineUrl != null">
+        f_online_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+    	0,
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="fSku != null">
+        #{fSku,jdbcType=VARCHAR},
+      </if>
+      <if test="fImagesUrl != null">
+        #{fImagesUrl,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fOnlineUrl != null">
+        #{fOnlineUrl,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sybinal.shop.model.OnlineDownloadWithBLOBs">
+    update online_download
+    <set>
+      <if test="fSku != null">
+        f_sku = #{fSku,jdbcType=VARCHAR},
+      </if>
+      <if test="fImagesUrl != null">
+        f_images_url = #{fImagesUrl,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fOnlineUrl != null">
+        f_online_url = #{fOnlineUrl,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.sybinal.shop.model.OnlineDownloadWithBLOBs">
+    update online_download
+    set f_sku = #{fSku,jdbcType=VARCHAR},
+      f_images_url = #{fImagesUrl,jdbcType=LONGVARCHAR},
+      f_online_url = #{fOnlineUrl,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sybinal.shop.model.OnlineDownload">
+    update online_download
+    set f_sku = #{fSku,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

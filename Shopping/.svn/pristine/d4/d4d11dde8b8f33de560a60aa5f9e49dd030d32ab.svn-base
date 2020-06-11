@@ -1,0 +1,79 @@
+package com.sybinal.shop.service.logistics;
+
+import java.util.List;
+
+import com.sybinal.shop.model.hjBase;
+
+
+public interface hjService {
+	
+	/*
+	 * 添加运单
+	 */
+	int addHJLogistics(hjBase hjBases);
+	/*
+	 *查询运单
+	 */
+	 List<hjBase>  selHJLogistics(hjBase hjBases);
+	 /*
+		 *查询运单唯一编号
+		 */
+		 List<hjBase>  selHJLogistics2(String spili);
+	/*
+	 *查询所有运单
+	*/
+	 List<hjBase> selectHjLogice(Integer id,String username, String string);
+	/*
+	 *查询所有运单
+	*/
+	 hjBase ckHJLogistics(hjBase hjBases);
+	 /*
+	  * 修改运单
+	  */
+	int editHJLogistics(hjBase hjBases);
+	 /*
+	  *删除运单
+	  */
+	int delHJLogistics(hjBase hjBases);
+	/*
+	 * 修改默认
+	 */
+	int defaultHj0(String hjStandy2);
+	/*
+	 * 修改默认
+	 */
+	int defaultHj1(Integer id);
+	/*
+	 * 添加标签
+	 */
+	String setLableKey(String doPost, String vID);
+
+	/*
+	 * 查询所有的lableKey
+	 */
+	List<hjBase> selectallOrid(String lableKeyList,String username);
+	/*
+	 * 添加默认的运单
+	 */
+	int insertSelective2(hjBase hjBases);
+	/*
+	 * 查找参考值
+	 */
+	hjBase selalls(String getfIds,String username);
+
+	/*
+	 * 查找所有值
+	 */
+	hjBase selalls2(String getfIds,String username);
+	/*
+	 * 查找所有的参考号
+	 */
+	List<hjBase> getNoList(String substring,String username);
+	//添加跟踪号
+	
+	int updata(String referenceNo, String trackNum1);
+	/*
+	 * 已集拼
+	 */
+	void addStandy12(String hjStandy12);
+}

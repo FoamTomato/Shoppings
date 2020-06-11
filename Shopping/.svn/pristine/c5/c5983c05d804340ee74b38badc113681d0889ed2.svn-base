@@ -1,0 +1,9 @@
+package com.sybinal.shop.mapper;
+
+import com.sybinal.shop.model.jpOrder;
+
+public interface jpOrderMapper {
+    int insert(jpOrder record);
+
+    int insertSelective(jpOrder record);
+}

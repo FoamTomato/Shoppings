@@ -1,0 +1,152 @@
+package com.sybinal.shop.controller.admin;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.sybinal.shop.common.sends.IMAPReceiveMailTest;
+import com.sybinal.shop.model.User;
+import com.sybinal.shop.model.emailDetailsWithBLOBs;
+import com.sybinal.shop.model.userEmail;
+import com.sybinal.shop.service.email.UserEmailServer;
+import com.sybinal.shop.service.user.UserService;
+
+@Controller
+@RequestMapping("email")
+public class EmailController {
+	
+	@Autowired
+	UserEmailServer userEmailServer;
+	
+	@Autowired
+	UserService userService;
+	//getEmail
+	@RequestMapping(value = "getEmail")
+	@ResponseBody
+	public ModelAndView selectOrderById() {
+		ModelAndView model = new ModelAndView();
+		model.setViewName("admin/email/mainsGet");
+		return model;
+	} 
+	/**
+	 * 查询所有的邮箱客服
+	 */
+	@RequestMapping(value = "Customer", method = RequestMethod.POST)
+	@ResponseBody
+	public PageInfo Customer(@RequestBody Map<String,Object> map) {
+		PageHelper.startPage(Integer.parseInt(map.get("page").toString()),Integer.parseInt(map.get("pagelength").toString()));
+		List<userEmail> List=userEmailServer.selectAllCatelist(map.get("selectText").toString());
+		PageInfo pageInfo = new PageInfo(List);
+		return pageInfo;
+	}
+	/**
+	 * 查询所有的邮箱客服2
+	 */
+	@RequestMapping(value = "Customer2", method = RequestMethod.POST)
+	@ResponseBody
+	public List<userEmail> Customer2() {
+		return userEmailServer.selectAllCatelist("");
+	}
+	/**
+	 * 查询所有的客服人员
+	 */
+	@RequestMapping(value = "user", method = RequestMethod.POST)
+	@ResponseBody
+	public List<User> user() {
+		return userService.user();
+	}
+	/**
+	 * 添加客服
+	 * add
+	 */
+	@RequestMapping(value = "add", method = RequestMethod.POST)
+	@ResponseBody
+	public int add(@RequestBody userEmail user) {
+		return userEmailServer.add(user);
+	}
+	/**
+	 * 删除客服
+	 * del
+	 */
+	@RequestMapping(value = "del", method = RequestMethod.POST)
+	@ResponseBody
+	public int del(@RequestBody userEmail user) {
+		return userEmailServer.del(user);
+	}
+	/**
+	 * 查询单个根据id
+	 * edit
+	 */
+	@RequestMapping(value = "edit", method = RequestMethod.POST)
+	@ResponseBody
+	public userEmail edit(@RequestBody userEmail user) {
+		return userEmailServer.edit(user);
+	}
+	/**
+	 * 保存修改
+	 * save
+	 */
+	@RequestMapping(value = "save", method = RequestMethod.POST)
+	@ResponseBody
+	public int save(@RequestBody userEmail user) {
+		return userEmailServer.save(user);
+	}
+	/**
+	 * 收件箱
+	 * giveEmail
+	 */
+	@RequestMapping(value = "giveEmail")
+	@ResponseBody
+	public ModelAndView giveEmail() {
+		ModelAndView model = new ModelAndView();
+		model.setViewName("admin/email/giveEmail");
+		return model;
+	}
+	/**
+	 * 接收邮件
+	 * @throws Exception 
+	 */
+	@RequestMapping(value = "get/Email", method = RequestMethod.POST)
+	@ResponseBody
+	public int Emails(@RequestBody List<userEmail> list) throws Exception {
+		IMAPReceiveMailTest mes=new IMAPReceiveMailTest();
+		//接收邮箱
+		int count=0;
+		for(userEmail s:list) {
+			System.out.println(s);
+			userEmailServer.addEmailContent(mes.getEmailMessage(s));
+			count++;
+		}
+		return count;
+	}
+	/**
+	 * 查找所有邮件的信息
+	 * get/emailList
+	 */
+	@RequestMapping(value = "get/emailList", method = RequestMethod.POST)
+	@ResponseBody
+	public PageInfo emailList(@RequestBody Map<String,Object> map){
+		PageHelper.startPage(Integer.parseInt(map.get("page").toString()),Integer.parseInt(map.get("pagelength").toString()));
+		List<emailDetailsWithBLOBs> List=userEmailServer.emailList(map);
+		PageInfo pageInfo = new PageInfo(List);
+		return pageInfo;
+	}
+	/**
+	 * 查找详情
+	 * get/emailstream
+	 */
+	@RequestMapping(value = "get/emailstream", method = RequestMethod.POST)
+	@ResponseBody
+	public emailDetailsWithBLOBs emailstream(@RequestBody Map<String,Object> map){
+		return userEmailServer.emailstream(Integer.parseInt(map.get("id").toString()));
+	}
+}

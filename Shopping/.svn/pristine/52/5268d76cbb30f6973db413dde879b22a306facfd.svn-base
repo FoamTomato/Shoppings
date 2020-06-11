@@ -1,0 +1,44 @@
+package com.sybinal.shop.common;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
+public class s {
+
+	public static void main(String[] args) {
+		// 创建http请求,模拟浏览器
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		// 创建HttpPost
+		HttpPost post = new HttpPost("http://192.168.1.171:8080/Shopping/api/v1/catalog/pr");
+
+		post.setHeader("User-Agent",
+				"Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36");
+		HttpEntity entity = post.getEntity();
+
+		post.setHeader("Content-Type", "application/x-www-form-urlencoded");
+		// post.setHeader("Content-Type", "application/json");
+		CloseableHttpResponse response = null;
+		try {
+			// 发起post请求
+			response = httpClient.execute(post);
+			if (response.getStatusLine().getStatusCode() == 200) {
+				// 输出响应实体数据
+				System.out.println(EntityUtils.toString(response.getEntity()));
+				System.out.println("Content-Type：" + entity.getContentType().getValue());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				response.close();
+				post.clone();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+}

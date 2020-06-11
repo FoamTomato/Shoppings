@@ -1,0 +1,92 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<script language="javascript" type="text/javascript">
+        function doPrint() { 
+            bdhtml=window.document.body.innerHTML; //获取当前页的html代码
+            sprnstr="<!--startprint-->"; //设置打印开始区域
+            eprnstr="<!--endprint-->";//设置打印结束区域
+            prnhtml=bdhtml.substr(bdhtml.indexOf(sprnstr)+17);//从开始代码向后取html
+            prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));//从结束代码向前取html
+            window.document.body.innerHTML=prnhtml;
+            window.print();
+        }
+    </script>
+    
+<div id="searchCates">
+<!-- 模态框（Modal） -->
+        <div class="modal fade" style="overflow:hidden" id="myModal_summary"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <nobr class="Foam-title" id="myModalLabelp">
+                        
+                        </nobr>
+                    </div>
+                    <div class="modal-body summary_body" style="display:block;height:260px">
+                    <!--startprint-->
+                      <div  class="form-group F_modal_ls col-lg-6">物流渠道:</br>
+                      <select name="status" class="" id="S_channel" style="width: 190px;height: 23px;">
+								<option value="cm_dd_sz">深圳邮局带电小包</option>
+								<option value="cm_sx_sz">深圳邮局小包</option>
+								<option value="ghxb_dd_sz">深圳邮局带电挂号</option>
+								<option value="ghxb_sg_sz">深圳邮局挂号</option>
+								<option value="cm_eub_szyjdd">深圳邮局E邮宝带电线下</option>
+								<option value="cm_eub_szyj">深圳邮局E邮宝线下</option>
+								<option value="cm_rb_shhm">上海黑猫日本专线</option>
+								
+								
+								<option value="cm_j_wbsd">万邦速达经济专线挂号</option>
+								<option value="cm_py_wbsd">万邦速达经济专线平邮</option>
+								<option value="cm_dg_shhm">上海黑猫德国经济专线</option>
+								<option value="cm_yg_wbsd">万邦速达英国经济专线</option>
+								<option value="cm_spain_wbsd">万邦速达西班牙专线</option>
+								<option value="cm_it_hh">华翰意大利带电专线平邮</option>
+					  </select>
+                      </div>
+                      <div  class="form-group F_modal_ls col-lg-6">渠道袋序:<input id="S_pack" class="F_modal_input" type="number"></div>
+                      <div  class="form-group F_modal_ls col-lg-6" style="display:none">袋内件数(个):<input id="S_num" class="F_modal_input" type="text"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">净重(kg):<input id="S_weights" class="F_modal_input" type="number"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">毛重(kg):<input id="S_weight2" class="F_modal_input" type="number"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">  操作员: </br> <input id="S_admin" class="F_modal_input" type="text"></div>
+                      <div  class="form-group F_modal_ls col-lg-6">操作时间:<input id="S_time" class="F_modal_input" type="text"></div>
+                    <!--endprint-->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" id="modal-change-sum" class="btn btn-primary">
+                            	
+                        </button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+</div>
+<script type="text/javascript">
+function edit_summart(){
+	let idlists=$("#idList").val().split(",");
+	if(idlists==""){
+		toastr.error("请选择需要集拼的运单！");
+		return false;
+	}
+	$("#myModal_summary").modal("show");
+	$("body").css('padding-right','0px');
+	$(".Foam-title").html("集拼单号打印信息");
+	$("#S_channel").val("");
+	$("#S_pack").val("");
+	$("#S_num").val("");
+	$("#S_weight").val("");
+	$("#S_weight2").val("");
+	$("#S_admin").val("出货集拼员P001");
+	
+	var day2 = new Date();
+ 	day2.setTime(day2.getTime());
+	var s2 = day2.getFullYear()+"-" + (day2.getMonth()+1) + "-" + day2.getDate()+" "+day2.getHours()+":"+day2.getMinutes()+":"+day2.getSeconds();
+	$("#S_time").val(s2);
+	$("#modal-change-sum").html("集拼");
+	$("#modal-change-sum").attr("onclick","dropinfo()");
+}
+
+</script>

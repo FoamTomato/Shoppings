@@ -1,0 +1,115 @@
+package com.sybinal.shop.service.logistics;
+
+import java.util.List;
+import java.util.Map;
+
+import com.sybinal.shop.model.Astrict;
+import com.sybinal.shop.model.hjBase;
+
+
+public interface hjService {
+
+	/*
+	 * 添加运单
+	 */
+	List<Astrict> astrict();
+	/*
+	 * 添加运单
+	 */
+	int addHJLogistics(hjBase hjBases);
+	/*
+	 *查询运单
+	 */
+	 List<hjBase>  selHJLogistics(hjBase hjBases);
+	 /*
+		 *查询运单唯一编号
+		 */
+		 List<hjBase>  selHJLogistics2(String spili);
+	/*
+	 *查询所有运单
+	*/
+	 List<hjBase> selectHjLogice(String string2,String username, String string);
+	/*
+	 *查询所有运单
+	*/
+	 hjBase ckHJLogistics(hjBase hjBases);
+	 /*
+	  * 修改运单
+	  */
+	int editHJLogistics(hjBase hjBases);
+	 /*
+	  *删除运单
+	  */
+	int delHJLogistics(hjBase hjBases);
+	/*
+	 * 修改默认
+	 */
+	int defaultHj0(String hjStandy2);
+	/**
+	 * 批量修改默认
+	*    
+	* 项目名称：Shopping   
+	* 类描述：   
+	* 创建人：PC1   
+	* 创建时间：2020年3月18日 下午5:22:11   
+	* @version
+	 */
+	int defaultHj0Plus(List<hjBase> hjList);
+	/*
+	 * 修改默认
+	 */
+	int defaultHj1(Integer id);
+	/*
+	 * 添加标签
+	 */
+	String setLableKey(String doPost, String vID);
+
+	/*
+	 * 查询所有的lableKey
+	 */
+	List<hjBase> selectallOrid(String lableKeyList,String username);
+	/*
+	 * 添加默认的运单
+	 */
+	int insertSelective2(hjBase hjBases);
+	/*
+	 * 查找参考值
+	 */
+	hjBase selalls(String getfIds,String username);
+
+	/*
+	 * 查找所有值
+	 */
+	hjBase selalls2(String getfIds,String username);
+	/*
+	 * 查找所有的参考号
+	 */
+	List<hjBase> getNoList(String substring,String username);
+	//添加跟踪号
+	
+	int updata(String referenceNo, String trackNum1);
+	/*
+	 * 已集拼
+	 */
+	void addStandy12(String hjStandy12);
+	/**
+	 * 批量添加
+	*    
+	* 项目名称：Shopping   
+	* 类描述：   
+	* 创建人：PC1   
+	* 创建时间：2020年3月18日 下午5:14:03   
+	* @version
+	 */
+	int insertSelective2Plus(List<hjBase> hjList);
+	/**
+	 * 批量修改
+	*    
+	* 项目名称：Shopping   
+	* 类描述：   
+	* 创建人：PC1   
+	* 创建时间：2020年3月20日 下午3:26:34   
+	* @version
+	 */
+	int updataList(List<Map<String, Object>> map);
+}

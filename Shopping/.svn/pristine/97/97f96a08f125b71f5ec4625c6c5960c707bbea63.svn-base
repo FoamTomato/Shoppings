@@ -1,0 +1,29 @@
+package com.sybinal.shop.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.sybinal.shop.model.roles;
+
+public interface rolesMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(roles record);
+
+    int insertSelective(roles record);
+
+    roles selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(roles record);
+
+    int updateByPrimaryKeyWithBLOBs(roles record);
+
+    int updateByPrimaryKey(roles record);
+    /**
+     * 查找权限
+     * @param role
+     * @return
+     */
+	List<roles> selAll(@Param("roles") roles role);
+}

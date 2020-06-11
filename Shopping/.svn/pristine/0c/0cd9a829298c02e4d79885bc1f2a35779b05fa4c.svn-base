@@ -1,0 +1,131 @@
+package com.sybinal.shop.service.logistics;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.sybinal.shop.controller.admin.FLogisticsController;
+import com.sybinal.shop.mapper.hjBaseMapper;
+import com.sybinal.shop.model.hjBase;
+
+@Service
+public class hjServiceImpl implements hjService {
+	@Autowired
+	hjBaseMapper hjBasesMapper;
+	@Override
+	public int addHJLogistics(hjBase hjBases) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.insertSelective(hjBases);
+	}
+
+	@Override
+	public int insertSelective2(hjBase hjBases) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.insertSelective2(hjBases);
+	}
+
+	@Override
+	public  List<hjBase>  selHJLogistics(hjBase hjBases) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.selHJLogistics(hjBases);
+	}
+
+	@Override
+	public List<hjBase> selectHjLogice(Integer id,String username,String fids) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.selectHjLogice(id,username,fids);
+	}
+
+	@Override
+	public hjBase ckHJLogistics(hjBase hjBases) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.selectByPrimaryKey(hjBases.getId(),hjBases.getHjStandy9());
+	}
+
+	@Override
+	public int editHJLogistics(hjBase hjBases) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.updateByPrimaryKeySelective(hjBases);
+	}
+
+	@Override
+	public int delHJLogistics(hjBase hjBases) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.deleteByPrimaryKey(hjBases.getId(),hjBases.getHjStandy9());
+	}
+
+	@Override
+	public int defaultHj0(String hjStandy2) {
+		// TODO Auto-generated method stub
+
+		String usernames=FLogisticsController.username();
+		return hjBasesMapper.defaultHj0(hjStandy2,usernames);
+	}
+
+	@Override
+	public int defaultHj1(Integer id) {
+		// TODO Auto-generated method stub
+
+		String usernames=FLogisticsController.username();
+		return hjBasesMapper.defaultHj1(id,usernames);
+	}
+	/*
+	 * (non-Javadoc)储存标签
+	 * @see com.sybinal.shop.service.logistics.hjService#setLableKey(java.lang.String)
+	 */
+	@Override
+	public String setLableKey(String doPost,String vID) {
+		// TODO Auto-generated method stub
+
+		String usernames=FLogisticsController.username();
+		return hjBasesMapper.setLableKey(doPost,vID,usernames);
+	}
+
+	@Override
+	public List<hjBase> selectallOrid(String lableKeyList,String username) {
+		// TODO Auto-generated method stub
+		String[] split = lableKeyList.split(",");
+        List<String> strings = Arrays.asList(split);
+		return hjBasesMapper.selectallOrid(strings,username);
+	}
+
+	@Override
+	public List<hjBase> selHJLogistics2(String spili) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.selHJLogistics2(spili);
+	}
+
+	@Override
+	public hjBase selalls(String getfIds,String username) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.selalls(getfIds,username);
+	}
+
+	@Override
+	public hjBase selalls2(String getfIds,String username) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.selalls2(getfIds,username);
+	}
+
+
+	@Override
+	public List<hjBase> getNoList(String list,String username) {
+		// TODO Auto-generated method stub
+		//把所有的值截取
+		String[] split = list.split(",");
+		//存为list
+        List<String> strings = Arrays.asList(split);
+        //根据list添加in
+		return hjBasesMapper.getNoList(strings,username);
+	}
+
+	@Override
+	public int updata(String referenceNo, String trackNum1) {
+		// TODO Auto-generated method stub
+
+		String usernames=FLogisticsController.username();
+		return hjBasesMapper.updata(referenceNo,trackNum1,usernames);
+	}
+}

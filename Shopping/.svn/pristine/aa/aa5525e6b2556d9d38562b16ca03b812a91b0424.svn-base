@@ -1,0 +1,19 @@
+package com.sybinal.shop.mapper;
+
+import java.util.List;
+
+import com.sybinal.shop.model.DTpic;
+
+public interface DTpicMapper {
+    int deleteByPrimaryKey(String id);
+
+    int insert(DTpic record);
+
+    int insertSelective(DTpic record);
+
+    List<DTpic> selectByPrimaryKey(String id);
+
+    int updateByPrimaryKeySelective(DTpic record);
+
+    int updateByPrimaryKey(DTpic record);
+}

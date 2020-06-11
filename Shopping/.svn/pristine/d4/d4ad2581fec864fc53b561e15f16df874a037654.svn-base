@@ -1,0 +1,16 @@
+package com.sybinal.shop.service;
+
+import java.util.List;
+import java.util.Map;
+
+import com.sybinal.shop.model.jpOrder;
+
+public interface PreviewService {
+	/**
+	 * 查找全部
+	 * @param map
+	 * @return
+	 */
+	List<jpOrder> selectAll(Map<String, String> map);
+
+}

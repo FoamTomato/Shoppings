@@ -1,0 +1,56 @@
+package com.sybinal.shop.controller.admin;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.sybinal.shop.model.User;
+import com.sybinal.shop.model.roles;
+import com.sybinal.shop.service.user.UserService;
+import com.sybinal.shop.service.user.roleService;
+
+@Controller
+public class RolesController {
+	@Autowired
+	UserService userService;
+	
+	@Autowired
+	roleService rolesService;
+	@RequestMapping(value = "/admin/role", method = RequestMethod.GET)
+	public ModelAndView userManage() {
+		ModelAndView model = new ModelAndView();
+		User user=new User();
+
+		user.setUserName(FLogisticsController.username());
+		model.addObject("jurisdiction", userService.jurisdiction(user));
+		model.setViewName("admin/role/rolesMain");
+		return model;
+	}
+	/**
+	 * 查找权限名列表
+	 * @param pageInfo
+	 * @param user
+	 * @return
+	 */
+	@RequestMapping(value = "/admin/role/selAll", method = RequestMethod.POST)
+	@ResponseBody
+	public PageInfo selAll(@RequestBody Map<String,String>map) {
+		Integer page=Integer.parseInt(map.get("page"));
+		Integer limit=Integer.parseInt(map.get("limit"));
+		roles role=new roles();
+		role.setRoleName(map.get("selectText"));
+		role.setRoleRoles(map.get("role"));
+		
+		PageHelper.startPage(page,limit);
+		PageInfo pageInfo = new PageInfo(rolesService.selAll(role));
+		return pageInfo;
+	}
+}

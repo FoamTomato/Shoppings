@@ -1,0 +1,20 @@
+package com.sybinal.shop.mapper;
+
+import com.sybinal.shop.model.czBase;
+import com.sybinal.shop.model.czBaseWithBLOBs;
+
+public interface czBaseMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(czBaseWithBLOBs record);
+
+    int insertSelective(czBaseWithBLOBs czbase);
+
+    czBase selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(czBaseWithBLOBs record);
+
+    int updateByPrimaryKeyWithBLOBs(czBaseWithBLOBs record);
+
+    int updateByPrimaryKey(czBase record);
+}

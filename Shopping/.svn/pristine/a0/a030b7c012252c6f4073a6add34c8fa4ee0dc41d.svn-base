@@ -1,0 +1,21 @@
+package com.sybinal.shop.mapper;
+
+import java.util.List;
+
+import com.sybinal.shop.model.Xlogistics;
+
+public interface XlogisticsMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(Xlogistics record);
+
+    int insertSelective(Xlogistics record);
+
+    List<Xlogistics> selectByPrimaryKey(String id);
+
+    int updateByPrimaryKeySelective(Xlogistics record);
+
+    int updateByPrimaryKey(Xlogistics record);
+
+	List<Xlogistics> selectSA();
+}

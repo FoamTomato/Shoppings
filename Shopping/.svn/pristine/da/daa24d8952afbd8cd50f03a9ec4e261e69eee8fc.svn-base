@@ -1,0 +1,299 @@
+package com.sybinal.shop.model;
+
+import java.util.Date;
+
+public class freightPreview {
+    private Integer id;
+
+    private Date deliverTime;
+
+    private String oddNumber;
+
+    private String customerNumber;
+
+    private String trackingSingleSign;
+
+    private String channelCode;
+
+    private String destinationCountry;
+
+    private String productType;
+
+    private String actualFreight;
+
+    private String amountReceivable;
+
+    private String state;
+
+    private String spare1;
+
+    private String spare2;
+
+    private String spare3;
+
+    private String spare4;
+
+    private String spare5;
+
+    private String spare6;
+
+    private String spare7;
+
+    private String spare8;
+
+    private String spare9;
+
+    private String spare10;
+    
+    private String hjShipperHawbcode;
+    
+    private String hjInvoiceWeight;
+
+    private String standby1;
+    
+    private String standby2;
+    
+    private String standby3;
+    
+    private String w;//差重
+    
+    private String p;//差价
+    
+    
+    public String getW() {
+		return w;
+	}
+
+	public void setW(String w) {
+		this.w = w;
+	}
+
+	public String getP() {
+		return p;
+	}
+
+	public void setP(String p) {
+		this.p = p;
+	}
+
+	public String getStandby1() {
+		return standby1;
+	}
+
+	public void setStandby1(String standby1) {
+		this.standby1 = standby1;
+	}
+
+	public String getStandby2() {
+		return standby2;
+	}
+
+	public void setStandby2(String standby2) {
+		this.standby2 = standby2;
+	}
+
+	public String getStandby3() {
+		return standby3;
+	}
+
+	public void setStandby3(String standby3) {
+		this.standby3 = standby3;
+	}
+
+	@Override
+	public String toString() {
+		return "freightPreview [id=" + id + ", deliverTime=" + deliverTime + ", oddNumber=" + oddNumber
+				+ ", customerNumber=" + customerNumber + ", trackingSingleSign=" + trackingSingleSign + ", channelCode="
+				+ channelCode + ", destinationCountry=" + destinationCountry + ", productType=" + productType
+				+ ", actualFreight=" + actualFreight + ", amountReceivable=" + amountReceivable + ", state=" + state
+				+ ", spare1=" + spare1 + ", spare2=" + spare2 + ", spare3=" + spare3 + ", spare4=" + spare4
+				+ ", spare5=" + spare5 + ", spare6=" + spare6 + ", spare7=" + spare7 + ", spare8=" + spare8
+				+ ", spare9=" + spare9 + ", spare10=" + spare10 + ", hjShipperHawbcode=" + hjShipperHawbcode
+				+ ", hjInvoiceWeight=" + hjInvoiceWeight + ", standby1=" + standby1 + ", standby2=" + standby2
+				+ ", standby3=" + standby3 + "]";
+	}
+
+	public String getHjShipperHawbcode() {
+		return hjShipperHawbcode;
+	}
+
+	public void setHjShipperHawbcode(String hjShipperHawbcode) {
+		this.hjShipperHawbcode = hjShipperHawbcode;
+	}
+
+	public String getHjInvoiceWeight() {
+		return hjInvoiceWeight;
+	}
+
+	public void setHjInvoiceWeight(String hjInvoiceWeight) {
+		this.hjInvoiceWeight = hjInvoiceWeight;
+	}
+
+	public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Date getDeliverTime() {
+        return deliverTime;
+    }
+
+    public void setDeliverTime(Date deliverTime) {
+        this.deliverTime = deliverTime;
+    }
+
+    public String getOddNumber() {
+        return oddNumber;
+    }
+
+    public void setOddNumber(String oddNumber) {
+        this.oddNumber = oddNumber == null ? null : oddNumber.trim();
+    }
+
+    public String getCustomerNumber() {
+        return customerNumber;
+    }
+
+    public void setCustomerNumber(String customerNumber) {
+        this.customerNumber = customerNumber == null ? null : customerNumber.trim();
+    }
+
+    public String getTrackingSingleSign() {
+        return trackingSingleSign;
+    }
+
+    public void setTrackingSingleSign(String trackingSingleSign) {
+        this.trackingSingleSign = trackingSingleSign == null ? null : trackingSingleSign.trim();
+    }
+
+    public String getChannelCode() {
+        return channelCode;
+    }
+
+    public void setChannelCode(String channelCode) {
+        this.channelCode = channelCode == null ? null : channelCode.trim();
+    }
+
+    public String getDestinationCountry() {
+        return destinationCountry;
+    }
+
+    public void setDestinationCountry(String destinationCountry) {
+        this.destinationCountry = destinationCountry == null ? null : destinationCountry.trim();
+    }
+
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType == null ? null : productType.trim();
+    }
+
+    public String getActualFreight() {
+        return actualFreight;
+    }
+
+    public void setActualFreight(String actualFreight) {
+        this.actualFreight = actualFreight == null ? null : actualFreight.trim();
+    }
+
+    public String getAmountReceivable() {
+        return amountReceivable;
+    }
+
+    public void setAmountReceivable(String amountReceivable) {
+        this.amountReceivable = amountReceivable == null ? null : amountReceivable.trim();
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state == null ? null : state.trim();
+    }
+
+    public String getSpare1() {
+        return spare1;
+    }
+
+    public void setSpare1(String spare1) {
+        this.spare1 = spare1 == null ? null : spare1.trim();
+    }
+
+    public String getSpare2() {
+        return spare2;
+    }
+
+    public void setSpare2(String spare2) {
+        this.spare2 = spare2 == null ? null : spare2.trim();
+    }
+
+    public String getSpare3() {
+        return spare3;
+    }
+
+    public void setSpare3(String spare3) {
+        this.spare3 = spare3 == null ? null : spare3.trim();
+    }
+
+    public String getSpare4() {
+        return spare4;
+    }
+
+    public void setSpare4(String spare4) {
+        this.spare4 = spare4 == null ? null : spare4.trim();
+    }
+
+    public String getSpare5() {
+        return spare5;
+    }
+
+    public void setSpare5(String spare5) {
+        this.spare5 = spare5 == null ? null : spare5.trim();
+    }
+
+    public String getSpare6() {
+        return spare6;
+    }
+
+    public void setSpare6(String spare6) {
+        this.spare6 = spare6 == null ? null : spare6.trim();
+    }
+
+    public String getSpare7() {
+        return spare7;
+    }
+
+    public void setSpare7(String spare7) {
+        this.spare7 = spare7 == null ? null : spare7.trim();
+    }
+
+    public String getSpare8() {
+        return spare8;
+    }
+
+    public void setSpare8(String spare8) {
+        this.spare8 = spare8 == null ? null : spare8.trim();
+    }
+
+    public String getSpare9() {
+        return spare9;
+    }
+
+    public void setSpare9(String spare9) {
+        this.spare9 = spare9 == null ? null : spare9.trim();
+    }
+
+    public String getSpare10() {
+        return spare10;
+    }
+
+    public void setSpare10(String spare10) {
+        this.spare10 = spare10 == null ? null : spare10.trim();
+    }
+}

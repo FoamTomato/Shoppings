@@ -1,0 +1,501 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>   
+
+<%@page session="true"%>
+<!DOCTYPE html>
+<html style="overflow: hidden;padding:0px;margin:0px">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="_csrf" content="${_csrf.token}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<title>客服邮箱</title>
+<jsp:include page="../VueElement.jsp" />
+<jsp:include page="../commonCss.jsp" />
+
+<style type="text/css">
+  .el-row {
+    /* margin-bottom: 20px; */
+     &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }
+  .bg-purple {
+    background: #f7f4ef;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+    height:750px;
+  }
+  .row-bg {
+    padding: 10px 0;
+    background-color: #f9fafc;
+  }
+</style>
+</head>
+<body class="blank" >
+<jsp:include page="../main/top.jsp" />
+<jsp:include page="../main/left.jsp" />
+<div id="wrapper">
+	<div class="small-header transition animated fadeIn">
+		<div class="small-header transition animated fadeIn">
+			<div class="content animate-panel" style="margin-bottom: -40px">
+				<div class="hpanel">
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="hpanel">
+									<div class="form-group col-lg-4">
+										搜索 : <el-input v-model="selectText" placeholder="邮箱地址/显示名称/客服人员/英文名称"  style="width:90%"></el-input>
+									</div>
+									<div class="form-group col-lg-2">
+										展示 : <el-input v-model="pagelength" type="number" placeholder="条数" style="width:80%"></el-input>
+									</div>
+									<div class="form-group col-lg-4">
+									<!-- 分页 -->
+									<el-pagination
+									  style="padding-top:10px"
+									  :page-size="pagelength"
+	      							  @current-change="handleCurrentChange"
+									  small
+									  layout="prev, pager, next"
+									  :total="total">
+									</el-pagination>
+									</div>
+									<div class="form-group col-lg-2">
+										<el-button type="success" @click="selectALL">查询</el-button>
+										<el-button type="info" @click="reset">重置</el-button>
+										<el-button type="primary" @click="adds">添加</el-button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="content animate-panel">
+			<div class="hpanel">
+				<div class="panel-body"  style="height:730px">
+					<div class="row">
+						<div class="col-lg-12">
+							<div class="hpanel" style="height:500px">
+							<template>
+								<el-row :gutter="20">
+								  <el-col :span="left"  class="animated">
+								  	<div class="grid-content">
+									  	<el-container>
+										  <el-header style="background:#2F4F4F;color:white;line-height:60px">
+										    <el-row>
+											  <el-col :span="4">邮箱地址</el-col>
+											  <el-col :span="4">显示名称</el-col>
+											  <el-col :span="4">发信名称</el-col>
+											  <el-col :span="4">接收服务器</el-col>
+											  <el-col :span="4">发送服务器</el-col>
+											  <el-col :span="4">操作</el-col>
+											</el-row>
+										  </el-header>
+										  <el-main>
+										<recycle-scroller
+										    class="scroller"
+										    :items="list"
+										    :item-size="40"
+										    key-field="id"
+										    v-slot="{ item }"
+										    style="height:630px;width:100%;line-height:30px"
+										  >
+											<el-row style="border-bottom:1px solid #ccc">
+											  <el-col :span="4">{{item.userEmail}}</el-col>
+											  <el-col :span="4">{{item.spare4}}</el-col>
+											  <el-col :span="4">{{item.spare1}}</el-col>
+											  <el-col :span="4">{{item.spare2}}</el-col>
+											  <el-col :span="4">{{item.spare3}}</el-col>
+											  <el-col :span="4">
+											  	<a  @click="edit(item.id)">编辑</a>
+											  	<a @click="result=item.id;delses=true">删除</a>
+											  </el-col>
+											</el-row>
+										</recycle-scroller>
+									  </el-main>
+									</el-container>
+									</div>
+								  </el-col>
+								  <el-col :span="right" class="animated fadeInRight">
+								  	<div class="grid-content bg-purple" style="height:710px">
+									  	<el-container>
+										  <el-header>
+										  	<div style="height: 30px;
+											    line-height: 55px;
+											    font-size: 17px;
+											    color: black;
+											    font-weight: 600;">
+										  		邮箱明细
+										  		<i class="el-icon-close" style="float:right;font-size:20px;line-height: 55px;" @click="close"></i>
+										  	</div>
+										  	<hr/>
+										  </el-header>
+										  <el-main style="line-height:55px">
+										  	<!-- `checked` 为 true 或 false -->
+										  	状态设置 : <el-checkbox v-model="checked">启用</el-checkbox><br/>
+										  	客服人员 : <el-select v-model="spare5" placeholder="请选择">
+													    <el-option
+													      v-for="item in options"
+													      :key="item.id"
+													      :label="item.userName"
+													      :value="item.userName">
+													    </el-option>
+													</el-select><br/>
+										  	标注名称 : <el-input v-model="spare4" placeholder="列表中标注的名称" style="width:80%"></el-input><br/>
+										  	英文名称 : <el-input v-model="spare1" placeholder="回复中显示的英文名称" style="width:80%"></el-input><br/>
+										  	邮箱地址 : <el-input v-model="userEmail"  placeholder="" style="width:80%"></el-input><br/>
+										  	邮箱密码 : <el-input v-model="pwdEmail" placeholder="" style="width:80%"></el-input><br/>
+										  	<el-dropdown  @command="portSelect(item)"  v-for="item in methodList" :key="item.id">
+											  <span class="el-dropdown-link">
+											    选择邮箱<i class="el-icon-arrow-down el-icon--right"></i>
+											  </span>
+											  <el-dropdown-menu slot="dropdown">
+											    <el-dropdown-item>{{item.name}}</el-dropdown-item>
+											  </el-dropdown-menu>
+											</el-dropdown>
+											<br/>
+										  	IMAP收信 : <el-input v-model="spare2" placeholder="" style="width:60%"></el-input>
+											  			<el-select v-model="port2" placeholder="请选择" style="width:20%">
+														    <el-option
+														      v-for="item in ports2"
+														      :key="item"
+														      :label="item"
+														      :value="item">
+														    </el-option>
+														</el-select><br/>
+										  	SMTP发信 : <el-input v-model="spare3" placeholder="" style="width:60%"></el-input>
+														<el-select v-model="port1" placeholder="请选择" style="width:20%">
+														    <el-option
+														      v-for="item in ports1"
+														      :key="item"
+														      :label="item"
+														      :value="item">
+														    </el-option>
+														</el-select><br/>
+											<el-button type="primary" v-if="aed" @click="saveAdd">添加</el-button>
+											<el-button type="primary" v-if="!aed" @click="save">保存</el-button>
+										  </el-main>
+										</el-container>
+								  	</div>
+								  </el-col>
+								</el-row>
+								</template>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 删除模板 -->
+	<el-dialog
+	  title="提示"
+	  :visible.sync="delses"
+	  width="30%"
+	  :before-close="handleClose">
+	  <span>删除后无法恢复请谨慎操作</span>
+	  <span slot="footer" class="dialog-footer">
+	    <el-button @click="delses = false">取 消</el-button>
+	    <el-button type="primary" @click="delses = false;dels()">确 定</el-button>
+	  </span>
+	</el-dialog>
+</div>
+	<script type="text/javascript">
+		$('#leftMenuOrder').addClass('active');
+		var oTable;
+		var header = $("meta[name='_csrf_header']").attr("content");
+		var token = $("meta[name='_csrf']").attr("content");
+		var contextPath = '${pageContext.request.contextPath}';
+		$(function() {
+			$(document).ajaxSend(function(e, xhr, options) {
+				xhr.setRequestHeader(header, token);
+			});
+		});
+
+		Vue.component('recycle-scroller', VueVirtualScroller.RecycleScroller)
+		Vue.http.options.root="${pageContext.request.contextPath}";
+		var vm=new Vue({
+			el:'#wrapper',
+			data:{
+				right:0,//内容右侧占据
+				left:24,//内容左侧占据
+				list:[],//客服邮箱列表
+				userEmail:"",//用户邮箱
+				pwdEmail:"",//用户授权码
+				types:"",//邮箱类型
+				state:"",//账户状态  checked为true则为1，为false则为0
+				spare1:"",//英文名字
+				spare2:"",//imap收信
+				spare3:"",//smtp发信
+				spare4:"",//列表备注名
+				spare5:"",//客服人员
+				spare6:"",//
+				checked:false,//状态勾选框
+				selectText:"",//搜索框
+				pagelength:50,//展示数
+				options:[],//客服列表 label value
+				port1:"",//IMAP端口
+				port2:"",//SMTP端口
+				aed:true,//true 添加 false 修改
+				page:1,//页码
+				ports1:["25","465","587"],
+				ports2:["143","993"],
+				result:"",//删除的id
+				delses:false,//是否删除
+				methodList:[],//邮箱方式
+				//page:"1",//第几页
+				endpage:"",//尾页
+				totalPage:[],//所有页数显示数据
+				total:0,//页码
+			},
+			created(){
+				this.selectAllList(this.page)
+				//创建一个datas存储值
+				let datas={}
+				//ajiox请求方式
+				this.$http.post("email/user?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(datas),{emulateJSON:true}).then(result=>{
+					this.options=result.body
+				})
+				
+				this.$http.post("email/methodList?${_csrf.parameterName}=${_csrf.token}",{emulateJSON:true}).then(result=>{
+					this.methodList=result.body
+				})
+			},
+			mounted(){
+			},
+			updated(){
+			},
+			methods:{
+				selectAllList(data){
+					//创建一个datas存储值
+					let datas={}
+					datas["selectText"]=this.selectText
+					datas["pagelength"]=this.pagelength
+					datas["page"]=data
+					//ajiox请求方式
+					this.$http.post("email/Customer?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(datas),{emulateJSON:true}).then(result=>{
+						this.list=result.body.list
+						this.total=result.body.total
+					})
+					//更新单选
+					this.type="A"
+				},
+				opens(){
+					//展开右边
+					this.left=14
+					this.right=10
+					this.aed=false
+				},
+				close(){
+					//关闭右边
+					this.left=24
+					this.right=0
+					this.aed=true
+				},
+				selectALL(){
+					//查找
+					this.selectAllList(this.page)
+				},
+				reset(){
+					//重置
+					this.selectText=""
+					this.pagelength=50
+				},
+				resetText(){
+					//内容清空
+					this.userEmail=""//用户邮箱
+					this.pwdEmail=""//用户授权码
+					this.types=""//邮箱类型
+					this.state=""//账户状态  checked为true则为1，为false则为0
+					this.spare1=""//英文名字
+					this.spare2=""//imap收信
+					this.spare3=""//smtp发信
+					this.spare4=""//列表备注名
+					this.spare5=""//客服人员
+					this.spare6=""//
+					this.checked=false//状态勾选框
+					this.port1=""//IMAP端口
+					this.port2=""//SMTP端口
+				},
+				adds(){
+					//添加
+					this.resetText()
+					this.opens()
+					this.aed=true
+				},
+				dels(){
+					//删除
+					//创建一个datas存储值
+					let datas={}
+					//通过双向绑定实时赋值
+					datas["id"]=this.result
+					//ajiox请求方式
+					this.$http.post("email/del?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(datas),{emulateJSON:true}).then(result=>{
+						//判断是否添加成功
+						if(result.body==1){
+							this.$message.success("删除成功")
+							//查询刷新
+							this.selectAllList(this.page)
+							this.close()
+						}else{
+							this.$message.error("删除失败")
+						}
+					})
+				},
+				di(){
+					if(this.spare1==""||this.spare2==""||this.spare3==""||this.spare4==""||this.spare5==""||this.userEmail==""||this.pwdEmail==""||this.port1==""||this.port2==""){
+						this.$message.error("有值为空")
+						return false
+					}
+					if(!this.emails()){
+						return false
+					}
+					//创建一个datas存储值
+					let datas={}
+					//通过双向绑定实时赋值
+					datas["userEmail"]=this.userEmail
+					datas["pwdEmail"]=this.pwdEmail
+					datas["types"]=this.types
+					if(this.checked){
+						datas["state"]=1
+					}else{
+						datas["state"]=0
+					}
+					datas["spare1"]=this.spare1
+					datas["spare2"]=this.spare2
+					datas["spare3"]=this.spare3
+					datas["spare4"]=this.spare4
+					datas["spare5"]=this.spare5
+					datas["spare6"]=this.spare6
+					datas["port1"]=this.port1
+					datas["port2"]=this.port2
+					return datas
+				},
+				save(data){
+					//保存
+					let datas={}
+					datas=this.di()
+					datas["id"]=this.result
+					//ajiox请求方式
+					this.$http.post("email/save?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(datas),{emulateJSON:true}).then(result=>{
+						//判断是否添加成功
+						if(result.body==1){
+							this.$message.success("保存成功")
+							//查询刷新
+							this.selectAllList(this.page)
+							this.close()
+						}else{
+							this.$message.error("保存失败")
+						}
+					})
+				},
+				saveAdd(){
+					//添加
+					let datas={}
+					datas=this.di()
+					//ajiox请求方式
+					this.$http.post("email/add?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(datas),{emulateJSON:true}).then(result=>{
+						//判断是否添加成功
+						if(result.body==1){
+							this.$message.success("添加成功")
+							//查询刷新
+							this.selectAllList(this.page)
+							this.close()
+						}else{
+							this.$message.error("添加失败")
+						}
+					})
+				},
+				handleClose(done) {
+			        this.$confirm('确认关闭？')
+			          .then(_ => {
+			            done();
+			          })
+			          .catch(_ => {});
+			    },
+			    edit(data){
+			    	//编辑界面打开
+			    	//创建一个datas存储值
+					let datas={}
+					//通过双向绑定实时赋值
+					datas["id"]=data
+					//ajiox请求方式
+					this.$http.post("email/edit?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(datas),{emulateJSON:true}).then(result=>{
+						//判断是否添加成功
+						let das=result.body
+						this.userEmail=das.userEmail
+						this.pwdEmail=das.pwdEmail
+						this.types=das.types
+						if(das.state==1){
+							this.checked=true
+						}else{
+							this.checked=false
+						}
+						this.spare1=das.spare1
+						this.spare2=das.spare2
+						this.spare3=das.spare3
+						this.spare4=das.spare4
+						this.spare5=das.spare5
+						this.spare6=das.spare6
+						this.port1=das.port1
+						this.port2=das.port2
+						this.result=das.id
+						this.opens()
+					})
+			    },
+			    emails(){
+			    	//邮箱校验
+			       let reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+				   let obj=this.userEmail
+		    	　　if(obj === ""){
+		    		  this.$message.error("输入不能为空!") 
+		    	　　　　return false;
+		    	　　}else if(!reg.test(obj)){ 
+		    		  this.$message.error("请输入有效合法的邮箱地址！")
+		    	　　　　return false;
+		    	　　}else{
+		    	　　　　return true;
+		    	　　}
+			    },
+		        handleCurrentChange(val) {
+				    //分页改变
+				   this.selectAllList(val);
+		        },
+		        portSelect(val){
+		        	//选择端口
+					this.spare2=val.imap//imap收信
+					this.spare3=val.smtp//smtp发信
+					this.port1=val.imapPort//IMAP端口
+					this.port2=val.smtpPort//SMTP端口
+		        }
+			}
+		})
+		
+	</script>
+	
+<script src="${pageContext.request.contextPath}/resources/admin/jquery-barcode.js"></script>
+<script src="${pageContext.request.contextPath}/resources/admin/jquery-barcode.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jss/jquery-migrate-1.2.1.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/tanathos-jquery.jqprint-13a4f0e/jquery.jqprint-0.3.js"></script>
+<script src="${pageContext.request.contextPath}/resources/admin/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

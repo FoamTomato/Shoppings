@@ -1,0 +1,35 @@
+package com.sybinal.shop.service.email;
+
+import java.util.List;
+
+import com.sybinal.shop.model.userEmail;
+
+public interface UserEmailServer {
+	/**
+	 * 查找客服邮箱
+	 * @param object 
+	 */
+	List<userEmail> selectAllCatelist(String object);
+
+	/**
+	 * 添加客服
+	 * add
+	 */
+	int add(userEmail user);
+	/**
+	 * 添加客服
+	 * del
+	 */
+	int del(userEmail user);
+	/**
+	 * 查询单个根据id
+	 * edit
+	 */
+	userEmail edit(userEmail user);
+	/**
+	 * 保存修改
+	 * save
+	 */
+	int save(userEmail user);
+	
+}

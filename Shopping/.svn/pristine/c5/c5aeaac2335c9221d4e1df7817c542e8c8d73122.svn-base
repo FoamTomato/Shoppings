@@ -1,0 +1,17 @@
+package com.sybinal.shop.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.sybinal.shop.model.DTstock;
+
+public interface DTstockMapper {
+	int insert(DTstock record);
+
+	int insertSelective(DTstock record);
+
+	List<DTstock> selectBystockSku(@Param("fskus") String fsku);
+
+	void delstock(@Param("fsku")String fsku);
+}

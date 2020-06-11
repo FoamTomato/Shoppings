@@ -1,0 +1,129 @@
+log4j.rootLogger=FILE,database,MAIL,CONSOLE
+log4j.addivity.org.apache=true
+  
+# 应用于控制台
+log4j.appender.CONSOLE=org.apache.log4j.ConsoleAppender
+log4j.appender.CONSOLE.Threshold=INFO
+log4j.appender.CONSOLE.Target=System.out
+log4j.appender.CONSOLE.Encoding=UTF-8
+log4j.appender.CONSOLE.layout=org.apache.log4j.PatternLayout
+log4j.appender.CONSOLE.layout.ConversionPattern=FoamLogs==> %d [%-5p] %c %x \n ==> %m%n
+  
+########################
+# JDBC Appender
+#######################
+#这里定义了数据源
+log4j.appender.database=org.apache.log4j.jdbc.JDBCAppender
+log4j.appender.database.Threshold=ERROR
+# 这玩意就是每次缓存多少条数据然后插入数据库，为了演示这里设置为1
+log4j.appender.database.BufferSize=1
+log4j.appender.database.driver=com.mysql.jdbc.Driver
+log4j.appender.database.URL=jdbc:mysql://localhost:3306/libraryshoptest?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+log4j.appender.database.user=root
+log4j.appender.database.password=root
+log4j.appender.database.sql=insert into log (class,method,create_time,log_level,msg) values ('%C','%M','%d{yyyy-MM-dd hh:mm:ss}','%p','%m')  
+log4j.appender.database.layout=org.apache.log4j.PatternLayout
+#编码格式
+#log4j.appender.database.Encoding=GBK
+
+### 限制com.bob.digester(名:dig)才会log on JDBCAppender ###
+ #log4j.logger.com.bob.digester=info, dig
+ 
+ #log4j.appender.dig=org.apache.log4j.jdbc.JDBCAppender
+# log4j.appender.dig.URL=jdbc:mysql://localhost/logdb
+ #log4j.appender.dig.driver=com.mysql.jdbc.Driver
+ #log4j.appender.dig.user=root
+# log4j.appender.dig.password=
+ #log4j.appender.dig.sql=INSERT INTO MUGLOG (LOGDATE, LOGGER, PRIORITY, MESSAGE) VALUES ('%d', '%c', '%p', '%m')
+ #log4j.appender.dig.layout=org.apache.log4j.PatternLayout
+
+### 输出信息到控制抬 ###
+log4j.appender.stdout = org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.Target = System.out
+log4j.appender.stdout.layout = org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern = [%-5p] %d{yyyy-MM-dd HH:mm:ss,SSS} method:%l%n%m%n
+
+# 每天新建日志
+log4j.appender.A1=org.apache.log4j.DailyRollingFileAppender
+log4j.appender.A1.File=C:/log4j/log
+log4j.appender.A1.Encoding=GBK
+log4j.appender.A1.Threshold=DEBUG
+log4j.appender.A1.DatePattern='.'yyyy-MM-dd
+log4j.appender.A1.layout=org.apache.log4j.PatternLayout
+log4j.appender.A1.layout.ConversionPattern=%d{ABSOLUTE} %5p %c{1}:%L : %m%n
+  
+#应用于文件
+log4j.appender.FILE=org.apache.log4j.FileAppender
+log4j.appender.FILE.File=C:/log4j/file.log
+log4j.appender.FILE.Append=false
+log4j.appender.FILE.Encoding=GBK
+log4j.appender.FILE.layout=org.apache.log4j.PatternLayout
+log4j.appender.FILE.layout.ConversionPattern=[framework] %d - %c -%-4r [%t] %-5p %c %x - %m%n
+  
+# 应用于文件回滚
+log4j.appender.ROLLING_FILE=org.apache.log4j.RollingFileAppender
+log4j.appender.ROLLING_FILE.Threshold=ERROR
+log4j.appender.ROLLING_FILE.File=rolling.log
+log4j.appender.ROLLING_FILE.Append=true
+log4j.appender.CONSOLE_FILE.Encoding=GBK
+log4j.appender.ROLLING_FILE.MaxFileSize=10KB
+log4j.appender.ROLLING_FILE.MaxBackupIndex=1
+log4j.appender.ROLLING_FILE.layout=org.apache.log4j.PatternLayout
+log4j.appender.ROLLING_FILE.layout.ConversionPattern=[framework] %d - %c -%-4r [%t] %-5p %c %x - %m%n
+  
+#自定义Appender
+log4j.appender.im = net.cybercorlin.util.logger.appender.IMAppender
+log4j.appender.im.host = mail.cybercorlin.net
+log4j.appender.im.username = username
+log4j.appender.im.password = password
+log4j.appender.im.recipient = yyflyons@163.com
+log4j.appender.im.layout=org.apache.log4j.PatternLayout
+log4j.appender.im.layout.ConversionPattern =[framework] %d - %c -%-4r [%t] %-5p %c %x - %m%n 
+  
+#应用于socket
+log4j.appender.SOCKET=org.apache.log4j.RollingFileAppender
+log4j.appender.SOCKET.RemoteHost=localhost
+log4j.appender.SOCKET.Port=5001
+log4j.appender.SOCKET.LocationInfo=true
+# Set up for Log Facter 5  
+log4j.appender.SOCKET.layout=org.apache.log4j.PatternLayout
+log4j.appender.SOCET.layout.ConversionPattern=[start]%d{DATE}[DATE]%n%p[PRIORITY]%n%x[NDC]%n%t[THREAD]%n%c[CATEGORY]%n%m[MESSAGE]%n%n
+# Log Factor 5 Appender  
+log4j.appender.LF5_APPENDER=org.apache.log4j.lf5.LF5Appender
+log4j.appender.LF5_APPENDER.MaxNumberOfRecords=2000
+  
+# 发送日志给邮件
+#log4j.appender.MAIL=org.apache.log4j.net.SMTPAppender
+#log4j.appender.MAIL.Threshold=FATAL
+#log4j.appender.MAIL.BufferSize=10
+#log4j.appender.MAIL.From=foamtomato@163.com
+#log4j.appender.MAIL.SMTPHost=smtp.163.com
+#log4j.appender.MAIL.Subject=Log4J Message
+#log4j.appender.MAIL.To=foamtomato@163.com
+#log4j.appender.MAIL.layout=org.apache.log4j.PatternLayout
+#log4j.appender.MAIL.layout.ConversionPattern=[framework] %d - %c -%-4r [%t] %-5p %c %x - %m%n
+
+
+######################send error through email.######################
+log4j.appender.MAIL=org.apache.log4j.net.SMTPAppender
+#日志的错误级别
+log4j.appender.MAIL.Threshold=ERROR
+#缓存文件大小，日志达到2时发送Email
+#log4j.appender.MAIL.BufferSize=2
+#发送邮件的服务器smtp.163.com
+log4j.appender.MAIL.SMTPHost=smtp.qq.com
+#邮件主题
+log4j.appender.MAIL.Subject=Log4JErrorMessage
+#发送邮件箱的用户
+##yin_jw123@126.com
+log4j.appender.MAIL.SMTPUsername=1742379947@qq.com
+#发送邮件箱的密码
+#yinjianwei
+log4j.appender.MAIL.SMTPPassword=azszluzezxyxbbca
+#发送邮件箱yin_jw123@126.com
+log4j.appender.MAIL.From=1742379947@qq.com
+#接受邮件箱yin_jw@qq.com,yin_jw456@126.com
+log4j.appender.MAIL.To=1742379947@qq.com,foamtomato@163.com
+#发送邮件的格式
+log4j.appender.MAIL.layout=org.apache.log4j.HTMLLayout
+#log4j.appender.MAIL.layout.ConversionPattern=[framework] %d - %c -%-4r [%t] %-5p %c %x - %m%n

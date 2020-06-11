@@ -1,0 +1,1302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sybinal.shop.mapper.hjBaseMapper">
+  <resultMap id="BaseResultMap" type="com.sybinal.shop.model.hjBase">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="hj_referenceNo" jdbcType="VARCHAR" property="hjReferenceno" />
+    <result column="hj_shipperHawbcode" jdbcType="VARCHAR" property="hjShipperhawbcode" />
+    <result column="hj_shippingMethod" jdbcType="VARCHAR" property="hjShippingmethod" />
+    <result column="hj_countryCode" jdbcType="VARCHAR" property="hjCountrycode" />
+    <result column="hj_shipZip" jdbcType="VARCHAR" property="hjShipzip" />
+    <result column="hj_orderWeight" jdbcType="VARCHAR" property="hjOrderweight" />
+    <result column="hj_orderPieces" jdbcType="VARCHAR" property="hjOrderpieces" />
+    <result column="hj_totalprice" jdbcType="VARCHAR" property="hjTotalprice" />
+    <result column="hj_mailCargoType" jdbcType="VARCHAR" property="hjMailcargotype" />
+    <result column="hj_length" jdbcType="VARCHAR" property="hjLength" />
+    <result column="hj_width" jdbcType="VARCHAR" property="hjWidth" />
+    <result column="hj_height" jdbcType="VARCHAR" property="hjHeight" />
+    <result column="hj_isReturn" jdbcType="VARCHAR" property="hjIsreturn" />
+    <result column="hj_isBattery" jdbcType="VARCHAR" property="hjIsbattery" />
+    <result column="hj_consignee" jdbcType="VARCHAR" property="hjConsignee" />
+    <result column="hj_consigneeCompany" jdbcType="VARCHAR" property="hjConsigneecompany" />
+    <result column="hj_consigneeProvince" jdbcType="VARCHAR" property="hjConsigneeprovince" />
+    <result column="hj_consigneeCity" jdbcType="VARCHAR" property="hjConsigneecity" />
+    <result column="hj_consigneeStreet" jdbcType="VARCHAR" property="hjConsigneestreet" />
+    <result column="hj_consigneeStreet2" jdbcType="VARCHAR" property="hjConsigneestreet2" />
+    <result column="hj_consigneeStreet3" jdbcType="VARCHAR" property="hjConsigneestreet3" />
+    <result column="hj_consigneePostcode" jdbcType="VARCHAR" property="hjConsigneepostcode" />
+    <result column="hj_consigneeName" jdbcType="VARCHAR" property="hjConsigneename" />
+    <result column="hj_consigneeTelephone" jdbcType="VARCHAR" property="hjConsigneetelephone" />
+    <result column="hj_consigneeMobile" jdbcType="VARCHAR" property="hjConsigneemobile" />
+    <result column="hj_consigneeEmail" jdbcType="VARCHAR" property="hjConsigneeemail" />
+    <result column="hj_consigneeCountryEname" jdbcType="VARCHAR" property="hjConsigneecountryename" />
+    <result column="hj_consigneeCountryCname" jdbcType="VARCHAR" property="hjConsigneecountrycname" />
+    <result column="hj_itemArr" jdbcType="VARCHAR" property="hjItemarr" />
+    <result column="hj_invoiceEnname" jdbcType="VARCHAR" property="hjInvoiceenname" />
+    <result column="hj_invoiceCnname" jdbcType="VARCHAR" property="hjInvoicecnname" />
+    <result column="hj_invoiceWeight" jdbcType="VARCHAR" property="hjInvoiceweight" />
+    <result column="hj_invoiceQuantity" jdbcType="VARCHAR" property="hjInvoicequantity" />
+    <result column="hj_unitCode" jdbcType="VARCHAR" property="hjUnitcode" />
+    <result column="hj_invoiceUnitcharge" jdbcType="VARCHAR" property="hjInvoiceunitcharge" />
+    <result column="hj_invoiceCurrencycode" jdbcType="VARCHAR" property="hjInvoicecurrencycode" />
+    <result column="hj_hsCode" jdbcType="VARCHAR" property="hjHscode" />
+    <result column="hj_invoiceNote" jdbcType="VARCHAR" property="hjInvoicenote" />
+    <result column="hj_sku" jdbcType="VARCHAR" property="hjSku" />
+    <result column="hj_isContainsBattery" jdbcType="VARCHAR" property="hjIscontainsbattery" />
+    <result column="hj_isAneroidMarkup" jdbcType="VARCHAR" property="hjIsaneroidmarkup" />
+    <result column="hj_isOnlyBattery" jdbcType="VARCHAR" property="hjIsonlybattery" />
+    <result column="hj_isBreakable" jdbcType="VARCHAR" property="hjIsbreakable" />
+    <result column="hj_isCharged" jdbcType="VARCHAR" property="hjIscharged" />
+    <result column="hj_salePrice" jdbcType="VARCHAR" property="hjSaleprice" />
+    <result column="hj_saleCurrency" jdbcType="VARCHAR" property="hjSalecurrency" />
+    <result column="hj_categoryName" jdbcType="VARCHAR" property="hjCategoryname" />
+    <result column="hj_parentEnName" jdbcType="VARCHAR" property="hjParentenname" />
+    <result column="hj_standy1" jdbcType="TIMESTAMP" property="hjStandy1" />
+    <result column="hj_standy2" jdbcType="VARCHAR" property="hjStandy2" />
+    <result column="hj_standy3" jdbcType="VARCHAR" property="hjStandy3" />
+    <result column="hj_standy4" jdbcType="VARCHAR" property="hjStandy4" />
+    <result column="hj_standy5" jdbcType="VARCHAR" property="hjStandy5" />
+    <result column="hj_standy6" jdbcType="VARCHAR" property="hjStandy6" />
+    <result column="hj_standy7" jdbcType="VARCHAR" property="hjStandy7" />
+    <result column="hj_standy8" jdbcType="VARCHAR" property="hjStandy8" />
+    <result column="hj_standy9" jdbcType="VARCHAR" property="hjStandy9" />
+    <result column="hj_standy10" jdbcType="VARCHAR" property="hjStandy10" />
+    <result column="hj_standy11" jdbcType="VARCHAR" property="hjStandy11" />
+    <result column="hj_standy12" jdbcType="VARCHAR" property="hjStandy12" />
+    <result column="hj_standy13" jdbcType="VARCHAR" property="hjStandy13" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, hj_referenceNo, hj_shipperHawbcode, hj_shippingMethod, hj_countryCode, hj_shipZip, 
+    hj_orderWeight, hj_orderPieces, hj_totalprice, hj_mailCargoType, hj_length, hj_width, 
+    hj_height, hj_isReturn, hj_isBattery, hj_consignee, hj_consigneeCompany, hj_consigneeProvince, 
+    hj_consigneeCity, hj_consigneeStreet, hj_consigneeStreet2, hj_consigneeStreet3, hj_consigneePostcode, 
+    hj_consigneeName, hj_consigneeTelephone, hj_consigneeMobile, hj_consigneeEmail, hj_consigneeCountryEname, 
+    hj_consigneeCountryCname, hj_itemArr, hj_invoiceEnname, hj_invoiceCnname, hj_invoiceWeight, 
+    hj_invoiceQuantity, hj_unitCode, hj_invoiceUnitcharge, hj_invoiceCurrencycode, hj_hsCode, 
+    hj_invoiceNote, hj_sku, hj_isContainsBattery, hj_isAneroidMarkup, hj_isOnlyBattery, 
+    hj_isBreakable, hj_isCharged, hj_salePrice, hj_saleCurrency, hj_categoryName, hj_parentEnName, 
+    hj_standy1, hj_standy2, hj_standy3, hj_standy4, hj_standy5, hj_standy6, hj_standy7, 
+    hj_standy8, hj_standy9, hj_standy10, hj_standy11, hj_standy12, hj_standy13
+  </sql>
+  <!-- 查询所有运单 -->
+  <select id="selectHjLogice" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hj_base
+    where hj_shipperHawbcode = #{id,jdbcType=INTEGER} 
+    <if test="hjStandy9 != 'admin'">
+    	and hj_standy9 = #{hjStandy9}
+    </if>
+    <if test="fids != null">
+    	and hj_standy10 = #{fids}
+    </if>
+   		and hj_standy11 != "1"
+  </select>
+   <!-- 根据系统单查询 -->
+  <select id="selectByPrimaryKeyse" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hj_base
+     where hj_shipperHawbcode = #{fids} and hj_standy2 = "1" 
+     <if test="hjStandy9 != 'admin'">
+    	and hj_standy9 = #{hjStandy9}
+    </if>
+    and hj_standy11 != "1"
+    order by hj_standy1 desc LIMIT 0,1
+  </select>
+  <!-- 查询需要发送运单 -->
+  <select id="selectresult" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hj_base
+    where hj_shipperHawbcode = #{getfIds,jdbcType=INTEGER} and hj_standy2 = "1"
+    <if test="hjStandy9 != 'admin'">
+    	and hj_standy9 = #{hjStandy9}
+    </if>
+    and hj_standy11 != "1"
+  </select>
+<!--   查询单独的运单信息 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hj_base
+    where id = #{id,jdbcType=INTEGER}
+    <if test="hjStandy9 != 'admin'">
+    	and hj_standy9 = #{hjStandy9}
+    </if>
+    and hj_standy11 != "1"
+  </select>
+  <!--  -->
+  <!--   查找唯一值 -->
+  <select id="selalls" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select hj_referenceNo from hj_base where hj_shipperHawbcode = (select logistics.f_ids from logistics where id=#{getfIds}) and hj_standy2 =1
+    <if test="hjStandy9 != 'admin'">
+    	and hj_standy9 = #{hjStandy9}
+    </if>
+    and hj_standy11 != "1"
+  </select>
+  <!--   查询所有的编号 -->
+	<select id="getNoList" parameterType="java.util.List" resultMap="BaseResultMap">
+	select hj_referenceNo,hj_shipperHawbcode,hj_standy12 from hj_base where hj_shipperHawbcode in(select f_ids from logistics where id in 
+	<foreach collection="strings" item="id" open="(" close=")" separator=",">
+		 #{id}
+	</foreach>
+	) and hj_standy2  = "1"
+	<if test="hjStandy9 != 'admin'">
+    	and hj_standy9 = #{hjStandy9}
+    </if>
+    and hj_standy11 != "1"
+	</select>
+  <!--   查找唯一值 -->
+  <select id="selalls2" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select hj_referenceNo,hj_shippingMethod,hj_standy7 from hj_base where hj_shipperHawbcode = #{getfIds}
+  <if test="hjStandy9 != 'admin'">
+    	and hj_standy9 = #{hjStandy9}
+    </if>
+    and hj_standy11 != "1"
+  </select>
+  
+  <!-- 查找所有的lablekey -->
+  <select id="selectallOrid" parameterType="java.util.List" resultMap="BaseResultMap">
+   select hj_standy5,hj_shipperHawbcode,hj_shippingMethod,hj_referenceNo,hj_standy7,hj_standy1,hj_invoiceUnitcharge,hj_invoiceWeight from hj_base where hj_referenceNo in 
+	<foreach collection="lableKeyList" item="id" open="(" close=")" separator=",">
+		 #{id}
+	</foreach>
+and hj_standy5 != ""
+<if test="hjStandy9 != 'admin'">
+    	and hj_standy9 = #{hjStandy9}
+    </if>
+    and hj_standy11 != "1"
+  </select>
+  <!-- 查询运单 -->
+  <select id="selHJLogistics"  parameterType="com.sybinal.shop.model.hjBase" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hj_base
+    where hj_shipperHawbcode = #{hjShipperhawbcode,jdbcType=VARCHAR}
+    <if test="hjStandy9 != 'admin'">
+    	and hj_standy9 = #{hjStandy9}
+    </if> 
+    <if test="hjStandy10 != null">
+    	and hj_standy10 = #{hjStandy10}
+    </if>
+    and hj_standy11 != "1"
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    update hj_base
+    set hj_standy11 = "1"
+    where id = #{id,jdbcType=INTEGER} 
+    <if test="hjStandy9 != 'admin'">
+    	and hj_standy9 = #{hjStandy9}
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.sybinal.shop.model.hjBase">
+    insert into hj_base (id, hj_referenceNo, hj_shipperHawbcode, 
+      hj_shippingMethod, hj_countryCode, hj_shipZip, 
+      hj_orderWeight, hj_orderPieces, hj_totalprice, 
+      hj_mailCargoType, hj_length, hj_width, 
+      hj_height, hj_isReturn, hj_isBattery, 
+      hj_consignee, hj_consigneeCompany, hj_consigneeProvince, 
+      hj_consigneeCity, hj_consigneeStreet, hj_consigneeStreet2, 
+      hj_consigneeStreet3, hj_consigneePostcode, 
+      hj_consigneeName, hj_consigneeTelephone, 
+      hj_consigneeMobile, hj_consigneeEmail, hj_consigneeCountryEname, 
+      hj_consigneeCountryCname, hj_itemArr, hj_invoiceEnname, 
+      hj_invoiceCnname, hj_invoiceWeight, hj_invoiceQuantity, 
+      hj_unitCode, hj_invoiceUnitcharge, hj_invoiceCurrencycode, 
+      hj_hsCode, hj_invoiceNote, hj_sku, 
+      hj_isContainsBattery, hj_isAneroidMarkup, 
+      hj_isOnlyBattery, hj_isBreakable, hj_isCharged, 
+      hj_salePrice, hj_saleCurrency, hj_categoryName, 
+      hj_parentEnName, hj_standy1, hj_standy2, 
+      hj_standy3, hj_standy4, hj_standy5, 
+      hj_standy6, hj_standy7, hj_standy8, 
+      hj_standy9, hj_standy10, hj_standy11, 
+      hj_standy12, hj_standy13)
+    values (#{id,jdbcType=INTEGER}, #{hjReferenceno,jdbcType=VARCHAR}, #{hjShipperhawbcode,jdbcType=VARCHAR}, 
+      #{hjShippingmethod,jdbcType=VARCHAR}, #{hjCountrycode,jdbcType=VARCHAR}, #{hjShipzip,jdbcType=VARCHAR}, 
+      #{hjOrderweight,jdbcType=VARCHAR}, #{hjOrderpieces,jdbcType=VARCHAR}, #{hjTotalprice,jdbcType=VARCHAR}, 
+      #{hjMailcargotype,jdbcType=VARCHAR}, #{hjLength,jdbcType=VARCHAR}, #{hjWidth,jdbcType=VARCHAR}, 
+      #{hjHeight,jdbcType=VARCHAR}, #{hjIsreturn,jdbcType=VARCHAR}, #{hjIsbattery,jdbcType=VARCHAR}, 
+      #{hjConsignee,jdbcType=VARCHAR}, #{hjConsigneecompany,jdbcType=VARCHAR}, #{hjConsigneeprovince,jdbcType=VARCHAR}, 
+      #{hjConsigneecity,jdbcType=VARCHAR}, #{hjConsigneestreet,jdbcType=VARCHAR}, #{hjConsigneestreet2,jdbcType=VARCHAR}, 
+      #{hjConsigneestreet3,jdbcType=VARCHAR}, #{hjConsigneepostcode,jdbcType=VARCHAR}, 
+      #{hjConsigneename,jdbcType=VARCHAR}, #{hjConsigneetelephone,jdbcType=VARCHAR}, 
+      #{hjConsigneemobile,jdbcType=VARCHAR}, #{hjConsigneeemail,jdbcType=VARCHAR}, #{hjConsigneecountryename,jdbcType=VARCHAR}, 
+      #{hjConsigneecountrycname,jdbcType=VARCHAR}, #{hjItemarr,jdbcType=VARCHAR}, #{hjInvoiceenname,jdbcType=VARCHAR}, 
+      #{hjInvoicecnname,jdbcType=VARCHAR}, #{hjInvoiceweight,jdbcType=VARCHAR}, #{hjInvoicequantity,jdbcType=VARCHAR}, 
+      #{hjUnitcode,jdbcType=VARCHAR}, #{hjInvoiceunitcharge,jdbcType=VARCHAR}, #{hjInvoicecurrencycode,jdbcType=VARCHAR}, 
+      #{hjHscode,jdbcType=VARCHAR}, #{hjInvoicenote,jdbcType=VARCHAR}, #{hjSku,jdbcType=VARCHAR}, 
+      #{hjIscontainsbattery,jdbcType=VARCHAR}, #{hjIsaneroidmarkup,jdbcType=VARCHAR}, 
+      #{hjIsonlybattery,jdbcType=VARCHAR}, #{hjIsbreakable,jdbcType=VARCHAR}, #{hjIscharged,jdbcType=VARCHAR}, 
+      #{hjSaleprice,jdbcType=VARCHAR}, #{hjSalecurrency,jdbcType=VARCHAR}, #{hjCategoryname,jdbcType=VARCHAR}, 
+      #{hjParentenname,jdbcType=VARCHAR}, #{hjStandy1,jdbcType=TIMESTAMP}, #{hjStandy2,jdbcType=VARCHAR}, 
+      #{hjStandy3,jdbcType=VARCHAR}, #{hjStandy4,jdbcType=VARCHAR}, #{hjStandy5,jdbcType=VARCHAR}, 
+      #{hjStandy6,jdbcType=VARCHAR}, #{hjStandy7,jdbcType=VARCHAR}, #{hjStandy8,jdbcType=VARCHAR}, 
+      #{hjStandy9,jdbcType=VARCHAR}, #{hjStandy10,jdbcType=VARCHAR}, #{hjStandy11,jdbcType=VARCHAR}, 
+      #{hjStandy12,jdbcType=VARCHAR}, #{hjStandy13,jdbcType=VARCHAR})
+  </insert>
+  
+  
+  <insert id="insertSelective2" parameterType="com.sybinal.shop.model.hjBase">
+    insert into hj_base
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="hjReferenceno != null">
+        hj_referenceNo,
+      </if>
+      <if test="hjShipperhawbcode != null">
+        hj_shipperHawbcode,
+      </if>
+      <if test="hjShippingmethod != null">
+        hj_shippingMethod,
+      </if>
+      <if test="hjCountrycode != null">
+        hj_countryCode,
+      </if>
+      <if test="hjShipzip != null">
+        hj_shipZip,
+      </if>
+      <if test="hjOrderweight != null">
+        hj_orderWeight,
+      </if>
+      <if test="hjOrderpieces != null">
+        hj_orderPieces,
+      </if>
+      <if test="hjTotalprice != null">
+        hj_totalprice,
+      </if>
+      <if test="hjMailcargotype != null">
+        hj_mailCargoType,
+      </if>
+      <if test="hjLength != null">
+        hj_length,
+      </if>
+      <if test="hjWidth != null">
+        hj_width,
+      </if>
+      <if test="hjHeight != null">
+        hj_height,
+      </if>
+      <if test="hjIsreturn != null">
+        hj_isReturn,
+      </if>
+      <if test="hjIsbattery != null">
+        hj_isBattery,
+      </if>
+      <if test="hjConsignee != null">
+        hj_consignee,
+      </if>
+      <if test="hjConsigneecompany != null">
+        hj_consigneeCompany,
+      </if>
+      <if test="hjConsigneeprovince != null">
+        hj_consigneeProvince,
+      </if>
+      <if test="hjConsigneecity != null">
+        hj_consigneeCity,
+      </if>
+      <if test="hjConsigneestreet != null">
+        hj_consigneeStreet,
+      </if>
+      <if test="hjConsigneestreet2 != null">
+        hj_consigneeStreet2,
+      </if>
+      <if test="hjConsigneestreet3 != null">
+        hj_consigneeStreet3,
+      </if>
+      <if test="hjConsigneepostcode != null">
+        hj_consigneePostcode,
+      </if>
+      <if test="hjConsigneename != null">
+        hj_consigneeName,
+      </if>
+      <if test="hjConsigneetelephone != null">
+        hj_consigneeTelephone,
+      </if>
+      <if test="hjConsigneemobile != null">
+        hj_consigneeMobile,
+      </if>
+      <if test="hjConsigneeemail != null">
+        hj_consigneeEmail,
+      </if>
+      <if test="hjConsigneecountryename != null">
+        hj_consigneeCountryEname,
+      </if>
+      <if test="hjConsigneecountrycname != null">
+        hj_consigneeCountryCname,
+      </if>
+      <if test="hjItemarr != null">
+        hj_itemArr,
+      </if>
+      <if test="hjInvoiceenname != null">
+        hj_invoiceEnname,
+      </if>
+      <if test="hjInvoicecnname != null">
+        hj_invoiceCnname,
+      </if>
+      <if test="hjInvoiceweight != null">
+        hj_invoiceWeight,
+      </if>
+      <if test="hjInvoicequantity != null">
+        hj_invoiceQuantity,
+      </if>
+      <if test="hjUnitcode != null">
+        hj_unitCode,
+      </if>
+      <if test="hjInvoiceunitcharge != null">
+        hj_invoiceUnitcharge,
+      </if>
+      <if test="hjInvoicecurrencycode != null">
+        hj_invoiceCurrencycode,
+      </if>
+      <if test="hjHscode != null">
+        hj_hsCode,
+      </if>
+      <if test="hjInvoicenote != null">
+        hj_invoiceNote,
+      </if>
+      <if test="hjSku != null">
+        hj_sku,
+      </if>
+      <if test="hjIscontainsbattery != null">
+        hj_isContainsBattery,
+      </if>
+      <if test="hjIsaneroidmarkup != null">
+        hj_isAneroidMarkup,
+      </if>
+      <if test="hjIsonlybattery != null">
+        hj_isOnlyBattery,
+      </if>
+      <if test="hjIsbreakable != null">
+        hj_isBreakable,
+      </if>
+      <if test="hjIscharged != null">
+        hj_isCharged,
+      </if>
+      <if test="hjSaleprice != null">
+        hj_salePrice,
+      </if>
+      <if test="hjSalecurrency != null">
+        hj_saleCurrency,
+      </if>
+      <if test="hjCategoryname != null">
+        hj_categoryName,
+      </if>
+      <if test="hjParentenname != null">
+        hj_parentEnName,
+      </if>
+        hj_standy2,
+      <if test="hjStandy3 != null">
+        hj_standy3,
+      </if>
+      <if test="hjStandy4 != null">
+        hj_standy4,
+      </if>
+      <if test="hjStandy5 != null">
+        hj_standy5,
+      </if>
+      <if test="hjStandy6 != null">
+        hj_standy6,
+      </if>
+      <if test="hjStandy7 != null">
+        hj_standy7,
+      </if>
+      <if test="hjStandy8 != null">
+        hj_standy8,
+      </if>
+      <if test="hjStandy9 != null">
+        hj_standy9,
+      </if>
+      <if test="hjStandy10 != null">
+        hj_standy10,
+      </if>
+      <if test="hjStandy11 != null">
+        hj_standy11,
+      </if>
+      <if test="hjStandy12 != null">
+        hj_standy12,
+      </if>
+      <if test="hjStandy13 != null">
+        hj_standy13,
+      </if>
+        hj_standy1
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="hjReferenceno != null">
+        #{hjReferenceno,jdbcType=VARCHAR},
+      </if>
+      <if test="hjShipperhawbcode != null">
+        #{hjShipperhawbcode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjShippingmethod != null">
+        #{hjShippingmethod,jdbcType=VARCHAR},
+      </if>
+      <if test="hjCountrycode != null">
+        #{hjCountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjShipzip != null">
+        #{hjShipzip,jdbcType=VARCHAR},
+      </if>
+      <if test="hjOrderweight != null">
+        #{hjOrderweight,jdbcType=VARCHAR},
+      </if>
+      <if test="hjOrderpieces != null">
+        #{hjOrderpieces,jdbcType=VARCHAR},
+      </if>
+      <if test="hjTotalprice != null">
+        #{hjTotalprice,jdbcType=VARCHAR},
+      </if>
+      <if test="hjMailcargotype != null">
+        #{hjMailcargotype,jdbcType=VARCHAR},
+      </if>
+      <if test="hjLength != null">
+        #{hjLength,jdbcType=VARCHAR},
+      </if>
+      <if test="hjWidth != null">
+        #{hjWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="hjHeight != null">
+        #{hjHeight,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIsreturn != null">
+        #{hjIsreturn,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIsbattery != null">
+        #{hjIsbattery,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsignee != null">
+        #{hjConsignee,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneecompany != null">
+        #{hjConsigneecompany,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneeprovince != null">
+        #{hjConsigneeprovince,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneecity != null">
+        #{hjConsigneecity,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneestreet != null">
+        #{hjConsigneestreet,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneestreet2 != null">
+        #{hjConsigneestreet2,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneestreet3 != null">
+        #{hjConsigneestreet3,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneepostcode != null">
+        #{hjConsigneepostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneename != null">
+        #{hjConsigneename,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneetelephone != null">
+        #{hjConsigneetelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneemobile != null">
+        #{hjConsigneemobile,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneeemail != null">
+        #{hjConsigneeemail,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneecountryename != null">
+        #{hjConsigneecountryename,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneecountrycname != null">
+        #{hjConsigneecountrycname,jdbcType=VARCHAR},
+      </if>
+      <if test="hjItemarr != null">
+        #{hjItemarr,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoiceenname != null">
+        #{hjInvoiceenname,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoicecnname != null">
+        #{hjInvoicecnname,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoiceweight != null">
+        #{hjInvoiceweight,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoicequantity != null">
+        #{hjInvoicequantity,jdbcType=VARCHAR},
+      </if>
+      <if test="hjUnitcode != null">
+        #{hjUnitcode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoiceunitcharge != null">
+        #{hjInvoiceunitcharge,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoicecurrencycode != null">
+        #{hjInvoicecurrencycode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjHscode != null">
+        #{hjHscode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoicenote != null">
+        #{hjInvoicenote,jdbcType=VARCHAR},
+      </if>
+      <if test="hjSku != null">
+        #{hjSku,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIscontainsbattery != null">
+        #{hjIscontainsbattery,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIsaneroidmarkup != null">
+        #{hjIsaneroidmarkup,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIsonlybattery != null">
+        #{hjIsonlybattery,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIsbreakable != null">
+        #{hjIsbreakable,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIscharged != null">
+        #{hjIscharged,jdbcType=VARCHAR},
+      </if>
+      <if test="hjSaleprice != null">
+        #{hjSaleprice,jdbcType=VARCHAR},
+      </if>
+      <if test="hjSalecurrency != null">
+        #{hjSalecurrency,jdbcType=VARCHAR},
+      </if>
+      <if test="hjCategoryname != null">
+        #{hjCategoryname,jdbcType=VARCHAR},
+      </if>
+      <if test="hjParentenname != null">
+        #{hjParentenname,jdbcType=VARCHAR},
+      </if>
+        1,
+      <if test="hjStandy3 != null">
+        #{hjStandy3,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy4 != null">
+        #{hjStandy4,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy5 != null">
+        #{hjStandy5,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy6 != null">
+        #{hjStandy6,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy7 != null">
+        #{hjStandy7,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy8 != null">
+        #{hjStandy8,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy9 != null">
+        #{hjStandy9,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy10 != null">
+        #{hjStandy10,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy11 != null">
+        #{hjStandy11,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy12 != null">
+        #{hjStandy12,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy13 != null">
+        #{hjStandy13,jdbcType=VARCHAR},
+      </if>
+        now()
+    </trim>
+  </insert>
+  
+  
+  
+  <insert id="insertSelective" parameterType="com.sybinal.shop.model.hjBase">
+    insert into hj_base
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="hjReferenceno != null">
+        hj_referenceNo,
+      </if>
+      <if test="hjShipperhawbcode != null">
+        hj_shipperHawbcode,
+      </if>
+      <if test="hjShippingmethod != null">
+        hj_shippingMethod,
+      </if>
+      <if test="hjCountrycode != null">
+        hj_countryCode,
+      </if>
+      <if test="hjShipzip != null">
+        hj_shipZip,
+      </if>
+      <if test="hjOrderweight != null">
+        hj_orderWeight,
+      </if>
+      <if test="hjOrderpieces != null">
+        hj_orderPieces,
+      </if>
+      <if test="hjTotalprice != null">
+        hj_totalprice,
+      </if>
+      <if test="hjMailcargotype != null">
+        hj_mailCargoType,
+      </if>
+      <if test="hjLength != null">
+        hj_length,
+      </if>
+      <if test="hjWidth != null">
+        hj_width,
+      </if>
+      <if test="hjHeight != null">
+        hj_height,
+      </if>
+      <if test="hjIsreturn != null">
+        hj_isReturn,
+      </if>
+      <if test="hjIsbattery != null">
+        hj_isBattery,
+      </if>
+      <if test="hjConsignee != null">
+        hj_consignee,
+      </if>
+      <if test="hjConsigneecompany != null">
+        hj_consigneeCompany,
+      </if>
+      <if test="hjConsigneeprovince != null">
+        hj_consigneeProvince,
+      </if>
+      <if test="hjConsigneecity != null">
+        hj_consigneeCity,
+      </if>
+      <if test="hjConsigneestreet != null">
+        hj_consigneeStreet,
+      </if>
+      <if test="hjConsigneestreet2 != null">
+        hj_consigneeStreet2,
+      </if>
+      <if test="hjConsigneestreet3 != null">
+        hj_consigneeStreet3,
+      </if>
+      <if test="hjConsigneepostcode != null">
+        hj_consigneePostcode,
+      </if>
+      <if test="hjConsigneename != null">
+        hj_consigneeName,
+      </if>
+      <if test="hjConsigneetelephone != null">
+        hj_consigneeTelephone,
+      </if>
+      <if test="hjConsigneemobile != null">
+        hj_consigneeMobile,
+      </if>
+      <if test="hjConsigneeemail != null">
+        hj_consigneeEmail,
+      </if>
+      <if test="hjConsigneecountryename != null">
+        hj_consigneeCountryEname,
+      </if>
+      <if test="hjConsigneecountrycname != null">
+        hj_consigneeCountryCname,
+      </if>
+      <if test="hjItemarr != null">
+        hj_itemArr,
+      </if>
+      <if test="hjInvoiceenname != null">
+        hj_invoiceEnname,
+      </if>
+      <if test="hjInvoicecnname != null">
+        hj_invoiceCnname,
+      </if>
+      <if test="hjInvoiceweight != null">
+        hj_invoiceWeight,
+      </if>
+      <if test="hjInvoicequantity != null">
+        hj_invoiceQuantity,
+      </if>
+      <if test="hjUnitcode != null">
+        hj_unitCode,
+      </if>
+      <if test="hjInvoiceunitcharge != null">
+        hj_invoiceUnitcharge,
+      </if>
+      <if test="hjInvoicecurrencycode != null">
+        hj_invoiceCurrencycode,
+      </if>
+      <if test="hjHscode != null">
+        hj_hsCode,
+      </if>
+      <if test="hjInvoicenote != null">
+        hj_invoiceNote,
+      </if>
+      <if test="hjSku != null">
+        hj_sku,
+      </if>
+      <if test="hjIscontainsbattery != null">
+        hj_isContainsBattery,
+      </if>
+      <if test="hjIsaneroidmarkup != null">
+        hj_isAneroidMarkup,
+      </if>
+      <if test="hjIsonlybattery != null">
+        hj_isOnlyBattery,
+      </if>
+      <if test="hjIsbreakable != null">
+        hj_isBreakable,
+      </if>
+      <if test="hjIscharged != null">
+        hj_isCharged,
+      </if>
+      <if test="hjSaleprice != null">
+        hj_salePrice,
+      </if>
+      <if test="hjSalecurrency != null">
+        hj_saleCurrency,
+      </if>
+      <if test="hjCategoryname != null">
+        hj_categoryName,
+      </if>
+      <if test="hjParentenname != null">
+        hj_parentEnName,
+      </if>
+      <if test="hjStandy2 != null">
+        hj_standy2,
+      </if>
+      <if test="hjStandy3 != null">
+        hj_standy3,
+      </if>
+      <if test="hjStandy4 != null">
+        hj_standy4,
+      </if>
+      <if test="hjStandy5 != null">
+        hj_standy5,
+      </if>
+      <if test="hjStandy6 != null">
+        hj_standy6,
+      </if>
+      <if test="hjStandy7 != null">
+        hj_standy7,
+      </if>
+      <if test="hjStandy8 != null">
+        hj_standy8,
+      </if>
+      <if test="hjStandy9 != null">
+        hj_standy9,
+      </if>
+      <if test="hjStandy10 != null">
+        hj_standy10,
+      </if>
+      <if test="hjStandy11 != null">
+        hj_standy11,
+      </if>
+      <if test="hjStandy12 != null">
+        hj_standy12,
+      </if>
+      <if test="hjStandy13 != null">
+        hj_standy13,
+      </if>
+        hj_standy1
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="hjReferenceno != null">
+        #{hjReferenceno,jdbcType=VARCHAR},
+      </if>
+      <if test="hjShipperhawbcode != null">
+        #{hjShipperhawbcode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjShippingmethod != null">
+        #{hjShippingmethod,jdbcType=VARCHAR},
+      </if>
+      <if test="hjCountrycode != null">
+        #{hjCountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjShipzip != null">
+        #{hjShipzip,jdbcType=VARCHAR},
+      </if>
+      <if test="hjOrderweight != null">
+        #{hjOrderweight,jdbcType=VARCHAR},
+      </if>
+      <if test="hjOrderpieces != null">
+        #{hjOrderpieces,jdbcType=VARCHAR},
+      </if>
+      <if test="hjTotalprice != null">
+        #{hjTotalprice,jdbcType=VARCHAR},
+      </if>
+      <if test="hjMailcargotype != null">
+        #{hjMailcargotype,jdbcType=VARCHAR},
+      </if>
+      <if test="hjLength != null">
+        #{hjLength,jdbcType=VARCHAR},
+      </if>
+      <if test="hjWidth != null">
+        #{hjWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="hjHeight != null">
+        #{hjHeight,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIsreturn != null">
+        #{hjIsreturn,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIsbattery != null">
+        #{hjIsbattery,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsignee != null">
+        #{hjConsignee,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneecompany != null">
+        #{hjConsigneecompany,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneeprovince != null">
+        #{hjConsigneeprovince,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneecity != null">
+        #{hjConsigneecity,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneestreet != null">
+        #{hjConsigneestreet,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneestreet2 != null">
+        #{hjConsigneestreet2,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneestreet3 != null">
+        #{hjConsigneestreet3,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneepostcode != null">
+        #{hjConsigneepostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneename != null">
+        #{hjConsigneename,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneetelephone != null">
+        #{hjConsigneetelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneemobile != null">
+        #{hjConsigneemobile,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneeemail != null">
+        #{hjConsigneeemail,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneecountryename != null">
+        #{hjConsigneecountryename,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneecountrycname != null">
+        #{hjConsigneecountrycname,jdbcType=VARCHAR},
+      </if>
+      <if test="hjItemarr != null">
+        #{hjItemarr,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoiceenname != null">
+        #{hjInvoiceenname,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoicecnname != null">
+        #{hjInvoicecnname,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoiceweight != null">
+        #{hjInvoiceweight,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoicequantity != null">
+        #{hjInvoicequantity,jdbcType=VARCHAR},
+      </if>
+      <if test="hjUnitcode != null">
+        #{hjUnitcode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoiceunitcharge != null">
+        #{hjInvoiceunitcharge,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoicecurrencycode != null">
+        #{hjInvoicecurrencycode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjHscode != null">
+        #{hjHscode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoicenote != null">
+        #{hjInvoicenote,jdbcType=VARCHAR},
+      </if>
+      <if test="hjSku != null">
+        #{hjSku,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIscontainsbattery != null">
+        #{hjIscontainsbattery,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIsaneroidmarkup != null">
+        #{hjIsaneroidmarkup,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIsonlybattery != null">
+        #{hjIsonlybattery,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIsbreakable != null">
+        #{hjIsbreakable,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIscharged != null">
+        #{hjIscharged,jdbcType=VARCHAR},
+      </if>
+      <if test="hjSaleprice != null">
+        #{hjSaleprice,jdbcType=VARCHAR},
+      </if>
+      <if test="hjSalecurrency != null">
+        #{hjSalecurrency,jdbcType=VARCHAR},
+      </if>
+      <if test="hjCategoryname != null">
+        #{hjCategoryname,jdbcType=VARCHAR},
+      </if>
+      <if test="hjParentenname != null">
+        #{hjParentenname,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy2 != null">
+        #{hjStandy2,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy3 != null">
+        #{hjStandy3,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy4 != null">
+        #{hjStandy4,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy5 != null">
+        #{hjStandy5,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy6 != null">
+        #{hjStandy6,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy7 != null">
+        #{hjStandy7,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy8 != null">
+        #{hjStandy8,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy9 != null">
+        #{hjStandy9,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy10 != null">
+        #{hjStandy10,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy11 != null">
+        #{hjStandy11,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy12 != null">
+        #{hjStandy12,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy13 != null">
+        #{hjStandy13,jdbcType=VARCHAR},
+      </if>
+        now()
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sybinal.shop.model.hjBase">
+    update hj_base
+    <set>
+      <if test="hjReferenceno != null">
+        hj_referenceNo = #{hjReferenceno,jdbcType=VARCHAR},
+      </if>
+      <if test="hjShipperhawbcode != null">
+        hj_shipperHawbcode = #{hjShipperhawbcode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjShippingmethod != null">
+        hj_shippingMethod = #{hjShippingmethod,jdbcType=VARCHAR},
+      </if>
+      <if test="hjCountrycode != null">
+        hj_countryCode = #{hjCountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjShipzip != null">
+        hj_shipZip = #{hjShipzip,jdbcType=VARCHAR},
+      </if>
+      <if test="hjOrderweight != null">
+        hj_orderWeight = #{hjOrderweight,jdbcType=VARCHAR},
+      </if>
+      <if test="hjOrderpieces != null">
+        hj_orderPieces = #{hjOrderpieces,jdbcType=VARCHAR},
+      </if>
+      <if test="hjTotalprice != null">
+        hj_totalprice = #{hjTotalprice,jdbcType=VARCHAR},
+      </if>
+      <if test="hjMailcargotype != null">
+        hj_mailCargoType = #{hjMailcargotype,jdbcType=VARCHAR},
+      </if>
+      <if test="hjLength != null">
+        hj_length = #{hjLength,jdbcType=VARCHAR},
+      </if>
+      <if test="hjWidth != null">
+        hj_width = #{hjWidth,jdbcType=VARCHAR},
+      </if>
+      <if test="hjHeight != null">
+        hj_height = #{hjHeight,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIsreturn != null">
+        hj_isReturn = #{hjIsreturn,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIsbattery != null">
+        hj_isBattery = #{hjIsbattery,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsignee != null">
+        hj_consignee = #{hjConsignee,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneecompany != null">
+        hj_consigneeCompany = #{hjConsigneecompany,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneeprovince != null">
+        hj_consigneeProvince = #{hjConsigneeprovince,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneecity != null">
+        hj_consigneeCity = #{hjConsigneecity,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneestreet != null">
+        hj_consigneeStreet = #{hjConsigneestreet,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneestreet2 != null">
+        hj_consigneeStreet2 = #{hjConsigneestreet2,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneestreet3 != null">
+        hj_consigneeStreet3 = #{hjConsigneestreet3,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneepostcode != null">
+        hj_consigneePostcode = #{hjConsigneepostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneename != null">
+        hj_consigneeName = #{hjConsigneename,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneetelephone != null">
+        hj_consigneeTelephone = #{hjConsigneetelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneemobile != null">
+        hj_consigneeMobile = #{hjConsigneemobile,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneeemail != null">
+        hj_consigneeEmail = #{hjConsigneeemail,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneecountryename != null">
+        hj_consigneeCountryEname = #{hjConsigneecountryename,jdbcType=VARCHAR},
+      </if>
+      <if test="hjConsigneecountrycname != null">
+        hj_consigneeCountryCname = #{hjConsigneecountrycname,jdbcType=VARCHAR},
+      </if>
+      <if test="hjItemarr != null">
+        hj_itemArr = #{hjItemarr,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoiceenname != null">
+        hj_invoiceEnname = #{hjInvoiceenname,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoicecnname != null">
+        hj_invoiceCnname = #{hjInvoicecnname,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoiceweight != null">
+        hj_invoiceWeight = #{hjInvoiceweight,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoicequantity != null">
+        hj_invoiceQuantity = #{hjInvoicequantity,jdbcType=VARCHAR},
+      </if>
+      <if test="hjUnitcode != null">
+        hj_unitCode = #{hjUnitcode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoiceunitcharge != null">
+        hj_invoiceUnitcharge = #{hjInvoiceunitcharge,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoicecurrencycode != null">
+        hj_invoiceCurrencycode = #{hjInvoicecurrencycode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjHscode != null">
+        hj_hsCode = #{hjHscode,jdbcType=VARCHAR},
+      </if>
+      <if test="hjInvoicenote != null">
+        hj_invoiceNote = #{hjInvoicenote,jdbcType=VARCHAR},
+      </if>
+      <if test="hjSku != null">
+        hj_sku = #{hjSku,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIscontainsbattery != null">
+        hj_isContainsBattery = #{hjIscontainsbattery,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIsaneroidmarkup != null">
+        hj_isAneroidMarkup = #{hjIsaneroidmarkup,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIsonlybattery != null">
+        hj_isOnlyBattery = #{hjIsonlybattery,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIsbreakable != null">
+        hj_isBreakable = #{hjIsbreakable,jdbcType=VARCHAR},
+      </if>
+      <if test="hjIscharged != null">
+        hj_isCharged = #{hjIscharged,jdbcType=VARCHAR},
+      </if>
+      <if test="hjSaleprice != null">
+        hj_salePrice = #{hjSaleprice,jdbcType=VARCHAR},
+      </if>
+      <if test="hjSalecurrency != null">
+        hj_saleCurrency = #{hjSalecurrency,jdbcType=VARCHAR},
+      </if>
+      <if test="hjCategoryname != null">
+        hj_categoryName = #{hjCategoryname,jdbcType=VARCHAR},
+      </if>
+      <if test="hjParentenname != null">
+        hj_parentEnName = #{hjParentenname,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy1 != null">
+        hj_standy1 = #{hjStandy1,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hjStandy2 != null">
+        hj_standy2 = #{hjStandy2,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy3 != null">
+        hj_standy3 = #{hjStandy3,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy4 != null">
+        hj_standy4 = #{hjStandy4,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy5 != null">
+        hj_standy5 = #{hjStandy5,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy6 != null">
+        hj_standy6 = #{hjStandy6,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy7 != null">
+        hj_standy7 = #{hjStandy7,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy8 != null">
+        hj_standy8 = #{hjStandy8,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="hjStandy10 != null">
+        hj_standy10 = #{hjStandy10,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy11 != null">
+        hj_standy11 = #{hjStandy11,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy12 != null">
+        hj_standy12 = #{hjStandy12,jdbcType=VARCHAR},
+      </if>
+      <if test="hjStandy13 != null">
+        hj_standy13 = #{hjStandy13,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}.
+    <if test="hjStandy9 != 'admin'">
+      and  hj_standy9 = #{hjStandy9,jdbcType=VARCHAR}
+      </if>
+  </update>
+  <!-- 默认defaultHj -->
+  <update id="defaultHj0" parameterType="com.sybinal.shop.model.hjBase">
+    update hj_base
+    set  hj_standy2 = 0 where hj_shipperHawbcode = #{hjStandy2,jdbcType=VARCHAR}
+    <if test="hjStandy9 != 'admin'">
+      and  hj_standy9 = #{hjStandy9,jdbcType=VARCHAR}
+      </if>
+  </update>
+  <!-- 默认defaultHj -->
+  <update id="defaultHj1" parameterType="com.sybinal.shop.model.hjBase">
+    update hj_base
+    set  hj_standy2 = 1 where id = #{id,jdbcType=INTEGER}
+    <if test="hjStandy9 != 'admin'">
+      and  hj_standy9 = #{hjStandy9,jdbcType=VARCHAR}
+      </if>
+  </update>
+  <!-- 添加标签 -->
+  <update id="setLableKey" parameterType="com.sybinal.shop.model.hjBase">
+    update hj_base
+    set  hj_standy5 = #{doPost,jdbcType=VARCHAR} where id = #{vID,jdbcType=INTEGER}
+    <if test="hjStandy9 != 'admin'">
+      and  hj_standy9 = #{hjStandy9,jdbcType=VARCHAR}
+      </if>
+  </update>
+	<!-- 添加面单标签insertLableKey -->
+	<update id="insertLableKey" parameterType="com.sybinal.shop.model.hjBase">
+    update hj_base
+    set
+        hj_standy5 = #{labs,jdbcType=VARCHAR},
+      <!-- <if test="num2 != null">
+        hj_standy8 = #{num2,jdbcType=VARCHAR},
+      </if> -->
+        hj_standy7 = #{num1,jdbcType=VARCHAR}
+      where #{ids,jdbcType=INTEGER} in (hj_referenceNo,hj_shipperHawbcode) and hj_standy2 = "1"
+      <if test="hjStandy9 != 'admin'">
+      and  hj_standy9 = #{hjStandy9,jdbcType=VARCHAR}
+      </if>
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.sybinal.shop.model.hjBase">
+    update hj_base
+    set hj_referenceNo = #{hjReferenceno,jdbcType=VARCHAR},
+      hj_shipperHawbcode = #{hjShipperhawbcode,jdbcType=VARCHAR},
+      hj_shippingMethod = #{hjShippingmethod,jdbcType=VARCHAR},
+      hj_countryCode = #{hjCountrycode,jdbcType=VARCHAR},
+      hj_shipZip = #{hjShipzip,jdbcType=VARCHAR},
+      hj_orderWeight = #{hjOrderweight,jdbcType=VARCHAR},
+      hj_orderPieces = #{hjOrderpieces,jdbcType=VARCHAR},
+      hj_totalprice = #{hjTotalprice,jdbcType=VARCHAR},
+      hj_mailCargoType = #{hjMailcargotype,jdbcType=VARCHAR},
+      hj_length = #{hjLength,jdbcType=VARCHAR},
+      hj_width = #{hjWidth,jdbcType=VARCHAR},
+      hj_height = #{hjHeight,jdbcType=VARCHAR},
+      hj_isReturn = #{hjIsreturn,jdbcType=VARCHAR},
+      hj_isBattery = #{hjIsbattery,jdbcType=VARCHAR},
+      hj_consignee = #{hjConsignee,jdbcType=VARCHAR},
+      hj_consigneeCompany = #{hjConsigneecompany,jdbcType=VARCHAR},
+      hj_consigneeProvince = #{hjConsigneeprovince,jdbcType=VARCHAR},
+      hj_consigneeCity = #{hjConsigneecity,jdbcType=VARCHAR},
+      hj_consigneeStreet = #{hjConsigneestreet,jdbcType=VARCHAR},
+      hj_consigneeStreet2 = #{hjConsigneestreet2,jdbcType=VARCHAR},
+      hj_consigneeStreet3 = #{hjConsigneestreet3,jdbcType=VARCHAR},
+      hj_consigneePostcode = #{hjConsigneepostcode,jdbcType=VARCHAR},
+      hj_consigneeName = #{hjConsigneename,jdbcType=VARCHAR},
+      hj_consigneeTelephone = #{hjConsigneetelephone,jdbcType=VARCHAR},
+      hj_consigneeMobile = #{hjConsigneemobile,jdbcType=VARCHAR},
+      hj_consigneeEmail = #{hjConsigneeemail,jdbcType=VARCHAR},
+      hj_consigneeCountryEname = #{hjConsigneecountryename,jdbcType=VARCHAR},
+      hj_consigneeCountryCname = #{hjConsigneecountrycname,jdbcType=VARCHAR},
+      hj_itemArr = #{hjItemarr,jdbcType=VARCHAR},
+      hj_invoiceEnname = #{hjInvoiceenname,jdbcType=VARCHAR},
+      hj_invoiceCnname = #{hjInvoicecnname,jdbcType=VARCHAR},
+      hj_invoiceWeight = #{hjInvoiceweight,jdbcType=VARCHAR},
+      hj_invoiceQuantity = #{hjInvoicequantity,jdbcType=VARCHAR},
+      hj_unitCode = #{hjUnitcode,jdbcType=VARCHAR},
+      hj_invoiceUnitcharge = #{hjInvoiceunitcharge,jdbcType=VARCHAR},
+      hj_invoiceCurrencycode = #{hjInvoicecurrencycode,jdbcType=VARCHAR},
+      hj_hsCode = #{hjHscode,jdbcType=VARCHAR},
+      hj_invoiceNote = #{hjInvoicenote,jdbcType=VARCHAR},
+      hj_sku = #{hjSku,jdbcType=VARCHAR},
+      hj_isContainsBattery = #{hjIscontainsbattery,jdbcType=VARCHAR},
+      hj_isAneroidMarkup = #{hjIsaneroidmarkup,jdbcType=VARCHAR},
+      hj_isOnlyBattery = #{hjIsonlybattery,jdbcType=VARCHAR},
+      hj_isBreakable = #{hjIsbreakable,jdbcType=VARCHAR},
+      hj_isCharged = #{hjIscharged,jdbcType=VARCHAR},
+      hj_salePrice = #{hjSaleprice,jdbcType=VARCHAR},
+      hj_saleCurrency = #{hjSalecurrency,jdbcType=VARCHAR},
+      hj_categoryName = #{hjCategoryname,jdbcType=VARCHAR},
+      hj_parentEnName = #{hjParentenname,jdbcType=VARCHAR},
+      hj_standy1 = #{hjStandy1,jdbcType=TIMESTAMP},
+      hj_standy2 = #{hjStandy2,jdbcType=VARCHAR},
+      hj_standy3 = #{hjStandy3,jdbcType=VARCHAR},
+      hj_standy4 = #{hjStandy4,jdbcType=VARCHAR},
+      hj_standy5 = #{hjStandy5,jdbcType=VARCHAR},
+      hj_standy6 = #{hjStandy6,jdbcType=VARCHAR},
+      hj_standy7 = #{hjStandy7,jdbcType=VARCHAR},
+      hj_standy8 = #{hjStandy8,jdbcType=VARCHAR},
+      hj_standy9 = #{hjStandy9,jdbcType=VARCHAR},
+      hj_standy10 = #{hjStandy10,jdbcType=VARCHAR},
+      hj_standy11 = #{hjStandy11,jdbcType=VARCHAR},
+      hj_standy12 = #{hjStandy12,jdbcType=VARCHAR},
+      hj_standy13 = #{hjStandy13,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 修改环金updata -->
+  <update id="updata">
+    update hj_base
+    set
+        hj_standy7 = #{trackNum1,jdbcType=VARCHAR}
+      where hj_referenceNo = #{referenceNo,jdbcType=VARCHAR} and hj_standy2 = "1"
+      <if test="hjStandy9 != 'admin'">
+      and  hj_standy9 = #{hjStandy9,jdbcType=VARCHAR}
+      </if>
+  </update>
+  <!-- 已集拼addStandy12 -->
+  <update id="addStandy12">
+    update hj_base
+    set
+        hj_standy12 = 1
+      where hj_referenceNo = #{referenceNo,jdbcType=VARCHAR}
+     
+  </update>
+</mapper>

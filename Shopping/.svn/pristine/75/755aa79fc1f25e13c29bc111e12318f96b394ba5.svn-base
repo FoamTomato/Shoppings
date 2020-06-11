@@ -1,0 +1,11 @@
+eclipse.preferences.version=1
+encoding//WebContent/WEB-INF/views/admin/VueElement.jsp=UTF-8
+encoding//WebContent/WEB-INF/views/admin/product/Fright.jsp=UTF-8
+encoding//WebContent/WEB-INF/views/admin/product/productInfoMain.jsp=UTF-8
+encoding//WebContent/resources/admin/js/ueditor/jsp/config.json=UTF-8
+encoding//WebContent/resources/admin/styles/style.css=UTF-8
+encoding//src/com/sybinal/shop/common/POP3ReceiveMailTest.java=UTF-8
+encoding//src/com/sybinal/shop/common/sends/SimpleMailSender.java=UTF-8
+encoding//src/jdbc.properties=UTF-8
+encoding//src/log4j.properties=UTF-8
+encoding/<project>=UTF-8

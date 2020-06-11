@@ -1,0 +1,23 @@
+package com.sybinal.shop.mapper;
+
+import java.util.List;
+
+import com.sybinal.shop.model.logOutOf;
+
+public interface logOutOfMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(logOutOf record);
+
+    int insertSelective(logOutOf record);
+
+    logOutOf selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(logOutOf record);
+
+    int updateByPrimaryKey(logOutOf record);
+    /**
+	 * 查询所有的物流方式
+	 */
+	List<logOutOf> selectAll();
+}

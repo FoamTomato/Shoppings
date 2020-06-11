@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sybinal.shop.mapper.GlogisticsMapper">
+  <resultMap id="BaseResultMap" type="com.sybinal.shop.model.Glogistics">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="f_ids" jdbcType="VARCHAR" property="fids" />
+    <result column="f_old_order" jdbcType="VARCHAR" property="foldorder" />
+    <result column="f_old_purchase" jdbcType="VARCHAR" property="foldpurchase" />
+    <result column="f_client_order_code" jdbcType="VARCHAR" property="fclientordercode" />
+    <result column="f_store" jdbcType="VARCHAR" property="fstore" />
+    <result column="f_pay_time" jdbcType="TIMESTAMP" property="fpaytime" />
+    <result column="f_currency" jdbcType="VARCHAR" property="fcurrency" />
+    <result column="f_total_price" jdbcType="VARCHAR" property="ftotalprice" />
+    <result column="f_china_short" jdbcType="VARCHAR" property="fchinashort" />
+    <result column="f_first_name" jdbcType="VARCHAR" property="ffirstname" />
+    <result column="f_last_name" jdbcType="VARCHAR" property="flastname" />
+    <result column="f_country" jdbcType="VARCHAR" property="fcountry" />
+    <result column="f_province" jdbcType="VARCHAR" property="fprovince" />
+    <result column="f_city" jdbcType="VARCHAR" property="fcity" />
+    <result column="f_post_code" jdbcType="VARCHAR" property="fpostcode" />
+    <result column="f_email" jdbcType="VARCHAR" property="femail" />
+    <result column="f_telephone" jdbcType="VARCHAR" property="ftelephone" />
+    <result column="f_address1" jdbcType="VARCHAR" property="faddress1" />
+    <result column="f_address2" jdbcType="VARCHAR" property="faddress2" />
+    <result column="f_address3" jdbcType="VARCHAR" property="faddress3" />
+    <result column="f_logistics" jdbcType="VARCHAR" property="flogistics" />
+    <result column="f_english_short" jdbcType="VARCHAR" property="fenglishshort" />
+    <result column="f_channel" jdbcType="VARCHAR" property="fchannel" />
+    <result column="f_sheet" jdbcType="VARCHAR" property="fsheet" />
+    <result column="f_statue" jdbcType="VARCHAR" property="fstatue" />
+    <result column="f_freight" jdbcType="VARCHAR" property="ffreight" />
+    <result column="f_customs" jdbcType="VARCHAR" property="fcustoms" />
+    <result column="f_weight" jdbcType="DOUBLE" property="fweight" />
+    <result column="f_remark" jdbcType="VARCHAR" property="fremark" />
+    <result column="standby_1" jdbcType="VARCHAR" property="standby1" />
+    <result column="standby_2" jdbcType="VARCHAR" property="standby2" />
+    <result column="standby_3" jdbcType="VARCHAR" property="standby3" />
+    <result column="standby_4" jdbcType="VARCHAR" property="standby4" />
+    <result column="standby_5" jdbcType="VARCHAR" property="standby5" />
+    <result column="standby_6" jdbcType="VARCHAR" property="standby6" />
+    <result column="standby_7" jdbcType="VARCHAR" property="standby7" />
+    <result column="standby_8" jdbcType="VARCHAR" property="standby8" />
+    <result column="standby_9" jdbcType="VARCHAR" property="standby9" />
+    <result column="standby_10" jdbcType="VARCHAR" property="standby10" />
+    <result column="standby_11" jdbcType="VARCHAR" property="standby11" />
+    <result column="standby_12" jdbcType="VARCHAR" property="standby12" />
+    <result column="standby_13" jdbcType="VARCHAR" property="standby13" />
+    <result column="standby_14" jdbcType="VARCHAR" property="standby14" />
+    <result column="standby_15" jdbcType="VARCHAR" property="standby15" />
+    <result column="standby_16" jdbcType="VARCHAR" property="standby16" />
+    <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, f_ids, f_old_order, f_old_purchase, f_client_order_code, f_store, f_pay_time, 
+    f_currency, f_total_price, f_china_short, f_first_name, f_last_name, f_country, f_province, 
+    f_city, f_post_code, f_email, f_telephone, f_address1, f_address2, f_address3, f_logistics, 
+    f_english_short, f_channel, f_sheet, f_statue, f_freight, f_customs, f_weight, f_remark, 
+    standby_1, standby_2, standby_3, standby_4, standby_5, standby_6, standby_7, standby_8, 
+    standby_9,standby_10,standby_11,standby_12,standby_13,standby_14,standby_15,standby_16,update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from logistics
+     where id = #{id} and standby_9=#{username}
+  </select>
+ 
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from logistics
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sybinal.shop.model.Glogistics">
+    insert into logistics (id, f_ids, f_old_order, 
+      f_old_purchase, f_client_order_code, f_store, 
+      f_pay_time, f_currency, f_total_price, 
+      f_china_short, f_first_name, f_last_name, 
+      f_country, f_province, f_city, 
+      f_post_code, f_email, f_telephone, 
+      f_address1, f_address2, f_address3, 
+      f_logistics, f_english_short, f_channel, 
+      f_sheet, f_statue, f_freight, 
+      f_customs, f_weight, f_remark, 
+      standby_1, standby_2, standby_3, 
+      standby_4, standby_5, standby_6, 
+      standby_7, standby_8, standby_9,update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{f_ids,jdbcType=VARCHAR}, #{f_old_order,jdbcType=VARCHAR}, 
+      #{f_old_purchase,jdbcType=VARCHAR}, #{f_client_order_code,jdbcType=VARCHAR}, #{f_store,jdbcType=VARCHAR}, 
+      #{f_pay_time,jdbcType=TIMESTAMP}, #{f_currency,jdbcType=VARCHAR}, #{f_total_price,jdbcType=VARCHAR}, 
+      #{f_china_short,jdbcType=VARCHAR}, #{f_first_name,jdbcType=VARCHAR}, #{f_last_name,jdbcType=VARCHAR}, 
+      #{f_country,jdbcType=VARCHAR}, #{f_province,jdbcType=VARCHAR}, #{f_city,jdbcType=VARCHAR}, 
+      #{f_post_code,jdbcType=VARCHAR}, #{f_email,jdbcType=VARCHAR}, #{f_telephone,jdbcType=VARCHAR}, 
+      #{f_address1,jdbcType=VARCHAR}, #{f_address2,jdbcType=VARCHAR}, #{f_address3,jdbcType=VARCHAR}, 
+      #{f_logistics,jdbcType=VARCHAR}, #{f_english_short,jdbcType=VARCHAR}, #{f_channel,jdbcType=VARCHAR}, 
+      #{f_sheet,jdbcType=VARCHAR}, #{f_statue,jdbcType=VARCHAR}, #{f_freight,jdbcType=VARCHAR}, 
+      #{f_customs,jdbcType=VARCHAR}, #{f_weight,jdbcType=DOUBLE}, #{f_remark,jdbcType=VARCHAR}, 
+      #{standby_1,jdbcType=VARCHAR}, #{standby_2,jdbcType=VARCHAR}, #{standby_3,jdbcType=VARCHAR}, 
+      #{standby_4,jdbcType=VARCHAR}, #{standby_5,jdbcType=VARCHAR}, #{standby_6,jdbcType=VARCHAR}, 
+      #{standby_7,jdbcType=VARCHAR}, #{standby_8,jdbcType=VARCHAR}, #{standby_9,jdbcType=VARCHAR},now()
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sybinal.shop.model.Glogistics">
+    insert into logistics
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="f_ids != null">
+        f_ids,
+      </if>
+      <if test="f_old_order != null">
+        f_old_order,
+      </if>
+      <if test="f_old_purchase != null">
+        f_old_purchase,
+      </if>
+      <if test="f_client_order_code != null">
+        f_client_order_code,
+      </if>
+      <if test="f_store != null">
+        f_store,
+      </if>
+      <if test="f_pay_time != null">
+        f_pay_time,
+      </if>
+      <if test="f_currency != null">
+        f_currency,
+      </if>
+      <if test="f_total_price != null">
+        f_total_price,
+      </if>
+      <if test="f_china_short != null">
+        f_china_short,
+      </if>
+      <if test="f_first_name != null">
+        f_first_name,
+      </if>
+      <if test="f_last_name != null">
+        f_last_name,
+      </if>
+      <if test="f_country != null">
+        f_country,
+      </if>
+      <if test="f_province != null">
+        f_province,
+      </if>
+      <if test="f_city != null">
+        f_city,
+      </if>
+      <if test="f_post_code != null">
+        f_post_code,
+      </if>
+      <if test="f_email != null">
+        f_email,
+      </if>
+      <if test="f_telephone != null">
+        f_telephone,
+      </if>
+      <if test="f_address1 != null">
+        f_address1,
+      </if>
+      <if test="f_address2 != null">
+        f_address2,
+      </if>
+      <if test="f_address3 != null">
+        f_address3,
+      </if>
+      <if test="f_logistics != null">
+        f_logistics,
+      </if>
+      <if test="f_english_short != null">
+        f_english_short,
+      </if>
+      <if test="f_channel != null">
+        f_channel,
+      </if>
+      <if test="f_sheet != null">
+        f_sheet,
+      </if>
+      <if test="f_statue != null">
+        f_statue,
+      </if>
+      <if test="f_freight != null">
+        f_freight,
+      </if>
+      <if test="f_customs != null">
+        f_customs,
+      </if>
+      <if test="f_weight != null">
+        f_weight,
+      </if>
+      <if test="f_remark != null">
+        f_remark,
+      </if>
+      <if test="standby_1 != null">
+        standby_1,
+      </if>
+      <if test="standby_2 != null">
+        standby_2,
+      </if>
+      <if test="standby_3 != null">
+        standby_3,
+      </if>
+      <if test="standby_4 != null">
+        standby_4,
+      </if>
+      <if test="standby_5 != null">
+        standby_5,
+      </if>
+      <if test="standby_6 != null">
+        standby_6,
+      </if>
+      <if test="standby_7 != null">
+        standby_7,
+      </if>
+      <if test="standby_8 != null">
+        standby_8,
+      </if>
+      <if test="standby_9 != null">
+        standby_9,
+      </if>
+      <if test="update_time != 1">
+      	update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="f_ids != null">
+        #{f_ids,jdbcType=VARCHAR},
+      </if>
+      <if test="f_old_order != null">
+        #{f_old_order,jdbcType=VARCHAR},
+      </if>
+      <if test="f_old_purchase != null">
+        #{f_old_purchase,jdbcType=VARCHAR},
+      </if>
+      <if test="f_client_order_code != null">
+        #{f_client_order_code,jdbcType=VARCHAR},
+      </if>
+      <if test="f_store != null">
+        #{f_store,jdbcType=VARCHAR},
+      </if>
+      <if test="f_pay_time != null">
+        #{f_pay_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="f_currency != null">
+        #{f_currency,jdbcType=VARCHAR},
+      </if>
+      <if test="f_total_price != null">
+        #{f_total_price,jdbcType=VARCHAR},
+      </if>
+      <if test="f_china_short != null">
+        #{f_china_short,jdbcType=VARCHAR},
+      </if>
+      <if test="f_first_name != null">
+        #{f_first_name,jdbcType=VARCHAR},
+      </if>
+      <if test="f_last_name != null">
+        #{f_last_name,jdbcType=VARCHAR},
+      </if>
+      <if test="f_country != null">
+        #{f_country,jdbcType=VARCHAR},
+      </if>
+      <if test="f_province != null">
+        #{f_province,jdbcType=VARCHAR},
+      </if>
+      <if test="f_city != null">
+        #{f_city,jdbcType=VARCHAR},
+      </if>
+      <if test="f_post_code != null">
+        #{f_post_code,jdbcType=VARCHAR},
+      </if>
+      <if test="f_email != null">
+        #{f_email,jdbcType=VARCHAR},
+      </if>
+      <if test="f_telephone != null">
+        #{f_telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="f_address1 != null">
+        #{f_address1,jdbcType=VARCHAR},
+      </if>
+      <if test="f_address2 != null">
+        #{f_address2,jdbcType=VARCHAR},
+      </if>
+      <if test="f_address3 != null">
+        #{f_address3,jdbcType=VARCHAR},
+      </if>
+      <if test="f_logistics != null">
+        #{f_logistics,jdbcType=VARCHAR},
+      </if>
+      <if test="f_english_short != null">
+        #{f_english_short,jdbcType=VARCHAR},
+      </if>
+      <if test="f_channel != null">
+        #{f_channel,jdbcType=VARCHAR},
+      </if>
+      <if test="f_sheet != null">
+        #{f_sheet,jdbcType=VARCHAR},
+      </if>
+      <if test="f_statue != null">
+        #{f_statue,jdbcType=VARCHAR},
+      </if>
+      <if test="f_freight != null">
+        #{f_freight,jdbcType=VARCHAR},
+      </if>
+      <if test="f_customs != null">
+        #{f_customs,jdbcType=VARCHAR},
+      </if>
+      <if test="f_weight != null">
+        #{f_weight,jdbcType=DOUBLE},
+      </if>
+      <if test="f_remark != null">
+        #{f_remark,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_1 != null">
+        #{standby_1,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_2 != null">
+        #{standby_2,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_3 != null">
+        #{standby_3,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_4 != null">
+        #{standby_4,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_5 != null">
+        #{standby_5,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_6 != null">
+        #{standby_6,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_7 != null">
+        #{standby_7,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_8 != null">
+        #{standby_8,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_9 != null">
+        #{standby_9,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != 1">
+      	now();
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sybinal.shop.model.Glogistics">
+    update logistics
+    <set>
+      <if test="f_ids != null">
+        f_ids = #{f_ids,jdbcType=VARCHAR},
+      </if>
+      <if test="f_old_order != null">
+        f_old_order = #{f_old_order,jdbcType=VARCHAR},
+      </if>
+      <if test="f_old_purchase != null">
+        f_old_purchase = #{f_old_purchase,jdbcType=VARCHAR},
+      </if>
+      <if test="f_client_order_code != null">
+        f_client_order_code = #{f_client_order_code,jdbcType=VARCHAR},
+      </if>
+      <if test="f_store != null">
+        f_store = #{f_store,jdbcType=VARCHAR},
+      </if>
+      <if test="f_pay_time != null">
+        f_pay_time = #{f_pay_time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="f_currency != null">
+        f_currency = #{f_currency,jdbcType=VARCHAR},
+      </if>
+      <if test="f_total_price != null">
+        f_total_price = #{f_total_price,jdbcType=VARCHAR},
+      </if>
+      <if test="f_china_short != null">
+        f_china_short = #{f_china_short,jdbcType=VARCHAR},
+      </if>
+      <if test="f_first_name != null">
+        f_first_name = #{f_first_name,jdbcType=VARCHAR},
+      </if>
+      <if test="f_last_name != null">
+        f_last_name = #{f_last_name,jdbcType=VARCHAR},
+      </if>
+      <if test="f_country != null">
+        f_country = #{f_country,jdbcType=VARCHAR},
+      </if>
+      <if test="f_province != null">
+        f_province = #{f_province,jdbcType=VARCHAR},
+      </if>
+      <if test="f_city != null">
+        f_city = #{f_city,jdbcType=VARCHAR},
+      </if>
+      <if test="f_post_code != null">
+        f_post_code = #{f_post_code,jdbcType=VARCHAR},
+      </if>
+      <if test="f_email != null">
+        f_email = #{f_email,jdbcType=VARCHAR},
+      </if>
+      <if test="f_telephone != null">
+        f_telephone = #{f_telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="f_address1 != null">
+        f_address1 = #{f_address1,jdbcType=VARCHAR},
+      </if>
+      <if test="f_address2 != null">
+        f_address2 = #{f_address2,jdbcType=VARCHAR},
+      </if>
+      <if test="f_address3 != null">
+        f_address3 = #{f_address3,jdbcType=VARCHAR},
+      </if>
+      <if test="f_logistics != null">
+        f_logistics = #{f_logistics,jdbcType=VARCHAR},
+      </if>
+      <if test="f_english_short != null">
+        f_english_short = #{f_english_short,jdbcType=VARCHAR},
+      </if>
+      <if test="f_channel != null">
+        f_channel = #{f_channel,jdbcType=VARCHAR},
+      </if>
+      <if test="f_sheet != null">
+        f_sheet = #{f_sheet,jdbcType=VARCHAR},
+      </if>
+      <if test="f_statue != null">
+        f_statue = #{f_statue,jdbcType=VARCHAR},
+      </if>
+      <if test="f_freight != null">
+        f_freight = #{f_freight,jdbcType=VARCHAR},
+      </if>
+      <if test="f_customs != null">
+        f_customs = #{f_customs,jdbcType=VARCHAR},
+      </if>
+      <if test="f_weight != null">
+        f_weight = #{f_weight,jdbcType=DOUBLE},
+      </if>
+      <if test="f_remark != null">
+        f_remark = #{f_remark,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_1 != null">
+        standby_1 = #{standby_1,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_2 != null">
+        standby_2 = #{standby_2,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_3 != null">
+        standby_3 = #{standby_3,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_4 != null">
+        standby_4 = #{standby_4,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_5 != null">
+        standby_5 = #{standby_5,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_6 != null">
+        standby_6 = #{standby_6,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_7 != null">
+        standby_7 = #{standby_7,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_8 != null">
+        standby_8 = #{standby_8,jdbcType=VARCHAR},
+      </if>
+      <if test="standby_9 != null">
+        standby_9 = #{standby_9,jdbcType=VARCHAR},
+      </if>
+      <if test="update_time != 1">
+      	now(),
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sybinal.shop.model.Glogistics">
+    update logistics
+    set f_ids = #{f_ids,jdbcType=VARCHAR},
+      f_old_order = #{f_old_order,jdbcType=VARCHAR},
+      f_old_purchase = #{f_old_purchase,jdbcType=VARCHAR},
+      f_client_order_code = #{f_client_order_code,jdbcType=VARCHAR},
+      f_store = #{f_store,jdbcType=VARCHAR},
+      f_pay_time = #{f_pay_time,jdbcType=TIMESTAMP},
+      f_currency = #{f_currency,jdbcType=VARCHAR},
+      f_total_price = #{f_total_price,jdbcType=VARCHAR},
+      f_china_short = #{f_china_short,jdbcType=VARCHAR},
+      f_first_name = #{f_first_name,jdbcType=VARCHAR},
+      f_last_name = #{f_last_name,jdbcType=VARCHAR},
+      f_country = #{f_country,jdbcType=VARCHAR},
+      f_province = #{f_province,jdbcType=VARCHAR},
+      f_city = #{f_city,jdbcType=VARCHAR},
+      f_post_code = #{f_post_code,jdbcType=VARCHAR},
+      f_email = #{f_email,jdbcType=VARCHAR},
+      f_telephone = #{f_telephone,jdbcType=VARCHAR},
+      f_address1 = #{f_address1,jdbcType=VARCHAR},
+      f_address2 = #{f_address2,jdbcType=VARCHAR},
+      f_address3 = #{f_address3,jdbcType=VARCHAR},
+      f_logistics = #{f_logistics,jdbcType=VARCHAR},
+      f_english_short = #{f_english_short,jdbcType=VARCHAR},
+      f_channel = #{f_channel,jdbcType=VARCHAR},
+      f_sheet = #{f_sheet,jdbcType=VARCHAR},
+      f_statue = #{f_statue,jdbcType=VARCHAR},
+      f_freight = #{f_freight,jdbcType=VARCHAR},
+      f_customs = #{f_customs,jdbcType=VARCHAR},
+      f_weight = #{f_weight,jdbcType=DOUBLE},
+      f_remark = #{f_remark,jdbcType=VARCHAR},
+      standby_1 = #{standby_1,jdbcType=VARCHAR},
+      standby_2 = #{standby_2,jdbcType=VARCHAR},
+      standby_3 = #{standby_3,jdbcType=VARCHAR},
+      standby_4 = #{standby_4,jdbcType=VARCHAR},
+      standby_5 = #{standby_5,jdbcType=VARCHAR},
+      standby_6 = #{standby_6,jdbcType=VARCHAR},
+      standby_7 = #{standby_7,jdbcType=VARCHAR},
+      standby_8 = #{standby_8,jdbcType=VARCHAR},
+      standby_9 = #{standby_9,jdbcType=VARCHAR},
+      update_time =now()
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 批量查询集拼seljps -->
+  <select id="seljps" resultMap="BaseResultMap">
+  	select l.id,h.hj_invoiceUnitcharge as f_old_order, f_ids, f_old_purchase, f_client_order_code, f_store, f_pay_time, f_currency, f_total_price, f_china_short, f_first_name, f_last_name, f_country, f_province, f_city, f_post_code, f_email, f_telephone, f_address1, f_address2, f_address3, f_logistics, f_english_short, f_channel, f_sheet, f_statue, f_freight, f_customs, f_weight, f_remark, standby_1, standby_2, standby_3, standby_4, standby_5, standby_6, standby_7, standby_8, standby_9,standby_10,standby_11,standby_12,standby_13,standby_14,standby_15,standby_16,update_time from logistics l,hj_base h
+    <where> standby_15 in
+    <foreach collection="jplist" item="id" open="(" close=")" separator=",">
+		 #{id}
+	</foreach>
+	 and h.hj_referenceNo = standby_15 and l.standby_9 = #{standby9}
+ 	</where>
+  </select>
+</mapper>

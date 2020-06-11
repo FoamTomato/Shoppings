@@ -1,0 +1,83 @@
+package com.sybinal.shop.model;
+
+public class roles {
+    private Integer id;
+
+    private String roleName;
+
+    private String standy1;
+
+    private String standy2;
+
+    private String standy3;
+
+    private String standy4;
+
+    private String standy5;
+
+    private String roleRoles;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName == null ? null : roleName.trim();
+    }
+
+    public String getStandy1() {
+        return standy1;
+    }
+
+    public void setStandy1(String standy1) {
+        this.standy1 = standy1 == null ? null : standy1.trim();
+    }
+
+    public String getStandy2() {
+        return standy2;
+    }
+
+    public void setStandy2(String standy2) {
+        this.standy2 = standy2 == null ? null : standy2.trim();
+    }
+
+    public String getStandy3() {
+        return standy3;
+    }
+
+    public void setStandy3(String standy3) {
+        this.standy3 = standy3 == null ? null : standy3.trim();
+    }
+
+    public String getStandy4() {
+        return standy4;
+    }
+
+    public void setStandy4(String standy4) {
+        this.standy4 = standy4 == null ? null : standy4.trim();
+    }
+
+    public String getStandy5() {
+        return standy5;
+    }
+
+    public void setStandy5(String standy5) {
+        this.standy5 = standy5 == null ? null : standy5.trim();
+    }
+
+    public String getRoleRoles() {
+        return roleRoles;
+    }
+
+    public void setRoleRoles(String roleRoles) {
+        this.roleRoles = roleRoles == null ? null : roleRoles.trim();
+    }
+}

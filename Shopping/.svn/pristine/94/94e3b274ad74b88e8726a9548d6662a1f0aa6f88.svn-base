@@ -1,0 +1,185 @@
+package com.sybinal.shop.common;
+
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+
+import com.google.common.collect.Maps;
+import com.sybinal.shop.controller.admin.EnumContentType;
+import com.sybinal.shop.controller.admin.SignDemo;
+
+public class HttpUtilss {
+	private static int HTTP_TIMEOUT = 10000;
+
+	public static String doPost(String urlPath, String params,String map,
+			EnumContentType contentType, Integer timeout) throws Exception {
+		Map<String, String> head = Maps.newHashMap();
+		//93a61c53-e6a3-4f13-ad0b-594498a49c45 测试token
+		//c5074a1b-24c3-4895-848c-d2a7aacbe647  正式token
+		head.put("SE-TOKEN", "93a61c53-e6a3-4f13-ad0b-594498a49c45");
+		head.put("signature", SignDemo.getSign(urlPath,"93a61c53-e6a3-4f13-ad0b-594498a49c45",map,"POST"));
+		head.put("Content-Type", "application/json");
+		String method = "POST";
+		return doCall(urlPath, "POST", params, head, contentType, timeout);
+	}
+
+	public static String doGet(String urlPath, String params, Map<String, String> requestProperties,
+			EnumContentType contentType, Integer timeout) throws Exception {
+		String method = "GET";
+		return doCall(urlPath, "GET", params, requestProperties, contentType, timeout);
+	}
+
+	public static String doDelete(String urlPath, String params, Map<String, String> requestProperties,
+			EnumContentType contentType, Integer timeout) throws Exception {
+		String method = "DELETE";
+		return doCall(urlPath, "DELETE", params, requestProperties, contentType, timeout);
+	}
+
+	public static String doCall(String urlPath, String method, String params, Map<String, String> requestProperties,
+			EnumContentType contentType, Integer timeout) throws Exception {
+		HttpURLConnection httpConnection = null;
+
+		String var16;
+		try {
+			URL url = new URL(urlPath);
+			httpConnection = (HttpURLConnection) url.openConnection();
+			httpConnection.setRequestMethod(method);
+			httpConnection.setRequestProperty("Content-Type", contentType.getContentType());
+			if (timeout == null || timeout == 0) {
+				timeout = HTTP_TIMEOUT;
+			}
+
+			httpConnection.setConnectTimeout(timeout);
+			httpConnection.setReadTimeout(timeout);
+			if (requestProperties != null && requestProperties.keySet().size() > 0) {
+				Iterator var8 = requestProperties.keySet().iterator();
+
+				while (var8.hasNext()) {
+					String key = (String) var8.next();
+					httpConnection.setRequestProperty(key, requestProperties.get(key));
+				}
+			}
+
+			httpConnection.setDoOutput(true);
+			httpConnection.setDoInput(true);
+			if (StringUtils.isNotEmpty(params)) {
+				httpConnection.setRequestProperty("Content-Length", String.valueOf(params.length()));
+				OutputStreamWriter outputStreamWriter = new OutputStreamWriter(httpConnection.getOutputStream(),
+						"utf-8");
+				outputStreamWriter.write(params);
+				outputStreamWriter.flush();
+				outputStreamWriter.close();
+			}
+
+			var16 = IOUtils.toString(httpConnection.getInputStream(), "utf-8");
+		} catch (Exception var13) {
+			throw var13;
+		} finally {
+			httpConnection.disconnect();
+		}
+
+		return var16;
+	}
+
+	public static byte[] httpDownload(String urlPath, String method, String params,
+			Map<String, String> requestProperties, EnumContentType contentType) throws Exception {
+		HttpURLConnection httpConnection = null;
+
+		byte[] var9;
+		try {
+			URL url = new URL(urlPath);
+			httpConnection = (HttpURLConnection) url.openConnection();
+			httpConnection.setConnectTimeout(30000);
+			httpConnection.setReadTimeout(50000);
+			httpConnection.setRequestMethod(method);
+			httpConnection.setRequestProperty("Content-Type", contentType.getContentType());
+			if (requestProperties != null && requestProperties.keySet().size() > 0) {
+				Iterator var7 = requestProperties.keySet().iterator();
+
+				while (var7.hasNext()) {
+					String key = (String) var7.next();
+					httpConnection.setRequestProperty(key, requestProperties.get(key));
+				}
+			}
+
+			httpConnection.setDoOutput(true);
+			httpConnection.setDoInput(true);
+			if (StringUtils.isNotEmpty(params)) {
+				httpConnection.setRequestProperty("Content-Length", String.valueOf(params.length()));
+				OutputStreamWriter outputStreamWriter = new OutputStreamWriter(httpConnection.getOutputStream(),
+						"utf-8");
+				outputStreamWriter.write(params);
+				outputStreamWriter.flush();
+				outputStreamWriter.close();
+			}
+
+			int code = httpConnection.getResponseCode();
+			if (code != 200) {
+				throw new Exception(IOUtils.toString(httpConnection.getInputStream(), "utf-8"));
+			}
+
+			InputStream input = null;
+
+			try {
+				input = httpConnection.getInputStream();
+				var9 = IOUtils.toByteArray(input);
+			} finally {
+				IOUtils.closeQuietly(input);
+			}
+		} catch (Exception var19) {
+			throw var19;
+		} finally {
+			httpConnection.disconnect();
+		}
+
+		return var9;
+	}
+
+	public static int doPing(String urlPath) throws Exception {
+		URL url = new URL(urlPath);
+		HttpURLConnection httpConnection = (HttpURLConnection) url.openConnection();
+		httpConnection.setRequestMethod("GET");
+		int responseCode = httpConnection.getResponseCode();
+		httpConnection.disconnect();
+		return responseCode;
+	}
+
+	public static String getWholeUrl(String url, Map<String, Object> params) {
+		if (url == null) {
+			return null;
+		} else if (params == null) {
+			return url;
+		} else {
+			Set<Entry<String, Object>> set = params.entrySet();
+			if (set.size() <= 0) {
+				return url;
+			} else {
+				url = url + "?";
+				Iterator<Entry<String, Object>> it = set.iterator();
+				Entry entry;
+				String param;
+				if (it.hasNext()) {
+					entry = it.next();
+					param = (String) entry.getKey() + "=" + entry.getValue();
+					url = url + param;
+				}
+
+				while (it.hasNext()) {
+					entry = it.next();
+					param = (String) entry.getKey() + "=" + entry.getValue();
+					url = url + "&" + param;
+				}
+
+				return url;
+			}
+		}
+	}
+}

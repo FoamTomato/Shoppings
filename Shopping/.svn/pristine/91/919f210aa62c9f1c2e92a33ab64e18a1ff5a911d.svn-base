@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sybinal.shop.mapper.emailDetailsMapper">
+  <resultMap id="BaseResultMap" type="com.sybinal.shop.model.emailDetails">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="email_orders" jdbcType="VARCHAR" property="emailOrders" />
+    <result column="email_postman" jdbcType="VARCHAR" property="emailPostman" />
+    <result column="email_post_email" jdbcType="VARCHAR" property="emailPostEmail" />
+    <result column="email_getman" jdbcType="VARCHAR" property="emailGetman" />
+    <result column="email_get_email" jdbcType="VARCHAR" property="emailGetEmail" />
+    <result column="email_remark" jdbcType="VARCHAR" property="emailRemark" />
+    <result column="email_times" jdbcType="TIMESTAMP" property="emailTimes" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+    <result column="spare1" jdbcType="VARCHAR" property="spare1" />
+    <result column="spare2" jdbcType="VARCHAR" property="spare2" />
+    <result column="spare3" jdbcType="VARCHAR" property="spare3" />
+    <result column="spare4" jdbcType="VARCHAR" property="spare4" />
+    <result column="spare5" jdbcType="VARCHAR" property="spare5" />
+    <result column="spare6" jdbcType="VARCHAR" property="spare6" />
+    <result column="spare7" jdbcType="VARCHAR" property="spare7" />
+    <result column="spare8" jdbcType="VARCHAR" property="spare8" />
+    <result column="spare9" jdbcType="VARCHAR" property="spare9" />
+    <result column="spare10" jdbcType="VARCHAR" property="spare10" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.sybinal.shop.model.emailDetailsWithBLOBs">
+    <result column="text" jdbcType="LONGVARCHAR" property="text" />
+    <result column="result" jdbcType="LONGVARCHAR" property="result" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, email_orders, email_postman, email_post_email, email_getman, email_get_email, 
+    email_remark, email_times, state, spare1, spare2, spare3, spare4, spare5, spare6, 
+    spare7, spare8, spare9, spare10
+  </sql>
+  <sql id="Blob_Column_List">
+    text, result
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from email_details
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from email_details
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sybinal.shop.model.emailDetailsWithBLOBs">
+    insert into email_details (id, email_orders, email_postman, 
+      email_post_email, email_getman, email_get_email, 
+      email_remark, email_times, state, 
+      spare1, spare2, spare3, 
+      spare4, spare5, spare6, 
+      spare7, spare8, spare9, 
+      spare10, text, result
+      )
+    values (#{id,jdbcType=INTEGER}, #{emailOrders,jdbcType=VARCHAR}, #{emailPostman,jdbcType=VARCHAR}, 
+      #{emailPostEmail,jdbcType=VARCHAR}, #{emailGetman,jdbcType=VARCHAR}, #{emailGetEmail,jdbcType=VARCHAR}, 
+      #{emailRemark,jdbcType=VARCHAR}, #{emailTimes,jdbcType=TIMESTAMP}, #{state,jdbcType=VARCHAR}, 
+      #{spare1,jdbcType=VARCHAR}, #{spare2,jdbcType=VARCHAR}, #{spare3,jdbcType=VARCHAR}, 
+      #{spare4,jdbcType=VARCHAR}, #{spare5,jdbcType=VARCHAR}, #{spare6,jdbcType=VARCHAR}, 
+      #{spare7,jdbcType=VARCHAR}, #{spare8,jdbcType=VARCHAR}, #{spare9,jdbcType=VARCHAR}, 
+      #{spare10,jdbcType=VARCHAR}, #{text,jdbcType=LONGVARCHAR}, #{result,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <!-- emailList批量查找所有 -->
+  <select id="emailList" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from email_details 
+    <where>
+    <trim prefix="(" suffix=")" prefixOverrides="or">
+	   	<if test="map.selectText != ''">
+	   		email_postman like concat('%','${map.selectText}','%') 
+	   	</if>
+	   	<if test="map.mans != ''">
+	   		or email_postman like concat('%','${map.mans}','%')
+	   	</if>
+	</trim>
+	   	<if test="map.spare4 != ''"> 
+	   		and spare4="1"
+	   	</if>
+	   	<if test="map.spare4 == ''">
+	   		and (spare4!="1" or spare4 is null)
+	   	</if>
+   	</where>
+    order by id desc
+  </select>
+  <!-- addEmailContent批量添加 -->
+  <insert id="addEmailContent" parameterType="com.sybinal.shop.model.emailDetailsWithBLOBs">
+    insert into email_details (id, email_orders, email_postman, 
+      email_post_email, email_getman, email_get_email, 
+      email_remark, email_times, state, 
+      spare1, spare2, spare3, 
+      spare4, spare5, spare6, 
+      spare7, spare8, spare9, 
+      spare10, text, result
+      )
+    values 
+    <foreach  collection="list" item="listItem" separator=",">
+    (#{listItem.id,jdbcType=INTEGER}, #{listItem.emailOrders,jdbcType=VARCHAR}, #{listItem.emailPostman,jdbcType=VARCHAR}, 
+      #{listItem.emailPostEmail,jdbcType=VARCHAR}, #{listItem.emailGetman,jdbcType=VARCHAR}, #{listItem.emailGetEmail,jdbcType=VARCHAR}, 
+      #{listItem.emailRemark,jdbcType=VARCHAR}, #{listItem.emailTimes,jdbcType=TIMESTAMP}, #{listItem.state,jdbcType=VARCHAR}, 
+      #{listItem.spare1,jdbcType=VARCHAR}, #{listItem.spare2,jdbcType=VARCHAR}, #{listItem.spare3,jdbcType=VARCHAR}, 
+      #{listItem.spare4,jdbcType=VARCHAR}, #{listItem.spare5,jdbcType=VARCHAR}, #{listItem.spare6,jdbcType=VARCHAR}, 
+      #{listItem.spare7,jdbcType=VARCHAR}, #{listItem.spare8,jdbcType=VARCHAR}, #{listItem.spare9,jdbcType=VARCHAR}, 
+      #{listItem.spare10,jdbcType=VARCHAR}, #{listItem.text,jdbcType=LONGVARCHAR}, #{listItem.result,jdbcType=LONGVARCHAR}
+      )
+      </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.sybinal.shop.model.emailDetailsWithBLOBs">
+    insert into email_details
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="emailOrders != null">
+        email_orders,
+      </if>
+      <if test="emailPostman != null">
+        email_postman,
+      </if>
+      <if test="emailPostEmail != null">
+        email_post_email,
+      </if>
+      <if test="emailGetman != null">
+        email_getman,
+      </if>
+      <if test="emailGetEmail != null">
+        email_get_email,
+      </if>
+      <if test="emailRemark != null">
+        email_remark,
+      </if>
+      <if test="emailTimes != null">
+        email_times,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="spare1 != null">
+        spare1,
+      </if>
+      <if test="spare2 != null">
+        spare2,
+      </if>
+      <if test="spare3 != null">
+        spare3,
+      </if>
+      <if test="spare4 != null">
+        spare4,
+      </if>
+      <if test="spare5 != null">
+        spare5,
+      </if>
+      <if test="spare6 != null">
+        spare6,
+      </if>
+      <if test="spare7 != null">
+        spare7,
+      </if>
+      <if test="spare8 != null">
+        spare8,
+      </if>
+      <if test="spare9 != null">
+        spare9,
+      </if>
+      <if test="spare10 != null">
+        spare10,
+      </if>
+      <if test="text != null">
+        text,
+      </if>
+      <if test="result != null">
+        result,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="emailOrders != null">
+        #{emailOrders,jdbcType=VARCHAR},
+      </if>
+      <if test="emailPostman != null">
+        #{emailPostman,jdbcType=VARCHAR},
+      </if>
+      <if test="emailPostEmail != null">
+        #{emailPostEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="emailGetman != null">
+        #{emailGetman,jdbcType=VARCHAR},
+      </if>
+      <if test="emailGetEmail != null">
+        #{emailGetEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="emailRemark != null">
+        #{emailRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="emailTimes != null">
+        #{emailTimes,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="spare1 != null">
+        #{spare1,jdbcType=VARCHAR},
+      </if>
+      <if test="spare2 != null">
+        #{spare2,jdbcType=VARCHAR},
+      </if>
+      <if test="spare3 != null">
+        #{spare3,jdbcType=VARCHAR},
+      </if>
+      <if test="spare4 != null">
+        #{spare4,jdbcType=VARCHAR},
+      </if>
+      <if test="spare5 != null">
+        #{spare5,jdbcType=VARCHAR},
+      </if>
+      <if test="spare6 != null">
+        #{spare6,jdbcType=VARCHAR},
+      </if>
+      <if test="spare7 != null">
+        #{spare7,jdbcType=VARCHAR},
+      </if>
+      <if test="spare8 != null">
+        #{spare8,jdbcType=VARCHAR},
+      </if>
+      <if test="spare9 != null">
+        #{spare9,jdbcType=VARCHAR},
+      </if>
+      <if test="spare10 != null">
+        #{spare10,jdbcType=VARCHAR},
+      </if>
+      <if test="text != null">
+        #{text,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sybinal.shop.model.emailDetailsWithBLOBs">
+    update email_details
+    <set>
+      <if test="emailOrders != null">
+        email_orders = #{emailOrders,jdbcType=VARCHAR},
+      </if>
+      <if test="emailPostman != null">
+        email_postman = #{emailPostman,jdbcType=VARCHAR},
+      </if>
+      <if test="emailPostEmail != null">
+        email_post_email = #{emailPostEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="emailGetman != null">
+        email_getman = #{emailGetman,jdbcType=VARCHAR},
+      </if>
+      <if test="emailGetEmail != null">
+        email_get_email = #{emailGetEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="emailRemark != null">
+        email_remark = #{emailRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="emailTimes != null">
+        email_times = #{emailTimes,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="spare1 != null">
+        spare1 = #{spare1,jdbcType=VARCHAR},
+      </if>
+      <if test="spare2 != null">
+        spare2 = #{spare2,jdbcType=VARCHAR},
+      </if>
+      <if test="spare3 != null">
+        spare3 = #{spare3,jdbcType=VARCHAR},
+      </if>
+      <if test="spare4 != null">
+        spare4 = #{spare4,jdbcType=VARCHAR},
+      </if>
+      <if test="spare5 != null">
+        spare5 = #{spare5,jdbcType=VARCHAR},
+      </if>
+      <if test="spare6 != null">
+        spare6 = #{spare6,jdbcType=VARCHAR},
+      </if>
+      <if test="spare7 != null">
+        spare7 = #{spare7,jdbcType=VARCHAR},
+      </if>
+      <if test="spare8 != null">
+        spare8 = #{spare8,jdbcType=VARCHAR},
+      </if>
+      <if test="spare9 != null">
+        spare9 = #{spare9,jdbcType=VARCHAR},
+      </if>
+      <if test="spare10 != null">
+        spare10 = #{spare10,jdbcType=VARCHAR},
+      </if>
+      <if test="text != null">
+        text = #{text,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="result != null">
+        result = #{result,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.sybinal.shop.model.emailDetailsWithBLOBs">
+    update email_details
+    set email_orders = #{emailOrders,jdbcType=VARCHAR},
+      email_postman = #{emailPostman,jdbcType=VARCHAR},
+      email_post_email = #{emailPostEmail,jdbcType=VARCHAR},
+      email_getman = #{emailGetman,jdbcType=VARCHAR},
+      email_get_email = #{emailGetEmail,jdbcType=VARCHAR},
+      email_remark = #{emailRemark,jdbcType=VARCHAR},
+      email_times = #{emailTimes,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      spare1 = #{spare1,jdbcType=VARCHAR},
+      spare2 = #{spare2,jdbcType=VARCHAR},
+      spare3 = #{spare3,jdbcType=VARCHAR},
+      spare4 = #{spare4,jdbcType=VARCHAR},
+      spare5 = #{spare5,jdbcType=VARCHAR},
+      spare6 = #{spare6,jdbcType=VARCHAR},
+      spare7 = #{spare7,jdbcType=VARCHAR},
+      spare8 = #{spare8,jdbcType=VARCHAR},
+      spare9 = #{spare9,jdbcType=VARCHAR},
+      spare10 = #{spare10,jdbcType=VARCHAR},
+      text = #{text,jdbcType=LONGVARCHAR},
+      result = #{result,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sybinal.shop.model.emailDetails">
+    update email_details
+    set email_orders = #{emailOrders,jdbcType=VARCHAR},
+      email_postman = #{emailPostman,jdbcType=VARCHAR},
+      email_post_email = #{emailPostEmail,jdbcType=VARCHAR},
+      email_getman = #{emailGetman,jdbcType=VARCHAR},
+      email_get_email = #{emailGetEmail,jdbcType=VARCHAR},
+      email_remark = #{emailRemark,jdbcType=VARCHAR},
+      email_times = #{emailTimes,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      spare1 = #{spare1,jdbcType=VARCHAR},
+      spare2 = #{spare2,jdbcType=VARCHAR},
+      spare3 = #{spare3,jdbcType=VARCHAR},
+      spare4 = #{spare4,jdbcType=VARCHAR},
+      spare5 = #{spare5,jdbcType=VARCHAR},
+      spare6 = #{spare6,jdbcType=VARCHAR},
+      spare7 = #{spare7,jdbcType=VARCHAR},
+      spare8 = #{spare8,jdbcType=VARCHAR},
+      spare9 = #{spare9,jdbcType=VARCHAR},
+      spare10 = #{spare10,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

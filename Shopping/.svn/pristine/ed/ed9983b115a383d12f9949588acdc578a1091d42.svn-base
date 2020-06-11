@@ -1,0 +1,8 @@
+package com.sybinal.shop.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class PreviewServiceImpl implements PreviewService {
+
+}

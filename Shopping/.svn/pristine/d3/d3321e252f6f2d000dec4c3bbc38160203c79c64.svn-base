@@ -1,0 +1,24 @@
+package com.sybinal.shop.service;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.sybinal.shop.mapper.freightPreviewMapper;
+import com.sybinal.shop.model.jpOrder;
+
+@Service
+public class PreviewServiceImpl implements PreviewService {
+	
+	@Autowired
+	freightPreviewMapper privew;
+	
+	@Override
+	public List<jpOrder> selectAll(Map<String, String> map) {
+		// TODO Auto-generated method stub
+		return privew.selectAll(map);
+	}
+
+}

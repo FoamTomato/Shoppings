@@ -1,0 +1,24 @@
+package com.sybinal.shop.service.catalog;
+
+import java.util.List;
+
+import com.sybinal.shop.common.AjaxResult;
+import com.sybinal.shop.model.DTfzyings;
+import com.sybinal.shop.model.DTfzyingsWithBLOBs;
+
+public interface DTfzyingsService {
+	List<DTfzyingsWithBLOBs> selectAll();
+
+	AjaxResult setinsert(DTfzyingsWithBLOBs dtfzing);
+
+	DTfzyingsWithBLOBs selectByid(Integer id);
+
+	List<DTfzyingsWithBLOBs> selectdTstockAtAll(DTfzyingsWithBLOBs dtfzying, Integer price1, Integer price2,
+			String updateTime1, String updateTime2);
+
+	boolean setinsertY(DTfzyingsWithBLOBs dtfzing);
+
+	int updateProduct(DTfzyingsWithBLOBs dTfzying, DTfzyings st);
+
+	int deleteProduct(Integer id);
+}

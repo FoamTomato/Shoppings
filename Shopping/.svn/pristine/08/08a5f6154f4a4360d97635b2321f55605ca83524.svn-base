@@ -1,0 +1,219 @@
+	//翻译物流
+	//根据国家简称填写国家英文和中文
+function CountryEANDCs(abbreviation){
+	switch(abbreviation){
+	case "cm_dd_sz":
+		return "线下平邮(带电)";
+		break;
+	case "cm_sx_sz":
+		return "线下平邮(普货)";
+		break;
+	case "ghxb_dd_sz":
+		return "线下挂号(带电)";
+		break;
+	case "ghxb_sg_sz":
+		return "线下挂号(普货)";
+		break;
+	case "cm_eub_szyjdd":
+		return "线下E邮宝(带电)";
+		break;
+	case "cm_eub_szyj":
+		return "线下E邮宝(普货)";
+		break;
+	case "cm_rb_shhm":
+		return "日本专线";
+		break;
+	case "cm_j_wbsd":
+		return "欧洲经济专线挂号";
+		break;
+	case "cm_py_wbsd":
+		return "欧洲经济专线平邮";
+		break;
+	case "cm_dg_shhm":
+		return "德国专线";
+		break;
+	case "cm_yg_wbsd":
+		return "英国专线";
+		break;
+	case "cm_spain_wbsd":
+		return "西班牙专线";
+		break;
+	case "cm_it_hh":
+		return "意大利专线平邮";
+	case "cm_jna_ltzx":
+		return "加拿大专线";
+	case "xn_fg_wbsd":
+		return "法国专线";
+	case "cm_hm_yg":
+		return "英国经济专线";
+		break;
+	case "cm_jy_jnd":
+		return "加拿大专线2";
+		break;
+	case "cm_jnd_jy":
+		return "加拿大带电专线";
+		break;
+	case "xn_fg_hm":
+		return "法国带电专线";
+		break;
+	case "cm_esdd_hh":
+		return "西班牙带电专线";
+		break;
+	case "cm_it_ft":
+		return "意大利专线";
+		break;
+	case "cm_ydl_ft":
+		return "意大利专线平邮2";
+		break;
+	case "xn_dg_hm":
+		return "德国带电专线";
+		break;
+	case "cm_dgdd_bx":
+		return "德国带电专线挂号";
+		break;
+	case "cm_uk_hm":
+		return "英国带电经济专线";
+	case "cm_alq_jc":
+		return "阿联酋专线";
+	}
+}
+
+
+//根据国家简称填写国家英文和中文
+function CountryEANDC(abbreviation){
+	switch(abbreviation){
+	case "US":
+		return {a:"美国",b:"America"}
+		break;
+	case "CA":
+		return {a:"加拿大",b:"Canada"}
+		break;
+	case "JP":
+		return {a:"日本",b:"Japan"}
+		break;
+	case "AE":
+		return {a:"阿拉伯联合酋长国",b:"TheUnitedArabEmirates"}
+		break;
+	case "FR":
+		return {a:"法国",b:"France"}
+		break;
+	case "IT":
+		return {a:"意大利",b:"Italy"}
+		break;
+	case "ES":
+		return {a:"西班牙",b:"Spain"}
+		break;
+	case "UK":
+		return {a:"英国",b:"Britain"}
+		break;
+	case "GB":
+		return {a:"英国",b:"Britain"}
+		break;
+	case "DE":
+		return {a:"德国",b:"Germany"}
+		break;
+	case "CH":
+		return {a:"瑞士",b:"Switzerland"}
+		break;
+	case "GP":
+		return {a:"瓜德罗普",b:"Guadeloupe"}
+	case "SA":
+		return {a:"沙特阿拉伯",b:"Saudi Arabia"}
+	case "NO":
+		return {a:"挪威",b:"Norway"}
+	case "SE":
+		return {a:"瑞典",b:"Sweden"}
+	case "UA":
+		return {a:"乌克兰",b:"Ukraine"}
+	case "IL":
+		return {a:"以色列",b:"Israel"}
+	case "PT":
+		return {a:"葡萄牙",b:"Portugal"}
+	case "CH":
+		return {a:"瑞士",b:"Switzerland"}
+	case "BR":
+		return {a:"巴西",b:"Brazil"}
+	case "AU":
+		return {a:"澳大利亚",b:"Australia"}
+	case "IE":
+		return {a:"爱尔兰",b:"Ireland"}
+	case "BE":
+		return {a:"比利时",b:"Belgium"}
+	case "FI":
+		return {a:"芬兰",b:"Finland"}
+	case "PL":
+		return {a:"波兰",b:"poland"}
+	case "MX":
+		return {a:"墨西哥",b:"Mexico"}
+	}
+}
+
+//物流转换
+function zhwl(data){
+	switch(data){
+	case "cm_dd_sz":
+		return "线下平邮(带电)";
+	case "cm_sx_sz":
+		return "线下平邮(普货)";
+	case "ghxb_dd_sz":
+		return "线下挂号(带电)";
+	case "ghxb_sg_sz":
+		return "线下挂号(普货)";
+	case "cm_eub_szyjdd":
+		return "线下E邮宝(带电)";
+	case "cm_eub_szyj":
+		return "线下E邮宝(普货)";
+	case "cm_rb_shhm":
+		return "国际专线/日本专线";
+	case "cm_j_wbsd":
+		return "欧洲经济专线挂号";
+	case "cm_py_wbsd":
+		return "欧洲经济专线平邮";
+	case "cm_dg_shhm":
+		return "德国专线";
+	case "cm_yg_wbsd":
+		return "英国专线";
+	case "cm_spain_wbsd":
+		return "西班牙专线";
+	case "cm_it_hh":
+		return "意大利专线平邮";
+	case "cm_jna_ltzx":
+		return "加拿大专线";
+	case "xn_fg_wbsd":
+		return "法国专线";
+	case "cm_hm_yg":
+		return "上海黑猫英国Hermes48经济专线";
+	case "cm_jy_jnd":
+		return "加拿大专线2";
+	case "cm_jnd_jy":
+		return "加拿大带电专线";
+	case "xn_fg_hm":
+		return "法国带电专线";
+	case "cm_esdd_hh":
+		return "西班牙带电专线";
+	case "cm_it_ft":
+		return "意大利专线";
+	case "cm_ydl_ft":
+		return "意大利专线平邮2";
+	case "xn_dg_hm":
+		return "德国带电专线";
+	case "cm_dgdd_bx":
+		return "德国带电专线挂号";
+	case "cm_uk_hm":
+		return "英国带电经济专线";
+	case "cm_alq_jc":
+		return "阿联酋专线";
+	}
+	return null;
+}
+//时间转换
+function timechange(item){
+	var time = new Date(item) 
+	var year = time.getFullYear().toString().padStart(2,"0")
+	var month = (time.getMonth() + 1).toString().padStart(2,"0")
+	var date = time.getDate().toString().padStart(2,"0")
+	var hours=time.getHours().toString().padStart(2,"0")
+	var mins=time.getMinutes().toString().padStart(2,"0")
+	var sec=time.getSeconds().toString().padStart(2,"0")
+	return year + '-' + month + '-' + date+" "+hours + ':' + mins + ":" + sec
+}

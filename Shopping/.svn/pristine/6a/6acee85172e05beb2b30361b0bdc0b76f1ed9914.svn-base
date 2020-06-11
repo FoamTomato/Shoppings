@@ -1,0 +1,509 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page session="true"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="_csrf" content="${_csrf.token}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<title>商城后台</title>
+<jsp:include page="../commonCss.jsp" />
+<script src="${pageContext.request.contextPath}/resources/admin/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/admin/toastr-master/build/toastr.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/jss/sweetalert2@9.js"></script>
+<script src="${pageContext.request.contextPath}/resources/admin/js/vue/vue.js"></script>
+<script src="${pageContext.request.contextPath}/resources/admin/js/vue/vue-resource.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/admin/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/admin/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/admin/demo.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/admin/jquery.easyui.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/admin/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script	src="${pageContext.request.contextPath}/resources/admin/scripts/productLIst_js.js"></script>
+</head>
+<body class="blank" style="margin: 0px; padding: 0px; background: white">
+	<jsp:include page="../productCategory/modalCate.jsp" />
+<div id="apps">
+
+	<div class="form-group col-xs-2">
+		<label>商品编号</label> <input 
+			name="externalId" class="form-control" type="hidden" v-model="externalId"
+			placeholder="商品编号">
+		</p>{{externalId}}
+	</div>
+	<div class="form-group col-xs-10">
+		<label>商品名称</label> <input  name="name" v-model="name"
+			class="form-control" type="hidden" placeholder="商品名称">
+		</p>{{name}}
+	</div>
+	<div class="form-group col-xs-12">
+		<label>产品分类</label> <input  v-model="productStatus"
+			name="productStatus" class="form-control f_kind_select"  onfocus="this.blur();">
+			
+	</div>
+	<div class="form-group col-xs-12" style="display: block;width: 750px;">
+		<div id="picss"></div>
+		<div id="mainUpdateimg"
+			style="float: left; width: 50px; height: 50px; border: 1px solid #9BCD9B; text-align: center; line-height: 50px; margin: 2.5px">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+		</div>
+
+	</div>
+	
+	<div class="form-group col-xs-2">
+		<label>特殊状态</label> <select  v-model="special"
+			name="special" class="form-control">
+			<option value="0" selected="selected">全部</option>
+			<option value="1">重点</option>
+			<option value="2">原创</option>
+			<option value="3">海外</option>
+			<option value="4">抓取</option>
+			<option value="5">导入</option>
+		</select>
+	</div>
+	<div class="form-group col-xs-2">
+		<label>分销状态</label> <select v-model="distribution"
+			name="distribution" class="form-control">
+			<option value="0" selected="selected">全部</option>
+			<option value="1">分销</option>
+			<option value="2">不分销</option>
+			<option value="3">没运费</option>
+			<option value="4">无挂号</option>
+			<option value="5">未分类</option>
+			<option value="6">零库存</option>
+		</select>
+	</div>
+	<div class="form-group col-xs-2">
+		<label>日期</label> <select v-model="dates"
+			name="date" class="form-control">
+			<option value="0" selected="selected">全部</option>
+			<option value="1">七天内</option>
+			<option value="2">一周前</option>
+			<option value="3">一月前</option>
+			<option value="4">三月前</option>
+			<option value="5">半年前</option>
+			<option value="6">一年前</option>
+			<option value="7">未出单</option>
+		</select>
+	</div>
+	<div class="form-group col-xs-2">
+		<label>审核状态</label> <select v-model="audit"
+			name="audit" class="form-control">
+			<option value="0" selected="selected">全部</option>
+			<option value="1">通过</option>
+			<option value="2">待审核</option>
+			<option value="3">过滤</option>
+			<option value="4">侵权</option>
+			<option value="5">禁止上传</option>
+			<option value="6">屏蔽</option>
+		</select>
+	</div>
+	<div class="form-group col-xs-2">
+		<label>产品状态</label> <select v-model="products"
+			name="products" class="form-control">
+			<option value="0" selected="selected">全部</option>
+			<option value="1">已上架</option>
+			<option value="2">已下架</option>
+			<option value="3">失效</option>
+		</select>
+	</div>
+	<div class="form-group col-xs-2">
+		<label>分级及图案</label> <select v-model="grading"
+			name="grading" class="form-control">
+			<option value="0" selected="selected">全部</option>
+			<option value="1">未分级</option>
+			<option value="2">图案设计</option>
+			<option value="3">有图案设计</option>
+			<option value="4">国内品牌</option>
+			<option value="5">高风险</option>
+		</select>
+	</div>
+	<div class="form-group col-xs-12" style="margin-top: 0px;">
+		<label style="color: red; font-size: 12px; font-weight: 400;">设置过滤，侵权和屏蔽，亚马逊上传明细将自动标注"待删除"</label>
+	</div>
+	<div class="form-group col-xs-3" style="margin-top: 30px;">
+		<label>业务员</label>
+		<input name="salesman" v-model="salesman"
+		 class="form-control" type="hidden"
+			placeholder="英文简称" >
+		</p>{{salesman}}
+	</div>
+	<div class="form-group col-xs-3" style="margin-top: 30px;">
+		<label>原产地区</label> <input name="provenance"
+			v-model="provenance" class="form-control" type="text"
+			placeholder="原产地区">
+	</div>
+	<div class="form-group col-xs-3" style="margin-top: 30px;">
+		<label>英文简称</label> <input name="englishShort" v-model="englishShort"
+			 class="form-control" type="text"
+			placeholder="英文简称">
+	</div>
+	<div class="form-group col-xs-3" style="margin-top: 30px;">
+		<label>中文简称</label> <input id="chinaShort" v-model="chinaShort"
+			class="form-control" type="text" placeholder="中文简称"
+			>
+	</div>
+	<div class="form-group col-xs-3" style="">
+		<label>包装毛重</label> <input id="productGrossWeight" v-model="productGrossWeight"
+			class="form-control" type="text" placeholder="包装毛重"
+		>
+	</div>
+	<div class="form-group col-xs-6" style="">
+		<label>包装尺寸</label>
+		<div class="" style="">
+			<input name="lengths"
+				style="width: 30%; display: -webkit-inline-box"
+				v-model="lengths" class="form-control" type="text"
+				placeholder="长"> x <input
+				name="widths" style="width: 30%; display: -webkit-inline-box"
+				v-model="widths" class="form-control" type="text"
+				placeholder="宽"> x <input
+				name="heights" style="width: 30%; display: -webkit-inline-box"
+				v-model="heights" class="form-control" type="text"
+				placeholder="高">
+		</div>
+	</div>
+
+
+	<div class="form-group col-xs-3" style="margin-top: 0px;">
+		<label>产品币种</label> <input name="currency"
+			v-model="currency" class="form-control"
+			type="text" placeholder="产品币种">
+	</div>
+	<div class="form-group col-xs-5" style="">
+		<label>分销单价</label> <input name="store"
+			v-model="store" class="form-control" type="text"
+			placeholder="分销单价">
+	</div>
+
+	<div class="form-group col-xs-2"
+		style="margin-top: 30px; font-size: 15px">
+		<input type="checkbox" style="margin-right: 10px;" v-model="storeChecked"
+			>分销
+	</div>
+
+	<div class="form-group col-xs-5" style="">
+		<label>成本单价</label> <input name="shopPrice" class="form-control"
+			type="text" placeholder="成本单价" v-model="shopPrice">
+
+	</div>
+
+	<div class="form-group col-xs-3" style="">
+		<label>固定运费</label> <br>
+		<nobr style="display: -webkit-inline-box;    line-height: 30px;">
+			<input name="discount" style="width: 100%; margin-right: 20px;"
+				class="form-control" type="text" placeholder="分销单价"
+				v-model="discount">
+			建议用国家运费
+		</nobr>
+	</div>
+	<div class="form-group col-xs-6"
+		style="margin-top: 0px; margin-left: 110px">
+		<label>适用人群</label>
+		<input name="general" style="width: 100%; margin-right: 20px;"
+			class="form-control" type="text"
+			placeholder="适用人群" v-model="general">
+	</div>
+	<div class="form-group col-xs-12" style="">
+		<label>产品来源网址<a style="color: red; margin-left: 20px"
+			href="https://" target="view_blank">点击查看</a></label>
+		</p>
+		<textarea class="cdtext" cols="95" rows="1"
+			v-model="sourceUrl">{{sourceUrl}}</textarea>
+	</div>
+
+	<div class="form-group col-xs-6" style="margin-top: 0px;">
+		<label>产品材料</label>
+		
+		<input 
+			style="width: 100%; margin-right: 20px;" class="form-control"
+			type="text" placeholder="材料" v-model="materials">
+	</div>
+	<div class="form-group col-xs-6" style="margin-top: 0px;">
+		<label>内部SKU</label> <input name="sku"
+			class="form-control" type="hidden"
+			placeholder="分销单价" v-model="sku">
+		</p>{{sku}}
+	</div>
+	<div class="form-group col-xs-12" style="margin-top: 0px;">
+		<label>产品变体<nobr style="color:red;font-weight:500">(请用斜杠（/）隔开)</nobr></label>
+		</p>
+		<div class="col-xs-12">
+			颜色&nbsp;
+			</p>
+			<%-- <textarea class="cdtext" cols="95" id="stockColor${dTfzying.id}"
+				placeholder="颜色 多个用/隔开"><c:forEach items="${stock }"
+					var="stocks" varStatus="index"><c:if test="${stocks.fsize!=1}">${stocks.fcolor}<c:if test="${index.last == false}">/</c:if></c:if></c:forEach></textarea> --%>
+		</div>
+		<div class="col-xs-12">
+			</p>
+			尺寸&nbsp;
+			</p>
+			<%-- <textarea class="cdtext" cols="95" id="stockSize${dTfzying.id}"
+				placeholder="尺寸 多个用/隔开"></textarea> --%>
+
+		</div>
+
+		
+		<!-- 遮罩层 -->
+		<div class="col-xs-12">
+			<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+				aria-labelledby="myModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content" style="margin-top: 600px;">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="myModalLabel">修改图片</h4>
+						</div>
+						<div class="modal-body"
+							style="display: inline-block; width: 580px;">
+							<div class="form-group" id="mainViewImg"></div>
+						</div>
+						<div class="modal-footer">
+							<div class="form-group" style="float: left">
+								<div class="file-container"
+									style="float: left; display: inline-block; position: relative; overflow: hidden; vertical-align: middle">
+									<button class="btn btn-success fileinput-button" type="button">浏览</button>
+									<input type="file" id="jobData"
+										onchange="loadFile(this.files[0])"
+										style="position: absolute; top: 0; left: 0; font-size: 34px; opacity: 0">
+								</div>
+								<div id="filename"
+									style="float: left; vertical-align: middle; margin-left: 5px; text-overflow: ellipsis; width: 100px; white-space: nowrap; line-height: 34px; font-size: 14px; text-align: left; overflow: hidden;">未选择文件</div>
+								
+								<input id="addim" type="hidden">
+								<nobr id="addims"></nobr>
+
+
+								<nobr id="saveIMGs"></nobr>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xs-12">
+				</p>
+				<div class="" style="display: -webkit-inline-box">
+					<a class="btn btn-primary   ccc" style="margin-top: -5px;"
+						onclick="addStock()">更新变体</a> <a
+						class="btn btn-primary   ccc"
+						style="margin-top: -5px; background: #ee4747; border: 1px solid #ee4747"
+						onclick="deleteStock()">删除选择变体</a>
+				</div>
+			</div>
+			
+			<table class="table-striped " style="width: 700px">
+
+				<tr
+					style="color: black; font-size: 14px; line-height: 50px; background: white;">
+					<th style="width: 100px; padding: 10px">
+						<div style="float: left">
+							<input name="stockCheckboxFid" type="checkbox"
+								class="stockCheckboxFid" />
+						</div>
+						<div style="float: left; margin-left: 14px">
+							<div id="allInner"
+								style="color: red; font-size: 14px; line-height: 30px">全选</div>
+							<div id="reverse"
+								style="color: red; font-size: 14px; line-height: 0px">反选</div>
+
+						</div>
+					</th>
+					<th>变体</th>
+					<th>SKU(选填)</th>
+					<th>库存</th>
+					<th>加价</th>
+					<th>图片</th>
+				</tr>
+				<%-- <tbody id="StockAdd">
+					<c:if test="${stock!=null }">
+						<c:forEach items="${stock }" var="stocks">
+							<c:if test="${stocks.fsize!=1 }">
+								<tr class="del" style="">
+									<td style="width: 20px; padding: 10px"><input
+										class="classid" type="hidden" value="${stocks.id }"> <input
+										class="stockCheckbox" type="checkbox" value="${stocks.id }">
+										<div id="tic${stocks.id }"></div></td>
+									<td><div class="colorp" id="colorp${stocks.id }"
+											style="word-break: break-all; width: 100px">${stocks.fcolor }</div></td>
+									<td><input class="no" style="width: 70px; height: 20px"
+										type="text" value="${stocks.fid }"></td>
+									<td><input class="num" style="width: 70px; height: 20px"
+										type="number" value="${stocks.fnum }"></td>
+									<td><input class="add" style="width: 70px; height: 20px"
+										type="number" value="${stocks.fadd }"></td>
+									<td style="max-width: 150px; word-break: break-all"><div
+											id="fimgs${stocks.id}"></div> <a
+										class="btn btn-primary   ccc" style="margin-left: 5px"
+										onclick="btn_add(${stocks.id})">编辑</a></td>
+								</tr>
+							</c:if>
+							<script type="text/javascript">
+				//获取变体的唯一id
+					StockUnique++;
+					$("#tic${stocks.id }").append('<input type="hidden" class="StockUniques" value="'+StockUnique+'">');
+					var fimgs=$("#fimgs${stocks.id}");
+				//获取图片的值
+					var stocksimg="${stocks.fimg}";
+					//图片截取
+					var result=stocksimg.split(",,");
+					for(var ssy=0;ssy<result.length;ssy++){
+						//去除空值
+						if(result[ssy]==""){
+							continue;
+						}
+						//添加图片
+						fimgs.append('<img class="imgStocks${stocks.id}" width="20px" height="20px" style="margin:2.5px" src="/Shopping/resources/uploads/'+result[ssy]+'"/>');
+					}
+				</script>
+						</c:forEach>
+					</c:if>
+				</tbody> --%>
+			</table>
+		</div>
+		<!-- 选项卡菜单-->
+		<!-- <ul id="myTab" class="nav nav-tabs" role="tablist"
+			style="margin-bottom: 30px">
+			<li class="active"><a href="#bulletin" role="tab"
+				data-toggle="tab">英语</a></li>
+			<li><a href="#rule" role="tab" data-toggle="tab">法语</a></li>
+			<li><a href="#forum" role="tab" data-toggle="tab">德语</a></li>
+			<li><a href="#security" role="tab" data-toggle="tab">意大利</a></li>
+			<li><a href="#spanlish" role="tab" data-toggle="tab">西班牙</a></li>
+			<li><a href="#japanese" role="tab" data-toggle="tab">日语</a></li>
+			<li><a href="#chinese" role="tab" data-toggle="tab">中文</a></li>
+		</ul>
+		选项卡面板
+		<div id="myTabContent" class="tab-content">
+			<div class="tab-pane active" id="bulletin">
+				<div class="form-group col-xs-12">
+					<label>产品标题(英语)</label>
+					<textarea cols="95" rows="2"></textarea>
+					<label>关键词：不超过五行 逗号，空格或回车分隔(英语)</label>
+					<textarea cols="95" rows="5"></textarea>
+					<label>要点说明：回车分隔，不超过五行，每行不超过五百个字符(英语)</label>
+					<textarea cols="95" rows="5"></textarea>
+					<label>产品描述：不要输入html标签(英语)</label>
+					<textarea cols="95" rows="8" ></textarea>
+				</div>
+			</div>
+			
+			</div>
+			<a href="javascript:void(0)" class="easyui-linkbutton"
+				style="background: #62cb31; border: 1px solid #62cb31; color: white; margin: 15px; padding: 5px;"
+				onclick="updatePanels()">修改</a> <a
+				href="javascript:void(0)" class="easyui-linkbutton"
+				style="background: #ee4747; border: 1px solid #ee4747; color: white; margin: 15px; padding: 5px;"
+				onclick="deletePanels()">删除</a>
+		</div> -->
+</div>
+</div>
+
+<script>
+		
+		Vue.http.options.root="${pageContext.request.contextPath}";
+		var vm=new Vue({
+			el:'#apps',
+			data:{
+				//商品编号
+				externalId:${id},
+				//商品名称
+				name:"",
+				//产品分类
+				productStatus:"",
+				//特殊状态
+				special:"",
+				//分销状态
+				distribution:"",
+				//日期
+				dates:"",
+				//审核状态
+				audit:"",
+				//产品状态
+				products:"",
+				//分级及图案
+				grading:"",
+				//业务员
+				salesman:"",
+				//原产地区
+				provenance:"",
+				//英文简称
+				englishShort:"",
+				//中文简称
+				chinaShort:"",
+				//包装毛重
+				productGrossWeight:"",
+				//长
+				lengths:"",
+				//宽
+				widths:"",
+				//高
+				heights:"",
+				//产品币种
+				currency:"",
+				//分销单价
+				store:"",
+				//分销
+				storeChecked:false,
+				//成本单价
+				shopPrice:"",
+				//固定运费
+				discount:"",
+				//适用人群
+				general:"",
+				//产品来源网址
+				sourceUrl:"",
+				//产品材料
+				materials:"",
+				//内部sku
+				sku:""
+			},
+			created(){
+				this.selectAlllist()
+			},
+			methods:{
+				selectAlllist(){
+					let datas={};
+					datas["id"]=this.externalId
+					//ajiox请求方式
+					this.$http.post("admin/getAllproducts?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(datas),{emulateJSON:true}).then(result=>{
+						console.log(result.body)
+						
+					})
+				}
+			}
+		})
+		function loadFile(file){
+		    $("#filename").html(file.name);
+			//$("#filename").html("已选择文件");
+		}
+		var css="";
+		for(let po=0;po<css.length;po++){
+			//console.log(css[po].indexOf("/resources/upload/")!=-1)
+			/*
+				判断是否包含新图片方法返回-1则为ture
+			*/
+			if(css[po].indexOf("/resources/upload/")!=-1){
+				$("#picss").append('<img class="mianImgs" width="50px" style="margin: 2.5px;float:left" height="50px" src="${pageContext.request.contextPath}'+css[po]+'">');
+			}else{
+				$("#picss").append('<img class="mianImgs" width="50px" style="margin: 2.5px;float:left" height="50px" src="/Shopping/resources/uploads/'+css[po]+'">');
+			}
+		}
+	</script>
+</body>
+</html>

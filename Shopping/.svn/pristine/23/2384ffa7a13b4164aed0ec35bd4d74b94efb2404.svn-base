@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sybinal.shop.mapper.XlogisticsMapper">
+  <resultMap id="BaseResultMap" type="com.sybinal.shop.model.Xlogistics">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="x_logistics" jdbcType="VARCHAR" property="xLogistics" />
+    <result column="x_custom" jdbcType="VARCHAR" property="xCustom" />
+    <result column="x_english" jdbcType="VARCHAR" property="xEnglish" />
+    <result column="x_china" jdbcType="VARCHAR" property="xChina" />
+    <result column="x_express" jdbcType="VARCHAR" property="xExpress" />
+    <result column="x_customs" jdbcType="VARCHAR" property="xCustoms" />
+    <result column="x_trace" jdbcType="VARCHAR" property="xTrace" />
+    <result column="x_data_time" jdbcType="TIMESTAMP" property="xDataTime" />
+    <result column="x_declare" jdbcType="VARCHAR" property="xDeclare" />
+    <result column="x_insurance" jdbcType="VARCHAR" property="xInsurance" />
+    <result column="x_weight" jdbcType="DOUBLE" property="xWeight" />
+    <result column="x_frieght" jdbcType="VARCHAR" property="xFrieght" />
+    <result column="x_remark" jdbcType="VARCHAR" property="xRemark" />
+    <result column="x_quantity" jdbcType="VARCHAR" property="xQuantity" />
+    <result column="x_f_ids" jdbcType="VARCHAR" property="xFIds" />
+    <result column="x_standby1" jdbcType="VARCHAR" property="xStandby1" />
+    <result column="x_standby2" jdbcType="VARCHAR" property="xStandby2" />
+    <result column="x_standby3" jdbcType="VARCHAR" property="xStandby3" />
+    <result column="x_standby4" jdbcType="VARCHAR" property="xStandby4" />
+    <result column="x_standby5" jdbcType="VARCHAR" property="xStandby5" />
+    <result column="x_standby6" jdbcType="VARCHAR" property="xStandby6" />
+    <result column="x_standby7" jdbcType="VARCHAR" property="xStandby7" />
+    <result column="x_standby8" jdbcType="VARCHAR" property="xStandby8" />
+    <result column="x_standby9" jdbcType="VARCHAR" property="xStandby9" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, x_logistics, x_custom, x_english, x_china, x_express, x_customs, x_trace, x_data_time, 
+    x_declare, x_insurance, x_weight, x_frieght, x_remark, x_quantity, x_f_ids, x_standby1, 
+    x_standby2, x_standby3, x_standby4, x_standby5, x_standby6, x_standby7, x_standby8, 
+    x_standby9
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from x_logistics
+    where x_f_ids = #{id,jdbcType=VARCHAR}
+  </select>
+  <!-- 获取所有运单 -->
+  <select id="selectSA" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from x_logistics
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from x_logistics
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sybinal.shop.model.Xlogistics">
+    insert into x_logistics (id, x_logistics, x_custom, 
+      x_english, x_china, x_express, 
+      x_customs, x_trace, x_data_time, 
+      x_declare, x_insurance, x_weight, 
+      x_frieght, x_remark, x_quantity, 
+      x_f_ids, x_standby1, x_standby2, 
+      x_standby3, x_standby4, x_standby5, 
+      x_standby6, x_standby7, x_standby8, 
+      x_standby9)
+    values (#{id,jdbcType=INTEGER}, #{xLogistics,jdbcType=VARCHAR}, #{xCustom,jdbcType=VARCHAR}, 
+      #{xEnglish,jdbcType=VARCHAR}, #{xChina,jdbcType=VARCHAR}, #{xExpress,jdbcType=VARCHAR}, 
+      #{xCustoms,jdbcType=VARCHAR}, #{xTrace,jdbcType=VARCHAR}, #{xDataTime,jdbcType=TIMESTAMP}, 
+      #{xDeclare,jdbcType=VARCHAR}, #{xInsurance,jdbcType=VARCHAR}, #{xWeight,jdbcType=DOUBLE}, 
+      #{xFrieght,jdbcType=VARCHAR}, #{xRemark,jdbcType=VARCHAR}, #{xQuantity,jdbcType=VARCHAR}, 
+      #{xFIds,jdbcType=VARCHAR}, #{xStandby1,jdbcType=VARCHAR}, #{xStandby2,jdbcType=VARCHAR}, 
+      #{xStandby3,jdbcType=VARCHAR}, #{xStandby4,jdbcType=VARCHAR}, #{xStandby5,jdbcType=VARCHAR}, 
+      #{xStandby6,jdbcType=VARCHAR}, #{xStandby7,jdbcType=VARCHAR}, #{xStandby8,jdbcType=VARCHAR}, 
+      #{xStandby9,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sybinal.shop.model.Xlogistics">
+    insert into x_logistics
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="xLogistics != null">
+        x_logistics,
+      </if>
+      <if test="xCustom != null">
+        x_custom,
+      </if>
+      <if test="xEnglish != null">
+        x_english,
+      </if>
+      <if test="xChina != null">
+        x_china,
+      </if>
+      <if test="xExpress != null">
+        x_express,
+      </if>
+      <if test="xCustoms != null">
+        x_customs,
+      </if>
+      <if test="xTrace != null">
+        x_trace,
+      </if>
+      <if test="xDataTime != null">
+        x_data_time,
+      </if>
+      <if test="xDeclare != null">
+        x_declare,
+      </if>
+      <if test="xInsurance != null">
+        x_insurance,
+      </if>
+      <if test="xWeight != null">
+        x_weight,
+      </if>
+      <if test="xFrieght != null">
+        x_frieght,
+      </if>
+      <if test="xRemark != null">
+        x_remark,
+      </if>
+      <if test="xQuantity != null">
+        x_quantity,
+      </if>
+      <if test="xFIds != null">
+        x_f_ids,
+      </if>
+      <if test="xStandby1 != null">
+        x_standby1,
+      </if>
+      <if test="xStandby2 != null">
+        x_standby2,
+      </if>
+      <if test="xStandby3 != null">
+        x_standby3,
+      </if>
+      <if test="xStandby4 != null">
+        x_standby4,
+      </if>
+      <if test="xStandby5 != null">
+        x_standby5,
+      </if>
+      <if test="xStandby6 != null">
+        x_standby6,
+      </if>
+      <if test="xStandby7 != null">
+        x_standby7,
+      </if>
+      <if test="xStandby8 != null">
+        x_standby8,
+      </if>
+      <if test="xStandby9 != null">
+        x_standby9,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="xLogistics != null">
+        #{xLogistics,jdbcType=VARCHAR},
+      </if>
+      <if test="xCustom != null">
+        #{xCustom,jdbcType=VARCHAR},
+      </if>
+      <if test="xEnglish != null">
+        #{xEnglish,jdbcType=VARCHAR},
+      </if>
+      <if test="xChina != null">
+        #{xChina,jdbcType=VARCHAR},
+      </if>
+      <if test="xExpress != null">
+        #{xExpress,jdbcType=VARCHAR},
+      </if>
+      <if test="xCustoms != null">
+        #{xCustoms,jdbcType=VARCHAR},
+      </if>
+      <if test="xTrace != null">
+        #{xTrace,jdbcType=VARCHAR},
+      </if>
+      <if test="xDataTime != null">
+        #{xDataTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="xDeclare != null">
+        #{xDeclare,jdbcType=VARCHAR},
+      </if>
+      <if test="xInsurance != null">
+        #{xInsurance,jdbcType=VARCHAR},
+      </if>
+      <if test="xWeight != null">
+        #{xWeight,jdbcType=DOUBLE},
+      </if>
+      <if test="xFrieght != null">
+        #{xFrieght,jdbcType=VARCHAR},
+      </if>
+      <if test="xRemark != null">
+        #{xRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="xQuantity != null">
+        #{xQuantity,jdbcType=VARCHAR},
+      </if>
+      <if test="xFIds != null">
+        #{xFIds,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby1 != null">
+        #{xStandby1,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby2 != null">
+        #{xStandby2,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby3 != null">
+        #{xStandby3,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby4 != null">
+        #{xStandby4,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby5 != null">
+        #{xStandby5,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby6 != null">
+        #{xStandby6,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby7 != null">
+        #{xStandby7,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby8 != null">
+        #{xStandby8,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby9 != null">
+        #{xStandby9,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sybinal.shop.model.Xlogistics">
+    update x_logistics
+    <set>
+      <if test="xLogistics != null">
+        x_logistics = #{xLogistics,jdbcType=VARCHAR},
+      </if>
+      <if test="xCustom != null">
+        x_custom = #{xCustom,jdbcType=VARCHAR},
+      </if>
+      <if test="xEnglish != null">
+        x_english = #{xEnglish,jdbcType=VARCHAR},
+      </if>
+      <if test="xChina != null">
+        x_china = #{xChina,jdbcType=VARCHAR},
+      </if>
+      <if test="xExpress != null">
+        x_express = #{xExpress,jdbcType=VARCHAR},
+      </if>
+      <if test="xCustoms != null">
+        x_customs = #{xCustoms,jdbcType=VARCHAR},
+      </if>
+      <if test="xTrace != null">
+        x_trace = #{xTrace,jdbcType=VARCHAR},
+      </if>
+      <if test="xDataTime != null">
+        x_data_time = #{xDataTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="xDeclare != null">
+        x_declare = #{xDeclare,jdbcType=VARCHAR},
+      </if>
+      <if test="xInsurance != null">
+        x_insurance = #{xInsurance,jdbcType=VARCHAR},
+      </if>
+      <if test="xWeight != null">
+        x_weight = #{xWeight,jdbcType=DOUBLE},
+      </if>
+      <if test="xFrieght != null">
+        x_frieght = #{xFrieght,jdbcType=VARCHAR},
+      </if>
+      <if test="xRemark != null">
+        x_remark = #{xRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="xQuantity != null">
+        x_quantity = #{xQuantity,jdbcType=VARCHAR},
+      </if>
+      <if test="xFIds != null">
+        x_f_ids = #{xFIds,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby1 != null">
+        x_standby1 = #{xStandby1,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby2 != null">
+        x_standby2 = #{xStandby2,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby3 != null">
+        x_standby3 = #{xStandby3,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby4 != null">
+        x_standby4 = #{xStandby4,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby5 != null">
+        x_standby5 = #{xStandby5,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby6 != null">
+        x_standby6 = #{xStandby6,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby7 != null">
+        x_standby7 = #{xStandby7,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby8 != null">
+        x_standby8 = #{xStandby8,jdbcType=VARCHAR},
+      </if>
+      <if test="xStandby9 != null">
+        x_standby9 = #{xStandby9,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sybinal.shop.model.Xlogistics">
+    update x_logistics
+    set x_logistics = #{xLogistics,jdbcType=VARCHAR},
+      x_custom = #{xCustom,jdbcType=VARCHAR},
+      x_english = #{xEnglish,jdbcType=VARCHAR},
+      x_china = #{xChina,jdbcType=VARCHAR},
+      x_express = #{xExpress,jdbcType=VARCHAR},
+      x_customs = #{xCustoms,jdbcType=VARCHAR},
+      x_trace = #{xTrace,jdbcType=VARCHAR},
+      x_data_time = #{xDataTime,jdbcType=TIMESTAMP},
+      x_declare = #{xDeclare,jdbcType=VARCHAR},
+      x_insurance = #{xInsurance,jdbcType=VARCHAR},
+      x_weight = #{xWeight,jdbcType=DOUBLE},
+      x_frieght = #{xFrieght,jdbcType=VARCHAR},
+      x_remark = #{xRemark,jdbcType=VARCHAR},
+      x_quantity = #{xQuantity,jdbcType=VARCHAR},
+      x_f_ids = #{xFIds,jdbcType=VARCHAR},
+      x_standby1 = #{xStandby1,jdbcType=VARCHAR},
+      x_standby2 = #{xStandby2,jdbcType=VARCHAR},
+      x_standby3 = #{xStandby3,jdbcType=VARCHAR},
+      x_standby4 = #{xStandby4,jdbcType=VARCHAR},
+      x_standby5 = #{xStandby5,jdbcType=VARCHAR},
+      x_standby6 = #{xStandby6,jdbcType=VARCHAR},
+      x_standby7 = #{xStandby7,jdbcType=VARCHAR},
+      x_standby8 = #{xStandby8,jdbcType=VARCHAR},
+      x_standby9 = #{xStandby9,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

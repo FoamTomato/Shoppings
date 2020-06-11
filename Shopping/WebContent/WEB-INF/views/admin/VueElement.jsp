@@ -1,0 +1,15 @@
+<script src="${pageContext.request.contextPath}/resources/admin/jquery.min.js"></script><%-- 
+<script src="${pageContext.request.contextPath}/resources/admin/toastr-master/build/toastr.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/jss/sweetalert2@9.js"></script> --%>
+<script src="${pageContext.request.contextPath}/resources/admin/js/vue/vue.js"></script>
+<script src="${pageContext.request.contextPath}/resources/admin/js/vue/vue-resource.js"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/element.css">
+<!-- 引入样式 -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/vue-virtual-scroller.css">
+<!-- 引入组件库 -->
+<script src="${pageContext.request.contextPath}/resources/jss/element.js"></script>
+<!-- 引入组件库 -->
+<%-- <script
+	src="${pageContext.request.contextPath}/resources/admin/vendor/sweetalert/lib/sweet-alert.min.js"></script> --%>
+<script src="${pageContext.request.contextPath}/resources/jss/vue-virtual-scroller.min.js"></script>

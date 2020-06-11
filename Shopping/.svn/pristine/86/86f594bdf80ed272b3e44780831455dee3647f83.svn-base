@@ -1,0 +1,63 @@
+package com.sybinal.shop.service.catalog;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.sybinal.shop.common.AjaxResult;
+import com.sybinal.shop.mapper.DTfzyingMapper;
+import com.sybinal.shop.model.DTfzying;
+import com.sybinal.shop.model.DTfzyingWithBLOBs;
+
+@Service
+public class DTfzyingServiceImpl implements DTfzyingService {
+	@Autowired
+	DTfzyingMapper dTfzyingMapper;
+
+	@Override
+	public List<DTfzying> selectAll() {
+		// TODO Auto-generated method stub
+		return dTfzyingMapper.selectAll();
+	}
+
+	@Override
+	public AjaxResult setinsert(DTfzyingWithBLOBs dtfzing) {
+		// TODO Auto-generated method stub
+
+		int c = dTfzyingMapper.insertSelective(dtfzing);
+		if (c == 1) {
+			return new AjaxResult(true, "保存成功!");
+		}
+
+		return new AjaxResult(false, "保存失败!");
+	}
+
+	@Override
+	public DTfzyingWithBLOBs selectByid(Integer id) {
+		// TODO Auto-generated method stub
+		return dTfzyingMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public List<DTfzyingWithBLOBs> selectdTstockAtAll(DTfzyingWithBLOBs dTfzying, Integer price1, Integer price2,
+			String updateTime1, String updateTime2) {
+		// TODO Auto-generated method stub
+		return dTfzyingMapper.selectdTstockAtAll(dTfzying, price1, price2, updateTime1, updateTime2);
+	}
+
+	@Override
+	@Transactional
+	public boolean setinsertY(DTfzyingWithBLOBs dtfzing) {
+		// TODO Auto-generated method stub
+		return dtfzing != null;
+	}
+
+	@Override
+	public int updateProduct(DTfzyingWithBLOBs dTfzying) {
+		// TODO Auto-generated method stub
+		return dTfzyingMapper.updateByPrimaryKeySelective(dTfzying);
+	}
+
+}

@@ -1,0 +1,29 @@
+package com.sybinal.shop.mapper;
+
+import java.util.List;
+
+import com.sybinal.shop.model.countryCode;
+
+public interface countryCodeMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(countryCode record);
+
+    int insertSelective(countryCode record);
+
+    countryCode selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(countryCode record);
+
+    int updateByPrimaryKey(countryCode record);
+    /**
+     * 获取所有的国家
+    *    
+    * 项目名称：Shopping   
+    * 类描述：   
+    * 创建人：PC1   
+    * 创建时间：2020年3月21日 上午11:21:38   
+    * @version
+     */
+	List<countryCode> selectAll();
+}

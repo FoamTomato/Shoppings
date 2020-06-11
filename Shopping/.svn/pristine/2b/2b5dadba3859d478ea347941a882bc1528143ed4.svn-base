@@ -1,0 +1,52 @@
+package com.sybinal.shop.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.sybinal.shop.model.DTfzyings;
+import com.sybinal.shop.model.DTfzyingsWithBLOBs;
+
+public interface DTfzyingsMapper {
+	int deleteByPrimaryKey(Integer id);
+
+	int insert(DTfzyingsWithBLOBs record);
+
+	int insertSelective(DTfzyingsWithBLOBs record);
+
+	DTfzyingsWithBLOBs selectByPrimaryKey(Integer id);
+
+	int updateByPrimaryKeySelective(@Param("record") DTfzyingsWithBLOBs record);
+
+	int updateByPrimaryKeyWithBLOBs(DTfzyingsWithBLOBs record);
+
+	int updateByPrimaryKey(DTfzyings record);
+
+	List<DTfzyingsWithBLOBs> selectAll();
+	
+	List<DTfzyingsWithBLOBs> selectdTstockAtAlls(@Param("dtfzying") DTfzyings dtfzying,@Param("lists")List<String> strings);
+
+	/**  
+	 * @user: spor-wen10
+	 * @Title: insertAll  
+	 * @Description: TODO 表格导入产品
+	 * @date: 2020年2月11日 下午12:38:29
+	 * @param: @param dTfzyings
+	 * @param: @return    参数  
+	 * @return: int    返回类型  
+	 * @throws  
+	 */
+	int insertAll(@Param("dtfzying")List<DTfzyingsWithBLOBs> dTfzyings1);
+
+	/**  
+	 * @user: spor-wen10
+	 * @Title: selectCheckedProduct   查询需要导出的编号
+	 * @Description: TODO
+	 * @date: 2020年2月18日 下午1:35:55
+	 * @param: @param strings
+	 * @param: @return    参数  
+	 * @return: List<Map<String,String>>    返回类型  
+	 * @throws  
+	 */
+	List<DTfzyingsWithBLOBs> selectCheckedProduct(@Param("checked")List<String> strings);
+}

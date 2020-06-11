@@ -1,0 +1,39 @@
+package com.sybinal.shop.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.sybinal.shop.model.hjBase;
+
+public interface hjBaseMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(hjBase record);
+
+    int insertSelective(hjBase record);
+
+    hjBase selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(hjBase record);
+
+    int updateByPrimaryKey(hjBase record);
+
+	List<hjBase>  selHJLogistics(hjBase hjBases);
+
+	List<hjBase> selectHjLogice(Integer id);
+
+	hjBase ckHJLogistics(Integer id);
+
+	int delHJLogistics(hjBase hjBases);
+
+	int defaultHj0(@Param("hjStandy2") String hjStandy2);
+	
+	int defaultHj1(@Param("id") Integer id);
+
+	hjBase selectresult(String getfIds);
+
+	String setLableKey(@Param("doPost") String doPost,@Param("vID")  String vID);
+
+	int insertLableKey(@Param("ids") String id,@Param("labs") String lab);
+}

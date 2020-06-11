@@ -1,0 +1,927 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sybinal.shop.mapper.ydBaseMapper">
+  <resultMap id="BaseResultMap" type="com.sybinal.shop.model.ydBase">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="yd_reference_no" jdbcType="VARCHAR" property="ydReferenceNo" />
+    <result column="yd_shipping_method" jdbcType="VARCHAR" property="ydShippingMethod" />
+    <result column="yd_shipping_method_no" jdbcType="VARCHAR" property="ydShippingMethodNo" />
+    <result column="yd_order_weight" jdbcType="VARCHAR" property="ydOrderWeight" />
+    <result column="yd_order_pieces" jdbcType="VARCHAR" property="ydOrderPieces" />
+    <result column="yd_cargotype" jdbcType="VARCHAR" property="ydCargotype" />
+    <result column="yd_mail_cargo_type" jdbcType="VARCHAR" property="ydMailCargoType" />
+    <result column="yd_return_sign" jdbcType="VARCHAR" property="ydReturnSign" />
+    <result column="yd_buyer_id" jdbcType="VARCHAR" property="ydBuyerId" />
+    <result column="yd_order_info" jdbcType="VARCHAR" property="ydOrderInfo" />
+    <result column="yd_platform_id" jdbcType="VARCHAR" property="ydPlatformId" />
+    <result column="yd_custom_hawbcode" jdbcType="VARCHAR" property="ydCustomHawbcode" />
+    <result column="yd_shipper_name" jdbcType="VARCHAR" property="ydShipperName" />
+    <result column="yd_shipper_company" jdbcType="VARCHAR" property="ydShipperCompany" />
+    <result column="yd_shipper_countrycode" jdbcType="VARCHAR" property="ydShipperCountrycode" />
+    <result column="yd_shipper_city" jdbcType="VARCHAR" property="ydShipperCity" />
+    <result column="yd_shipper_street" jdbcType="VARCHAR" property="ydShipperStreet" />
+    <result column="yd_shipper_postcode" jdbcType="VARCHAR" property="ydShipperPostcode" />
+    <result column="yd_shipper_areacode" jdbcType="VARCHAR" property="ydShipperAreacode" />
+    <result column="yd_shipper_telephone" jdbcType="VARCHAR" property="ydShipperTelephone" />
+    <result column="yd_shipper_mobile" jdbcType="VARCHAR" property="ydShipperMobile" />
+    <result column="yd_shipper_email" jdbcType="VARCHAR" property="ydShipperEmail" />
+    <result column="yd_shipper_fax" jdbcType="VARCHAR" property="ydShipperFax" />
+    <result column="yd_consignee_name" jdbcType="VARCHAR" property="ydConsigneeName" />
+    <result column="yd_consignee_company" jdbcType="VARCHAR" property="ydConsigneeCompany" />
+    <result column="yd_consignee_countrycode" jdbcType="VARCHAR" property="ydConsigneeCountrycode" />
+    <result column="yd_consignee_province" jdbcType="VARCHAR" property="ydConsigneeProvince" />
+    <result column="yd_consignee_city" jdbcType="VARCHAR" property="ydConsigneeCity" />
+    <result column="yd_consignee_street" jdbcType="VARCHAR" property="ydConsigneeStreet" />
+    <result column="yd_consignee_postcode" jdbcType="VARCHAR" property="ydConsigneePostcode" />
+    <result column="yd_consignee_doorplate" jdbcType="VARCHAR" property="ydConsigneeDoorplate" />
+    <result column="yd_consignee_areacode" jdbcType="VARCHAR" property="ydConsigneeAreacode" />
+    <result column="yd_consignee_telephone" jdbcType="VARCHAR" property="ydConsigneeTelephone" />
+    <result column="yd_consignee_mobile" jdbcType="VARCHAR" property="ydConsigneeMobile" />
+    <result column="yd_consignee_email" jdbcType="VARCHAR" property="ydConsigneeEmail" />
+    <result column="yd_consignee_fax" jdbcType="VARCHAR" property="ydConsigneeFax" />
+    <result column="yd_consignee_certificatetype" jdbcType="VARCHAR" property="ydConsigneeCertificatetype" />
+    <result column="yd_consignee_certificatecode" jdbcType="VARCHAR" property="ydConsigneeCertificatecode" />
+    <result column="yd_consignee_credentials_period" jdbcType="VARCHAR" property="ydConsigneeCredentialsPeriod" />
+    <result column="yd_consignee_tariff" jdbcType="VARCHAR" property="ydConsigneeTariff" />
+    <result column="yd_sku" jdbcType="VARCHAR" property="ydSku" />
+    <result column="yd_invoice_enname" jdbcType="VARCHAR" property="ydInvoiceEnname" />
+    <result column="yd_invoice_cnname" jdbcType="VARCHAR" property="ydInvoiceCnname" />
+    <result column="yd_invoice_quantity" jdbcType="VARCHAR" property="ydInvoiceQuantity" />
+    <result column="yd_unit_code" jdbcType="VARCHAR" property="ydUnitCode" />
+    <result column="yd_invoice_unitcharge" jdbcType="VARCHAR" property="ydInvoiceUnitcharge" />
+    <result column="yd_hs_code" jdbcType="VARCHAR" property="ydHsCode" />
+    <result column="yd_invoice_note" jdbcType="VARCHAR" property="ydInvoiceNote" />
+    <result column="yd_invoice_url" jdbcType="VARCHAR" property="ydInvoiceUrl" />
+    <result column="yd_invoice_info" jdbcType="VARCHAR" property="ydInvoiceInfo" />
+    <result column="yd_standy1" jdbcType="VARCHAR" property="ydStandy1" />
+    <result column="yd_standy2" jdbcType="VARCHAR" property="ydStandy2" />
+    <result column="yd_standy3" jdbcType="VARCHAR" property="ydStandy3" />
+    <result column="yd_standy4" jdbcType="VARCHAR" property="ydStandy4" />
+    <result column="yd_standy5" jdbcType="TIMESTAMP" property="ydStandy5" />
+    <result column="yd_standy6" jdbcType="VARCHAR" property="ydStandy6" />
+    <result column="yd_standy7" jdbcType="VARCHAR" property="ydStandy7" />
+    <result column="yd_standy8" jdbcType="VARCHAR" property="ydStandy8" />
+    <result column="yd_standy9" jdbcType="VARCHAR" property="ydStandy9" />
+    <result column="yd_standy10" jdbcType="VARCHAR" property="ydStandy10" /> 
+    <result column="yd_standy11" jdbcType="VARCHAR" property="ydStandy11" />
+    <result column="yd_standy12" jdbcType="VARCHAR" property="ydStandy12" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, yd_reference_no, yd_shipping_method, yd_shipping_method_no, yd_order_weight, 
+    yd_order_pieces, yd_cargotype, yd_mail_cargo_type, yd_return_sign, yd_buyer_id, yd_order_info, 
+    yd_platform_id, yd_custom_hawbcode, yd_shipper_name, yd_shipper_company, yd_shipper_countrycode, 
+    yd_shipper_city, yd_shipper_street, yd_shipper_postcode, yd_shipper_areacode, yd_shipper_telephone, 
+    yd_shipper_mobile, yd_shipper_email, yd_shipper_fax, yd_consignee_name, yd_consignee_company, 
+    yd_consignee_countrycode, yd_consignee_province, yd_consignee_city, yd_consignee_street, 
+    yd_consignee_postcode, yd_consignee_doorplate, yd_consignee_areacode, yd_consignee_telephone, 
+    yd_consignee_mobile, yd_consignee_email, yd_consignee_fax, yd_consignee_certificatetype, 
+    yd_consignee_certificatecode, yd_consignee_credentials_period, yd_consignee_tariff, 
+    yd_sku, yd_invoice_enname, yd_invoice_cnname, yd_invoice_quantity, yd_unit_code, 
+    yd_invoice_unitcharge, yd_hs_code, yd_invoice_note, yd_invoice_url, yd_invoice_info, 
+    yd_standy1, yd_standy2, yd_standy3, yd_standy4, yd_standy5, yd_standy6, yd_standy7, 
+    yd_standy8, yd_standy9, yd_standy10, yd_standy11, yd_standy12
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yd_base
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!-- 查找 -->
+  <select id="selectOrder" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yd_base
+    where yd_standy3 = #{id}  and yd_standy7!="1"
+    <if test="standby1 != 'admin' and standby1 != ''">
+    	and yd_standy1= #{standby1}
+    </if>
+  </select>
+  <select id="selectAll"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yd_base
+  </select>
+  
+  <!-- selectYd查找默认 -->
+  <select id="selectYd"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yd_base
+    where yd_standy3 = #{strings,jdbcType=VARCHAR} and yd_standy2 = "1" and yd_standy7!="1"
+  </select>
+  <!-- 批量查询selectYds -->
+  <select id="selectYds"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yd_base
+    where yd_standy3 in
+ 	<foreach collection="lists" separator="," item="list" open="(" close=")">
+ 	#{list}
+ 	</foreach>
+    and yd_standy2 = "1" and yd_standy7!="1"
+  </select>
+  <!-- 批量查询selectYdsId -->
+  <select id="selectYdsId"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yd_base
+    where id in
+ 	<foreach collection="lists" separator="," item="list" open="(" close=")">
+ 	#{list}
+ 	</foreach>
+  </select>
+  <!-- 批量查找参考号selectIDList -->
+  <select id="selectIDList"  resultType="java.lang.String">
+    select 
+    yd_reference_no
+    from yd_base
+    where yd_standy3 in
+ 	<foreach collection="lists" separator="," item="list" open="(" close=")">
+ 	#{list}
+ 	</foreach>
+    and yd_standy2 = "1" and yd_standy7!="1"
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from yd_base
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <!-- 批量添加addOrders -->
+  <insert id="addOrders" parameterType="com.sybinal.shop.model.ydBase">
+    insert into yd_base (id, yd_reference_no, yd_shipping_method, 
+      yd_shipping_method_no, yd_order_weight, yd_order_pieces, 
+      yd_cargotype, yd_mail_cargo_type, yd_return_sign, 
+      yd_buyer_id, yd_order_info, yd_platform_id, 
+      yd_custom_hawbcode, yd_shipper_name, yd_shipper_company, 
+      yd_shipper_countrycode, yd_shipper_city, yd_shipper_street, 
+      yd_shipper_postcode, yd_shipper_areacode, yd_shipper_telephone, 
+      yd_shipper_mobile, yd_shipper_email, yd_shipper_fax, 
+      yd_consignee_name, yd_consignee_company, yd_consignee_countrycode, 
+      yd_consignee_province, yd_consignee_city, yd_consignee_street, 
+      yd_consignee_postcode, yd_consignee_doorplate, 
+      yd_consignee_areacode, yd_consignee_telephone, 
+      yd_consignee_mobile, yd_consignee_email, yd_consignee_fax, 
+      yd_consignee_certificatetype, yd_consignee_certificatecode, 
+      yd_consignee_credentials_period, yd_consignee_tariff, 
+      yd_sku, yd_invoice_enname, yd_invoice_cnname, 
+      yd_invoice_quantity, yd_unit_code, yd_invoice_unitcharge, 
+      yd_hs_code, yd_invoice_note, yd_invoice_url, 
+      yd_invoice_info, yd_standy1, yd_standy2, 
+      yd_standy3, yd_standy4, yd_standy5, 
+      yd_standy6, yd_standy7, yd_standy8, 
+      yd_standy9, yd_standy10, yd_standy11, 
+      yd_standy12)
+    values 
+    <foreach collection="lists" separator="," item="list">
+    (#{list.id,jdbcType=INTEGER}, #{list.ydReferenceNo,jdbcType=VARCHAR}, #{list.ydShippingMethod,jdbcType=VARCHAR}, 
+      #{list.ydShippingMethodNo,jdbcType=VARCHAR}, #{list.ydOrderWeight,jdbcType=VARCHAR}, #{list.ydOrderPieces,jdbcType=VARCHAR}, 
+      #{list.ydCargotype,jdbcType=VARCHAR}, #{list.ydMailCargoType,jdbcType=VARCHAR}, #{list.ydReturnSign,jdbcType=VARCHAR}, 
+      #{list.ydBuyerId,jdbcType=VARCHAR}, #{list.ydOrderInfo,jdbcType=VARCHAR}, #{list.ydPlatformId,jdbcType=VARCHAR}, 
+      #{list.ydCustomHawbcode,jdbcType=VARCHAR}, #{list.ydShipperName,jdbcType=VARCHAR}, #{list.ydShipperCompany,jdbcType=VARCHAR}, 
+      #{list.ydShipperCountrycode,jdbcType=VARCHAR}, #{list.ydShipperCity,jdbcType=VARCHAR}, #{list.ydShipperStreet,jdbcType=VARCHAR}, 
+      #{list.ydShipperPostcode,jdbcType=VARCHAR}, #{list.ydShipperAreacode,jdbcType=VARCHAR}, #{list.ydShipperTelephone,jdbcType=VARCHAR}, 
+      #{list.ydShipperMobile,jdbcType=VARCHAR}, #{list.ydShipperEmail,jdbcType=VARCHAR}, #{list.ydShipperFax,jdbcType=VARCHAR}, 
+      #{list.ydConsigneeName,jdbcType=VARCHAR}, #{list.ydConsigneeCompany,jdbcType=VARCHAR}, #{list.ydConsigneeCountrycode,jdbcType=VARCHAR}, 
+      #{list.ydConsigneeProvince,jdbcType=VARCHAR}, #{list.ydConsigneeCity,jdbcType=VARCHAR}, #{list.ydConsigneeStreet,jdbcType=VARCHAR}, 
+      #{list.ydConsigneePostcode,jdbcType=VARCHAR}, #{list.ydConsigneeDoorplate,jdbcType=VARCHAR}, 
+      #{list.ydConsigneeAreacode,jdbcType=VARCHAR}, #{list.ydConsigneeTelephone,jdbcType=VARCHAR}, 
+      #{list.ydConsigneeMobile,jdbcType=VARCHAR}, #{list.ydConsigneeEmail,jdbcType=VARCHAR}, #{list.ydConsigneeFax,jdbcType=VARCHAR}, 
+      #{list.ydConsigneeCertificatetype,jdbcType=VARCHAR}, #{list.ydConsigneeCertificatecode,jdbcType=VARCHAR}, 
+      #{list.ydConsigneeCredentialsPeriod,jdbcType=VARCHAR}, #{list.ydConsigneeTariff,jdbcType=VARCHAR}, 
+      #{list.ydSku,jdbcType=VARCHAR}, #{list.ydInvoiceEnname,jdbcType=VARCHAR}, #{list.ydInvoiceCnname,jdbcType=VARCHAR}, 
+      #{list.ydInvoiceQuantity,jdbcType=VARCHAR}, #{list.ydUnitCode,jdbcType=VARCHAR}, #{list.ydInvoiceUnitcharge,jdbcType=VARCHAR}, 
+      #{list.ydHsCode,jdbcType=VARCHAR}, #{list.ydInvoiceNote,jdbcType=VARCHAR}, #{list.ydInvoiceUrl,jdbcType=VARCHAR}, 
+      #{list.ydInvoiceInfo,jdbcType=VARCHAR}, #{list.ydStandy1,jdbcType=VARCHAR}, #{list.ydStandy2,jdbcType=VARCHAR}, 
+      #{list.ydStandy3,jdbcType=VARCHAR}, #{list.ydStandy4,jdbcType=VARCHAR}, now(), 
+      #{list.ydStandy6,jdbcType=VARCHAR}, #{list.ydStandy7,jdbcType=VARCHAR}, #{list.ydStandy8,jdbcType=VARCHAR}, 
+      #{list.ydStandy9,jdbcType=VARCHAR}, #{list.ydStandy10,jdbcType=VARCHAR}, #{list.ydStandy11,jdbcType=VARCHAR}, 
+      #{list.ydStandy12,jdbcType=VARCHAR})
+      </foreach>
+  </insert>
+  
+  <insert id="insert" parameterType="com.sybinal.shop.model.ydBase">
+    insert into yd_base (id, yd_reference_no, yd_shipping_method, 
+      yd_shipping_method_no, yd_order_weight, yd_order_pieces, 
+      yd_cargotype, yd_mail_cargo_type, yd_return_sign, 
+      yd_buyer_id, yd_order_info, yd_platform_id, 
+      yd_custom_hawbcode, yd_shipper_name, yd_shipper_company, 
+      yd_shipper_countrycode, yd_shipper_city, yd_shipper_street, 
+      yd_shipper_postcode, yd_shipper_areacode, yd_shipper_telephone, 
+      yd_shipper_mobile, yd_shipper_email, yd_shipper_fax, 
+      yd_consignee_name, yd_consignee_company, yd_consignee_countrycode, 
+      yd_consignee_province, yd_consignee_city, yd_consignee_street, 
+      yd_consignee_postcode, yd_consignee_doorplate, 
+      yd_consignee_areacode, yd_consignee_telephone, 
+      yd_consignee_mobile, yd_consignee_email, yd_consignee_fax, 
+      yd_consignee_certificatetype, yd_consignee_certificatecode, 
+      yd_consignee_credentials_period, yd_consignee_tariff, 
+      yd_sku, yd_invoice_enname, yd_invoice_cnname, 
+      yd_invoice_quantity, yd_unit_code, yd_invoice_unitcharge, 
+      yd_hs_code, yd_invoice_note, yd_invoice_url, 
+      yd_invoice_info, yd_standy1, yd_standy2, 
+      yd_standy3, yd_standy4, yd_standy5, 
+      yd_standy6, yd_standy7, yd_standy8, 
+      yd_standy9, yd_standy10, yd_standy11, 
+      yd_standy12)
+    values (#{id,jdbcType=INTEGER}, #{ydReferenceNo,jdbcType=VARCHAR}, #{ydShippingMethod,jdbcType=VARCHAR}, 
+      #{ydShippingMethodNo,jdbcType=VARCHAR}, #{ydOrderWeight,jdbcType=VARCHAR}, #{ydOrderPieces,jdbcType=VARCHAR}, 
+      #{ydCargotype,jdbcType=VARCHAR}, #{ydMailCargoType,jdbcType=VARCHAR}, #{ydReturnSign,jdbcType=VARCHAR}, 
+      #{ydBuyerId,jdbcType=VARCHAR}, #{ydOrderInfo,jdbcType=VARCHAR}, #{ydPlatformId,jdbcType=VARCHAR}, 
+      #{ydCustomHawbcode,jdbcType=VARCHAR}, #{ydShipperName,jdbcType=VARCHAR}, #{ydShipperCompany,jdbcType=VARCHAR}, 
+      #{ydShipperCountrycode,jdbcType=VARCHAR}, #{ydShipperCity,jdbcType=VARCHAR}, #{ydShipperStreet,jdbcType=VARCHAR}, 
+      #{ydShipperPostcode,jdbcType=VARCHAR}, #{ydShipperAreacode,jdbcType=VARCHAR}, #{ydShipperTelephone,jdbcType=VARCHAR}, 
+      #{ydShipperMobile,jdbcType=VARCHAR}, #{ydShipperEmail,jdbcType=VARCHAR}, #{ydShipperFax,jdbcType=VARCHAR}, 
+      #{ydConsigneeName,jdbcType=VARCHAR}, #{ydConsigneeCompany,jdbcType=VARCHAR}, #{ydConsigneeCountrycode,jdbcType=VARCHAR}, 
+      #{ydConsigneeProvince,jdbcType=VARCHAR}, #{ydConsigneeCity,jdbcType=VARCHAR}, #{ydConsigneeStreet,jdbcType=VARCHAR}, 
+      #{ydConsigneePostcode,jdbcType=VARCHAR}, #{ydConsigneeDoorplate,jdbcType=VARCHAR}, 
+      #{ydConsigneeAreacode,jdbcType=VARCHAR}, #{ydConsigneeTelephone,jdbcType=VARCHAR}, 
+      #{ydConsigneeMobile,jdbcType=VARCHAR}, #{ydConsigneeEmail,jdbcType=VARCHAR}, #{ydConsigneeFax,jdbcType=VARCHAR}, 
+      #{ydConsigneeCertificatetype,jdbcType=VARCHAR}, #{ydConsigneeCertificatecode,jdbcType=VARCHAR}, 
+      #{ydConsigneeCredentialsPeriod,jdbcType=VARCHAR}, #{ydConsigneeTariff,jdbcType=VARCHAR}, 
+      #{ydSku,jdbcType=VARCHAR}, #{ydInvoiceEnname,jdbcType=VARCHAR}, #{ydInvoiceCnname,jdbcType=VARCHAR}, 
+      #{ydInvoiceQuantity,jdbcType=VARCHAR}, #{ydUnitCode,jdbcType=VARCHAR}, #{ydInvoiceUnitcharge,jdbcType=VARCHAR}, 
+      #{ydHsCode,jdbcType=VARCHAR}, #{ydInvoiceNote,jdbcType=VARCHAR}, #{ydInvoiceUrl,jdbcType=VARCHAR}, 
+      #{ydInvoiceInfo,jdbcType=VARCHAR}, #{ydStandy1,jdbcType=VARCHAR}, #{ydStandy2,jdbcType=VARCHAR}, 
+      #{ydStandy3,jdbcType=VARCHAR}, #{ydStandy4,jdbcType=VARCHAR}, now(), 
+      #{ydStandy6,jdbcType=VARCHAR}, #{ydStandy7,jdbcType=VARCHAR}, #{ydStandy8,jdbcType=VARCHAR}, 
+      #{ydStandy9,jdbcType=VARCHAR}, #{ydStandy10,jdbcType=VARCHAR}, #{ydStandy11,jdbcType=VARCHAR}, 
+      #{ydStandy12,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sybinal.shop.model.ydBase">
+    insert into yd_base
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="ydReferenceNo != null">
+        yd_reference_no,
+      </if>
+      <if test="ydShippingMethod != null">
+        yd_shipping_method,
+      </if>
+      <if test="ydShippingMethodNo != null">
+        yd_shipping_method_no,
+      </if>
+      <if test="ydOrderWeight != null">
+        yd_order_weight,
+      </if>
+      <if test="ydOrderPieces != null">
+        yd_order_pieces,
+      </if>
+      <if test="ydCargotype != null">
+        yd_cargotype,
+      </if>
+      <if test="ydMailCargoType != null">
+        yd_mail_cargo_type,
+      </if>
+      <if test="ydReturnSign != null">
+        yd_return_sign,
+      </if>
+      <if test="ydBuyerId != null">
+        yd_buyer_id,
+      </if>
+      <if test="ydOrderInfo != null">
+        yd_order_info,
+      </if>
+      <if test="ydPlatformId != null">
+        yd_platform_id,
+      </if>
+      <if test="ydCustomHawbcode != null">
+        yd_custom_hawbcode,
+      </if>
+      <if test="ydShipperName != null">
+        yd_shipper_name,
+      </if>
+      <if test="ydShipperCompany != null">
+        yd_shipper_company,
+      </if>
+      <if test="ydShipperCountrycode != null">
+        yd_shipper_countrycode,
+      </if>
+      <if test="ydShipperCity != null">
+        yd_shipper_city,
+      </if>
+      <if test="ydShipperStreet != null">
+        yd_shipper_street,
+      </if>
+      <if test="ydShipperPostcode != null">
+        yd_shipper_postcode,
+      </if>
+      <if test="ydShipperAreacode != null">
+        yd_shipper_areacode,
+      </if>
+      <if test="ydShipperTelephone != null">
+        yd_shipper_telephone,
+      </if>
+      <if test="ydShipperMobile != null">
+        yd_shipper_mobile,
+      </if>
+      <if test="ydShipperEmail != null">
+        yd_shipper_email,
+      </if>
+      <if test="ydShipperFax != null">
+        yd_shipper_fax,
+      </if>
+      <if test="ydConsigneeName != null">
+        yd_consignee_name,
+      </if>
+      <if test="ydConsigneeCompany != null">
+        yd_consignee_company,
+      </if>
+      <if test="ydConsigneeCountrycode != null">
+        yd_consignee_countrycode,
+      </if>
+      <if test="ydConsigneeProvince != null">
+        yd_consignee_province,
+      </if>
+      <if test="ydConsigneeCity != null">
+        yd_consignee_city,
+      </if>
+      <if test="ydConsigneeStreet != null">
+        yd_consignee_street,
+      </if>
+      <if test="ydConsigneePostcode != null">
+        yd_consignee_postcode,
+      </if>
+      <if test="ydConsigneeDoorplate != null">
+        yd_consignee_doorplate,
+      </if>
+      <if test="ydConsigneeAreacode != null">
+        yd_consignee_areacode,
+      </if>
+      <if test="ydConsigneeTelephone != null">
+        yd_consignee_telephone,
+      </if>
+      <if test="ydConsigneeMobile != null">
+        yd_consignee_mobile,
+      </if>
+      <if test="ydConsigneeEmail != null">
+        yd_consignee_email,
+      </if>
+      <if test="ydConsigneeFax != null">
+        yd_consignee_fax,
+      </if>
+      <if test="ydConsigneeCertificatetype != null">
+        yd_consignee_certificatetype,
+      </if>
+      <if test="ydConsigneeCertificatecode != null">
+        yd_consignee_certificatecode,
+      </if>
+      <if test="ydConsigneeCredentialsPeriod != null">
+        yd_consignee_credentials_period,
+      </if>
+      <if test="ydConsigneeTariff != null">
+        yd_consignee_tariff,
+      </if>
+      <if test="ydSku != null">
+        yd_sku,
+      </if>
+      <if test="ydInvoiceEnname != null">
+        yd_invoice_enname,
+      </if>
+      <if test="ydInvoiceCnname != null">
+        yd_invoice_cnname,
+      </if>
+      <if test="ydInvoiceQuantity != null">
+        yd_invoice_quantity,
+      </if>
+      <if test="ydUnitCode != null">
+        yd_unit_code,
+      </if>
+      <if test="ydInvoiceUnitcharge != null">
+        yd_invoice_unitcharge,
+      </if>
+      <if test="ydHsCode != null">
+        yd_hs_code,
+      </if>
+      <if test="ydInvoiceNote != null">
+        yd_invoice_note,
+      </if>
+      <if test="ydInvoiceUrl != null">
+        yd_invoice_url,
+      </if>
+      <if test="ydInvoiceInfo != null">
+        yd_invoice_info,
+      </if>
+      <if test="ydStandy1 != null">
+        yd_standy1,
+      </if>
+      <if test="ydStandy2 != null">
+        yd_standy2,
+      </if>
+      <if test="ydStandy3 != null">
+        yd_standy3,
+      </if>
+      <if test="ydStandy4 != null">
+        yd_standy4,
+      </if>
+      <if test="ydStandy6 != null">
+        yd_standy6,
+      </if>
+      <if test="ydStandy7 != null">
+        yd_standy7,
+      </if>
+      <if test="ydStandy8 != null">
+        yd_standy8,
+      </if>
+      <if test="ydStandy9 != null">
+        yd_standy9,
+      </if>
+      <if test="ydStandy10 != null">
+        yd_standy10,
+      </if>
+      <if test="ydStandy11 != null">
+        yd_standy11,
+      </if>
+      <if test="ydStandy12 != null">
+        yd_standy12,
+      </if>
+        yd_standy5
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="ydReferenceNo != null">
+        #{ydReferenceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShippingMethod != null">
+        #{ydShippingMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShippingMethodNo != null">
+        #{ydShippingMethodNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ydOrderWeight != null">
+        #{ydOrderWeight,jdbcType=VARCHAR},
+      </if>
+      <if test="ydOrderPieces != null">
+        #{ydOrderPieces,jdbcType=VARCHAR},
+      </if>
+      <if test="ydCargotype != null">
+        #{ydCargotype,jdbcType=VARCHAR},
+      </if>
+      <if test="ydMailCargoType != null">
+        #{ydMailCargoType,jdbcType=VARCHAR},
+      </if>
+      <if test="ydReturnSign != null">
+        #{ydReturnSign,jdbcType=VARCHAR},
+      </if>
+      <if test="ydBuyerId != null">
+        #{ydBuyerId,jdbcType=VARCHAR},
+      </if>
+      <if test="ydOrderInfo != null">
+        #{ydOrderInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="ydPlatformId != null">
+        #{ydPlatformId,jdbcType=VARCHAR},
+      </if>
+      <if test="ydCustomHawbcode != null">
+        #{ydCustomHawbcode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperName != null">
+        #{ydShipperName,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperCompany != null">
+        #{ydShipperCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperCountrycode != null">
+        #{ydShipperCountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperCity != null">
+        #{ydShipperCity,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperStreet != null">
+        #{ydShipperStreet,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperPostcode != null">
+        #{ydShipperPostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperAreacode != null">
+        #{ydShipperAreacode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperTelephone != null">
+        #{ydShipperTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperMobile != null">
+        #{ydShipperMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperEmail != null">
+        #{ydShipperEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperFax != null">
+        #{ydShipperFax,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeName != null">
+        #{ydConsigneeName,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeCompany != null">
+        #{ydConsigneeCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeCountrycode != null">
+        #{ydConsigneeCountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeProvince != null">
+        #{ydConsigneeProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeCity != null">
+        #{ydConsigneeCity,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeStreet != null">
+        #{ydConsigneeStreet,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneePostcode != null">
+        #{ydConsigneePostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeDoorplate != null">
+        #{ydConsigneeDoorplate,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeAreacode != null">
+        #{ydConsigneeAreacode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeTelephone != null">
+        #{ydConsigneeTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeMobile != null">
+        #{ydConsigneeMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeEmail != null">
+        #{ydConsigneeEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeFax != null">
+        #{ydConsigneeFax,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeCertificatetype != null">
+        #{ydConsigneeCertificatetype,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeCertificatecode != null">
+        #{ydConsigneeCertificatecode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeCredentialsPeriod != null">
+        #{ydConsigneeCredentialsPeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeTariff != null">
+        #{ydConsigneeTariff,jdbcType=VARCHAR},
+      </if>
+      <if test="ydSku != null">
+        #{ydSku,jdbcType=VARCHAR},
+      </if>
+      <if test="ydInvoiceEnname != null">
+        #{ydInvoiceEnname,jdbcType=VARCHAR},
+      </if>
+      <if test="ydInvoiceCnname != null">
+        #{ydInvoiceCnname,jdbcType=VARCHAR},
+      </if>
+      <if test="ydInvoiceQuantity != null">
+        #{ydInvoiceQuantity,jdbcType=VARCHAR},
+      </if>
+      <if test="ydUnitCode != null">
+        #{ydUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydInvoiceUnitcharge != null">
+        #{ydInvoiceUnitcharge,jdbcType=VARCHAR},
+      </if>
+      <if test="ydHsCode != null">
+        #{ydHsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydInvoiceNote != null">
+        #{ydInvoiceNote,jdbcType=VARCHAR},
+      </if>
+      <if test="ydInvoiceUrl != null">
+        #{ydInvoiceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="ydInvoiceInfo != null">
+        #{ydInvoiceInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy1 != null">
+        #{ydStandy1,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy2 != null">
+        #{ydStandy2,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy3 != null">
+        #{ydStandy3,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy4 != null">
+        #{ydStandy4,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy6 != null">
+        #{ydStandy6,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy7 != null">
+        #{ydStandy7,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy8 != null">
+        #{ydStandy8,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy9 != null">
+        #{ydStandy9,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy10 != null">
+        #{ydStandy10,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy11 != null">
+        #{ydStandy11,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy12 != null">
+        #{ydStandy12,jdbcType=VARCHAR},
+      </if>
+      now()
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sybinal.shop.model.ydBase">
+    update yd_base
+    <set>
+      <if test="ydReferenceNo != null">
+        yd_reference_no = #{ydReferenceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShippingMethod != null">
+        yd_shipping_method = #{ydShippingMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShippingMethodNo != null">
+        yd_shipping_method_no = #{ydShippingMethodNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ydOrderWeight != null">
+        yd_order_weight = #{ydOrderWeight,jdbcType=VARCHAR},
+      </if>
+      <if test="ydOrderPieces != null">
+        yd_order_pieces = #{ydOrderPieces,jdbcType=VARCHAR},
+      </if>
+      <if test="ydCargotype != null">
+        yd_cargotype = #{ydCargotype,jdbcType=VARCHAR},
+      </if>
+      <if test="ydMailCargoType != null">
+        yd_mail_cargo_type = #{ydMailCargoType,jdbcType=VARCHAR},
+      </if>
+      <if test="ydReturnSign != null">
+        yd_return_sign = #{ydReturnSign,jdbcType=VARCHAR},
+      </if>
+      <if test="ydBuyerId != null">
+        yd_buyer_id = #{ydBuyerId,jdbcType=VARCHAR},
+      </if>
+      <if test="ydOrderInfo != null">
+        yd_order_info = #{ydOrderInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="ydPlatformId != null">
+        yd_platform_id = #{ydPlatformId,jdbcType=VARCHAR},
+      </if>
+      <if test="ydCustomHawbcode != null">
+        yd_custom_hawbcode = #{ydCustomHawbcode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperName != null">
+        yd_shipper_name = #{ydShipperName,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperCompany != null">
+        yd_shipper_company = #{ydShipperCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperCountrycode != null">
+        yd_shipper_countrycode = #{ydShipperCountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperCity != null">
+        yd_shipper_city = #{ydShipperCity,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperStreet != null">
+        yd_shipper_street = #{ydShipperStreet,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperPostcode != null">
+        yd_shipper_postcode = #{ydShipperPostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperAreacode != null">
+        yd_shipper_areacode = #{ydShipperAreacode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperTelephone != null">
+        yd_shipper_telephone = #{ydShipperTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperMobile != null">
+        yd_shipper_mobile = #{ydShipperMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperEmail != null">
+        yd_shipper_email = #{ydShipperEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="ydShipperFax != null">
+        yd_shipper_fax = #{ydShipperFax,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeName != null">
+        yd_consignee_name = #{ydConsigneeName,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeCompany != null">
+        yd_consignee_company = #{ydConsigneeCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeCountrycode != null">
+        yd_consignee_countrycode = #{ydConsigneeCountrycode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeProvince != null">
+        yd_consignee_province = #{ydConsigneeProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeCity != null">
+        yd_consignee_city = #{ydConsigneeCity,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeStreet != null">
+        yd_consignee_street = #{ydConsigneeStreet,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneePostcode != null">
+        yd_consignee_postcode = #{ydConsigneePostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeDoorplate != null">
+        yd_consignee_doorplate = #{ydConsigneeDoorplate,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeAreacode != null">
+        yd_consignee_areacode = #{ydConsigneeAreacode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeTelephone != null">
+        yd_consignee_telephone = #{ydConsigneeTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeMobile != null">
+        yd_consignee_mobile = #{ydConsigneeMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeEmail != null">
+        yd_consignee_email = #{ydConsigneeEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeFax != null">
+        yd_consignee_fax = #{ydConsigneeFax,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeCertificatetype != null">
+        yd_consignee_certificatetype = #{ydConsigneeCertificatetype,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeCertificatecode != null">
+        yd_consignee_certificatecode = #{ydConsigneeCertificatecode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeCredentialsPeriod != null">
+        yd_consignee_credentials_period = #{ydConsigneeCredentialsPeriod,jdbcType=VARCHAR},
+      </if>
+      <if test="ydConsigneeTariff != null">
+        yd_consignee_tariff = #{ydConsigneeTariff,jdbcType=VARCHAR},
+      </if>
+      <if test="ydSku != null">
+        yd_sku = #{ydSku,jdbcType=VARCHAR},
+      </if>
+      <if test="ydInvoiceEnname != null">
+        yd_invoice_enname = #{ydInvoiceEnname,jdbcType=VARCHAR},
+      </if>
+      <if test="ydInvoiceCnname != null">
+        yd_invoice_cnname = #{ydInvoiceCnname,jdbcType=VARCHAR},
+      </if>
+      <if test="ydInvoiceQuantity != null">
+        yd_invoice_quantity = #{ydInvoiceQuantity,jdbcType=VARCHAR},
+      </if>
+      <if test="ydUnitCode != null">
+        yd_unit_code = #{ydUnitCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydInvoiceUnitcharge != null">
+        yd_invoice_unitcharge = #{ydInvoiceUnitcharge,jdbcType=VARCHAR},
+      </if>
+      <if test="ydHsCode != null">
+        yd_hs_code = #{ydHsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ydInvoiceNote != null">
+        yd_invoice_note = #{ydInvoiceNote,jdbcType=VARCHAR},
+      </if>
+      <if test="ydInvoiceUrl != null">
+        yd_invoice_url = #{ydInvoiceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="ydInvoiceInfo != null">
+        yd_invoice_info = #{ydInvoiceInfo,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy1 != null">
+        yd_standy1 = #{ydStandy1,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy2 != null">
+        yd_standy2 = #{ydStandy2,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy3 != null">
+        yd_standy3 = #{ydStandy3,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy4 != null">
+        yd_standy4 = #{ydStandy4,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy5 != null">
+        yd_standy5 = #{ydStandy5,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy6 != null">
+        yd_standy6 = #{ydStandy6,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy7 != null">
+        yd_standy7 = #{ydStandy7,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy8 != null">
+        yd_standy8 = #{ydStandy8,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy9 != null">
+        yd_standy9 = #{ydStandy9,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy10 != null">
+        yd_standy10 = #{ydStandy10,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy11 != null">
+        yd_standy11 = #{ydStandy11,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy12 != null">
+        yd_standy12 = #{ydStandy12,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 添加义达跟踪号updateYd -->
+  <update id="updateYd" parameterType="com.sybinal.shop.model.ydBase">
+    update yd_base
+    <set>
+      <if test="ydShippingMethodNo != null">
+        yd_shipping_method_no = #{ydShippingMethodNo,jdbcType=VARCHAR},
+      </if>
+      <if test="ydStandy6 != null">
+        yd_standy6 = #{ydStandy6,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where yd_reference_no = #{ydReferenceNo,jdbcType=VARCHAR}
+  </update>
+  <update id="defaultHj0" parameterType="com.sybinal.shop.model.ydBase">
+  	update yd_base
+    set yd_standy2 = "0"
+    where yd_standy3=#{ids,jdbcType=VARCHAR}
+  </update>
+  <!-- 批量修改默认 -->
+  <update id="defaultHj0Plus" parameterType="com.sybinal.shop.model.ydBase">
+  	update yd_base
+    set yd_standy2 = "0"
+    where yd_standy3 in 
+    <foreach collection="hjList" open="(" close=")" item="list" separator=",">
+    #{list.hjShipperhawbcode,jdbcType=VARCHAR}
+    </foreach>
+  </update>
+  <update id="default2" parameterType="com.sybinal.shop.model.ydBase">
+  	update yd_base
+    set yd_standy2 = "1"
+    where id=#{id}
+  </update>
+  <!-- ydDelOrder删除 -->
+  <update id="ydDelOrder" parameterType="com.sybinal.shop.model.ydBase">
+  	update yd_base
+    set yd_standy7 = "1"
+    where id=#{id}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sybinal.shop.model.ydBase">
+    update yd_base
+    set yd_reference_no = #{ydReferenceNo,jdbcType=VARCHAR},
+      yd_shipping_method = #{ydShippingMethod,jdbcType=VARCHAR},
+      yd_shipping_method_no = #{ydShippingMethodNo,jdbcType=VARCHAR},
+      yd_order_weight = #{ydOrderWeight,jdbcType=VARCHAR},
+      yd_order_pieces = #{ydOrderPieces,jdbcType=VARCHAR},
+      yd_cargotype = #{ydCargotype,jdbcType=VARCHAR},
+      yd_mail_cargo_type = #{ydMailCargoType,jdbcType=VARCHAR},
+      yd_return_sign = #{ydReturnSign,jdbcType=VARCHAR},
+      yd_buyer_id = #{ydBuyerId,jdbcType=VARCHAR},
+      yd_order_info = #{ydOrderInfo,jdbcType=VARCHAR},
+      yd_platform_id = #{ydPlatformId,jdbcType=VARCHAR},
+      yd_custom_hawbcode = #{ydCustomHawbcode,jdbcType=VARCHAR},
+      yd_shipper_name = #{ydShipperName,jdbcType=VARCHAR},
+      yd_shipper_company = #{ydShipperCompany,jdbcType=VARCHAR},
+      yd_shipper_countrycode = #{ydShipperCountrycode,jdbcType=VARCHAR},
+      yd_shipper_city = #{ydShipperCity,jdbcType=VARCHAR},
+      yd_shipper_street = #{ydShipperStreet,jdbcType=VARCHAR},
+      yd_shipper_postcode = #{ydShipperPostcode,jdbcType=VARCHAR},
+      yd_shipper_areacode = #{ydShipperAreacode,jdbcType=VARCHAR},
+      yd_shipper_telephone = #{ydShipperTelephone,jdbcType=VARCHAR},
+      yd_shipper_mobile = #{ydShipperMobile,jdbcType=VARCHAR},
+      yd_shipper_email = #{ydShipperEmail,jdbcType=VARCHAR},
+      yd_shipper_fax = #{ydShipperFax,jdbcType=VARCHAR},
+      yd_consignee_name = #{ydConsigneeName,jdbcType=VARCHAR},
+      yd_consignee_company = #{ydConsigneeCompany,jdbcType=VARCHAR},
+      yd_consignee_countrycode = #{ydConsigneeCountrycode,jdbcType=VARCHAR},
+      yd_consignee_province = #{ydConsigneeProvince,jdbcType=VARCHAR},
+      yd_consignee_city = #{ydConsigneeCity,jdbcType=VARCHAR},
+      yd_consignee_street = #{ydConsigneeStreet,jdbcType=VARCHAR},
+      yd_consignee_postcode = #{ydConsigneePostcode,jdbcType=VARCHAR},
+      yd_consignee_doorplate = #{ydConsigneeDoorplate,jdbcType=VARCHAR},
+      yd_consignee_areacode = #{ydConsigneeAreacode,jdbcType=VARCHAR},
+      yd_consignee_telephone = #{ydConsigneeTelephone,jdbcType=VARCHAR},
+      yd_consignee_mobile = #{ydConsigneeMobile,jdbcType=VARCHAR},
+      yd_consignee_email = #{ydConsigneeEmail,jdbcType=VARCHAR},
+      yd_consignee_fax = #{ydConsigneeFax,jdbcType=VARCHAR},
+      yd_consignee_certificatetype = #{ydConsigneeCertificatetype,jdbcType=VARCHAR},
+      yd_consignee_certificatecode = #{ydConsigneeCertificatecode,jdbcType=VARCHAR},
+      yd_consignee_credentials_period = #{ydConsigneeCredentialsPeriod,jdbcType=VARCHAR},
+      yd_consignee_tariff = #{ydConsigneeTariff,jdbcType=VARCHAR},
+      yd_sku = #{ydSku,jdbcType=VARCHAR},
+      yd_invoice_enname = #{ydInvoiceEnname,jdbcType=VARCHAR},
+      yd_invoice_cnname = #{ydInvoiceCnname,jdbcType=VARCHAR},
+      yd_invoice_quantity = #{ydInvoiceQuantity,jdbcType=VARCHAR},
+      yd_unit_code = #{ydUnitCode,jdbcType=VARCHAR},
+      yd_invoice_unitcharge = #{ydInvoiceUnitcharge,jdbcType=VARCHAR},
+      yd_hs_code = #{ydHsCode,jdbcType=VARCHAR},
+      yd_invoice_note = #{ydInvoiceNote,jdbcType=VARCHAR},
+      yd_invoice_url = #{ydInvoiceUrl,jdbcType=VARCHAR},
+      yd_invoice_info = #{ydInvoiceInfo,jdbcType=VARCHAR},
+      yd_standy1 = #{ydStandy1,jdbcType=VARCHAR},
+      yd_standy2 = #{ydStandy2,jdbcType=VARCHAR},
+      yd_standy3 = #{ydStandy3,jdbcType=VARCHAR},
+      yd_standy4 = #{ydStandy4,jdbcType=VARCHAR},
+      yd_standy5 = #{ydStandy5,jdbcType=VARCHAR},
+      yd_standy6 = #{ydStandy6,jdbcType=VARCHAR},
+      yd_standy7 = #{ydStandy7,jdbcType=VARCHAR},
+      yd_standy8 = #{ydStandy8,jdbcType=VARCHAR},
+      yd_standy9 = #{ydStandy9,jdbcType=VARCHAR},
+      yd_standy10 = #{ydStandy10,jdbcType=VARCHAR},
+      yd_standy11 = #{ydStandy11,jdbcType=VARCHAR},
+      yd_standy12 = #{ydStandy12,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

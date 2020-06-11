@@ -1,0 +1,11 @@
+package com.sybinal.shop.service.user;
+
+import java.util.List;
+
+import com.sybinal.shop.model.userShortRole;
+
+public interface userShortRoleService {
+
+	List<userShortRole> selAllroles();
+
+}

@@ -1,0 +1,21 @@
+package com.sybinal.shop.service;
+
+import java.util.List;
+
+import com.sybinal.shop.model.logOutOf;
+
+public interface logOutOfService {
+	/**
+	 * 查询所有的物流方式
+	 */
+	List <logOutOf> selectAll();
+	/**
+	 * 物流添加的main函数
+	 * @param shorts 简称
+	 * @param name 名称
+	 * @param logisticname 集拼名称
+	 * @return
+	 */
+	int addlogistic(String shorts, String name, String logisticname);
+	
+}

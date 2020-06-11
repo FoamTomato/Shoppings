@@ -1,0 +1,233 @@
+package com.sybinal.shop.controller.admin;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.google.gson.Gson;
+import com.sybinal.shop.common.PageInformation;
+import com.sybinal.shop.model.Cate;
+import com.sybinal.shop.model.ProductCategory;
+import com.sybinal.shop.service.catalog.ProductCategoryService;
+import com.sybinal.shop.service.cate.CateService;
+import com.sybinal.shop.utils.UserUtils;
+
+@Controller
+public class ProductCategoryController {
+
+	@Autowired
+	ProductCategoryService productCategoryService;
+	
+	@Autowired
+	CateService cateService;
+	
+	@RequestMapping(value = "/admin/productCategoryList", method = RequestMethod.GET)
+	public ModelAndView productCategoryManage(Cate cate) {
+		ModelAndView model = new ModelAndView();
+		List<Cate> list=cateService.selectAllCate(cate);
+		HashSet<String> result = new HashSet<>();
+		for(Cate cates:list) {
+			result.add(cates.getCate1());
+		}
+		System.out.println("result+++"+result);
+		model.addObject("cate1s",result);
+		model.setViewName("admin/productCategory/productCategoryList");
+		return model;
+	}
+	
+	//查询分类信息
+	@RequestMapping(value = "/admin/Foam_Cate_list", method = RequestMethod.POST)
+	@ResponseBody
+	public List<Cate> CateList(@RequestBody Cate cate){
+			switch(cate.getA()) {
+			case "cate1":
+				System.out.println("cate1");
+				cate.setCate1(cate.getB());
+				return cateService.selectAllCate(cate);
+			case "cate2":
+				System.out.println("cate2");
+				cate.setCate2(cate.getB());
+				return cateService.selectAllCate(cate);
+			case "cate3":
+				System.out.println("cate3");
+				cate.setCate3(cate.getB());
+				return cateService.selectAllCate(cate);
+			case "cate4":
+				System.out.println("cate4");
+				cate.setCate4(cate.getB());
+				return cateService.selectAllCate(cate);
+			case "cate5":
+				System.out.println("cate5");
+				cate.setCate5(cate.getB());
+				return cateService.selectAllCate(cate);
+			case "cate6":
+				System.out.println("cate6");
+				cate.setCate6(cate.getB());
+				return cateService.selectAllCate(cate);
+			}
+		return cateService.selectAllCate(cate);
+	}
+	
+	
+		//根据name查询分类列表信息
+		@RequestMapping(value = "/admin/Foam_Cate_list_search", method = RequestMethod.POST)
+		@ResponseBody
+		public List<Cate> Foam_Cate_list_search(@RequestBody Cate cate){
+				System.out.println(cate.getCate1());
+			return cateService.Seach_cate(cate);
+		}
+	//查询所有的分类信息
+	@RequestMapping(value = "/admin/addCategory")
+	public ModelAndView addProductCategory() {
+		ModelAndView model = new ModelAndView();
+
+		List<ProductCategory> produtId=productCategoryService.getProductCategory();
+		model.addObject("produtId",produtId);
+		model.setViewName("admin/productCategory/productCategoryEdit");
+		return model;
+	}
+	
+	@RequestMapping(value = "/admin/productCategorynfoDataTable", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> productCategorynfoDataTable(PageInformation pageInfo,ProductCategory category){
+		return productCategoryService.getProductCategoryAll(pageInfo, category);
+	}
+	//tree查询父类和子类的关系  json数据
+	@RequestMapping(value = "/admin/addCategorys")
+	@ResponseBody
+	public Object addProductCategorys(Gson gson) {
+		ModelAndView model = new ModelAndView();
+
+		List<ProductCategory> produtId=productCategoryService.getProductCategory();
+		System.out.println(produtId);
+		Object s=gson.toJson(produtId);
+		System.out.println(s);
+		return s;
+	}
+	//添加商品分类
+	@RequestMapping(value = "/admin/save", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> saveProductCategory(@RequestBody ProductCategory productCategory){
+		Map<String, Object> map = new HashMap<String, Object>();
+		SimpleDateFormat adf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		int i = 0;
+		Date date = new Date();
+		productCategory.setUpdateTime(date);
+		productCategory.setUpdateUserName(UserUtils.getUserName());
+		productCategory.setCreateTime(adf.format(date));
+		if(productCategory.getId() == null){
+			System.out.println(productCategory.getPid());
+			i = productCategoryService.addProductCategory(productCategory);
+		}else{
+			System.out.println("=="+productCategory.getPid());
+			i = productCategoryService.updateProductCategory(productCategory);
+		}
+		if (i > 0) {
+			map.put("error", "0"); // 成功
+			map.put("data", productCategory); // 数据
+		} else {
+			map.put("error", "-1"); // 失败
+			map.put("data", productCategory); // 数据成
+		}
+		return map;
+	}
+	//修改商品分类
+	@RequestMapping(value = "/admin/edit", method = RequestMethod.POST)
+	@ResponseBody
+	public ModelAndView editProductCategory(Integer id){
+		ModelAndView model = new ModelAndView();
+		ProductCategory productCategory = productCategoryService.getProductCategoryContent(id);
+		ProductCategory productCategorys = productCategoryService.getProductCategoryContents(productCategory.getPid());
+		if(productCategory != null){
+			model.addObject("productCategorys", productCategorys);
+			model.addObject("productCategory", productCategory);
+		}
+		System.out.println("进入");
+		model.setViewName("admin/productCategory/productCategoryEdit");
+		return model;
+	}
+	
+	@RequestMapping(value = "/admin/checkVerify", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> checkVerifyProduct(@RequestBody String idTemp){
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(StringUtils.isEmpty(idTemp) == true){
+			map.put("error", "-1"); // 失败
+		}else{
+			int i = productCategoryService.getProductCount(idTemp);
+			if(i == 0){
+				map.put("error", "0"); // 成功
+			}else{
+				map.put("error", "-1"); // 失败
+			}
+		}
+		return map;
+	}
+	
+	@RequestMapping(value = "/admin/removeProductCategory", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> deleteProductCategory(@RequestBody String id){
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(StringUtils.isEmpty(id) == true){
+			map.put("error", "-1"); // 失败
+		}else{
+			int i = productCategoryService.delteProductCategory(id);
+			if(i > 0){
+				map.put("error", "0"); // 成功
+			}else{
+				map.put("error", "-1"); // 失败
+			}
+		}
+		return map;
+	}
+	
+	@RequestMapping(value = "/admin/validationName", method = RequestMethod.POST)
+	@ResponseBody
+	public String validationName(HttpServletRequest request,HttpServletResponse response) throws IllegalAccessException, InvocationTargetException, IOException {
+		String name = request.getParameter("name");
+		String id = request.getParameter("id");
+		int i = 0;
+		if(StringUtils.isEmpty(id) == true){
+			i = productCategoryService.getProductNameCount(name);
+		}else{
+			ProductCategory pc = new ProductCategory();
+			pc.setId(Integer.parseInt(id));
+			pc.setName(name);
+			i = productCategoryService.getProductCategoryName(pc);
+		}
+		if (i > 0) {
+			response.getWriter().write("false");
+		} else {
+			response.getWriter().write("true");
+		}
+		return null;
+	}
+	
+	/*
+	 * 添加分类信息
+	 * /admin/Foam_AddCate_Name
+	 */
+	@RequestMapping(value = "/admin/Foam_AddCate_Name", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String,String> catename(@RequestBody Map<String,String>map){
+		System.out.println("+++"+map.get("cate5"));
+		return map;
+	}
+}

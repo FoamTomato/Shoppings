@@ -1,0 +1,530 @@
+package com.sybinal.shop.controller.admin;
+
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.sybinal.shop.common.AjaxResult;
+import com.sybinal.shop.common.HttpUtilss;
+import com.sybinal.shop.common.PageInformation;
+import com.sybinal.shop.model.DTfzyingWithBLOBs;
+import com.sybinal.shop.model.DTfzyings;
+import com.sybinal.shop.model.DTfzyingsWithBLOBs;
+import com.sybinal.shop.model.DTstock;
+import com.sybinal.shop.model.DTstocks;
+import com.sybinal.shop.model.Fproduct;
+import com.sybinal.shop.model.OnlineDownloadWithBLOBs;
+import com.sybinal.shop.model.Option;
+import com.sybinal.shop.model.Product;
+import com.sybinal.shop.model.ProductCategory;
+import com.sybinal.shop.model.ProductOptionInfo;
+import com.sybinal.shop.model.ProductRelation;
+import com.sybinal.shop.model.Sku;
+import com.sybinal.shop.model.SkuVOInfo;
+import com.sybinal.shop.model.User;
+import com.sybinal.shop.service.catalog.DTfzyingService;
+import com.sybinal.shop.service.catalog.DTfzyingsService;
+import com.sybinal.shop.service.catalog.DTpicService;
+import com.sybinal.shop.service.catalog.DTstockService;
+import com.sybinal.shop.service.catalog.FProductService;
+import com.sybinal.shop.service.catalog.ProductCategoryService;
+import com.sybinal.shop.service.catalog.ProductService;
+import com.sybinal.shop.service.catalog.SkuService;
+import com.sybinal.shop.service.catalog.dTstocksService;
+import com.sybinal.shop.service.onlineDown.OnlineDownService;
+import com.sybinal.shop.service.option.OptionService;
+import com.sybinal.shop.service.user.UserService;
+import com.sybinal.shop.utils.UserUtils;
+@Controller
+public class ProductController {
+
+	@Autowired
+	UserService userService;
+
+	@Autowired
+	ProductCategoryService productCategoryService;
+
+	@Autowired
+	ProductService productService;
+
+	@Autowired
+	OptionService optionService;
+
+	@Autowired
+	SkuService skuService;
+
+	@Autowired
+	FProductService fProductService;
+
+	@Autowired
+	DTfzyingService dTfzyingService;
+
+	@Autowired
+	DTfzyingsService dTfzyingsService;
+
+	@Autowired
+	DTstockService dTstockService;
+
+	@Autowired
+	dTstocksService DTstocksService;
+
+	@Autowired
+	DTpicService dTpicService;
+
+	@Autowired
+	OnlineDownService onlineservice;
+
+	private static Logger logger=Logger.getLogger(ProductController.class);
+	@RequestMapping(value = "/admin/productList", method = RequestMethod.GET)
+	public ModelAndView productList(@ModelAttribute Product product, PageInformation pageInfo) {
+		ModelAndView model = new ModelAndView();
+
+		User user=new User();
+
+		user.setUserName(FLogisticsController.username());
+		model.addObject("jurisdiction", userService.jurisdiction(user));
+		model.setViewName("admin/product/productInfoMain");
+		return model;
+	}
+
+	// 弹窗遮罩层
+	@RequestMapping(value = "admin/windows")
+	public ModelAndView productWindow() {
+		ModelAndView model = new ModelAndView();
+		model.setViewName("admin/product/windows");
+		return model;
+	}
+
+	// 遮罩层查询图片
+	@RequestMapping(value = "/admin/mainViewImgs", method = RequestMethod.POST, headers = "Accept=application/json")
+	@ResponseBody
+	public ArrayList<String> mainViewImg(@RequestBody OnlineDownloadWithBLOBs online) {
+		//String[] onlines = online.getfImagesUrl().split(",/Shopping/resources/uploads/");
+		ArrayList<String> arrayList = new ArrayList<String>();
+		ArrayList<String> arrayList2 = new ArrayList<String>();
+		// 根据sku查询唯一的在线地址
+		List<OnlineDownloadWithBLOBs> list = onlineservice.ImagesUnique(online.getfSku());
+
+		for (OnlineDownloadWithBLOBs c : list) {
+			// 根据唯一的在线地址查询一个本地地址
+			List<OnlineDownloadWithBLOBs> lists = onlineservice.ImageLocal(c.getfOnlineUrl());
+			
+			for (OnlineDownloadWithBLOBs cd : lists) {
+				arrayList2.add(cd.getfImagesUrl());  
+				
+			}
+		}
+		return arrayList2;
+
+	}
+
+	// 跳转右侧小页面
+	@RequestMapping(value = "admin/productFright")
+	public ModelAndView productfright(@ModelAttribute Product product, HttpServletRequest req, Fproduct fproduct,
+			PageInformation pageInfo, @RequestParam("id") Integer id) {
+		ModelAndView model = new ModelAndView();
+		
+		model.addObject("id", id);
+		model.setViewName("admin/product/Fright");
+		return model;
+	}
+	//获取右侧的商品详情dTfzyingsService.selectByid(product.getId());
+	@RequestMapping(value = "/admin/getAllproducts", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getAllproducts(@RequestBody Map<String,String> map) {
+		Map<String,Object> map1=new HashMap();
+		ArrayList<String> arrayList2 = new ArrayList<String>();
+		DTfzyingsWithBLOBs sku=dTfzyingsService.selectByid(Integer.parseInt(map.get("id")));
+		/*// 根据sku查询唯一的在线地址
+				List<OnlineDownloadWithBLOBs> list = onlineservice.ImagesUnique(sku.getFsku());
+				for (OnlineDownloadWithBLOBs c : list) {
+					// 根据唯一的在线地址查询一个本地地址
+					List<OnlineDownloadWithBLOBs> lists = onlineservice.ImageLocal(c.getfOnlineUrl());
+					for (OnlineDownloadWithBLOBs cd : lists) { 
+						if(cd.getfImagesUrl().split("F:/LibraryImage/").length==1) {
+							
+							 //新的根据项目服务器存储的地址
+							 
+							arrayList2.add(cd.getfImagesUrl().split("F:/LibraryImage/")[0]);  
+						}else {
+							
+							 // 老版拼接死的地址
+							 
+							arrayList2.add(cd.getfImagesUrl().split("F:/LibraryImage/")[1]);  
+						}
+					}
+				}*/
+		onlineservice.ImagesUnique(sku.getFids()).forEach(x->{
+			arrayList2.add(x.getfOnlineUrl());
+		});
+		map1.put("pro", sku);
+		map1.put("stock", DTstocksService.selectBystockSku(sku.getFids()));
+		/**
+		 * 主图
+		 */
+		map1.put("pic", arrayList2);
+		return map1;
+	}
+	// 带条件查询商品
+	@RequestMapping(value = "/admin/productListAtAll", method = RequestMethod.POST)
+	@ResponseBody
+	public PageInfo productLists(@RequestBody Map<String,String> map) {
+		 int limit=Integer.parseInt(map.get("limit"));
+		 int page=Integer.parseInt(map.get("page"));
+		 PageHelper.startPage(page,limit);
+		DTfzyings dTfzying=new DTfzyings();
+		dTfzying.setFsku(map.get("fsku"));
+		/*
+		 * 类型转换不能转换空值
+		 */
+		if(map.get("price1")!="") {
+			dTfzying.setPrice1(Integer.valueOf(map.get("price1")));
+		}
+		if(map.get("price2")!="") {
+			dTfzying.setPrice2(Integer.valueOf(map.get("price2")));
+		}
+		String fen=map.get("fen");
+		dTfzying.setFkind(map.get("fkind"));
+		dTfzying.setFrs1(map.get("frs1"));
+		dTfzying.setFrs2(map.get("frs2"));
+		dTfzying.setFrs3(map.get("frs3"));
+		dTfzying.setFintro(map.get("fintro"));
+		dTfzying.setFrs4(map.get("frs4"));
+		dTfzying.setFrs5(map.get("frs5"));
+		dTfzying.setFrs6(map.get("frs6"));
+		dTfzying.setUpdateTime1(map.get("updateTime1"));
+		dTfzying.setUpdateTime2(map.get("updateTime2"));
+		dTfzying.setFrs7(map.get("frs7"));
+		//logger.info(dTfzying.getUpdateTime1());
+		//logger.info(dTfzying.getUpdateTime2());
+		List<DTfzyingsWithBLOBs> s = dTfzyingsService.selectdTstockAtAll(dTfzying,fen);
+		PageInfo pageInfo = new PageInfo(s);
+		return pageInfo;
+	}
+
+	// 修改右边页面商品
+	@RequestMapping(value = "/adminsdf/productUpdate", method = RequestMethod.POST, headers = "Accept=application/json")
+	@ResponseBody
+	public int asdfasg(@RequestBody Map<String,Object> map) throws ParseException {
+		Gson gson=new Gson();
+		DTfzyingsWithBLOBs dtfzings =gson.fromJson(gson.toJson(map.get("pro")), DTfzyingsWithBLOBs.class);
+		if (dtfzings.getFrs1().equals("") | dtfzings.getFrs1().equals("-1")) {
+			dtfzings.setFrs1("0");
+		}
+		if (dtfzings.getFrs2().equals("") | dtfzings.getFrs2().equals("-1")) {
+			dtfzings.setFrs2("0");
+		}
+		if (dtfzings.getFrs3().equals("") | dtfzings.getFrs3().equals("-1")) {
+			dtfzings.setFrs3("0");
+		}
+		if (dtfzings.getFrs4().equals("") | dtfzings.getFrs4().equals("-1")) {
+			dtfzings.setFrs4("0");
+		}
+
+		List<Map<String,Object>> langse=gson.fromJson(gson.toJson(map.get("languages")),new TypeToken<ArrayList<Map<String,Object>>>(){}.getType());
+		langse.forEach(x->{
+			if(x.get("country").equals("zh")) {
+				dtfzings.setFzh(x.get("title")+"|"+x.get("word")+"|"+x.get("points")+"|"+x.get("content"));
+			}else if(x.get("country").equals("en")) {
+				dtfzings.setFen(x.get("title")+"|"+x.get("word")+"|"+x.get("points")+"|"+x.get("content"));
+			}else if(x.get("country").equals("ja")) {
+				dtfzings.setFja(x.get("title")+"|"+x.get("word")+"|"+x.get("points")+"|"+x.get("content"));
+			}else if(x.get("country").equals("es")) {
+				dtfzings.setFes(x.get("title")+"|"+x.get("word")+"|"+x.get("points")+"|"+x.get("content"));
+			}else if(x.get("country").equals("it")) {
+				dtfzings.setFit(x.get("title")+"|"+x.get("word")+"|"+x.get("points")+"|"+x.get("content"));
+			}else if(x.get("country").equals("de")) {
+				dtfzings.setFde(x.get("title")+"|"+x.get("word")+"|"+x.get("points")+"|"+x.get("content"));
+			}else if(x.get("country").equals("fr")) {
+				dtfzings.setFfr(x.get("title")+"|"+x.get("word")+"|"+x.get("points")+"|"+x.get("content"));
+			}
+		});
+		/**
+		 * 删除变体
+		 */
+		dTstockService.delstock(dtfzings.getFids());
+		List<DTstock> stocks=gson.fromJson(gson.toJson(map.get("stock")),new TypeToken<ArrayList<DTstock>>(){}.getType());
+		dtfzings.setY(stocks);
+		/**
+		 * 添加变体
+		 */
+		addstock(dtfzings);
+		/*System.out.println(dtfzings);
+		logger.info(dtfzings.getFids());
+		// Gson gson=new Gson();
+		// String sa=gson.toJson(productListAtAll);
+		DTfzyings st = new DTfzyings();
+*/
+		return dTfzyingsService.updateProduct(dtfzings);
+
+	}
+	/**
+	 * 删除产品
+	*    
+	* 项目名称：Shopping   
+	* 类描述：   
+	* 创建人：PC1   
+	* 创建时间：2020年4月8日 下午3:04:03   
+	* @version
+	 */
+	@RequestMapping(value = "admin/delet/delcz", method = RequestMethod.POST, headers = "Accept=application/json")
+	@ResponseBody
+	public int delcz(@RequestBody List<String> map) throws ParseException {
+		return dTfzyingsService.deleteProductList(map);
+	}
+	// 修改变体商品
+	@RequestMapping(value = "/Stock/productUpdate", method = RequestMethod.POST, headers = "Accept=application/json")
+	@ResponseBody
+	public int Stock(@RequestBody DTstocks stocks) throws ParseException {
+
+		if (stocks.getId() == null) {
+			return DTstocksService.nullStock(stocks);
+		} else {
+			return DTstocksService.addStock(stocks);
+		}
+
+	}
+
+	
+	// 删除主图
+		@RequestMapping(value = "/admin/deletMainImgs", method = RequestMethod.POST, headers = "Accept=application/json")
+		@ResponseBody
+		public int deletMainImgs(@RequestBody List<String> order) throws ParseException {
+			//根据sku和本地图片去查找在线
+			/*List<OnlineDownloadWithBLOBs> onlines=onlineservice.selectOnline(online);
+			System.out.println(onlines.size()); 
+			for(OnlineDownloadWithBLOBs c:onlines) {
+				//根据在线地址去查找所有本地图片路径
+				List<OnlineDownloadWithBLOBs> lo=onlineservice.selectlo(c.getfOnlineUrl(),c.getfSku());
+				for(OnlineDownloadWithBLOBs d:lo) {
+					//删除所有本地的图片路径
+					onlineservice.delet(d);
+				} 
+			}
+			OnlineDownloadWithBLOBs onlines1=new OnlineDownloadWithBLOBs();
+			onlines1.setfSku(online.get(0).getfSku());*/
+
+			
+			return onlineservice.delet(order);//selMainImgs(onlines1);
+
+		}
+	//查询主图selMainImgs
+		@RequestMapping(value = "/admin/selMainImgs", method = RequestMethod.POST, headers = "Accept=application/json")
+		@ResponseBody
+		public List<OnlineDownloadWithBLOBs> selMainImgs(@RequestBody Map<String,Object>map) throws ParseException {
+			// 根据sku查询唯一的在线地址
+
+			DTfzyingsWithBLOBs sku=dTfzyingsService.selectByid(Integer.parseInt(map.get("id").toString()));
+			
+					/*List<OnlineDownloadWithBLOBs> list = onlineservice.ImagesUnique(online.getfSku());
+					for (OnlineDownloadWithBLOBs c : list) {
+						// 根据唯一的在线地址查询一个本地地址
+						List<OnlineDownloadWithBLOBs> lists = onlineservice.ImageLocal(c.getfOnlineUrl());
+						for (OnlineDownloadWithBLOBs cd : lists) {
+							if(cd.getfImagesUrl().split("F:/LibraryImage/").length==1) {
+								
+								 //新的根据项目服务器存储的地址
+								 
+								arrayList2.add(cd.getfImagesUrl().split("F:/LibraryImage/")[0]);  
+							}else {
+								
+								 // 老版拼接死的地址
+								 
+								arrayList2.add(cd.getfImagesUrl().split("F:/LibraryImage/")[1]);  
+							}
+						}
+					}*/
+			return onlineservice.ImagesUnique(sku.getFids());
+
+		}
+	// 删除右边页面商品
+	@RequestMapping(value = "/admin/productDelete", method = RequestMethod.POST, headers = "Accept=application/json")
+	@ResponseBody
+	public int productdelete(@RequestBody DTfzyingsWithBLOBs dtfzings) {
+		int i = dTfzyingsService.deleteProduct(dtfzings.getId());
+		return i;
+	}
+	
+	/*
+	 * 图片修改
+	 */
+	@RequestMapping(value = "/admin/saveViewImgs", method = RequestMethod.POST, headers = "Accept=application/json")
+	@ResponseBody
+	public int saveViewImgs(@RequestBody DTstocks stocks) {
+		
+		return DTstocksService.updateStocks(stocks);
+		
+	}
+	
+	@RequestMapping(value = "/admin/product/addEdit{id}", method = RequestMethod.GET)
+	public ModelAndView editUser(@ModelAttribute ProductRelation product, @PathVariable("id") Integer productId)
+			throws IOException {
+		ModelAndView model = new ModelAndView();
+		Map<Integer, String> categoryMap = new TreeMap<Integer, String>();
+		// 取得商品分类信息
+		List<ProductCategory> productCategoryList = productCategoryService.getProductCategory();
+		if (productCategoryList != null && productCategoryList.size() > 0) {
+			for (ProductCategory productCategory : productCategoryList) {
+				categoryMap.put(productCategory.getId(), productCategory.getName());
+			}
+		}
+		model.addObject("categoryMap", categoryMap);
+		List<Option> optionList = optionService.getOption();
+		model.addObject("optionList", optionList);
+		if (productId != null) {
+			product = productService.getProductInfoById(productId);
+			ObjectMapper objMapper = new ObjectMapper();
+			List<ProductOptionInfo> productOptionInfo = productService.getOptionByProductId(productId);
+			model.addObject("productOptionInfo", objMapper.writeValueAsString(productOptionInfo));
+			List<Sku> skuList = productService.getProductOptionInfoByProductId(productId);
+			model.addObject("skuVOInfoList", skuList);
+		} else {
+			product.setHot(1);// 默认为热销商品
+			product.setInventoryFlag(0);// 默认为更新库存
+		}
+		Fproduct f = fProductService.selectByPrimaryKey(productId);
+		model.addObject("fproduct", f);
+		model.addObject("product", product);
+		model.setViewName("admin/product/productInfoEdit");
+		return model;
+	}
+
+	@RequestMapping(value = "/admin/product/save", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> saveProduct(@RequestBody ProductRelation product)
+			throws IllegalAccessException, InvocationTargetException {
+		int i = 0;
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			product.setUpdateUserName(UserUtils.getUserName());
+			i = productService.saveProductInfo(product);
+			if (i > 0) {
+				map.put("error", "0"); // 成功
+				map.put("data", product); // 数据
+			} else {
+				map.put("error", "-1"); // 失败
+			}
+		} catch (Exception e) {
+			map.put("error", "-1"); // 失败
+		}
+		return map;
+	}
+
+	@RequestMapping(value = "/admin/productInfoDataTable", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> productInfoDataTable(PageInformation pageInfo, Product product) {
+		return productService.getProductInfoByCondition(pageInfo, product);
+	}
+	/*
+	 * 翻译
+	 */
+	@RequestMapping(value = "/admin/changLangs", method = RequestMethod.POST)
+	@ResponseBody
+	public String changLangs(@RequestBody Map<String,String>map) {
+		String apiurl="http://translate.google.cn/translate_a/single";//http 请求路径
+		Gson gson=new Gson();
+		System.out.println(map);
+		 try {
+			String doposts=HttpUtilss.doPost2(apiurl,gson.toJson(map),map.toString(),EnumContentType.JSON, 30000);
+			System.out.println(doposts);
+			return doposts;
+		 } catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	@RequestMapping(value = "/admin/product/option/value", method = RequestMethod.POST)
+	@ResponseBody
+	public List<SkuVOInfo> getOptionValue(@RequestBody List<Integer> idList) throws ParseException {
+		return optionService.getOptionByOptionId(idList);
+	}
+
+	@RequestMapping(value = "/admin/product/save/sku", method = RequestMethod.POST)
+	@ResponseBody
+	public AjaxResult saveSku(@RequestBody ProductRelation productRelation) throws ParseException {
+		return skuService.saveSku(productRelation);
+	}
+	//添加变体
+	public int addstock(DTfzyingsWithBLOBs dtfzings) throws ParseException {
+
+		List<DTstock> list = new ArrayList<DTstock>();
+		dtfzings.getY().forEach(x->{
+			DTstock dTstock = new DTstock();
+			// 添加颜色
+			dTstock.setFcolor(x.getFcolor());
+			// 添加编号
+			dTstock.setFno(x.getFno());
+			// 添加价格
+			dTstock.setFadd(x.getFadd());
+			// 添加数量
+			dTstock.setFnum(x.getFnum());
+			// 添加图片地址
+			dTstock.setFimg(x.getFimg());
+			// 添加尺码
+			dTstock.setFsize(x.getFsize());
+			// 添加变体指向商品唯一id
+			dTstock.setFid(dtfzings.getFids());
+			list.add(dTstock);
+		});
+		
+		return dTstockService.insertStock(list);
+	}
+	// 添加一个数据
+	@RequestMapping(value = "/admin/saddsproduct", method = RequestMethod.POST)
+	@ResponseBody
+	public AjaxResult productadd(@RequestBody DTfzyingWithBLOBs dtfzings) throws ParseException {
+		DTstock dTstock = new DTstock();
+		for (int i = 0; i < dtfzings.getY().length; i++) {
+			// 添加颜色
+			String color = dtfzings.getY()[i].getFcolor();
+			dTstock.setFcolor(color);
+			// 添加编号
+			String no = dtfzings.getY()[i].getFno();
+			dTstock.setFno(no);
+			// 添加价格
+			String add = dtfzings.getY()[i].getFadd();
+			dTstock.setFadd(add);
+			// 添加数量
+			Integer num = dtfzings.getY()[i].getFnum();
+			dTstock.setFnum(num);
+			// 添加图片地址
+			String img = dtfzings.getY()[i].getFimg();
+			dTstock.setFimg(img);
+			// 添加尺码
+			String fsize = dtfzings.getY()[i].getFsize();
+			dTstock.setFsize(fsize);
+			// 添加变体指向商品唯一id
+			String fid = dtfzings.getY()[i].getFid();
+			dTstock.setFid(fid);
+
+			//dTstockService.insertStock(dTstock);
+		}
+		return dTfzyingService.setinsert(dtfzings);
+	}
+
+}

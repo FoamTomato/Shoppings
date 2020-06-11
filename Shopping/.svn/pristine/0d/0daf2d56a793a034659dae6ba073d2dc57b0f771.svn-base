@@ -1,0 +1,24 @@
+package com.sybinal.shop.mapper;
+
+import java.util.List;
+
+import com.sybinal.shop.model.FLogistics;
+
+
+public interface FLogisticsMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(FLogistics record);
+
+    int insertSelective(FLogistics record);
+
+    FLogistics selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(FLogistics record);
+
+    int updateByPrimaryKey(FLogistics record);
+
+	List<FLogistics> selectAll();
+
+	List<FLogistics> selStatusOrder(FLogistics fLogistics);
+}

@@ -1,0 +1,114 @@
+package com.sybinal.shop.service.logistics;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.sybinal.shop.mapper.hjBaseMapper;
+import com.sybinal.shop.model.hjBase;
+
+@Service
+public class hjServiceImpl implements hjService {
+	@Autowired
+	hjBaseMapper hjBasesMapper;
+
+	@Override
+	public int addHJLogistics(hjBase hjBases) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.insertSelective(hjBases);
+	}
+
+	@Override
+	public int insertSelective2(hjBase hjBases) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.insertSelective2(hjBases);
+	}
+
+	@Override
+	public  List<hjBase>  selHJLogistics(hjBase hjBases) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.selHJLogistics(hjBases);
+	}
+
+	@Override
+	public List<hjBase> selectHjLogice(Integer id) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.selectHjLogice(id);
+	}
+
+	@Override
+	public hjBase ckHJLogistics(hjBase hjBases) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.selectByPrimaryKey(hjBases.getId());
+	}
+
+	@Override
+	public int editHJLogistics(hjBase hjBases) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.updateByPrimaryKeySelective(hjBases);
+	}
+
+	@Override
+	public int delHJLogistics(hjBase hjBases) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.deleteByPrimaryKey(hjBases.getId());
+	}
+
+	@Override
+	public int defaultHj0(String hjStandy2) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.defaultHj0(hjStandy2);
+	}
+
+	@Override
+	public int defaultHj1(Integer id) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.defaultHj1(id);
+	}
+	/*
+	 * (non-Javadoc)储存标签
+	 * @see com.sybinal.shop.service.logistics.hjService#setLableKey(java.lang.String)
+	 */
+	@Override
+	public String setLableKey(String doPost,String vID) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.setLableKey(doPost,vID);
+	}
+
+	@Override
+	public List<hjBase> selectallOrid(String lableKeyList) {
+		// TODO Auto-generated method stub
+		String[] split = lableKeyList.split(",");
+        List<String> strings = Arrays.asList(split);
+		return hjBasesMapper.selectallOrid(strings);
+	}
+
+	@Override
+	public List<hjBase> selHJLogistics2(String spili) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.selHJLogistics2(spili);
+	}
+
+	@Override
+	public hjBase selalls(String getfIds) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.selalls(getfIds);
+	}
+
+	@Override
+	public hjBase selalls2(String getfIds) {
+		// TODO Auto-generated method stub
+		return hjBasesMapper.selalls2(getfIds);
+	}
+
+
+	@Override
+	public List<hjBase> getNoList(String list) {
+		// TODO Auto-generated method stub
+		String[] split = list.split(",");
+        List<String> strings = Arrays.asList(split);
+		return hjBasesMapper.getNoList(strings);
+	}
+}

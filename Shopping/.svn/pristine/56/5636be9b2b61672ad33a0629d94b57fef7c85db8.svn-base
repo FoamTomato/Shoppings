@@ -1,0 +1,250 @@
+package com.sybinal.shop.service.excel;
+
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.sybinal.shop.common.ExcelUtil;
+import com.sybinal.shop.mapper.FLogisticsMapper;
+import com.sybinal.shop.mapper.GlogisticsMapper;
+import com.sybinal.shop.model.ExcelBean;
+import com.sybinal.shop.model.FLogistics;
+import com.sybinal.shop.model.Glogistics;
+
+@Service
+public class ExcelServiceImpl implements ExcelService{
+	
+	@Autowired
+	FLogisticsMapper fLogisticsMapper;
+	
+	@Autowired
+	GlogisticsMapper glogisticsMapper;
+	/*
+	 * 导入
+	 * (non-Javadoc)
+	 * @see com.sybinal.shop.service.excel.ExcelService#importExcelInfo(java.io.InputStream, org.springframework.web.multipart.MultipartFile)
+	 */
+	@Override
+    public void importExcelInfo(InputStream in, MultipartFile file) {
+ 
+        try{
+            List<List<Object>> listob = ExcelUtil.getBankListByExcel(in,file.getOriginalFilename());
+            List<FLogistics> fLogistics = new ArrayList<FLogistics>();
+            //遍历listob数据，把数据放到List中listob.size()
+            for (int i = 0; i < listob.size(); i++) {
+                List<Object> ob = listob.get(i);
+                FLogistics FLogisticsInfo =new FLogistics();
+                /*
+                 * id
+                 */
+                FLogisticsInfo.setfIds(String.valueOf(ob.get(0)));
+                /*
+                                          * 旧单号
+                 */
+                FLogisticsInfo.setfOldOrder(String.valueOf(ob.get(1)));
+                /*
+				 * 旧采购
+				*/
+				FLogisticsInfo.setfOldPurchase(String.valueOf(ob.get(2)));
+                /*
+				* ClientOrderCode
+				*/
+				FLogisticsInfo.setfClientOrderCode(String.valueOf(ob.get(3)));
+                /*
+				* 店铺
+				*/
+				FLogisticsInfo.setfStore(String.valueOf(ob.get(4)));
+                /*
+				* PayTime
+				*/
+				DateFormat format = new SimpleDateFormat("yyyy/MM/dd"); 
+				//FLogisticsInfo.setfPayTime(format.parse(String.valueOf(ob.get(6))));
+				if(String.valueOf(ob.get(6))!=""&&String.valueOf(ob.get(6))!=null) {
+					FLogisticsInfo.setfPayTime(format.parse(String.valueOf(ob.get(6))));
+				}
+                /*
+				* Currency
+				*/
+				FLogisticsInfo.setfCurrency(String.valueOf(ob.get(7)));
+                /*
+				* TotalPrice
+				*/
+				FLogisticsInfo.setfTotalPrice(String.valueOf(ob.get(8)));
+                /*
+				* 中文简称
+				*/
+				FLogisticsInfo.setfChinaShort(String.valueOf(ob.get(18)));
+                /*
+				* FirstName
+				*/
+				FLogisticsInfo.setfFirstName(String.valueOf(ob.get(23)));
+                /*
+				* LastName
+				*/
+				FLogisticsInfo.setfLastName(String.valueOf(ob.get(24)));
+                /*
+				* Country
+				*/
+				FLogisticsInfo.setfCountry(String.valueOf(ob.get(25)));
+                /*
+				* Province
+				*/
+				FLogisticsInfo.setfProvince(String.valueOf(ob.get(26)));
+                /*
+				* City
+				*/
+				FLogisticsInfo.setfCity(String.valueOf(ob.get(27)));
+                /*
+				* PostCode
+				*/
+				FLogisticsInfo.setfPostCode(String.valueOf(ob.get(28)));
+                /*
+				* Email
+				*/
+				FLogisticsInfo.setfEmail(String.valueOf(ob.get(29)));
+                /*
+				* Telephone
+				*/
+				FLogisticsInfo.setfTelephone(String.valueOf(ob.get(30)));
+                /*
+				* Address1
+				*/
+				FLogisticsInfo.setfAddress1(String.valueOf(ob.get(31)));
+                /*
+				* Address2
+				*/
+				FLogisticsInfo.setfAddress2(String.valueOf(ob.get(32)));
+                /*
+				* Address3
+				*/
+				FLogisticsInfo.setfAddress3(String.valueOf(ob.get(33)));
+                /*
+				* 物流
+				*/
+				FLogisticsInfo.setfLogistics(String.valueOf(ob.get(34)));
+                /*
+				* 渠道
+				*/
+				FLogisticsInfo.setfChannel(String.valueOf(ob.get(35)));
+                /*
+				* 运单号
+				*/
+				FLogisticsInfo.setfSheet(String.valueOf(ob.get(36)));
+                /*
+				* Fee
+				*/
+				FLogisticsInfo.setStandby1(String.valueOf(ob.get(9)));
+                /*
+				* Money
+				*/
+				FLogisticsInfo.setStandby2(String.valueOf(ob.get(12)));
+                /*
+				* Cost
+				*/
+				FLogisticsInfo.setStandby3(String.valueOf(ob.get(13)));
+                /*
+				* Profile
+				*/
+				FLogisticsInfo.setStandby4(String.valueOf(ob.get(14)));
+                /*
+				* 追踪号
+				*/
+				FLogisticsInfo.setStandby7(String.valueOf(ob.get(37)));
+                /*
+                                           * 存入list列表
+                 */
+               fLogistics.add(FLogisticsInfo);
+            }
+            /*
+                                 * 存入数据库
+             */
+            fLogisticsMapper.insertAll(fLogistics);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+	/*
+	 * 导出
+	 */
+	@Override
+    public XSSFWorkbook exportExcelInfo(String idList) {//String idList
+        XSSFWorkbook xssfWorkbook=null;
+        try {
+            //根据ID查找数据
+           String[] list = idList.split(",");
+            List<Glogistics> fLogistics = new ArrayList<Glogistics>();
+           for(int i=0;i<list.length;i++){
+            	List<Glogistics> fLogisticsInfoList = glogisticsMapper.selectByPrimaryKey(Integer.valueOf(list[i]));//Integer.valueOf(list[i])
+            	fLogisticsMapper.updateStatues(Integer.valueOf(list[i]));
+            	for(Glogistics s:fLogisticsInfoList) {
+                    fLogistics.add(s);
+            	}
+                System.out.println(fLogisticsInfoList);
+           }
+            List<ExcelBean> excel=new ArrayList<>();
+            Map<Integer,List<ExcelBean>> map=new LinkedHashMap<>();
+            //设置标题栏
+            excel.add(new ExcelBean("ID","fids",0));
+            excel.add(new ExcelBean("旧单号","foldorder",0));
+            excel.add(new ExcelBean("旧采购","foldpurchase",0));
+            excel.add(new ExcelBean("ClientOrderCode","fclientordercode",0));
+            excel.add(new ExcelBean("店铺","fstore",0));
+            excel.add(new ExcelBean("PayTime","fpaytime",0));
+            excel.add(new ExcelBean("Currency","fcurrency",0));
+            excel.add(new ExcelBean("TotalPrice","ftotalprice",0));
+            excel.add(new ExcelBean("中文简称","fchinashort",0));
+            excel.add(new ExcelBean("英文简称","fenglishshort",0));
+            excel.add(new ExcelBean("FirstName","ffirstname",0));
+            excel.add(new ExcelBean("LastName","flastname",0));
+            excel.add(new ExcelBean("Country","fcountry",0));
+            excel.add(new ExcelBean("Province","fprovince",0));
+            excel.add(new ExcelBean("City","fcity",0));
+            excel.add(new ExcelBean("PostCode","fpostcode",0));
+            excel.add(new ExcelBean("Email","femail",0));
+            excel.add(new ExcelBean("Telephone","ftelephone",0));
+            excel.add(new ExcelBean("Address1","faddress1",0));
+            excel.add(new ExcelBean("Address2","faddress2",0));
+            excel.add(new ExcelBean("Address3","faddress3",0));
+            excel.add(new ExcelBean("物流","flogistics",0));
+            excel.add(new ExcelBean("渠道","fchannel",0));
+            excel.add(new ExcelBean("运单号","fsheet",0));
+            excel.add(new ExcelBean("物流状态","fstatue",0));
+            excel.add(new ExcelBean("运费","ffreight",0));
+            excel.add(new ExcelBean("海关","fcustoms",0));
+            excel.add(new ExcelBean("重量","fweight",0));
+            excel.add(new ExcelBean("备注","fremark",0));
+            excel.add(new ExcelBean("手续费Fee","standby1",0));
+            excel.add(new ExcelBean("原价Money","standby2",0));
+            excel.add(new ExcelBean("运费Cost","standby3",0));
+            excel.add(new ExcelBean("利润Profile","standby4",0));
+            excel.add(new ExcelBean("公司","standby5",0));
+            excel.add(new ExcelBean("状态","standby6",0));
+            excel.add(new ExcelBean("追踪号","standby7",0));
+            System.out.println(excel);
+            map.put(0, excel);
+            System.out.println(map);
+            Calendar cal=Calendar.getInstance();      
+            int y=cal.get(Calendar.YEAR);      
+            int m=cal.get(Calendar.MONTH);      
+            int d=cal.get(Calendar.DATE);      
+            int h=cal.get(Calendar.HOUR_OF_DAY);      
+            int mi=cal.get(Calendar.MINUTE);      
+            int s=cal.get(Calendar.SECOND);      
+            String sheetName ="Foam_运单基本信息"+y+"年"+m+"月"+d+"日"+h+"时"+mi+"分"+s+"秒";
+            xssfWorkbook = ExcelUtil.createExcelFile(Glogistics.class, fLogistics, map, sheetName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return xssfWorkbook;
+    }
+}

@@ -1,0 +1,40 @@
+package com.sybinal.shop.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.sybinal.shop.mapper.logOutOfMapper;
+import com.sybinal.shop.model.logOutOf;
+
+@Service
+public class logOutOfServiceImpl implements logOutOfService {
+	@Autowired
+	logOutOfMapper logMapper;
+	/**
+	 * 查询所有的物流方式
+	 */
+	@Override
+	public List<logOutOf> selectAll() {
+		// TODO Auto-generated method stub
+		return logMapper.selectAll();
+	}
+	/**
+	 * 物流添加的main函数
+	 * @param shorts 简称
+	 * @param name 名称
+	 * @param logisticname 集拼名称
+	 * @return
+	 */
+	@Override
+	public int addlogistic(String shorts, String name, String logisticname) {
+		// TODO Auto-generated method stub
+		logOutOf out=new logOutOf();
+		out.setShortName(shorts);
+		out.setName(name);
+		out.setLogisticsName(logisticname);
+		System.out.println(out);
+		return logMapper.insertSelective(out);
+	}
+}

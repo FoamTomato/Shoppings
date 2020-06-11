@@ -1,0 +1,78 @@
+package com.sybinal.shop.service.logistics;
+
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import com.sybinal.shop.model.FLogistics;
+import com.sybinal.shop.model.Xlogistics;
+
+
+public interface LogisticsService {
+	/*
+	 * 查询所有列表
+	 */
+	List<FLogistics> checkTheOrder();
+	/*
+	 * 根据id查询列表
+	 */
+	FLogistics selectOrderByIds(FLogistics fLogistics);
+	/*
+	 * 修改基本信息
+	 */
+	int updateBasicInformation(FLogistics fLogistics);
+	/*
+	 * 添加运单
+	 */
+	int addLogisticsQuantity(Xlogistics xlogistics);
+	/*
+	 * 查询运单的信息
+	 */
+	List<Xlogistics> selLogisticsQuantity(Xlogistics xlogistics);
+	/*
+	 * 查询运单的信息
+	 */
+	List<Xlogistics>  selectSA(Integer xlogistics);
+	/*
+	 * 删除运单
+	 */
+	int delLogisticsQuantity(Xlogistics xlogistics);
+	/*
+	 * 查询单独运单
+	 */
+	Xlogistics selsLogisticsQuantity(Xlogistics xlogistics);
+	/*
+	 * 修改运单
+	 */
+	int editLogisticsQuantity(Xlogistics xlogistics);
+	/*
+	 * 根据条件查询订单
+	 */
+	List<FLogistics> selStatusOrder(FLogistics fLogistics);
+	/*
+	 * 改变状态
+	 */
+	int update(FLogistics fLogistics);
+	/*
+	 * 默认状态
+	 */
+	int default0(String hjShipperhawbcode);
+	/*
+	 * 默认状态
+	 */
+	int default1(Integer valueOf);
+	/*
+	 * 查找fid
+	 */
+	TreeMap<String, Object> getfids(Map<String,String> map);
+	/*
+	 * 已发件状态
+	 */
+	int postLogistics(String id);
+	/*
+	 * 添加标签
+	 */
+	int insertLableKey(String id, String lab);
+
+
+}

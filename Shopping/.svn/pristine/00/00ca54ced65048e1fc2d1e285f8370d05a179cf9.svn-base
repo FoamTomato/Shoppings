@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sybinal.shop.mapper.jpOrderMapper">
+  <resultMap id="BaseResultMap" type="com.sybinal.shop.model.jpOrder">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="jp_laks" jdbcType="VARCHAR" property="jpLaks" />
+    <result column="jp_time" jdbcType="TIMESTAMP" property="jpTime" />
+    <result column="jp_logistic" jdbcType="VARCHAR" property="jpLogistic" />
+    <result column="jp_length" jdbcType="VARCHAR" property="jpLength" />
+    <result column="jp_suttle" jdbcType="VARCHAR" property="jpSuttle" />
+    <result column="jp_roughweight" jdbcType="VARCHAR" property="jpRoughweight" />
+    <result column="jp_admin" jdbcType="VARCHAR" property="jpAdmin" />
+    <result column="jp_standby1" jdbcType="VARCHAR" property="jpStandby1" />
+    <result column="jp_standby2" jdbcType="VARCHAR" property="jpStandby2" />
+    <result column="jp_standby3" jdbcType="VARCHAR" property="jpStandby3" />
+    <result column="jp_standby4" jdbcType="VARCHAR" property="jpStandby4" />
+    <result column="jp_standby5" jdbcType="VARCHAR" property="jpStandby5" />
+    <result column="jp_standby6" jdbcType="VARCHAR" property="jpStandby6" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.sybinal.shop.model.jpOrder">
+    <result column="jp_result" jdbcType="LONGVARCHAR" property="jpResult" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, jp_laks, jp_time, jp_logistic, jp_length, jp_suttle, jp_roughweight, jp_admin, 
+    jp_standby1, jp_standby2, jp_standby3, jp_standby4, jp_standby5, jp_standby6
+  </sql>
+  <sql id="Blob_Column_List">
+    jp_result
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from jp_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from jp_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sybinal.shop.model.jpOrder">
+    insert into jp_order (id, jp_laks, jp_time, 
+      jp_logistic, jp_length, jp_suttle, 
+      jp_roughweight, jp_admin, jp_standby1, 
+      jp_standby2, jp_standby3, jp_standby4, 
+      jp_standby5, jp_standby6, jp_result
+      )
+    values (#{id,jdbcType=INTEGER}, #{jpLaks,jdbcType=VARCHAR}, #{jpTime,jdbcType=TIMESTAMP}, 
+      #{jpLogistic,jdbcType=VARCHAR}, #{jpLength,jdbcType=VARCHAR}, #{jpSuttle,jdbcType=VARCHAR}, 
+      #{jpRoughweight,jdbcType=VARCHAR}, #{jpAdmin,jdbcType=VARCHAR}, #{jpStandby1,jdbcType=VARCHAR}, 
+      #{jpStandby2,jdbcType=VARCHAR}, #{jpStandby3,jdbcType=VARCHAR}, #{jpStandby4,jdbcType=VARCHAR}, 
+      #{jpStandby5,jdbcType=VARCHAR}, #{jpStandby6,jdbcType=VARCHAR}, #{jpResult,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sybinal.shop.model.jpOrder">
+    insert into jp_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="jpLaks != null">
+        jp_laks,
+      </if>
+      <if test="jpTime != null">
+        jp_time,
+      </if>
+      <if test="jpLogistic != null">
+        jp_logistic,
+      </if>
+      <if test="jpLength != null">
+        jp_length,
+      </if>
+      <if test="jpSuttle != null">
+        jp_suttle,
+      </if>
+      <if test="jpRoughweight != null">
+        jp_roughweight,
+      </if>
+      <if test="jpAdmin != null">
+        jp_admin,
+      </if>
+      <if test="jpStandby1 != null">
+        jp_standby1,
+      </if>
+      <if test="jpStandby2 != null">
+        jp_standby2,
+      </if>
+      <if test="jpStandby3 != null">
+        jp_standby3,
+      </if>
+      <if test="jpStandby4 != null">
+        jp_standby4,
+      </if>
+      <if test="jpStandby5 != null">
+        jp_standby5,
+      </if>
+      <if test="jpStandby6 != null">
+        jp_standby6,
+      </if>
+      <if test="jpResult != null">
+        jp_result,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="jpLaks != null">
+        #{jpLaks,jdbcType=VARCHAR},
+      </if>
+      <if test="jpTime != null">
+        #{jpTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jpLogistic != null">
+        #{jpLogistic,jdbcType=VARCHAR},
+      </if>
+      <if test="jpLength != null">
+        #{jpLength,jdbcType=VARCHAR},
+      </if>
+      <if test="jpSuttle != null">
+        #{jpSuttle,jdbcType=VARCHAR},
+      </if>
+      <if test="jpRoughweight != null">
+        #{jpRoughweight,jdbcType=VARCHAR},
+      </if>
+      <if test="jpAdmin != null">
+        #{jpAdmin,jdbcType=VARCHAR},
+      </if>
+      <if test="jpStandby1 != null">
+        #{jpStandby1,jdbcType=VARCHAR},
+      </if>
+      <if test="jpStandby2 != null">
+        #{jpStandby2,jdbcType=VARCHAR},
+      </if>
+      <if test="jpStandby3 != null">
+        #{jpStandby3,jdbcType=VARCHAR},
+      </if>
+      <if test="jpStandby4 != null">
+        #{jpStandby4,jdbcType=VARCHAR},
+      </if>
+      <if test="jpStandby5 != null">
+        #{jpStandby5,jdbcType=VARCHAR},
+      </if>
+      <if test="jpStandby6 != null">
+        #{jpStandby6,jdbcType=VARCHAR},
+      </if>
+      <if test="jpResult != null">
+        #{jpResult,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sybinal.shop.model.jpOrder">
+    update jp_order
+    <set>
+      <if test="jpLaks != null">
+        jp_laks = #{jpLaks,jdbcType=VARCHAR},
+      </if>
+      <if test="jpTime != null">
+        jp_time = #{jpTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jpLogistic != null">
+        jp_logistic = #{jpLogistic,jdbcType=VARCHAR},
+      </if>
+      <if test="jpLength != null">
+        jp_length = #{jpLength,jdbcType=VARCHAR},
+      </if>
+      <if test="jpSuttle != null">
+        jp_suttle = #{jpSuttle,jdbcType=VARCHAR},
+      </if>
+      <if test="jpRoughweight != null">
+        jp_roughweight = #{jpRoughweight,jdbcType=VARCHAR},
+      </if>
+      <if test="jpAdmin != null">
+        jp_admin = #{jpAdmin,jdbcType=VARCHAR},
+      </if>
+      <if test="jpStandby1 != null">
+        jp_standby1 = #{jpStandby1,jdbcType=VARCHAR},
+      </if>
+      <if test="jpStandby2 != null">
+        jp_standby2 = #{jpStandby2,jdbcType=VARCHAR},
+      </if>
+      <if test="jpStandby3 != null">
+        jp_standby3 = #{jpStandby3,jdbcType=VARCHAR},
+      </if>
+      <if test="jpStandby4 != null">
+        jp_standby4 = #{jpStandby4,jdbcType=VARCHAR},
+      </if>
+      <if test="jpStandby5 != null">
+        jp_standby5 = #{jpStandby5,jdbcType=VARCHAR},
+      </if>
+      <if test="jpStandby6 != null">
+        jp_standby6 = #{jpStandby6,jdbcType=VARCHAR},
+      </if>
+      <if test="jpResult != null">
+        jp_result = #{jpResult,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.sybinal.shop.model.jpOrder">
+    update jp_order
+    set jp_laks = #{jpLaks,jdbcType=VARCHAR},
+      jp_time = #{jpTime,jdbcType=TIMESTAMP},
+      jp_logistic = #{jpLogistic,jdbcType=VARCHAR},
+      jp_length = #{jpLength,jdbcType=VARCHAR},
+      jp_suttle = #{jpSuttle,jdbcType=VARCHAR},
+      jp_roughweight = #{jpRoughweight,jdbcType=VARCHAR},
+      jp_admin = #{jpAdmin,jdbcType=VARCHAR},
+      jp_standby1 = #{jpStandby1,jdbcType=VARCHAR},
+      jp_standby2 = #{jpStandby2,jdbcType=VARCHAR},
+      jp_standby3 = #{jpStandby3,jdbcType=VARCHAR},
+      jp_standby4 = #{jpStandby4,jdbcType=VARCHAR},
+      jp_standby5 = #{jpStandby5,jdbcType=VARCHAR},
+      jp_standby6 = #{jpStandby6,jdbcType=VARCHAR},
+      jp_result = #{jpResult,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sybinal.shop.model.jpOrder">
+    update jp_order
+    set jp_laks = #{jpLaks,jdbcType=VARCHAR},
+      jp_time = #{jpTime,jdbcType=TIMESTAMP},
+      jp_logistic = #{jpLogistic,jdbcType=VARCHAR},
+      jp_length = #{jpLength,jdbcType=VARCHAR},
+      jp_suttle = #{jpSuttle,jdbcType=VARCHAR},
+      jp_roughweight = #{jpRoughweight,jdbcType=VARCHAR},
+      jp_admin = #{jpAdmin,jdbcType=VARCHAR},
+      jp_standby1 = #{jpStandby1,jdbcType=VARCHAR},
+      jp_standby2 = #{jpStandby2,jdbcType=VARCHAR},
+      jp_standby3 = #{jpStandby3,jdbcType=VARCHAR},
+      jp_standby4 = #{jpStandby4,jdbcType=VARCHAR},
+      jp_standby5 = #{jpStandby5,jdbcType=VARCHAR},
+      jp_standby6 = #{jpStandby6,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 查找所有集拼 -->
+  <select id="selectAll" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from jp_order 
+    <where>
+    <trim  suffixOverrides="and">
+    <if test="seles.selectText != ''">
+	    <foreach collection="listke" item="id" open="(" close=")" separator=",">
+	    jp_laks like concat('%','${id}','%')
+	    or jp_result like concat('%','${id}','%')
+		</foreach>
+		and
+	</if>
+	<if test="seles.shortCutTime != ''">
+	  date_sub(CURDATE(),INTERVAL #{seles.shortCutTime} DAY) &lt;= jp_time and
+ 	</if>
+ 	<if test="seles.shortCutTime == ''">
+		<if test="seles.startTime != ''">
+			jp_time &gt;= #{seles.startTime} and
+		</if>
+		<if test="seles.endTime != ''">
+			jp_time &lt;= #{seles.endTime} and
+		</if>
+ 	</if>
+ 	<if test="seles.logistics != ''">
+		jp_logistic =#{seles.logistics} and
+ 	</if>
+ 	</trim>
+ 	</where>
+  </select>
+  
+  <!-- 批量删除 -->
+  <delete id="deleteByPrimaryKeys" parameterType="java.util.List" >
+   delete from jp_order
+    where id in
+	<foreach collection="strings" item="id" open="(" close=")" separator=",">
+		 #{id}
+	</foreach>
+  </delete>
+</mapper>

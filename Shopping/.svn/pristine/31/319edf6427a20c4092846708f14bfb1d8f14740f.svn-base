@@ -1,0 +1,264 @@
+package com.sybinal.shop.controller.admin;
+
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.sybinal.shop.model.FLogistics;
+import com.sybinal.shop.model.Xlogistics;
+import com.sybinal.shop.model.hjBase;
+import com.sybinal.shop.service.logistics.LogisticsService;
+import com.sybinal.shop.service.logistics.hjService;
+import com.sybinal.shop.service.order.OrderService;
+
+@Controller
+public class FLogisticsController {
+
+	@Autowired
+	OrderService orderService;
+
+	@Autowired
+	LogisticsService logisticsService;
+	
+	@Autowired
+	hjService hjServices;
+	/*
+	 * 查询订单
+	 *
+	 */
+	@RequestMapping(value = "/Logistics/checkTheOrder",method=RequestMethod.GET)
+	@ResponseBody
+	public PageInfo checkTheOrder(@RequestParam(value="page",defaultValue="1")Integer page,
+            @RequestParam(value = "limit", defaultValue = "50") Integer limit) {
+		  PageHelper.startPage(page,limit);
+		  List<FLogistics> List=logisticsService.checkTheOrder();
+		  PageInfo pageInfo = new PageInfo(List);
+		  
+		return pageInfo;
+	}
+	/*
+	 * 改变打印订单状态
+	 *
+	 */
+	@RequestMapping(value = "/Logistics/printStatus",method=RequestMethod.POST)
+	@ResponseBody
+	public int printStatus(@RequestBody FLogistics fLogistics) {
+		 
+		return logisticsService.update(fLogistics);
+	}
+	/*
+	 * 根据id查询订单详情selectOrderById
+	 */
+	@RequestMapping(value = "/Logistics/selectOrderById")
+	@ResponseBody
+	public ModelAndView selectOrderById(FLogistics fLogistics) {
+		ModelAndView model = new ModelAndView();
+		/*
+		 * 获取订单详情
+		 */
+		model.addObject("fLogistics",logisticsService.selectOrderByIds(fLogistics));
+		/*
+		 * 获取云单详情
+		 */
+		model.addObject("XLogistics",logisticsService.selectSA(fLogistics.getId()));
+		/*
+		 * 获取hj云单详情
+		 */
+		model.addObject("hjLogistics",hjServices.selectHjLogice(fLogistics.getId()));
+		model.setViewName("admin/order/o_Fright");
+		return model;
+	}
+	/*
+	 * 根据id查询订单详情/Logistics/saveEdit
+	 */
+	@RequestMapping(value = "/Logistics/saveEdit",method=RequestMethod.POST)
+	@ResponseBody
+	public FLogistics saveEdit(@RequestBody FLogistics fLogistics) {
+		
+		if(logisticsService.updateBasicInformation(fLogistics)==1)
+		return logisticsService.selectOrderByIds(fLogistics);
+	return null;
+	}
+	
+	/*
+	 * 添加环金运单/Logistics/addLogisticsQuantity
+	 */
+	@RequestMapping(value = "/Logistics/addHJLogistics",method=RequestMethod.POST)
+	@ResponseBody
+	public int addHJLogistics(@RequestBody hjBase hjBases) {
+	
+	return hjServices.addHJLogistics(hjBases);
+	}
+	/*
+	 * 添加运单/Logistics/addLogisticsQuantity
+	 */
+	@RequestMapping(value = "/Logistics/addLogisticsQuantity",method=RequestMethod.POST)
+	@ResponseBody
+	public int addLogisticsQuantity(@RequestBody Xlogistics xlogistics) {
+		
+	return logisticsService.addLogisticsQuantity(xlogistics);
+	}
+	
+	/*
+	 * 删除运单/Logistics/delLogisticsQuantity
+	 */
+	@RequestMapping(value = "/Logistics/delLogisticsQuantity",method=RequestMethod.POST)
+	@ResponseBody
+	public int delLogisticsQuantity(@RequestBody Xlogistics xlogistics) {
+		
+		return logisticsService.delLogisticsQuantity(xlogistics);
+	}
+	/*
+	 * 删除HJ运单/Logistics/editHJLogistics
+	 */
+	@RequestMapping(value = "/Logistics/delHJLogistics",method=RequestMethod.POST)
+	@ResponseBody
+	public int delHJLogistics(@RequestBody hjBase hjBases) {
+		return hjServices.delHJLogistics(hjBases);
+	}
+	/*查询所有订单*/
+	
+	@RequestMapping(value = "/Logistics/seleHJALL",method=RequestMethod.POST)
+	@ResponseBody
+	public List<hjBase> seleHJALL(@RequestBody hjBase hjBases) {
+			return hjServices.selHJLogistics(hjBases);
+	}
+	/*
+	 * 查询运单/Logistics/selLogisticsQuantity
+	 */
+	@RequestMapping(value = "/Logistics/selLogisticsQuantity",method=RequestMethod.POST)
+	@ResponseBody
+	public Xlogistics selLogisticsQuantity(@RequestBody Xlogistics xlogistics) {
+			return logisticsService.selsLogisticsQuantity(xlogistics);
+	}
+	/*
+	 * 查询环金运单/Logistics/ckHJLogistics
+	 */
+	@RequestMapping(value = "/Logistics/ckHJLogistics",method=RequestMethod.POST)
+	@ResponseBody
+	public hjBase ckHJLogistics(@RequestBody hjBase hjBases) {
+			return hjServices.ckHJLogistics(hjBases);
+	}
+	/*
+	 * 修改运单/Logistics/editLogisticsQuantity
+	 */
+	@RequestMapping(value = "/Logistics/editLogisticsQuantity",method=RequestMethod.POST)
+	@ResponseBody
+	public int editLogisticsQuantity(@RequestBody Xlogistics xlogistics) {
+		
+		return logisticsService.editLogisticsQuantity(xlogistics);
+	}
+	/*
+	 * 修改HJ运单/Logistics/editHJLogistics
+	 */
+	@RequestMapping(value = "/Logistics/editHJLogistics",method=RequestMethod.POST)
+	@ResponseBody
+	public int editHJLogistics(@RequestBody hjBase hjBases) {
+		
+		return hjServices.editHJLogistics(hjBases);
+	}
+	/*
+	 * 修改运单/Logistics/editHJLogistics
+	 */
+	@RequestMapping(value = "/Logistics/selLogi",method=RequestMethod.POST)
+	@ResponseBody
+	public  List<Xlogistics> selLogi(@RequestBody Xlogistics xlogistics) {
+		
+		return logisticsService.selLogisticsQuantity(xlogistics);
+	}
+	
+	/*
+	 * 修改默认
+	 */
+	@RequestMapping(value = "/Logistics/defaultHj",method=RequestMethod.POST)
+	@ResponseBody
+	public  int defaultHj(@RequestBody hjBase hjBases) {
+		System.out.println(hjBases);
+		if(hjBases.getHjStandy3().equals("0")) {
+			System.out.println("1");
+			/*
+			 * 环金
+			 */
+			hjServices.defaultHj0(hjBases.getHjShipperhawbcode());
+			logisticsService.default0(hjBases.getHjShipperhawbcode());
+			return hjServices.defaultHj1(Integer.valueOf(hjBases.getHjStandy2()));
+		}else if(hjBases.getHjStandy3().equals("1")) {
+			System.out.println("2");
+			/*
+			 * 普通
+			 */
+			hjServices.defaultHj0(hjBases.getHjShipperhawbcode());
+			logisticsService.default0(hjBases.getHjShipperhawbcode());
+			return logisticsService.default1(Integer.valueOf(hjBases.getHjStandy2()));
+		}
+		return 0;
+	}
+	/*
+	 * 根据条件查询订单/Logistics/selStatusOrder
+	 */
+	@RequestMapping(value = "/Logistics/selStatusOrder",method=RequestMethod.POST)
+	@ResponseBody
+	public PageInfo selStatusOrder(@RequestBody FLogistics fLogistics) {
+		//指定格式化格式
+		if(fLogistics.getLimit()!=null) {
+			  PageHelper.startPage(fLogistics.getPage(),fLogistics.getLimit());
+		}else {
+			  PageHelper.startPage(fLogistics.getPage(),50); 
+		}
+		  List<FLogistics> List=logisticsService.selStatusOrder(fLogistics);
+		  PageInfo pageInfo = new PageInfo(List);
+		  
+		return pageInfo;
+	}
+	/*
+	 * 获取到订单fid/Logistics/getPostId
+	 */
+	@RequestMapping(value = "/Logistics/getPostId",method=RequestMethod.POST)
+	@ResponseBody
+	public  TreeMap<String, Object> getPostId(@RequestBody Map<String,String> map) {
+
+		System.out.println("123");
+		return logisticsService.getfids(map);
+	}
+	/*
+	 * 发送请求
+	 */
+	@RequestMapping(value = "/Logistics/getPostYu",method=RequestMethod.POST)
+	@ResponseBody
+	public  void getPosts(@RequestBody Map<String,Object> map) {
+		System.out.println(map);
+		String apiurl="http://vakind.f3322.org:10008/api/logistics/v1/track/create/order";//http 请求路径
+		//String path="/api/logistics/v1/track/lable/download";
+		//String paramer="{\"lableKey\":\"1_1159279533531246593\"}";
+		//Map<String, String> head = Maps.newHashMap();
+		//head.put("SE-TOKEN", "93a61c53-e6a3-4f13-ad0b-594498a49c45");
+		//head.put("signature","52AD1BA7767405EF86295D9824A1AE0BA795B7B0");//getSign(apiurl,"token",paramer,"POST")
+		//head.put("Content-Type", "application/json");
+		System.out.println(map.get("hmacSha1"));
+		Map<String, Object> maps= Maps.newHashMap();
+		//maps.putAll(map.get("data"));
+		//http请求请求
+		Gson gson=new Gson();
+		try {
+			String doPost = HttpUtils.doPost("http", "http://vakind.f3322.org:10008/api/logistics/v1/track/create/order", map);
+			System.out.println(doPost+"+"+gson.toJson(map.get("data")));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//return logisticsService.getfids(map);
+	}
+}

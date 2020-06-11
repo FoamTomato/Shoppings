@@ -1,0 +1,77 @@
+package com.sybinal.shop.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.sybinal.shop.model.FLogistics;
+
+
+public interface FLogisticsMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(FLogistics record);
+
+    int insertSelective(FLogistics record); 
+
+    FLogistics selectByPrimaryKey(FLogistics id);
+
+    FLogistics selectByPrimaryKey2(FLogistics id);
+    
+    List<FLogistics> SelectIdsForm(Integer id);
+
+    int updateByPrimaryKeySelective(FLogistics record);
+
+    int updateByPrimaryKey(FLogistics record);
+
+	List<FLogistics> selectAll(@Param("username") String username);
+
+	List<FLogistics> selStatusOrder(@Param("flog")FLogistics fLogistics,@Param("let") List<String> strings,@Param("uks") String uks);
+	
+    int insertAll(@Param("FLogistics") List<FLogistics> record);
+
+	int updateStatues(@Param("strings")List<String> strings);
+
+	FLogistics selectIDs(@Param("id") String id,@Param("username")  String username);
+
+	int postLogistics(@Param("id")String id,@Param("username")String username);
+
+	int insertLableKey(@Param("ids") String id,@Param("labs") String lab,@Param("num1") String num1,@Param("method") String method,@Param("username") String username);//,@Param("num2") String num2
+
+	int updatajp(@Param("jpResult") String jpResult,@Param("updatajp") String updatajp,@Param("nos") String nos,@Param("username") String username);
+
+	int batdel(@Param("lit") List<String> strings);
+
+	void addWeight(@Param("wei")  String hjInvoiceweight,@Param("iid")  String string,@Param("nos") String nos,@Param("username") String username);
+
+	int updataCn(@Param("referenceNo")String referenceNo,@Param("trackNum1") String trackNum1);
+ 
+	void updateStatue2s(@Param("string2s")List<String> string2s,@Param("username")String  id);
+ 
+	int defaultsLO(@Param("valueOf")Integer valueOf,@Param("username")String username);
+	/**
+	 * 修改集拼
+	 * @param states
+	 * @return
+	 */
+	int jps(@Param("states")String states,@Param("ids")String ids);
+	/**
+	 * 批量查找id
+	 * @param strings
+	 * @return
+	 */
+	List<FLogistics> selectListid(@Param("lit")List<String> strings);
+	/**
+	 * 根据亚马逊编号查找
+	 * @param postman
+	 * @return
+	 */
+	List<FLogistics> stream(@Param("postman") String postman);
+	/**
+	 * 根据邮箱查找
+	 * @param replace
+	 * @return
+	 */
+	List<FLogistics> streamEmail(@Param("emails") String replace);
+ 
+}

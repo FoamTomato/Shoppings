@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sybinal.shop.mapper.CateMapper">
+  <resultMap id="BaseResultMap" type="com.sybinal.shop.model.Cate">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cate1" jdbcType="VARCHAR" property="cate1" />
+    <result column="cate2" jdbcType="VARCHAR" property="cate2" />
+    <result column="cate3" jdbcType="VARCHAR" property="cate3" />
+    <result column="cate4" jdbcType="VARCHAR" property="cate4" />
+    <result column="cate5" jdbcType="VARCHAR" property="cate5" />
+    <result column="cate6" jdbcType="VARCHAR" property="cate6" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cate1, cate2, cate3, cate4, cate5, cate6, status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!-- 根据条件查询所有的分类selectAll -->
+  <select id="selectAll"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cate
+    where 1=1
+    <if test="cate1 != null">
+      and  cate1 = #{cate1,jdbcType=VARCHAR}
+      </if>
+      <if test="cate2 != null">
+       and  cate2 = #{cate2,jdbcType=VARCHAR}
+      </if>
+      <if test="cate3 != null">
+       and cate3 = #{cate3,jdbcType=VARCHAR}
+      </if>
+      <if test="cate4 != null">
+       and  cate4 = #{cate4,jdbcType=VARCHAR}
+      </if>
+      <if test="cate5 != null">
+       and  cate5 = #{cate5,jdbcType=VARCHAR}
+      </if>
+      <if test="cate6 != null">
+       and  cate6 = #{cate6,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null">
+      and  status = #{status,jdbcType=VARCHAR}
+      </if>
+  </select>
+  <!-- 查询所有后续分类 -->
+  <select id="select_modal_cate"  resultMap="BaseResultMap">
+  	select
+  	<trim  suffixOverrides=",">
+      <if test="id == null">
+        id,
+      </if>
+      <if test="cate1 == null">
+        cate1,
+      </if>
+      <if test="cate2 == null">
+        cate2,
+      </if>
+      <if test="cate3 == null">
+        cate3,
+      </if>
+      <if test="cate4 == null">
+        cate4,
+      </if>
+      <if test="cate5 == null">
+        cate5,
+      </if>
+      <if test="cate6 == null">
+        cate6,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    from cate where 1=1
+      <if test="cate1 != null">
+      and  cate1 = #{cate1,jdbcType=VARCHAR}
+      </if>
+      <if test="cate2 != null">
+       and  cate2 = #{cate2,jdbcType=VARCHAR}
+      </if>
+      <if test="cate3 != null">
+       and cate3 = #{cate3,jdbcType=VARCHAR}
+      </if>
+      <if test="cate4 != null">
+       and  cate4 = #{cate4,jdbcType=VARCHAR}
+      </if>
+      <if test="cate5 != null">
+       and  cate5 = #{cate5,jdbcType=VARCHAR}
+      </if>
+      <if test="cate6 != null">
+       and  cate6 = #{cate6,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null">
+      and  status = #{status,jdbcType=VARCHAR}
+      </if>
+  </select>
+  <!-- 查询按钮 -->
+  <select id="Seach_cate"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cate
+    where 
+    <if test="cate1 != null">
+        cate1 like concat('%','${cate1}','%')
+      
+       or  cate2 like concat('%','${cate1}','%')
+      
+       or cate3 like concat('%','${cate1}','%')
+      
+       or  cate4 like concat('%','${cate1}','%')
+      
+       or  cate5 like concat('%','${cate1}','%')
+     
+       or  cate6 like concat('%','${cate1}','%')
+     
+      </if>
+    <if test="cate1 == null">1=1</if>
+  </select>
+  <!-- 删除分类 deleteCate-->
+  <delete id="deleteCate" parameterType="com.sybinal.shop.model.Cate">
+    delete from cate
+    where 
+    <trim  suffixOverrides="and">
+	<if test="cate1 != null">
+        cate1 = #{cate1,jdbcType=VARCHAR} and
+      </if>
+      <if test="cate2 != null">
+      cate2 = #{cate2,jdbcType=VARCHAR}  and
+      </if>
+      <if test="cate3 != null">
+       cate3 = #{cate3,jdbcType=VARCHAR} and
+      </if>
+      <if test="cate4 != null">
+       cate4 = #{cate4,jdbcType=VARCHAR} and
+      </if>
+      <if test="cate5 != null">
+       cate5 = #{cate5,jdbcType=VARCHAR} and
+      </if>
+      <if test="cate6 != null">
+      cate6 = #{cate6,jdbcType=VARCHAR} and
+      </if>
+      <if test="status != null">
+      status = #{status,jdbcType=VARCHAR} and
+      </if>
+      </trim>
+  </delete>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cate
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sybinal.shop.model.Cate">
+    insert into cate (id, cate1, cate2, 
+      cate3, cate4, cate5, 
+      cate6, status)
+    values (#{id,jdbcType=INTEGER}, #{cate1,jdbcType=VARCHAR}, #{cate2,jdbcType=VARCHAR}, 
+      #{cate3,jdbcType=VARCHAR}, #{cate4,jdbcType=VARCHAR}, #{cate5,jdbcType=VARCHAR}, 
+      #{cate6,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sybinal.shop.model.Cate">
+    insert into cate
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cate1 != null">
+        cate1,
+      </if>
+      <if test="cate2 != null">
+        cate2,
+      </if>
+      <if test="cate3 != null">
+        cate3,
+      </if>
+      <if test="cate4 != null">
+        cate4,
+      </if>
+      <if test="cate5 != null">
+        cate5,
+      </if>
+      <if test="cate6 != null">
+        cate6,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cate1 != null">
+        #{cate1,jdbcType=VARCHAR},
+      </if>
+      <if test="cate2 != null">
+        #{cate2,jdbcType=VARCHAR},
+      </if>
+      <if test="cate3 != null">
+        #{cate3,jdbcType=VARCHAR},
+      </if>
+      <if test="cate4 != null">
+        #{cate4,jdbcType=VARCHAR},
+      </if>
+      <if test="cate5 != null">
+        #{cate5,jdbcType=VARCHAR},
+      </if>
+      <if test="cate6 != null">
+        #{cate6,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sybinal.shop.model.Cate">
+    update cate
+    <set>
+      <if test="cate1 != null">
+        cate1 = #{cate1,jdbcType=VARCHAR},
+      </if>
+      <if test="cate1 == null">
+        cate1 = null,
+      </if>
+      <if test="cate2 != null">
+        cate2 = #{cate2,jdbcType=VARCHAR},
+      </if>
+      <if test="cate2 == null">
+        cate2 = null,
+      </if>
+      <if test="cate3 != null">
+        cate3 = #{cate3,jdbcType=VARCHAR},
+      </if>
+      <if test="cate3 == null">
+        cate3 = null,
+      </if>
+      <if test="cate4 != null">
+        cate4 = #{cate4,jdbcType=VARCHAR},
+      </if>
+      <if test="cate4 == null">
+        cate4 = null,
+      </if>
+      <if test="cate5 != null">
+        cate5 = #{cate5,jdbcType=VARCHAR},
+      </if>
+      <if test="cate5 == null">
+        cate5 = null,
+      </if>
+      <if test="cate6 != null">
+        cate6 = #{cate6,jdbcType=VARCHAR},
+      </if>
+      <if test="cate6 == null">
+        cate6 = null,
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sybinal.shop.model.Cate">
+    update cate
+    set cate1 = #{cate1,jdbcType=VARCHAR},
+      cate2 = #{cate2,jdbcType=VARCHAR},
+      cate3 = #{cate3,jdbcType=VARCHAR},
+      cate4 = #{cate4,jdbcType=VARCHAR},
+      cate5 = #{cate5,jdbcType=VARCHAR},
+      cate6 = #{cate6,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

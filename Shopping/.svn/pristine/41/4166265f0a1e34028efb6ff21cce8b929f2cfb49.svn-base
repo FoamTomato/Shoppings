@@ -1,0 +1,20 @@
+package com.sybinal.shop.service.cate;
+
+import java.util.List;
+
+import com.sybinal.shop.model.Cate;
+
+public interface CateService {
+	//查询所有的分类
+	public List<Cate> selectAllCate(Cate cate);
+	//查询所有的类似分类
+	public List<Cate> Seach_cate(Cate cate);
+	/*
+	 * 添加分类
+	 */
+	public int AddCates(Cate cates);
+	/*
+	 * 删除分类
+	 */
+	public int DelCates(Cate cates);
+}

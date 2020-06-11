@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sybinal.shop.mapper.AstrictMapper" >
+  <resultMap id="BaseResultMap" type="com.sybinal.shop.model.Astrict" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="names" property="names" jdbcType="VARCHAR" />
+    <result column="product" property="product" jdbcType="VARCHAR" />
+    <result column="two" property="two" jdbcType="VARCHAR" />
+    <result column="share1" property="share1" jdbcType="VARCHAR" />
+    <result column="share2" property="share2" jdbcType="VARCHAR" />
+    <result column="share3" property="share3" jdbcType="VARCHAR" />
+    <result column="share4" property="share4" jdbcType="VARCHAR" />
+    <result column="share5" property="share5" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, names, product, two, share1, share2, share3, share4, share5
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from astrict
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from astrict
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from astrict
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sybinal.shop.model.Astrict" >
+    insert into astrict (id, names, product, 
+      two, share1, share2, 
+      share3, share4, share5
+      )
+    values (#{id,jdbcType=INTEGER}, #{names,jdbcType=VARCHAR}, #{product,jdbcType=VARCHAR}, 
+      #{two,jdbcType=VARCHAR}, #{share1,jdbcType=VARCHAR}, #{share2,jdbcType=VARCHAR}, 
+      #{share3,jdbcType=VARCHAR}, #{share4,jdbcType=VARCHAR}, #{share5,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.sybinal.shop.model.Astrict" >
+    insert into astrict
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="names != null" >
+        names,
+      </if>
+      <if test="product != null" >
+        product,
+      </if>
+      <if test="two != null" >
+        two,
+      </if>
+      <if test="share1 != null" >
+        share1,
+      </if>
+      <if test="share2 != null" >
+        share2,
+      </if>
+      <if test="share3 != null" >
+        share3,
+      </if>
+      <if test="share4 != null" >
+        share4,
+      </if>
+      <if test="share5 != null" >
+        share5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="names != null" >
+        #{names,jdbcType=VARCHAR},
+      </if>
+      <if test="product != null" >
+        #{product,jdbcType=VARCHAR},
+      </if>
+      <if test="two != null" >
+        #{two,jdbcType=VARCHAR},
+      </if>
+      <if test="share1 != null" >
+        #{share1,jdbcType=VARCHAR},
+      </if>
+      <if test="share2 != null" >
+        #{share2,jdbcType=VARCHAR},
+      </if>
+      <if test="share3 != null" >
+        #{share3,jdbcType=VARCHAR},
+      </if>
+      <if test="share4 != null" >
+        #{share4,jdbcType=VARCHAR},
+      </if>
+      <if test="share5 != null" >
+        #{share5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sybinal.shop.model.Astrict" >
+    update astrict
+    <set >
+      <if test="names != null" >
+        names = #{names,jdbcType=VARCHAR},
+      </if>
+      <if test="product != null" >
+        product = #{product,jdbcType=VARCHAR},
+      </if>
+      <if test="two != null" >
+        two = #{two,jdbcType=VARCHAR},
+      </if>
+      <if test="share1 != null" >
+        share1 = #{share1,jdbcType=VARCHAR},
+      </if>
+      <if test="share2 != null" >
+        share2 = #{share2,jdbcType=VARCHAR},
+      </if>
+      <if test="share3 != null" >
+        share3 = #{share3,jdbcType=VARCHAR},
+      </if>
+      <if test="share4 != null" >
+        share4 = #{share4,jdbcType=VARCHAR},
+      </if>
+      <if test="share5 != null" >
+        share5 = #{share5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sybinal.shop.model.Astrict" >
+    update astrict
+    set names = #{names,jdbcType=VARCHAR},
+      product = #{product,jdbcType=VARCHAR},
+      two = #{two,jdbcType=VARCHAR},
+      share1 = #{share1,jdbcType=VARCHAR},
+      share2 = #{share2,jdbcType=VARCHAR},
+      share3 = #{share3,jdbcType=VARCHAR},
+      share4 = #{share4,jdbcType=VARCHAR},
+      share5 = #{share5,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

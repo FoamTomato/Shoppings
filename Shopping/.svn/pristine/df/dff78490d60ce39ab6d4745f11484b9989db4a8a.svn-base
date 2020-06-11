@@ -1,0 +1,11 @@
+package com.sybinal.shop.service;
+
+import com.sybinal.shop.model.CateList;
+import com.sybinal.shop.model.jpOrder;
+
+public interface JpService {
+	/*
+	 * 添加集拼记录
+	 */
+	int addd(jpOrder jporder);
+}

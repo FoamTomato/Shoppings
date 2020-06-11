@@ -1,0 +1,86 @@
+package com.sybinal.shop.service.logistics;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.sybinal.shop.mapper.FLogisticsMapper;
+import com.sybinal.shop.mapper.XlogisticsMapper;
+import com.sybinal.shop.model.FLogistics;
+import com.sybinal.shop.model.Xlogistics;
+
+@Service
+public class LogisticsServiceImpl implements LogisticsService {
+	@Autowired
+	FLogisticsMapper LogisticsMapper;
+	
+	@Autowired
+	XlogisticsMapper xLogisticsMapper;
+	
+	@Override
+	public List<FLogistics> checkTheOrder() {
+		// TODO Auto-generated method stub
+		return LogisticsMapper.selectAll();
+	}
+
+	@Override
+	public FLogistics selectOrderByIds(FLogistics fLogistics) {
+		// TODO Auto-generated method stub
+		return LogisticsMapper.selectByPrimaryKey(fLogistics.getId());
+	}
+
+	@Override
+	public int updateBasicInformation(FLogistics fLogistics) {
+		// TODO Auto-generated method stub
+		return LogisticsMapper.updateByPrimaryKeySelective(fLogistics);
+	}
+
+	@Override
+	public int addLogisticsQuantity(Xlogistics xlogistics) {
+		// TODO Auto-generated method stub
+		return xLogisticsMapper.insertSelective(xlogistics);
+	}
+
+	@Override
+	public List<Xlogistics> selLogisticsQuantity(Xlogistics xlogistics) {
+		// TODO Auto-generated method stub
+		return xLogisticsMapper.selectByPrimaryKey(xlogistics.getxFIds());
+	}
+
+	@Override
+	public List<Xlogistics> selectSA(Integer xlogistics) {
+		// TODO Auto-generated method stub
+		return xLogisticsMapper.selectSA(xlogistics);
+	}
+
+	@Override
+	public int delLogisticsQuantity(Xlogistics xlogistics) {
+		// TODO Auto-generated method stub
+		return xLogisticsMapper.deleteByPrimaryKey(xlogistics.getId());
+	}
+
+	@Override
+	public Xlogistics selsLogisticsQuantity(Xlogistics xlogistics) {
+		// TODO Auto-generated method stub
+		return xLogisticsMapper.selLogisticsQuantity(xlogistics.getId());
+	}
+
+	@Override
+	public int editLogisticsQuantity(Xlogistics xlogistics) {
+		// TODO Auto-generated method stub
+		return xLogisticsMapper.updateByPrimaryKeySelective(xlogistics);
+	}
+
+	@Override
+	public List<FLogistics> selStatusOrder(FLogistics fLogistics) {
+		// TODO Auto-generated method stub
+		return LogisticsMapper.selStatusOrder(fLogistics);
+	}
+
+	@Override
+	public int update(FLogistics fLogistics) {
+		// TODO Auto-generated method stub
+		return LogisticsMapper.updateByPrimaryKeySelective(fLogistics);
+	}
+}

@@ -1,0 +1,32 @@
+package com.sybinal.shop.service.logistics;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.sybinal.shop.mapper.czBaseMapper;
+import com.sybinal.shop.model.czBase;
+import com.sybinal.shop.model.czBaseWithBLOBs;
+
+@Service
+public class czServiceImpl implements czService {
+
+	@Autowired
+	czBaseMapper czBasesMapper;
+
+	private static Logger logger= Logger.getLogger(czServiceImpl.class);
+	@Override
+	public czBase SelectAll(czBase czbase) {
+		// TODO Auto-generated method stub
+		return czBasesMapper.selectByPrimaryKey(czbase.getId());
+	}
+	/**
+	 * 添加创志
+	 */
+	@Override
+	public int addOrder(czBaseWithBLOBs czbase) {
+		// TODO Auto-generated method stub
+		return czBasesMapper.insertSelective(czbase);
+	}
+
+}

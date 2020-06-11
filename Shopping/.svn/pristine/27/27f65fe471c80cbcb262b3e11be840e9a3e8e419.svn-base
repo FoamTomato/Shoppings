@@ -1,0 +1,21 @@
+package com.sybinal.shop.service.logistics;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.sybinal.shop.mapper.FLogisticsMapper;
+import com.sybinal.shop.model.FLogistics;
+
+@Service
+public class LogisticsServiceImpl implements LogisticsService {
+	@Autowired
+	FLogisticsMapper LogisticsMapper;
+	
+	@Override
+	public List<FLogistics> checkTheOrder() {
+		// TODO Auto-generated method stub
+		return LogisticsMapper.selectAll();
+	}
+}

@@ -1,0 +1,30 @@
+package com.sybinal.shop.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.sybinal.shop.model.FLogistics;
+
+
+public interface FLogisticsMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(FLogistics record);
+
+    int insertSelective(FLogistics record); 
+
+    FLogistics selectByPrimaryKey(Integer id);
+    
+    List<FLogistics> SelectIdsForm(Integer id);
+
+    int updateByPrimaryKeySelective(FLogistics record);
+
+    int updateByPrimaryKey(FLogistics record);
+
+	List<FLogistics> selectAll();
+
+	List<FLogistics> selStatusOrder(FLogistics fLogistics);
+	
+    int insertAll(@Param("FLogistics") List<FLogistics> record); 
+}

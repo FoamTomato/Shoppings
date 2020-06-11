@@ -1,0 +1,9 @@
+http.maxTotal=200
+http.defaultMaxPerRoute=50
+http.connectTimeout=30000
+http.connectionRequestTimeout=30000
+http.socketTimeout=300000
+http.staleConnectionCheckEnabled=true
+
+
+api.url = http://127.0.0.1:8080/Shopping/api/v1/

@@ -1,0 +1,22 @@
+package com.sybinal.shop.service.logistics;
+
+import com.sybinal.shop.model.czBase;
+import com.sybinal.shop.model.czBaseWithBLOBs;
+
+public interface czService {
+	/**
+	 * 根据id查询
+	 */
+	czBase SelectAll(czBase hjbases);
+	/**
+	 * 添加创志
+	*    
+	* 项目名称：Shopping   
+	* 类描述：   
+	* 创建人：PC1   
+	* 创建时间：2020年3月31日 下午6:24:24   
+	* @version
+	 */
+	int addOrder(czBaseWithBLOBs czbase);
+
+}

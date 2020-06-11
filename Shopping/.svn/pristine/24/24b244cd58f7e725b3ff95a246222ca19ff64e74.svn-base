@@ -1,0 +1,71 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<!-- 模态框（Modal） -->
+<div class="modal fade" style="overflow: hidden" id="myModal_Print"
+	tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content" style="height:430px">
+		 <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <nobr class="Foam-title" id="myModalLabelp">
+                        
+                        </nobr>
+                    </div>
+			<div id="pring_t" class="table_size_1" style="float:left;width: 98mm; height: 98mm;">
+				<table style="width: 100%" border="1px solid black" cellspacing="0"
+					cellpadding="525">
+					<tr>
+						<td colspan="2" style="text-align: center;">集拼单号
+							<div style="margin-left:93px">
+								<div id="barcodes" ></div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>物流渠道</td>
+						<td class="table_size_2">俄罗斯专线</td>
+					</tr>
+					<tr>
+						<td>渠道袋序</td>
+						<td class="table_size_2">袋内件数</td>
+					</tr>
+					<tr>
+						<td>袋内件数（个）</td>
+						<td class="table_size_2">$100</td>
+					</tr>
+					<tr>
+						<td>净重（KG）</td>
+						<td class="table_size_2">$100</td>
+					</tr>
+					<tr>
+						<td>毛重（KG）</td>
+						<td class="table_size_2">$100</td>
+					</tr>
+					<tr>
+						<td>操作员</td>
+						<td class="table_size_2">$100</td>
+					</tr>
+					<tr>
+						<td>操作时间</td>
+						<td class="table_size_2">$100</td>
+					</tr>
+				</table>
+			</div>
+			<button  class="btn btn-success" style="margin:10px" onclick="print2()">打印</button>
+		</div>
+
+	</div>
+</div>
+
+<script type="text/javascript">
+	function prints1() {
+		$("#myModal_summary").modal("hide");
+		$("#barcodes").barcode("D1234567890128", "code128",{barWidth:1,barHeight:38,showHRI:true,fontSize:18});  
+		$("#myModal_Print").modal("show");
+	}
+	function print2() {
+	    $("#pring_t").jqprint();
+	}
+</script>

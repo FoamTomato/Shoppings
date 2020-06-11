@@ -1,0 +1,13 @@
+package com.sybinal.shop.service.logistics;
+
+import java.util.List;
+
+import com.sybinal.shop.model.FLogistics;
+
+
+public interface LogisticsService {
+
+	List<FLogistics> checkTheOrder();
+
+
+}

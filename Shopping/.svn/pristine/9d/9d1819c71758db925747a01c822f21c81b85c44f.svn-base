@@ -1,0 +1,117 @@
+package com.sybinal.shop.common.sends;
+import java.util.Arrays;
+import java.util.Properties;
+/**
+ * ���⣺���ʼ��������������ʼ�������
+ * @author ����/shell_liu
+ * 2015-4-12
+ */
+public class MailSenderInfo {
+
+    //�����ʼ��ķ�������IP�Ͷ˿�
+    private String mailServerHost;
+    private String mailServerPort="25";
+    //�ʼ������ߵĵ�ַ
+    private String fromAddress;
+    //�ʼ������ߵĵ�ַ
+    private String toAddress;
+    //��½�ʼ����ͷ��������û���������
+    private String userName;
+    private String password;
+    //�Ƿ���Ҫ�����֤
+    private boolean validate=false;
+    //�ʼ���������
+    private String subject;
+    //�ʼ����ı�����
+    private String content;
+    //�ʼ��������ļ���
+    private String[] attachFileNames;
+    /**
+     * ����ʼ��Ự����
+     */
+    /**
+     * �ؼ����룬
+     * ����554 DT:SPM 163 smtp5,D9GowACHO7RNWNdXmXs1Bw--.9035S2 1473730639,
+     * please see http://mail.163.com/help/help_spam_16.htm?ip=124.251.36.10
+     * &hostid=smtp5&time=1473730639
+        ԭ���ǣ�ip��������ƥ�䡣
+     */
+    public  Properties getProperties(){
+        Properties p=new Properties();// ����Properties����
+        p.setProperty("mail.transport.protocol", "smtp");// ���ô���Э��
+        p.put("mail.smtp.host", this.mailServerHost);// ���÷��������smtp��ַ
+        p.put("mail.smtp.port", this.mailServerPort);
+        p.put("mail.smtp.auth", validate?"true":"false");// ��֤
+       p.put("mail.smtp.ssl.enable", true); 
+        p.put("mail.debug", "true");//���ڵ���
+        return p;}
+    public String getMailServerHost() {
+        return mailServerHost;
+    }
+    public void setMailServerHost(String mailServerHost) {
+        this.mailServerHost = mailServerHost;
+    }
+    public String getMailServerPort() {
+        return mailServerPort;
+    }
+    public void setMailServerPort(String mailServerPort) {
+        this.mailServerPort = mailServerPort;
+    }
+    public String getFromAddress() {
+        return fromAddress;
+    }
+    public void setFromAddress(String fromAddress) {
+        this.fromAddress = fromAddress;
+    }
+    public String getToAddress() {
+        return toAddress;
+    }
+    public void setToAddress(String toAddress) {
+        this.toAddress = toAddress;
+    }
+    public String getUserName() {
+        return userName;
+    }
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public boolean isValidate() {
+        return validate;
+    }
+    public void setValidate(boolean validate) {
+        this.validate = validate;
+    }
+    public String getSubject() {
+        return subject;
+    }
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+    public String getContent() {
+        return content;
+    }
+    public void setContent(String content) {
+        this.content = content;
+    }
+    public String[] getAttachFileNames() {
+        return attachFileNames;
+    }
+    public void setAttachFileNames(String[] attachFileNames) {
+        this.attachFileNames = attachFileNames;
+    }
+	@Override
+	public String toString() {
+		return "MailSenderInfo [mailServerHost=" + mailServerHost + ", mailServerPort=" + mailServerPort
+				+ ", fromAddress=" + fromAddress + ", toAddress=" + toAddress + ", userName=" + userName + ", password="
+				+ password + ", validate=" + validate + ", subject=" + subject + ", content=" + content
+				+ ", attachFileNames=" + Arrays.toString(attachFileNames) + "]";
+	}
+
+
+}

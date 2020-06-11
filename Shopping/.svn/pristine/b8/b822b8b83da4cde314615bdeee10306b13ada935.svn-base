@@ -1,0 +1,39 @@
+package com.sybinal.shop.model;
+
+public class jpOrder {
+    private String jpLaks;
+
+    private String jpResult;
+    
+    private String jpTime;
+    
+    public String getJpTime() {
+		return jpTime;
+	}
+
+	public void setJpTime(String jpTime) {
+		this.jpTime = jpTime;
+	}
+
+	public String getJpLaks() {
+        return jpLaks;
+    }
+
+    public void setJpLaks(String jpLaks) {
+        this.jpLaks = jpLaks == null ? null : jpLaks.trim();
+    }
+
+    public String getJpResult() {
+        return jpResult;
+    }
+
+    public void setJpResult(String jpResult) {
+        this.jpResult = jpResult == null ? null : jpResult.trim();
+    }
+
+	@Override
+	public String toString() {
+		return "jpOrder [jpLaks=" + jpLaks + ", jpResult=" + jpResult + "]";
+	}
+    
+}

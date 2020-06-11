@@ -1,0 +1,28 @@
+package com.sybinal.shop.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.sybinal.shop.model.DTfzyings;
+import com.sybinal.shop.model.DTfzyingsWithBLOBs;
+
+public interface DTfzyingsMapper {
+	int deleteByPrimaryKey(Integer id);
+
+	int insert(DTfzyingsWithBLOBs record);
+
+	int insertSelective(DTfzyingsWithBLOBs record);
+
+	DTfzyingsWithBLOBs selectByPrimaryKey(Integer id);
+
+	int updateByPrimaryKeySelective(@Param("record") DTfzyingsWithBLOBs record, @Param("st") DTfzyings st);
+
+	int updateByPrimaryKeyWithBLOBs(DTfzyingsWithBLOBs record);
+
+	int updateByPrimaryKey(DTfzyings record);
+
+	List<DTfzyingsWithBLOBs> selectAll();
+	
+	List<DTfzyingsWithBLOBs> selectdTstockAtAlls(@Param("dtfzying") DTfzyings dtfzying,@Param("lists")List<String> strings);
+}

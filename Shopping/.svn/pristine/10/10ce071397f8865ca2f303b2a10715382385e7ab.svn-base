@@ -1,0 +1,31 @@
+package com.sybinal.shop.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.sybinal.shop.model.userEmail;
+
+public interface userEmailMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(userEmail record);
+
+	/**
+	 * 添加客服
+	 * add
+	 */
+    int insertSelective(userEmail record);
+
+    userEmail selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(userEmail record);
+
+    int updateByPrimaryKey(userEmail record);
+    /**
+     * 查找客服邮箱
+     * @return
+     */
+	List<userEmail> selectAll(@Param("text")String text);
+
+}

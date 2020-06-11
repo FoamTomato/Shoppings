@@ -1,0 +1,23 @@
+package com.sybinal.shop.service.user;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.sybinal.shop.mapper.userShortRoleMapper;
+import com.sybinal.shop.model.userShortRole;
+
+@Service
+public class userShortRoleServiceImpl implements userShortRoleService {
+	
+	@Autowired
+	userShortRoleMapper usersShortRoleMapper;
+	
+	@Override
+	public List<userShortRole> selAllroles() {
+		// TODO Auto-generated method stub
+		return usersShortRoleMapper.selAllroles();
+	}
+
+}

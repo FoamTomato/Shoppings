@@ -1,0 +1,36 @@
+package com.sybinal.shop.common;
+/**
+ * 拦截
+ * @author PC1
+ *
+ */
+public class intercept {
+	//不能包含
+	static String[] names = {"先生","小姐","女士，sir","Mr","lady","madam","Mrs","miss","Ms"};
+	//不允许出现
+	static String[] product = {"sample","样品","礼物","礼品","gift","私人物品","effect","personal","goods","货物"};
+	//复合出现
+	static String[] two = {"衣服","cloth","衣物","clothes","箱包","box","bag","塑料","plastic","模型","model"};
+	public String namese(String data) {
+		
+		for(int i=0;i<names.length;i++) {
+			if(data.indexOf(names[i]) !=-1) {
+				return "敏感词："+names[i];
+			}
+		}
+		return "0";
+	}
+	public String products(String data) {
+		for(int i=0;i<product.length;i++) {
+			if(data.indexOf(product[i]) !=-1) {
+				return "敏感词："+product[i];
+			}
+		}
+		for(int i=0;i<two.length;i++) {
+			if(data.equals(two[i])) {
+				return "只允许复合出现："+two[i];
+			}
+		}
+		return "0";
+	}
+}

@@ -1,0 +1,461 @@
+package com.sybinal.shop.model;
+
+import java.util.Date;
+
+public class Glogistics {
+    private Integer id;
+
+    private String fids;
+
+    private String foldorder;
+
+    private String foldpurchase;
+
+    private String fclientordercode;
+
+    private String fstore;
+
+    private Date fpaytime;
+
+    private String fcurrency;
+
+    private String ftotalprice;
+
+    @Override
+	public String toString() {
+		return "Glogistics [id=" + id + ", fids=" + fids + ", foldorder=" + foldorder + ", foldpurchase=" + foldpurchase
+				+ ", fclientordercode=" + fclientordercode + ", fstore=" + fstore + ", fpaytime=" + fpaytime
+				+ ", fcurrency=" + fcurrency + ", ftotalprice=" + ftotalprice + ", fchinashort=" + fchinashort
+				+ ", ffirstname=" + ffirstname + ", flastname=" + flastname + ", fcountry=" + fcountry + ", fprovince="
+				+ fprovince + ", fcity=" + fcity + ", fpostcode=" + fpostcode + ", femail=" + femail + ", ftelephone="
+				+ ftelephone + ", faddress1=" + faddress1 + ", faddress2=" + faddress2 + ", faddress3=" + faddress3
+				+ ", flogistics=" + flogistics + ", fenglishshort=" + fenglishshort + ", fchannel=" + fchannel
+				+ ", fsheet=" + fsheet + ", fstatue=" + fstatue + ", ffreight=" + ffreight + ", fcustoms=" + fcustoms
+				+ ", fweight=" + fweight + ", fremark=" + fremark + ", standby1=" + standby1 + ", standby2=" + standby2
+				+ ", standby3=" + standby3 + ", standby4=" + standby4 + ", standby5=" + standby5 + ", standby6="
+				+ standby6 + ", standby7=" + standby7 + ", standby8=" + standby8 + ", standby9=" + standby9 + "]";
+	}
+
+	private String fchinashort;
+
+    private String ffirstname;
+
+    private String flastname;
+
+    private String fcountry;
+
+    private String fprovince;
+
+    private String fcity;
+
+    private String fpostcode;
+
+    private String femail;
+
+    private String ftelephone;
+
+    private String faddress1;
+
+    private String faddress2;
+
+    private String faddress3;
+
+    private String flogistics;
+
+    private String fenglishshort;
+
+    private String fchannel;
+
+    private String fsheet;
+
+    private String fstatue;
+
+    private String ffreight;
+
+    private String fcustoms;
+
+    private Double fweight;
+
+    private String fremark;
+
+    private String standby1;
+
+    private String standby2;
+
+    private String standby3;
+
+    private String standby4;
+
+    private String standby5;
+
+    private String standby6;
+
+    private String standby7;
+
+    private String standby8;
+
+    private String standby9;
+
+
+    private String standby10;
+
+    private String standby11;
+
+    private String standby12;
+
+    private String standby13;
+
+    private String standby14;
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getFids() {
+        return fids;
+    }
+
+    public void setFids(String fids) {
+        this.fids = fids == null ? null : fids.trim();
+    }
+
+    public String getFoldorder() {
+        return foldorder;
+    }
+
+    public void setFoldorder(String foldorder) {
+        this.foldorder = foldorder == null ? null : foldorder.trim();
+    }
+
+    public String getFoldpurchase() {
+        return foldpurchase;
+    }
+
+    public void setFoldpurchase(String foldpurchase) {
+        this.foldpurchase = foldpurchase == null ? null : foldpurchase.trim();
+    }
+
+    public String getFclientordercode() {
+        return fclientordercode;
+    }
+
+    public void setFclientordercode(String fclientordercode) {
+        this.fclientordercode = fclientordercode == null ? null : fclientordercode.trim();
+    }
+
+    public String getFstore() {
+        return fstore;
+    }
+
+    public void setFstore(String fstore) {
+        this.fstore = fstore == null ? null : fstore.trim();
+    }
+
+    public Date getFpaytime() {
+        return fpaytime;
+    }
+
+    public void setFpaytime(Date fpaytime) {
+        this.fpaytime = fpaytime;
+    }
+
+    public String getFcurrency() {
+        return fcurrency;
+    }
+
+    public void setFcurrency(String fcurrency) {
+        this.fcurrency = fcurrency == null ? null : fcurrency.trim();
+    }
+
+    public String getFtotalprice() {
+        return ftotalprice;
+    }
+
+    public void setFtotalprice(String ftotalprice) {
+        this.ftotalprice = ftotalprice == null ? null : ftotalprice.trim();
+    }
+
+    public String getFchinashort() {
+        return fchinashort;
+    }
+
+    public void setFchinashort(String fchinashort) {
+        this.fchinashort = fchinashort == null ? null : fchinashort.trim();
+    }
+
+    public String getFfirstname() {
+        return ffirstname;
+    }
+
+    public void setFfirstname(String ffirstname) {
+        this.ffirstname = ffirstname == null ? null : ffirstname.trim();
+    }
+
+    public String getFlastname() {
+        return flastname;
+    }
+
+    public void setFlastname(String flastname) {
+        this.flastname = flastname == null ? null : flastname.trim();
+    }
+
+    public String getFcountry() {
+        return fcountry;
+    }
+
+    public void setFcountry(String fcountry) {
+        this.fcountry = fcountry == null ? null : fcountry.trim();
+    }
+
+    public String getFprovince() {
+        return fprovince;
+    }
+
+    public void setFprovince(String fprovince) {
+        this.fprovince = fprovince == null ? null : fprovince.trim();
+    }
+
+    public String getFcity() {
+        return fcity;
+    }
+
+    public void setFcity(String fcity) {
+        this.fcity = fcity == null ? null : fcity.trim();
+    }
+
+    public String getFpostcode() {
+        return fpostcode;
+    }
+
+    public void setFpostcode(String fpostcode) {
+        this.fpostcode = fpostcode == null ? null : fpostcode.trim();
+    }
+
+    public String getFemail() {
+        return femail;
+    }
+
+    public void setFemail(String femail) {
+        this.femail = femail == null ? null : femail.trim();
+    }
+
+    public String getFtelephone() {
+        return ftelephone;
+    }
+
+    public void setFtelephone(String ftelephone) {
+        this.ftelephone = ftelephone == null ? null : ftelephone.trim();
+    }
+
+    public String getFaddress1() {
+        return faddress1;
+    }
+
+    public void setFaddress1(String faddress1) {
+        this.faddress1 = faddress1 == null ? null : faddress1.trim();
+    }
+
+    public String getFaddress2() {
+        return faddress2;
+    }
+
+    public void setFaddress2(String faddress2) {
+        this.faddress2 = faddress2 == null ? null : faddress2.trim();
+    }
+
+    public String getFaddress3() {
+        return faddress3;
+    }
+
+    public void setFaddress3(String faddress3) {
+        this.faddress3 = faddress3 == null ? null : faddress3.trim();
+    }
+
+    public String getFlogistics() {
+        return flogistics;
+    }
+
+    public void setFlogistics(String flogistics) {
+        this.flogistics = flogistics == null ? null : flogistics.trim();
+    }
+
+    public String getFenglishshort() {
+        return fenglishshort;
+    }
+
+    public void setFenglishshort(String fenglishshort) {
+        this.fenglishshort = fenglishshort == null ? null : fenglishshort.trim();
+    }
+
+    public String getFchannel() {
+        return fchannel;
+    }
+
+    public void setFchannel(String fchannel) {
+        this.fchannel = fchannel == null ? null : fchannel.trim();
+    }
+
+    public String getFsheet() {
+        return fsheet;
+    }
+
+    public void setFsheet(String fsheet) {
+        this.fsheet = fsheet == null ? null : fsheet.trim();
+    }
+
+    public String getFstatue() {
+        return fstatue;
+    }
+
+    public void setFstatue(String fstatue) {
+        this.fstatue = fstatue == null ? null : fstatue.trim();
+    }
+
+    public String getFfreight() {
+        return ffreight;
+    }
+
+    public void setFfreight(String ffreight) {
+        this.ffreight = ffreight == null ? null : ffreight.trim();
+    }
+
+    public String getFcustoms() {
+        return fcustoms;
+    }
+
+    public void setFcustoms(String fcustoms) {
+        this.fcustoms = fcustoms == null ? null : fcustoms.trim();
+    }
+
+    public Double getFweight() {
+        return fweight;
+    }
+
+    public void setFweight(Double fweight) {
+        this.fweight = fweight;
+    }
+
+    public String getFremark() {
+        return fremark;
+    }
+
+    public void setFremark(String fremark) {
+        this.fremark = fremark == null ? null : fremark.trim();
+    }
+
+    public String getStandby1() {
+        return standby1;
+    }
+
+    public void setStandby1(String standby1) {
+        this.standby1 = standby1 == null ? null : standby1.trim();
+    }
+
+    public String getStandby2() {
+        return standby2;
+    }
+
+    public void setStandby2(String standby2) {
+        this.standby2 = standby2 == null ? null : standby2.trim();
+    }
+
+    public String getStandby3() {
+        return standby3;
+    }
+
+    public void setStandby3(String standby3) {
+        this.standby3 = standby3 == null ? null : standby3.trim();
+    }
+
+    public String getStandby4() {
+        return standby4;
+    }
+
+    public void setStandby4(String standby4) {
+        this.standby4 = standby4 == null ? null : standby4.trim();
+    }
+
+    public String getStandby5() {
+        return standby5;
+    }
+
+    public void setStandby5(String standby5) {
+        this.standby5 = standby5 == null ? null : standby5.trim();
+    }
+
+    public String getStandby6() {
+        return standby6;
+    }
+
+    public void setStandby6(String standby6) {
+        this.standby6 = standby6 == null ? null : standby6.trim();
+    }
+
+    public String getStandby7() {
+        return standby7;
+    }
+
+    public void setStandby7(String standby7) {
+        this.standby7 = standby7 == null ? null : standby7.trim();
+    }
+
+    public String getStandby8() {
+        return standby8;
+    }
+
+    public void setStandby8(String standby8) {
+        this.standby8 = standby8 == null ? null : standby8.trim();
+    }
+
+    public String getStandby9() {
+        return standby9;
+    }
+
+    public void setStandby9(String standby9) {
+        this.standby9 = standby9 == null ? null : standby9.trim();
+    }
+
+	public String getStandby10() {
+		return standby10;
+	}
+
+	public void setStandby10(String standby10) {
+		this.standby10 = standby10;
+	}
+
+	public String getStandby11() {
+		return standby11;
+	}
+
+	public void setStandby11(String standby11) {
+		this.standby11 = standby11;
+	}
+
+	public String getStandby12() {
+		return standby12;
+	}
+
+	public void setStandby12(String standby12) {
+		this.standby12 = standby12;
+	}
+
+	public String getStandby13() {
+		return standby13;
+	}
+
+	public void setStandby13(String standby13) {
+		this.standby13 = standby13;
+	}
+
+	public String getStandby14() {
+		return standby14;
+	}
+
+	public void setStandby14(String standby14) {
+		this.standby14 = standby14;
+	}
+    
+}

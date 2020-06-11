@@ -1,0 +1,635 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sybinal.shop.mapper.FproductMapper">
+	<resultMap id="BaseResultMap" type="com.sybinal.shop.model.Fproduct">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="category_id" jdbcType="INTEGER" property="categoryId" />
+		<result column="explains" jdbcType="VARCHAR" property="explains" />
+		<result column="general_explain" jdbcType="VARCHAR" property="generalExplain" />
+		<result column="discount" jdbcType="INTEGER" property="discount" />
+		<result column="shop_price" jdbcType="INTEGER" property="shopPrice" />
+		<result column="price" jdbcType="INTEGER" property="price" />
+		<result column="external_id" jdbcType="VARCHAR" property="externalId" />
+		<result column="quantity" jdbcType="INTEGER" property="quantity" />
+		<result column="hot" jdbcType="INTEGER" property="hot" />
+		<result column="product_status" jdbcType="INTEGER" property="productStatus" />
+		<result column="inventory_flag" jdbcType="INTEGER" property="inventoryFlag" />
+		<result column="default_img" jdbcType="VARCHAR" property="defaultImg" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="update_user_id" jdbcType="INTEGER" property="updateUserId" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
+		<result column="origin_area" jdbcType="VARCHAR" property="originArea" />
+		<result column="price1" jdbcType="INTEGER" property="price1" />
+		<result column="price2" jdbcType="INTEGER" property="price2" />
+		<result column="english_short" jdbcType="VARCHAR" property="englishShort" />
+		<result column="china_short" jdbcType="VARCHAR" property="chinaShort" />
+		<result column="ens" jdbcType="VARCHAR" property="ens" />
+		<result column="frs" jdbcType="VARCHAR" property="frs" />
+		<result column="des" jdbcType="VARCHAR" property="des" />
+		<result column="its" jdbcType="VARCHAR" property="its" />
+		<result column="ess" jdbcType="VARCHAR" property="ess" />
+		<result column="rus" jdbcType="VARCHAR" property="rus" />
+		<result column="jas" jdbcType="VARCHAR" property="jas" />
+		<result column="zhs" jdbcType="VARCHAR" property="zhs" />
+		<result column="product_gross_weight" jdbcType="DOUBLE"
+			property="productGrossWeight" />
+		<result column="product_size" jdbcType="DOUBLE" property="productSize" />
+		<result column="product_currency" jdbcType="VARCHAR" property="productCurrency" />
+		<result column="source_url" jdbcType="VARCHAR" property="sourceUrl" />
+		<result column="back_up_copy1" jdbcType="VARCHAR" property="backUpCopy1" />
+		<result column="back_up_copy2" jdbcType="VARCHAR" property="backUpCopy2" />
+		<result column="back_up_copy3" jdbcType="VARCHAR" property="backUpCopy3" />
+		<result column="back_up_copy4" jdbcType="VARCHAR" property="backUpCopy4" />
+		<result column="back_up_copy5" jdbcType="VARCHAR" property="backUpCopy5" />
+		<result column="back_up_copy6" jdbcType="VARCHAR" property="backUpCopy6" />
+		<result column="back_up_copy7" jdbcType="VARCHAR" property="backUpCopy7" />
+		<result column="back_up_copy8" jdbcType="VARCHAR" property="backUpCopy8" />
+		<result column="back_up_copy9" jdbcType="VARCHAR" property="backUpCopy9" />
+		<result column="back_up_copy10" jdbcType="VARCHAR" property="backUpCopy10" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, name, category_id, explains, general_explain, discount, shop_price,
+		price, external_id,
+		quantity, hot, product_status, inventory_flag, default_img, update_time,
+		update_user_id,
+		create_time, create_user_id, origin_area, english_short, china_short, ens, frs,
+		des,
+		its, ess, rus, jas, zhs, product_gross_weight, product_size,
+		product_currency, source_url,
+		back_up_copy1, back_up_copy2, back_up_copy3, back_up_copy4, back_up_copy5,
+		back_up_copy6,
+		back_up_copy7, back_up_copy8, back_up_copy9, back_up_copy10
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from product
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<!-- 查询所有数据 -->
+	<select id="selectProAll" resultMap="BaseResultMap">
+	select
+		*
+		from product
+	</select>
+	<!-- 带条件查询数据 -->
+	<select id="selectProductListAtAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from product
+		<where>
+			1=1
+			<if test="fproduct.id != null and fproduct.id != ''">
+				and id=#{fproduct.id}
+			</if>
+			<if test="fproduct.name != null and fproduct.name != ''">
+				and name like concat('%','${fproduct.name}','%')
+			</if>
+			<if test="fproduct.externalId != null and fproduct.externalId != ''">
+				and external_id = #{fproduct.externalId}
+			</if>
+			<if
+				test="fproduct.categoryId != null and fproduct.categoryId != 0 and fproduct.categoryId!=''">
+				and category_id = #{fproduct.categoryId}
+			</if>
+			<if test="fproduct.backUpCopy1 != null and fproduct.backUpCopy1 != 0">
+				and back_up_copy1 = #{fproduct.backUpCopy1}
+			</if>
+			<if test="fproduct.backUpCopy2 != null and fproduct.backUpCopy2 != 0">
+				and back_up_copy2 = #{fproduct.backUpCopy2}
+			</if>
+			<if test="fproduct.backUpCopy3 != null and fproduct.backUpCopy3 != 0">
+				and back_up_copy3 = #{fproduct.backUpCopy3}
+			</if>
+			<if test="fproduct.backUpCopy4 != null and fproduct.backUpCopy4 != 0">
+				and back_up_copy4 = #{fproduct.backUpCopy4}
+			</if>
+			<if test="fproduct.backUpCopy5 != null and fproduct.backUpCopy5 != 0">
+				and back_up_copy5 = #{fproduct.backUpCopy5}
+			</if>
+			<if test="fproduct.productStatus != null and fproduct.productStatus != 0">
+				and product_status = #{fproduct.productStatus}
+			</if>
+			<if test="fproduct.hot != null and fproduct.hot != 2">
+				and hot = #{fproduct.hot}
+			</if>
+			<if test="fproduct.categoryId != null and fproduct.categoryId != 0">
+				and category_id = #{fproduct.categoryId}
+			</if>
+			<if test="fproduct.createUserId != null and fproduct.createUserId != 0">
+				and create_user_id = #{fproduct.createUserId}
+			</if>
+			<if test="price1 != null and price1 != 0">
+				and shop_price &gt; #{price1}
+			</if>
+			<if test="price2 != null and price2 != 0">
+				and shop_price &lt; #{price2}
+			</if>
+			<if test="updateTime1 != null and updateTime1 != ''">
+				and update_time &gt; #{updateTime1}
+			</if>
+			<if test="updateTime2 != null and updateTime2 != ''">
+				and update_time &gt; #{updateTime2}
+			</if>
+		</where>
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from product
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.sybinal.shop.model.Fproduct">
+		insert into product (id, name, category_id,
+		explains, general_explain, discount,
+		shop_price, price, external_id,
+		quantity, hot, product_status,
+		inventory_flag, default_img, update_time,
+		update_user_id, create_time, create_user_id,
+		origin_area, english_short, china_short,
+		ens, frs, des, its,
+		ess, rus, jas, zhs,
+		product_gross_weight, product_size, product_currency,
+		source_url, back_up_copy1, back_up_copy2,
+		back_up_copy3, back_up_copy4, back_up_copy5,
+		back_up_copy6, back_up_copy7, back_up_copy8,
+		back_up_copy9, back_up_copy10)
+		values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+		#{categoryId,jdbcType=INTEGER},
+		#{explains,jdbcType=VARCHAR}, #{generalExplain,jdbcType=VARCHAR}, #{discount,jdbcType=INTEGER},
+		#{shopPrice,jdbcType=INTEGER}, #{price,jdbcType=INTEGER},
+		#{externalId,jdbcType=VARCHAR},
+		#{quantity,jdbcType=INTEGER}, #{hot,jdbcType=INTEGER}, #{productStatus,jdbcType=INTEGER},
+		#{inventoryFlag,jdbcType=INTEGER}, #{defaultImg,jdbcType=VARCHAR},
+		#{updateTime,jdbcType=TIMESTAMP},
+		#{updateUserId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createUserId,jdbcType=INTEGER},
+		#{originArea,jdbcType=VARCHAR}, #{englishShort,jdbcType=VARCHAR},
+		#{chinaShort,jdbcType=VARCHAR},
+		#{ens,jdbcType=VARCHAR}, #{frs,jdbcType=VARCHAR}, #{des,jdbcType=VARCHAR},
+		#{its,jdbcType=VARCHAR},
+		#{ess,jdbcType=VARCHAR}, #{rus,jdbcType=VARCHAR}, #{jas,jdbcType=VARCHAR},
+		#{zhs,jdbcType=VARCHAR},
+		#{productGrossWeight,jdbcType=DOUBLE}, #{productSize,jdbcType=DOUBLE}, #{productCurrency,jdbcType=VARCHAR},
+		#{sourceUrl,jdbcType=VARCHAR}, #{backUpCopy1,jdbcType=VARCHAR},
+		#{backUpCopy2,jdbcType=VARCHAR},
+		#{backUpCopy3,jdbcType=VARCHAR}, #{backUpCopy4,jdbcType=VARCHAR}, #{backUpCopy5,jdbcType=VARCHAR},
+		#{backUpCopy6,jdbcType=VARCHAR}, #{backUpCopy7,jdbcType=VARCHAR},
+		#{backUpCopy8,jdbcType=VARCHAR},
+		#{backUpCopy9,jdbcType=VARCHAR}, #{backUpCopy10,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.sybinal.shop.model.Fproduct">
+		insert into product
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="categoryId != null">
+				category_id,
+			</if>
+			<if test="explains != null">
+				explains,
+			</if>
+			<if test="generalExplain != null">
+				general_explain,
+			</if>
+			<if test="discount != null">
+				discount,
+			</if>
+			<if test="shopPrice != null">
+				shop_price,
+			</if>
+			<if test="price != null">
+				price,
+			</if>
+			<if test="externalId != null">
+				external_id,
+			</if>
+			<if test="quantity != null">
+				quantity,
+			</if>
+			<if test="hot != null">
+				hot,
+			</if>
+			<if test="productStatus != null">
+				product_status,
+			</if>
+			<if test="inventoryFlag != null">
+				inventory_flag,
+			</if>
+			<if test="defaultImg != null">
+				default_img,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="updateUserId != null">
+				update_user_id,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUserId != null">
+				create_user_id,
+			</if>
+			<if test="originArea != null">
+				origin_area,
+			</if>
+			<if test="englishShort != null">
+				english_short,
+			</if>
+			<if test="chinaShort != null">
+				china_short,
+			</if>
+			<if test="ens != null">
+				ens,
+			</if>
+			<if test="frs != null">
+				frs,
+			</if>
+			<if test="des != null">
+				des,
+			</if>
+			<if test="its != null">
+				its,
+			</if>
+			<if test="ess != null">
+				ess,
+			</if>
+			<if test="rus != null">
+				rus,
+			</if>
+			<if test="jas != null">
+				jas,
+			</if>
+			<if test="zhs != null">
+				zhs,
+			</if>
+			<if test="productGrossWeight != null">
+				product_gross_weight,
+			</if>
+			<if test="productSize != null">
+				product_size,
+			</if>
+			<if test="productCurrency != null">
+				product_currency,
+			</if>
+			<if test="sourceUrl != null">
+				source_url,
+			</if>
+			<if test="backUpCopy1 != null">
+				back_up_copy1,
+			</if>
+			<if test="backUpCopy2 != null">
+				back_up_copy2,
+			</if>
+			<if test="backUpCopy3 != null">
+				back_up_copy3,
+			</if>
+			<if test="backUpCopy4 != null">
+				back_up_copy4,
+			</if>
+			<if test="backUpCopy5 != null">
+				back_up_copy5,
+			</if>
+			<if test="backUpCopy6 != null">
+				back_up_copy6,
+			</if>
+			<if test="backUpCopy7 != null">
+				back_up_copy7,
+			</if>
+			<if test="backUpCopy8 != null">
+				back_up_copy8,
+			</if>
+			<if test="backUpCopy9 != null">
+				back_up_copy9,
+			</if>
+			<if test="backUpCopy10 != null">
+				back_up_copy10,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="categoryId != null">
+				#{categoryId,jdbcType=INTEGER},
+			</if>
+			<if test="explains != null">
+				#{explains,jdbcType=VARCHAR},
+			</if>
+			<if test="generalExplain != null">
+				#{generalExplain,jdbcType=VARCHAR},
+			</if>
+			<if test="discount != null">
+				#{discount,jdbcType=INTEGER},
+			</if>
+			<if test="shopPrice != null">
+				#{shopPrice,jdbcType=INTEGER},
+			</if>
+			<if test="price != null">
+				#{price,jdbcType=INTEGER},
+			</if>
+			<if test="externalId != null">
+				#{externalId,jdbcType=VARCHAR},
+			</if>
+			<if test="quantity != null">
+				#{quantity,jdbcType=INTEGER},
+			</if>
+			<if test="hot != null">
+				#{hot,jdbcType=INTEGER},
+			</if>
+			<if test="productStatus != null">
+				#{productStatus,jdbcType=INTEGER},
+			</if>
+			<if test="inventoryFlag != null">
+				#{inventoryFlag,jdbcType=INTEGER},
+			</if>
+			<if test="defaultImg != null">
+				#{defaultImg,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUserId != null">
+				#{updateUserId,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUserId != null">
+				#{createUserId,jdbcType=INTEGER},
+			</if>
+			<if test="originArea != null">
+				#{originArea,jdbcType=VARCHAR},
+			</if>
+			<if test="englishShort != null">
+				#{englishShort,jdbcType=VARCHAR},
+			</if>
+			<if test="chinaShort != null">
+				#{chinaShort,jdbcType=VARCHAR},
+			</if>
+			<if test="ens != null">
+				#{ens,jdbcType=VARCHAR},
+			</if>
+			<if test="frs != null">
+				#{frs,jdbcType=VARCHAR},
+			</if>
+			<if test="des != null">
+				#{des,jdbcType=VARCHAR},
+			</if>
+			<if test="its != null">
+				#{its,jdbcType=VARCHAR},
+			</if>
+			<if test="ess != null">
+				#{ess,jdbcType=VARCHAR},
+			</if>
+			<if test="rus != null">
+				#{rus,jdbcType=VARCHAR},
+			</if>
+			<if test="jas != null">
+				#{jas,jdbcType=VARCHAR},
+			</if>
+			<if test="zhs != null">
+				#{zhs,jdbcType=VARCHAR},
+			</if>
+			<if test="productGrossWeight != null">
+				#{productGrossWeight,jdbcType=DOUBLE},
+			</if>
+			<if test="productSize != null">
+				#{productSize,jdbcType=DOUBLE},
+			</if>
+			<if test="productCurrency != null">
+				#{productCurrency,jdbcType=VARCHAR},
+			</if>
+			<if test="sourceUrl != null">
+				#{sourceUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy1 != null">
+				#{backUpCopy1,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy2 != null">
+				#{backUpCopy2,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy3 != null">
+				#{backUpCopy3,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy4 != null">
+				#{backUpCopy4,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy5 != null">
+				#{backUpCopy5,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy6 != null">
+				#{backUpCopy6,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy7 != null">
+				#{backUpCopy7,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy8 != null">
+				#{backUpCopy8,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy9 != null">
+				#{backUpCopy9,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy10 != null">
+				#{backUpCopy10,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.sybinal.shop.model.Fproduct">
+		update product
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="categoryId != null">
+				category_id = #{categoryId,jdbcType=INTEGER},
+			</if>
+			<if test="explains != null">
+				explains = #{explains,jdbcType=VARCHAR},
+			</if>
+			<if test="generalExplain != null">
+				general_explain = #{generalExplain,jdbcType=VARCHAR},
+			</if>
+			<if test="discount != null">
+				discount = #{discount,jdbcType=INTEGER},
+			</if>
+			<if test="shopPrice != null">
+				shop_price = #{shopPrice,jdbcType=INTEGER},
+			</if>
+			<if test="price != null">
+				price = #{price,jdbcType=INTEGER},
+			</if>
+			<if test="externalId != null">
+				external_id = #{externalId,jdbcType=VARCHAR},
+			</if>
+			<if test="quantity != null">
+				quantity = #{quantity,jdbcType=INTEGER},
+			</if>
+			<if test="hot != null">
+				hot = #{hot,jdbcType=INTEGER},
+			</if>
+			<if test="productStatus != null">
+				product_status = #{productStatus,jdbcType=INTEGER},
+			</if>
+			<if test="inventoryFlag != null">
+				inventory_flag = #{inventoryFlag,jdbcType=INTEGER},
+			</if>
+			<if test="defaultImg != null">
+				default_img = #{defaultImg,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateUserId != null">
+				update_user_id = #{updateUserId,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="createUserId != null">
+				create_user_id = #{createUserId,jdbcType=INTEGER},
+			</if>
+			<if test="originArea != null">
+				origin_area = #{originArea,jdbcType=VARCHAR},
+			</if>
+			<if test="englishShort != null">
+				english_short = #{englishShort,jdbcType=VARCHAR},
+			</if>
+			<if test="chinaShort != null">
+				china_short = #{chinaShort,jdbcType=VARCHAR},
+			</if>
+			<if test="ens != null">
+				ens = #{ens,jdbcType=VARCHAR},
+			</if>
+			<if test="frs != null">
+				frs = #{frs,jdbcType=VARCHAR},
+			</if>
+			<if test="des != null">
+				des = #{des,jdbcType=VARCHAR},
+			</if>
+			<if test="its != null">
+				its = #{its,jdbcType=VARCHAR},
+			</if>
+			<if test="ess != null">
+				ess = #{ess,jdbcType=VARCHAR},
+			</if>
+			<if test="rus != null">
+				rus = #{rus,jdbcType=VARCHAR},
+			</if>
+			<if test="jas != null">
+				jas = #{jas,jdbcType=VARCHAR},
+			</if>
+			<if test="zhs != null">
+				zhs = #{zhs,jdbcType=VARCHAR},
+			</if>
+			<if test="productGrossWeight != null">
+				product_gross_weight = #{productGrossWeight,jdbcType=DOUBLE},
+			</if>
+			<if test="productSize != null">
+				product_size = #{productSize,jdbcType=DOUBLE},
+			</if>
+			<if test="productCurrency != null">
+				product_currency = #{productCurrency,jdbcType=VARCHAR},
+			</if>
+			<if test="sourceUrl != null">
+				source_url = #{sourceUrl,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy1 != null">
+				back_up_copy1 = #{backUpCopy1,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy2 != null">
+				back_up_copy2 = #{backUpCopy2,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy3 != null">
+				back_up_copy3 = #{backUpCopy3,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy4 != null">
+				back_up_copy4 = #{backUpCopy4,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy5 != null">
+				back_up_copy5 = #{backUpCopy5,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy6 != null">
+				back_up_copy6 = #{backUpCopy6,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy7 != null">
+				back_up_copy7 = #{backUpCopy7,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy8 != null">
+				back_up_copy8 = #{backUpCopy8,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy9 != null">
+				back_up_copy9 = #{backUpCopy9,jdbcType=VARCHAR},
+			</if>
+			<if test="backUpCopy10 != null">
+				back_up_copy10 = #{backUpCopy10,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.sybinal.shop.model.Fproduct">
+		update product
+		set name = #{name,jdbcType=VARCHAR},
+		category_id = #{categoryId,jdbcType=INTEGER},
+		explains = #{explains,jdbcType=VARCHAR},
+		general_explain = #{generalExplain,jdbcType=VARCHAR},
+		discount = #{discount,jdbcType=INTEGER},
+		shop_price = #{shopPrice,jdbcType=INTEGER},
+		price = #{price,jdbcType=INTEGER},
+		external_id = #{externalId,jdbcType=VARCHAR},
+		quantity = #{quantity,jdbcType=INTEGER},
+		hot = #{hot,jdbcType=INTEGER},
+		product_status = #{productStatus,jdbcType=INTEGER},
+		inventory_flag = #{inventoryFlag,jdbcType=INTEGER},
+		default_img = #{defaultImg,jdbcType=VARCHAR},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		update_user_id = #{updateUserId,jdbcType=INTEGER},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		create_user_id = #{createUserId,jdbcType=INTEGER},
+		origin_area = #{originArea,jdbcType=VARCHAR},
+		english_short = #{englishShort,jdbcType=VARCHAR},
+		china_short = #{chinaShort,jdbcType=VARCHAR},
+		ens = #{ens,jdbcType=VARCHAR},
+		frs = #{frs,jdbcType=VARCHAR},
+		des = #{des,jdbcType=VARCHAR},
+		its = #{its,jdbcType=VARCHAR},
+		ess = #{ess,jdbcType=VARCHAR},
+		rus = #{rus,jdbcType=VARCHAR},
+		jas = #{jas,jdbcType=VARCHAR},
+		zhs = #{zhs,jdbcType=VARCHAR},
+		product_gross_weight = #{productGrossWeight,jdbcType=DOUBLE},
+		product_size = #{productSize,jdbcType=DOUBLE},
+		product_currency = #{productCurrency,jdbcType=VARCHAR},
+		source_url = #{sourceUrl,jdbcType=VARCHAR},
+		back_up_copy1 = #{backUpCopy1,jdbcType=VARCHAR},
+		back_up_copy2 = #{backUpCopy2,jdbcType=VARCHAR},
+		back_up_copy3 = #{backUpCopy3,jdbcType=VARCHAR},
+		back_up_copy4 = #{backUpCopy4,jdbcType=VARCHAR},
+		back_up_copy5 = #{backUpCopy5,jdbcType=VARCHAR},
+		back_up_copy6 = #{backUpCopy6,jdbcType=VARCHAR},
+		back_up_copy7 = #{backUpCopy7,jdbcType=VARCHAR},
+		back_up_copy8 = #{backUpCopy8,jdbcType=VARCHAR},
+		back_up_copy9 = #{backUpCopy9,jdbcType=VARCHAR},
+		back_up_copy10 = #{backUpCopy10,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+</mapper>

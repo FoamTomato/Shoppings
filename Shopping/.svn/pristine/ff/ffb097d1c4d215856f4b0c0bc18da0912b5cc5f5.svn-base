@@ -1,0 +1,37 @@
+<%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+
+<div id="pring_t" style="width:500px;height:500px;display:none">
+	<table style="width:100%" border="1px solid #ccc" cellspacing="0" cellpadding="525">
+	  <tr>
+	  	集拼单号
+	  </tr>
+	  <tr>
+	    <td>物流渠道</td>
+	    <td>俄罗斯专线</td>
+	  </tr>
+	  <tr>
+	    <td>渠道袋序</td>
+	    <td>袋内件数</td>
+	  </tr>
+	  <tr>
+	    <td>袋内件数</td>
+	    <td>$100</td>
+	  </tr>
+	  <tr>
+	    <td>净重</td>
+	    <td>$100</td>
+	  </tr>
+	  <tr>
+	    <td>毛重</td>
+	    <td>$100</td>
+	  </tr>
+	  <tr>
+	    <td>操作员</td>
+	    <td>$100</td>
+	  </tr>
+	  <tr>
+	    <td>操作时间</td>
+	    <td>$100</td>
+	  </tr>
+	</table>
+</div>

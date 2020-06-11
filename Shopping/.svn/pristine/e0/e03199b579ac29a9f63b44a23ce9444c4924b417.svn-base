@@ -1,0 +1,9 @@
+
+$(document).ready(function () {
+/*
+ * 选择产品分类
+ */
+$(".f_kind_select").click(function(){
+	f_kind_selects();
+});
+})

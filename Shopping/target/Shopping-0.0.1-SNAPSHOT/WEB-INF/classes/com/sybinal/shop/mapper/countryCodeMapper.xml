@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sybinal.shop.mapper.countryCodeMapper">
+  <resultMap id="BaseResultMap" type="com.sybinal.shop.model.countryCode">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="short_code" jdbcType="VARCHAR" property="shortCode" />
+    <result column="c_name" jdbcType="VARCHAR" property="cName" />
+    <result column="e_name" jdbcType="VARCHAR" property="eName" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, short_code, c_name, e_name, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from countrycode
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!-- 获取所有的国家selectAll -->
+  <select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from countrycode
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from countrycode
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.sybinal.shop.model.countryCode">
+    insert into countrycode (id, short_code, c_name, 
+      e_name, remark)
+    values (#{id,jdbcType=INTEGER}, #{shortCode,jdbcType=VARCHAR}, #{cName,jdbcType=VARCHAR}, 
+      #{eName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sybinal.shop.model.countryCode">
+    insert into countrycode
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="shortCode != null">
+        short_code,
+      </if>
+      <if test="cName != null">
+        c_name,
+      </if>
+      <if test="eName != null">
+        e_name,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="shortCode != null">
+        #{shortCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cName != null">
+        #{cName,jdbcType=VARCHAR},
+      </if>
+      <if test="eName != null">
+        #{eName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sybinal.shop.model.countryCode">
+    update countrycode
+    <set>
+      <if test="shortCode != null">
+        short_code = #{shortCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cName != null">
+        c_name = #{cName,jdbcType=VARCHAR},
+      </if>
+      <if test="eName != null">
+        e_name = #{eName,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sybinal.shop.model.countryCode">
+    update countrycode
+    set short_code = #{shortCode,jdbcType=VARCHAR},
+      c_name = #{cName,jdbcType=VARCHAR},
+      e_name = #{eName,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

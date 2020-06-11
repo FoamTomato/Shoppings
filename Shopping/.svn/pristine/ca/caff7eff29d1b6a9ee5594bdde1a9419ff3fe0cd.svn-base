@@ -1,0 +1,59 @@
+package com.sybinal.shop.service.order;
+
+import java.util.List;
+
+import com.sybinal.shop.model.ydBase;
+
+public interface yidaService {
+
+	int addOrder(ydBase base);
+
+	List<ydBase> selectOrder(Integer id, String standby1, String getfIds);
+	//修改为0
+	void defaultHj0(String hjShipperhawbcode);
+	//修改为1
+	int default2(Integer valueOf);
+	//获取默认的
+	ydBase selectYd(String string);
+	/**
+	 * 添加义达跟踪号
+	*    
+	* 项目名称：Shopping   
+	* 类描述：   
+	* 创建人：PC1   
+	* 创建时间：2020年3月7日 下午2:08:58   
+	* @version
+	 */
+	int updateYd(ydBase base);
+	/**
+	 * 根据id查询单个
+	*    
+	* 项目名称：Shopping   
+	* 类描述：   
+	* 创建人：PC1   
+	* 创建时间：2020年3月7日 下午5:43:03   
+	* @version
+	 */
+	ydBase yidaSelectOne(ydBase base);
+	/**
+	 * 修改订单
+	*    
+	* 项目名称：Shopping   
+	* 类描述：   
+	* 创建人：PC1   
+	* 创建时间：2020年3月7日 下午6:06:33   
+	* @version
+	 */
+	int ydUpdateOrder(ydBase base);
+	/**
+	 * 删除义达
+	*    
+	* 项目名称：Shopping   
+	* 类描述：   
+	* 创建人：PC1   
+	* 创建时间：2020年3月7日 下午6:25:27   
+	* @version
+	 */
+	int ydDelOrder(ydBase base);
+
+}

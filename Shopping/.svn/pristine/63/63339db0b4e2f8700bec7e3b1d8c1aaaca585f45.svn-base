@@ -1,0 +1,49 @@
+package com.sybinal.shop.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.sybinal.shop.model.FLogistics;
+import com.sybinal.shop.model.hjBase;
+
+
+public interface FLogisticsMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(FLogistics record);
+
+    int insertSelective(FLogistics record); 
+
+    FLogistics selectByPrimaryKey(Integer id);
+
+    FLogistics selectByPrimaryKey2(Integer id);
+    
+    List<FLogistics> SelectIdsForm(Integer id);
+
+    int updateByPrimaryKeySelective(FLogistics record);
+
+    int updateByPrimaryKey(FLogistics record);
+
+	List<FLogistics> selectAll();
+
+	List<FLogistics> selStatusOrder(@Param("flog")FLogistics fLogistics,@Param("let") List<String> strings);
+	
+    int insertAll(@Param("FLogistics") List<FLogistics> record);
+
+	int updateStatues(Integer valueOf);
+
+	FLogistics selectIDs(String id);
+
+	int postLogistics(String id);
+
+	int insertLableKey(@Param("ids") String id,@Param("labs") String lab,@Param("num1") String num1,@Param("method") String method);//,@Param("num2") String num2
+
+	int updatajp(@Param("jpResult") String jpResult,@Param("updatajp") String updatajp,@Param("nos") String nos);
+
+	int batdel(@Param("lit") List<String> strings);
+
+	void addWeight(@Param("wei")  String hjInvoiceweight,@Param("iid")  String string,@Param("nos") String nos);
+
+ 
+}

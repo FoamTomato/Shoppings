@@ -1,0 +1,862 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sybinal.shop.mapper.DTfzyingsMapper">
+  <resultMap id="BaseResultMap" type="com.sybinal.shop.model.DTfzyings">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="Fids" jdbcType="INTEGER" property="fids" />
+    <result column="Fsku" jdbcType="VARCHAR" property="fsku" />
+    <result column="Fbrand" jdbcType="VARCHAR" property="fbrand" />
+    <result column="Fkind" jdbcType="VARCHAR" property="fkind" />
+    <result column="Fkeys" jdbcType="VARCHAR" property="fkeys" />
+    <result column="Fbullet" jdbcType="VARCHAR" property="fbullet" />
+    <result column="Fintro" jdbcType="VARCHAR" property="fintro" />
+    <result column="Fcur" jdbcType="VARCHAR" property="fcur" />
+    <result column="Fprice" jdbcType="DECIMAL" property="fprice" />
+    <result column="Fcost" jdbcType="DECIMAL" property="fcost" />
+    <result column="Ffreight" jdbcType="DOUBLE" property="ffreight" />
+    <result column="Fdeclare" jdbcType="DOUBLE" property="fdeclare" />
+    <result column="Fshipid" jdbcType="INTEGER" property="fshipid" />
+    <result column="Fquantity" jdbcType="INTEGER" property="fquantity" />
+    <result column="Fitems" jdbcType="INTEGER" property="fitems" />
+    <result column="Fweight" jdbcType="DOUBLE" property="fweight" />
+    <result column="Flength" jdbcType="DOUBLE" property="flength" />
+    <result column="Fwidth" jdbcType="DOUBLE" property="fwidth" />
+    <result column="Fheight" jdbcType="DOUBLE" property="fheight" />
+    <result column="Fbattery" jdbcType="VARCHAR" property="fbattery" />
+    <result column="Fspecial" jdbcType="VARCHAR" property="fspecial" />
+    <result column="Fstock" jdbcType="VARCHAR" property="fstock" />
+    <result column="Forigin" jdbcType="VARCHAR" property="forigin" />
+    <result column="Ffacturer" jdbcType="VARCHAR" property="ffacturer" />
+    <result column="Fnumber" jdbcType="INTEGER" property="fnumber" />
+    <result column="Fdepartment" jdbcType="VARCHAR" property="fdepartment" />
+    <result column="Fmaterial" jdbcType="VARCHAR" property="fmaterial" />
+    <result column="Fmetal" jdbcType="VARCHAR" property="fmetal" />
+    <result column="Fgem" jdbcType="VARCHAR" property="fgem" />
+    <result column="Fpackages" jdbcType="VARCHAR" property="fpackages" />
+    <result column="Fhscode" jdbcType="VARCHAR" property="fhscode" />
+    <result column="Fenglish" jdbcType="VARCHAR" property="fenglish" />
+    <result column="Fchinese" jdbcType="VARCHAR" property="fchinese" />
+    <result column="Fsource" jdbcType="VARCHAR" property="fsource" />
+    <result column="Fmemo" jdbcType="VARCHAR" property="fmemo" />
+    <result column="Frs1" jdbcType="VARCHAR" property="frs1" />
+    <result column="Frs2" jdbcType="VARCHAR" property="frs2" />
+    <result column="Frs3" jdbcType="VARCHAR" property="frs3" />
+    <result column="Frs4" jdbcType="VARCHAR" property="frs4" />
+    <result column="Frs5" jdbcType="VARCHAR" property="frs5" />
+    <result column="Frs6" jdbcType="VARCHAR" property="frs6" />
+    <result column="Frs7" jdbcType="VARCHAR" property="frs7" />
+    <result column="Frs8" jdbcType="VARCHAR" property="frs8" />
+    <result column="Frs9" jdbcType="VARCHAR" property="frs9" />
+    <result column="Frs10" jdbcType="TIMESTAMP" property="frs10" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.sybinal.shop.model.DTfzyingsWithBLOBs">
+    <result column="Fen" jdbcType="LONGVARCHAR" property="fen" />
+    <result column="Fzh" jdbcType="LONGVARCHAR" property="fzh" />
+    <result column="Fja" jdbcType="LONGVARCHAR" property="fja" />
+    <result column="Fru" jdbcType="LONGVARCHAR" property="fru" />
+    <result column="Fes" jdbcType="LONGVARCHAR" property="fes" />
+    <result column="Fit" jdbcType="LONGVARCHAR" property="fit" />
+    <result column="Fde" jdbcType="LONGVARCHAR" property="fde" />
+    <result column="Ffr" jdbcType="LONGVARCHAR" property="ffr" />
+    <result column="Fpic" jdbcType="LONGVARCHAR" property="fpic" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, Fids, Fsku, Fbrand, Fkind, Fkeys, Fbullet, Fintro, Fcur, Fprice, Fcost, Ffreight, 
+    Fdeclare, Fshipid, Fquantity, Fitems, Fweight, Flength, Fwidth, Fheight, Fbattery, 
+    Fspecial, Fstock, Forigin, Ffacturer, Fnumber, Fdepartment, Fmaterial, Fmetal, Fgem, 
+    Fpackages, Fhscode, Fenglish, Fchinese, Fsource, Fmemo, Frs1, Frs2, Frs3, Frs4, Frs5, 
+    Frs6, Frs7, Frs8, Frs9, Frs10
+  </sql>
+  <sql id="Blob_Column_List">
+    Fen, Fzh, Fja, Fru, Fes, Fit, Fde, Ffr, Fpic
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from fzying
+    where id = #{id,jdbcType=INTEGER} 
+  </select>
+  <!-- 查询所有 -->
+  <select id="selectAll" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from fzying LIMIT 0,10
+  </select>
+   <!-- 查询需要导出的编号，根据id -->
+  <select id="selectCheckedProduct" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from fzying where id in 
+    <foreach collection="checked" item="ide" separator="," open="(" close=")">
+    	 #{ide,jdbcType=VARCHAR}
+    </foreach>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from fzying
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <!-- 批量删除deleteProductList -->
+  <delete id="deleteProductList" parameterType="java.lang.Integer">
+    delete from fzying
+    where id in
+    <foreach collection="lists" item="ids" open="(" close=")" separator=",">
+     #{ids}
+    </foreach>
+    
+  </delete>
+  <!-- insertAll导入产品 -->
+  <insert id="insertAll" parameterType="com.sybinal.shop.model.DTfzyingsWithBLOBs">
+    insert into fzying (id, Fids, Fsku, 
+      Fbrand, Fkind, Fkeys, 
+      Fbullet, Fintro, Fcur, 
+      Fprice, Fcost, Ffreight, 
+      Fdeclare, Fshipid, Fquantity, 
+      Fitems, Fweight, Flength, 
+      Fwidth, Fheight, Fbattery, 
+      Fspecial, Fstock, Forigin, 
+      Ffacturer, Fnumber, Fdepartment, 
+      Fmaterial, Fmetal, Fgem, 
+      Fpackages, Fhscode, Fenglish, 
+      Fchinese, Fsource, Fmemo, 
+      Frs1, Frs2, Frs3, Frs4, 
+      Frs5, Frs6, Frs7, Frs8, 
+      Frs9, Frs10, Fen, 
+      Fzh, Fja, Fru, 
+      Fes, Fit, Fde, 
+      Ffr, Fpic)
+    values 
+    <foreach collection="dtfzying" item="ide" separator=",">
+    	(#{ide.id,jdbcType=INTEGER}, #{ide.fids,jdbcType=INTEGER}, #{ide.fsku,jdbcType=VARCHAR}, 
+      #{ide.fbrand,jdbcType=VARCHAR}, #{ide.fkind,jdbcType=VARCHAR}, #{ide.fkeys,jdbcType=VARCHAR}, 
+      #{ide.fbullet,jdbcType=VARCHAR}, #{ide.fintro,jdbcType=VARCHAR}, #{ide.fcur,jdbcType=VARCHAR}, 
+      #{ide.fprice,jdbcType=DECIMAL}, #{ide.fcost,jdbcType=DECIMAL}, #{ide.ffreight,jdbcType=DOUBLE}, 
+      #{ide.fdeclare,jdbcType=DOUBLE}, #{ide.fshipid,jdbcType=INTEGER}, #{ide.fquantity,jdbcType=INTEGER}, 
+      #{ide.fitems,jdbcType=INTEGER}, #{ide.fweight,jdbcType=DOUBLE}, #{ide.flength,jdbcType=DOUBLE}, 
+      #{ide.fwidth,jdbcType=DOUBLE}, #{ide.fheight,jdbcType=DOUBLE}, #{ide.fbattery,jdbcType=VARCHAR}, 
+      #{ide.fspecial,jdbcType=VARCHAR}, #{ide.fstock,jdbcType=VARCHAR}, #{ide.forigin,jdbcType=VARCHAR}, 
+      #{ide.ffacturer,jdbcType=VARCHAR}, #{ide.fnumber,jdbcType=INTEGER}, #{ide.fdepartment,jdbcType=VARCHAR}, 
+      #{ide.fmaterial,jdbcType=VARCHAR}, #{ide.fmetal,jdbcType=VARCHAR}, #{ide.fgem,jdbcType=VARCHAR}, 
+      #{ide.fpackages,jdbcType=VARCHAR}, #{ide.fhscode,jdbcType=VARCHAR}, #{ide.fenglish,jdbcType=VARCHAR}, 
+      #{ide.fchinese,jdbcType=VARCHAR}, #{ide.fsource,jdbcType=VARCHAR}, #{ide.fmemo,jdbcType=VARCHAR}, 
+      #{ide.frs1,jdbcType=VARCHAR}, #{ide.frs2,jdbcType=VARCHAR}, #{ide.frs3,jdbcType=VARCHAR}, #{ide.frs4,jdbcType=VARCHAR}, 
+      #{ide.frs5,jdbcType=VARCHAR}, #{ide.frs6,jdbcType=VARCHAR}, #{ide.frs7,jdbcType=VARCHAR}, #{ide.frs8,jdbcType=VARCHAR}, 
+      #{ide.frs9,jdbcType=VARCHAR}, #{ide.frs10,jdbcType=TIMESTAMP}, #{ide.fen,jdbcType=LONGVARCHAR}, 
+      #{ide.fzh,jdbcType=LONGVARCHAR}, #{ide.fja,jdbcType=LONGVARCHAR}, #{ide.fru,jdbcType=LONGVARCHAR}, 
+      #{ide.fes,jdbcType=LONGVARCHAR}, #{ide.fit,jdbcType=LONGVARCHAR}, #{ide.fde,jdbcType=LONGVARCHAR}, 
+      #{ide.ffr,jdbcType=LONGVARCHAR}, #{ide.fpic,jdbcType=LONGVARCHAR})
+      </foreach>
+  </insert>
+  <insert id="insert" parameterType="com.sybinal.shop.model.DTfzyingsWithBLOBs">
+    insert into fzying (id, Fids, Fsku, 
+      Fbrand, Fkind, Fkeys, 
+      Fbullet, Fintro, Fcur, 
+      Fprice, Fcost, Ffreight, 
+      Fdeclare, Fshipid, Fquantity, 
+      Fitems, Fweight, Flength, 
+      Fwidth, Fheight, Fbattery, 
+      Fspecial, Fstock, Forigin, 
+      Ffacturer, Fnumber, Fdepartment, 
+      Fmaterial, Fmetal, Fgem, 
+      Fpackages, Fhscode, Fenglish, 
+      Fchinese, Fsource, Fmemo, 
+      Frs1, Frs2, Frs3, Frs4, 
+      Frs5, Frs6, Frs7, Frs8, 
+      Frs9, Frs10, Fen, 
+      Fzh, Fja, Fru, 
+      Fes, Fit, Fde, 
+      Ffr, Fpic)
+    values (#{id,jdbcType=INTEGER}, #{fids,jdbcType=INTEGER}, #{fsku,jdbcType=VARCHAR}, 
+      #{fbrand,jdbcType=VARCHAR}, #{fkind,jdbcType=VARCHAR}, #{fkeys,jdbcType=VARCHAR}, 
+      #{fbullet,jdbcType=VARCHAR}, #{fintro,jdbcType=VARCHAR}, #{fcur,jdbcType=VARCHAR}, 
+      #{fprice,jdbcType=DECIMAL}, #{fcost,jdbcType=DECIMAL}, #{ffreight,jdbcType=DOUBLE}, 
+      #{fdeclare,jdbcType=DOUBLE}, #{fshipid,jdbcType=INTEGER}, #{fquantity,jdbcType=INTEGER}, 
+      #{fitems,jdbcType=INTEGER}, #{fweight,jdbcType=DOUBLE}, #{flength,jdbcType=DOUBLE}, 
+      #{fwidth,jdbcType=DOUBLE}, #{fheight,jdbcType=DOUBLE}, #{fbattery,jdbcType=VARCHAR}, 
+      #{fspecial,jdbcType=VARCHAR}, #{fstock,jdbcType=VARCHAR}, #{forigin,jdbcType=VARCHAR}, 
+      #{ffacturer,jdbcType=VARCHAR}, #{fnumber,jdbcType=INTEGER}, #{fdepartment,jdbcType=VARCHAR}, 
+      #{fmaterial,jdbcType=VARCHAR}, #{fmetal,jdbcType=VARCHAR}, #{fgem,jdbcType=VARCHAR}, 
+      #{fpackages,jdbcType=VARCHAR}, #{fhscode,jdbcType=VARCHAR}, #{fenglish,jdbcType=VARCHAR}, 
+      #{fchinese,jdbcType=VARCHAR}, #{fsource,jdbcType=VARCHAR}, #{fmemo,jdbcType=VARCHAR}, 
+      #{frs1,jdbcType=VARCHAR}, #{frs2,jdbcType=VARCHAR}, #{frs3,jdbcType=VARCHAR}, #{frs4,jdbcType=VARCHAR}, 
+      #{frs5,jdbcType=VARCHAR}, #{frs6,jdbcType=VARCHAR}, #{frs7,jdbcType=VARCHAR}, #{frs8,jdbcType=VARCHAR}, 
+      #{frs9,jdbcType=VARCHAR}, #{frs10,jdbcType=TIMESTAMP}, #{fen,jdbcType=LONGVARCHAR}, 
+      #{fzh,jdbcType=LONGVARCHAR}, #{fja,jdbcType=LONGVARCHAR}, #{fru,jdbcType=LONGVARCHAR}, 
+      #{fes,jdbcType=LONGVARCHAR}, #{fit,jdbcType=LONGVARCHAR}, #{fde,jdbcType=LONGVARCHAR}, 
+      #{ffr,jdbcType=LONGVARCHAR}, #{fpic,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.sybinal.shop.model.DTfzyingsWithBLOBs">
+    insert into fzying
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="fids != null">
+        Fids,
+      </if>
+      <if test="fsku != null">
+        Fsku,
+      </if>
+      <if test="fbrand != null">
+        Fbrand,
+      </if>
+      <if test="fkind != null">
+        Fkind,
+      </if>
+      <if test="fkeys != null">
+        Fkeys,
+      </if>
+      <if test="fbullet != null">
+        Fbullet,
+      </if>
+      <if test="fintro != null">
+        Fintro,
+      </if>
+      <if test="fcur != null">
+        Fcur,
+      </if>
+      <if test="fprice != null">
+        Fprice,
+      </if>
+      <if test="fcost != null">
+        Fcost,
+      </if>
+      <if test="ffreight != null">
+        Ffreight,
+      </if>
+      <if test="fdeclare != null">
+        Fdeclare,
+      </if>
+      <if test="fshipid != null">
+        Fshipid,
+      </if>
+      <if test="fquantity != null">
+        Fquantity,
+      </if>
+      <if test="fitems != null">
+        Fitems,
+      </if>
+      <if test="fweight != null">
+        Fweight,
+      </if>
+      <if test="flength != null">
+        Flength,
+      </if>
+      <if test="fwidth != null">
+        Fwidth,
+      </if>
+      <if test="fheight != null">
+        Fheight,
+      </if>
+      <if test="fbattery != null">
+        Fbattery,
+      </if>
+      <if test="fspecial != null">
+        Fspecial,
+      </if>
+      <if test="fstock != null">
+        Fstock,
+      </if>
+      <if test="forigin != null">
+        Forigin,
+      </if>
+      <if test="ffacturer != null">
+        Ffacturer,
+      </if>
+      <if test="fnumber != null">
+        Fnumber,
+      </if>
+      <if test="fdepartment != null">
+        Fdepartment,
+      </if>
+      <if test="fmaterial != null">
+        Fmaterial,
+      </if>
+      <if test="fmetal != null">
+        Fmetal,
+      </if>
+      <if test="fgem != null">
+        Fgem,
+      </if>
+      <if test="fpackages != null">
+        Fpackages,
+      </if>
+      <if test="fhscode != null">
+        Fhscode,
+      </if>
+      <if test="fenglish != null">
+        Fenglish,
+      </if>
+      <if test="fchinese != null">
+        Fchinese,
+      </if>
+      <if test="fsource != null">
+        Fsource,
+      </if>
+      <if test="fmemo != null">
+        Fmemo,
+      </if>
+      <if test="frs1 != null">
+        Frs1,
+      </if>
+      <if test="frs2 != null">
+        Frs2,
+      </if>
+      <if test="frs3 != null">
+        Frs3,
+      </if>
+      <if test="frs4 != null">
+        Frs4,
+      </if>
+      <if test="frs5 != null">
+        Frs5,
+      </if>
+      <if test="frs6 != null">
+        Frs6,
+      </if>
+      <if test="frs7 != null">
+        Frs7,
+      </if>
+      <if test="frs8 != null">
+        Frs8,
+      </if>
+      <if test="frs9 != null">
+        Frs9,
+      </if>
+      <if test="frs10 != null">
+        Frs10,
+      </if>
+      <if test="fen != null">
+        Fen,
+      </if>
+      <if test="fzh != null">
+        Fzh,
+      </if>
+      <if test="fja != null">
+        Fja,
+      </if>
+      <if test="fru != null">
+        Fru,
+      </if>
+      <if test="fes != null">
+        Fes,
+      </if>
+      <if test="fit != null">
+        Fit,
+      </if>
+      <if test="fde != null">
+        Fde,
+      </if>
+      <if test="ffr != null">
+        Ffr,
+      </if>
+      <if test="fpic != null">
+        Fpic,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="fids != null">
+        #{fids,jdbcType=INTEGER},
+      </if>
+      <if test="fsku != null">
+        #{fsku,jdbcType=VARCHAR},
+      </if>
+      <if test="fbrand != null">
+        #{fbrand,jdbcType=VARCHAR},
+      </if>
+      <if test="fkind != null">
+        #{fkind,jdbcType=VARCHAR},
+      </if>
+      <if test="fkeys != null">
+        #{fkeys,jdbcType=VARCHAR},
+      </if>
+      <if test="fbullet != null">
+        #{fbullet,jdbcType=VARCHAR},
+      </if>
+      <if test="fintro != null">
+        #{fintro,jdbcType=VARCHAR},
+      </if>
+      <if test="fcur != null">
+        #{fcur,jdbcType=VARCHAR},
+      </if>
+      <if test="fprice != null">
+        #{fprice,jdbcType=DECIMAL},
+      </if>
+      <if test="fcost != null">
+        #{fcost,jdbcType=DECIMAL},
+      </if>
+      <if test="ffreight != null">
+        #{ffreight,jdbcType=DOUBLE},
+      </if>
+      <if test="fdeclare != null">
+        #{fdeclare,jdbcType=DOUBLE},
+      </if>
+      <if test="fshipid != null">
+        #{fshipid,jdbcType=INTEGER},
+      </if>
+      <if test="fquantity != null">
+        #{fquantity,jdbcType=INTEGER},
+      </if>
+      <if test="fitems != null">
+        #{fitems,jdbcType=INTEGER},
+      </if>
+      <if test="fweight != null">
+        #{fweight,jdbcType=DOUBLE},
+      </if>
+      <if test="flength != null">
+        #{flength,jdbcType=DOUBLE},
+      </if>
+      <if test="fwidth != null">
+        #{fwidth,jdbcType=DOUBLE},
+      </if>
+      <if test="fheight != null">
+        #{fheight,jdbcType=DOUBLE},
+      </if>
+      <if test="fbattery != null">
+        #{fbattery,jdbcType=VARCHAR},
+      </if>
+      <if test="fspecial != null">
+        #{fspecial,jdbcType=VARCHAR},
+      </if>
+      <if test="fstock != null">
+        #{fstock,jdbcType=VARCHAR},
+      </if>
+      <if test="forigin != null">
+        #{forigin,jdbcType=VARCHAR},
+      </if>
+      <if test="ffacturer != null">
+        #{ffacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="fnumber != null">
+        #{fnumber,jdbcType=INTEGER},
+      </if>
+      <if test="fdepartment != null">
+        #{fdepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="fmaterial != null">
+        #{fmaterial,jdbcType=VARCHAR},
+      </if>
+      <if test="fmetal != null">
+        #{fmetal,jdbcType=VARCHAR},
+      </if>
+      <if test="fgem != null">
+        #{fgem,jdbcType=VARCHAR},
+      </if>
+      <if test="fpackages != null">
+        #{fpackages,jdbcType=VARCHAR},
+      </if>
+      <if test="fhscode != null">
+        #{fhscode,jdbcType=VARCHAR},
+      </if>
+      <if test="fenglish != null">
+        #{fenglish,jdbcType=VARCHAR},
+      </if>
+      <if test="fchinese != null">
+        #{fchinese,jdbcType=VARCHAR},
+      </if>
+      <if test="fsource != null">
+        #{fsource,jdbcType=VARCHAR},
+      </if>
+      <if test="fmemo != null">
+        #{fmemo,jdbcType=VARCHAR},
+      </if>
+      <if test="frs1 != null">
+        #{frs1,jdbcType=VARCHAR},
+      </if>
+      <if test="frs2 != null">
+        #{frs2,jdbcType=VARCHAR},
+      </if>
+      <if test="frs3 != null">
+        #{frs3,jdbcType=VARCHAR},
+      </if>
+      <if test="frs4 != null">
+        #{frs4,jdbcType=VARCHAR},
+      </if>
+      <if test="frs5 != null">
+        #{frs5,jdbcType=VARCHAR},
+      </if>
+      <if test="frs6 != null">
+        #{frs6,jdbcType=VARCHAR},
+      </if>
+      <if test="frs7 != null">
+        #{frs7,jdbcType=VARCHAR},
+      </if>
+      <if test="frs8 != null">
+        #{frs8,jdbcType=VARCHAR},
+      </if>
+      <if test="frs9 != null">
+        #{frs9,jdbcType=VARCHAR},
+      </if>
+      <if test="frs10 != null">
+        #{frs10,jdbcType=TIMESTAMP},
+      </if>
+      <if test="fen != null">
+        #{fen,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fzh != null">
+        #{fzh,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fja != null">
+        #{fja,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fru != null">
+        #{fru,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fes != null">
+        #{fes,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fit != null">
+        #{fit,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fde != null">
+        #{fde,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="ffr != null">
+        #{ffr,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fpic != null">
+        #{fpic,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sybinal.shop.model.DTfzyingsWithBLOBs">
+    update fzying
+    <set>
+      <if test="record.fids != null">
+        Fids = #{record.fids,jdbcType=INTEGER},
+      </if>
+      <if test="record.fsku != null">
+        Fsku = #{record.fsku,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fbrand != null">
+        Fbrand = #{record.fbrand,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fkind != null">
+        Fkind = #{record.fkind,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fkeys != null">
+        Fkeys = #{record.fkeys,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fbullet != null">
+        Fbullet = #{record.fbullet,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fintro != null">
+        Fintro = #{record.fintro,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fcur != null">
+        Fcur = #{record.fcur,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fprice != null">
+        Fprice = #{record.fprice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.fcost != null">
+        Fcost = #{record.fcost,jdbcType=DECIMAL},
+      </if>
+      <if test="record.ffreight != null">
+        Ffreight = #{record.ffreight,jdbcType=DOUBLE},
+      </if>
+      <if test="record.fdeclare != null">
+        Fdeclare = #{record.fdeclare,jdbcType=DOUBLE},
+      </if>
+      <if test="record.fshipid != null">
+        Fshipid = #{record.fshipid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fquantity != null">
+        Fquantity = #{record.fquantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.fitems != null">
+        Fitems = #{record.fitems,jdbcType=INTEGER},
+      </if>
+      <if test="record.fweight != null">
+        Fweight = #{record.fweight,jdbcType=DOUBLE},
+      </if>
+      <if test="record.flength != null">
+        Flength = #{record.flength,jdbcType=DOUBLE},
+      </if>
+      <if test="record.fwidth != null">
+        Fwidth = #{record.fwidth,jdbcType=DOUBLE},
+      </if>
+      <if test="record.fheight != null">
+        Fheight = #{record.fheight,jdbcType=DOUBLE},
+      </if>
+      <if test="record.fbattery != null">
+        Fbattery = #{record.fbattery,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fspecial != null">
+        Fspecial = #{record.fspecial,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fstock != null">
+        Fstock = #{record.fstock,jdbcType=VARCHAR},
+      </if>
+      <if test="record.forigin != null">
+        Forigin = #{record.forigin,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ffacturer != null">
+        Ffacturer = #{record.ffacturer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fnumber != null">
+        Fnumber = #{record.fnumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.fdepartment != null">
+        Fdepartment = #{record.fdepartment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fmaterial != null">
+        Fmaterial = #{record.fmaterial,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fmetal != null">
+        Fmetal = #{record.fmetal,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fgem != null">
+        Fgem = #{record.fgem,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fpackages != null">
+        Fpackages = #{record.fpackages,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fhscode != null">
+        Fhscode = #{record.fhscode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fenglish != null">
+        Fenglish = #{record.fenglish,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fchinese != null">
+        Fchinese = #{record.fchinese,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fsource != null">
+        Fsource = #{record.fsource,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fmemo != null">
+        Fmemo = #{record.fmemo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frs1 != null">
+        Frs1 = #{record.frs1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frs2 != null">
+        Frs2 = #{record.frs2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frs3 != null">
+        Frs3 = #{record.frs3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frs4 != null">
+        Frs4 = #{record.frs4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frs5 != null">
+        Frs5 = #{record.frs5,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frs6 != null">
+        Frs6 = #{record.frs6,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frs7 != null">
+        Frs7 = #{record.frs7,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frs8 != null">
+        Frs8 = #{record.frs8,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frs9 != null">
+        Frs9 = #{record.frs9,jdbcType=VARCHAR},
+      </if>
+      <if test="record.frs10 != null">
+        Frs10 = #{record.frs10,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.fen != null">
+        Fen = #{record.fen,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.fzh != null">
+        Fzh = #{record.fzh,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.fja != null">
+        Fja = #{record.fja,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.fru != null">
+        Fru = #{record.fru,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.fes != null">
+        Fes = #{record.fes,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.fit != null">
+        Fit = #{record.fit,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.fde != null">
+        Fde = #{record.fde,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.ffr != null">
+        Ffr = #{record.ffr,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.fpic != null">
+        Fpic = #{record.fpic,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{record.id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.sybinal.shop.model.DTfzyingsWithBLOBs">
+    update fzying
+    set Fids = #{fids,jdbcType=INTEGER},
+      Fsku = #{fsku,jdbcType=VARCHAR},
+      Fbrand = #{fbrand,jdbcType=VARCHAR},
+      Fkind = #{fkind,jdbcType=VARCHAR},
+      Fkeys = #{fkeys,jdbcType=VARCHAR},
+      Fbullet = #{fbullet,jdbcType=VARCHAR},
+      Fintro = #{fintro,jdbcType=VARCHAR},
+      Fcur = #{fcur,jdbcType=VARCHAR},
+      Fprice = #{fprice,jdbcType=DECIMAL},
+      Fcost = #{fcost,jdbcType=DECIMAL},
+      Ffreight = #{ffreight,jdbcType=DOUBLE},
+      Fdeclare = #{fdeclare,jdbcType=DOUBLE},
+      Fshipid = #{fshipid,jdbcType=INTEGER},
+      Fquantity = #{fquantity,jdbcType=INTEGER},
+      Fitems = #{fitems,jdbcType=INTEGER},
+      Fweight = #{fweight,jdbcType=DOUBLE},
+      Flength = #{flength,jdbcType=DOUBLE},
+      Fwidth = #{fwidth,jdbcType=DOUBLE},
+      Fheight = #{fheight,jdbcType=DOUBLE},
+      Fbattery = #{fbattery,jdbcType=VARCHAR},
+      Fspecial = #{fspecial,jdbcType=VARCHAR},
+      Fstock = #{fstock,jdbcType=VARCHAR},
+      Forigin = #{forigin,jdbcType=VARCHAR},
+      Ffacturer = #{ffacturer,jdbcType=VARCHAR},
+      Fnumber = #{fnumber,jdbcType=INTEGER},
+      Fdepartment = #{fdepartment,jdbcType=VARCHAR},
+      Fmaterial = #{fmaterial,jdbcType=VARCHAR},
+      Fmetal = #{fmetal,jdbcType=VARCHAR},
+      Fgem = #{fgem,jdbcType=VARCHAR},
+      Fpackages = #{fpackages,jdbcType=VARCHAR},
+      Fhscode = #{fhscode,jdbcType=VARCHAR},
+      Fenglish = #{fenglish,jdbcType=VARCHAR},
+      Fchinese = #{fchinese,jdbcType=VARCHAR},
+      Fsource = #{fsource,jdbcType=VARCHAR},
+      Fmemo = #{fmemo,jdbcType=VARCHAR},
+      Frs1 = #{frs1,jdbcType=VARCHAR},
+      Frs2 = #{frs2,jdbcType=VARCHAR},
+      Frs3 = #{frs3,jdbcType=VARCHAR},
+      Frs4 = #{frs4,jdbcType=VARCHAR},
+      Frs5 = #{frs5,jdbcType=VARCHAR},
+      Frs6 = #{frs6,jdbcType=VARCHAR},
+      Frs7 = #{frs7,jdbcType=VARCHAR},
+      Frs8 = #{frs8,jdbcType=VARCHAR},
+      Frs9 = #{frs9,jdbcType=VARCHAR},
+      Frs10 = #{frs10,jdbcType=TIMESTAMP},
+      Fen = #{fen,jdbcType=LONGVARCHAR},
+      Fzh = #{fzh,jdbcType=LONGVARCHAR},
+      Fja = #{fja,jdbcType=LONGVARCHAR},
+      Fru = #{fru,jdbcType=LONGVARCHAR},
+      Fes = #{fes,jdbcType=LONGVARCHAR},
+      Fit = #{fit,jdbcType=LONGVARCHAR},
+      Fde = #{fde,jdbcType=LONGVARCHAR},
+      Ffr = #{ffr,jdbcType=LONGVARCHAR},
+      Fpic = #{fpic,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.sybinal.shop.model.DTfzyings">
+    update fzying
+    set Fids = #{fids,jdbcType=INTEGER},
+      Fsku = #{fsku,jdbcType=VARCHAR},
+      Fbrand = #{fbrand,jdbcType=VARCHAR},
+      Fkind = #{fkind,jdbcType=VARCHAR},
+      Fkeys = #{fkeys,jdbcType=VARCHAR},
+      Fbullet = #{fbullet,jdbcType=VARCHAR},
+      Fintro = #{fintro,jdbcType=VARCHAR},
+      Fcur = #{fcur,jdbcType=VARCHAR},
+      Fprice = #{fprice,jdbcType=DECIMAL},
+      Fcost = #{fcost,jdbcType=DECIMAL},
+      Ffreight = #{ffreight,jdbcType=DOUBLE},
+      Fdeclare = #{fdeclare,jdbcType=DOUBLE},
+      Fshipid = #{fshipid,jdbcType=INTEGER},
+      Fquantity = #{fquantity,jdbcType=INTEGER},
+      Fitems = #{fitems,jdbcType=INTEGER},
+      Fweight = #{fweight,jdbcType=DOUBLE},
+      Flength = #{flength,jdbcType=DOUBLE},
+      Fwidth = #{fwidth,jdbcType=DOUBLE},
+      Fheight = #{fheight,jdbcType=DOUBLE},
+      Fbattery = #{fbattery,jdbcType=VARCHAR},
+      Fspecial = #{fspecial,jdbcType=VARCHAR},
+      Fstock = #{fstock,jdbcType=VARCHAR},
+      Forigin = #{forigin,jdbcType=VARCHAR},
+      Ffacturer = #{ffacturer,jdbcType=VARCHAR},
+      Fnumber = #{fnumber,jdbcType=INTEGER},
+      Fdepartment = #{fdepartment,jdbcType=VARCHAR},
+      Fmaterial = #{fmaterial,jdbcType=VARCHAR},
+      Fmetal = #{fmetal,jdbcType=VARCHAR},
+      Fgem = #{fgem,jdbcType=VARCHAR},
+      Fpackages = #{fpackages,jdbcType=VARCHAR},
+      Fhscode = #{fhscode,jdbcType=VARCHAR},
+      Fenglish = #{fenglish,jdbcType=VARCHAR},
+      Fchinese = #{fchinese,jdbcType=VARCHAR},
+      Fsource = #{fsource,jdbcType=VARCHAR},
+      Fmemo = #{fmemo,jdbcType=VARCHAR},
+      Frs1 = #{frs1,jdbcType=VARCHAR},
+      Frs2 = #{frs2,jdbcType=VARCHAR},
+      Frs3 = #{frs3,jdbcType=VARCHAR},
+      Frs4 = #{frs4,jdbcType=VARCHAR},
+      Frs5 = #{frs5,jdbcType=VARCHAR},
+      Frs6 = #{frs6,jdbcType=VARCHAR},
+      Frs7 = #{frs7,jdbcType=VARCHAR},
+      Frs8 = #{frs8,jdbcType=VARCHAR},
+      Frs9 = #{frs9,jdbcType=VARCHAR},
+      Frs10 = #{frs10,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 带条件查询 selectdTstockAtAll-->
+  <select id="selectdTstockAtAlls"  parameterType="com.sybinal.shop.model.DTfzyings" resultMap="ResultMapWithBLOBs">
+    select id,Fchinese,Fprice,Fcost,Fpic
+    from fzying
+    
+    <where>
+    <trim  suffixOverrides="and">
+			<if test="lists != null">
+			    <foreach collection="lists" item="id" open="(" close=")" separator="or">
+			    Fenglish like concat('%','${id}','%') or Fchinese like concat('%','${id}','%')
+				</foreach>
+				and
+			</if>
+			<if test="dtfzying.fsku != null and dtfzying.fsku != ''">
+				Fsku = #{dtfzying.fsku} and
+			</if>
+			<if test="dtfzying.fkind != null and dtfzying.fkind != 0 and dtfzying.fkind!=''">
+				Fkind like concat('%','${dtfzying.fkind}','%') and 
+			</if>
+			<if test="dtfzying.frs1 != null and dtfzying.frs1 != 0">
+				Frs1 = #{dtfzying.frs1} and
+			</if>
+			<if test="dtfzying.frs2 != null and dtfzying.frs2 != 0">
+				Frs2 = #{dtfzying.frs2} and 
+			</if>
+			<if test="dtfzying.frs3 != null and dtfzying.frs3 != 0">
+				 Frs3 = #{dtfzying.frs3} and
+			</if>
+			<if test="dtfzying.frs4 != null and dtfzying.frs4 != 0">
+				Frs4 = #{dtfzying.frs4} and 
+			</if>
+			<if test="dtfzying.frs5 != null and dtfzying.frs5 != 0">
+				Frs5 = #{dtfzying.frs5} and 
+			</if>
+			<if test="dtfzying.frs6 != null and dtfzying.frs6 != 0">
+				Frs6 = #{dtfzying.frs6} and 
+			</if>
+			<if test="dtfzying.frs7 != null and dtfzying.frs7 != 0">
+				Frs7 = #{dtfzying.frs7} and 
+			</if>
+			<if test="dtfzying.price1 != null and dtfzying.price1 != 0">
+				Fprice &gt;= #{dtfzying.price1} and 
+			</if>
+			<if test="dtfzying.price2 != null and dtfzying.price2 != 0">
+				Fprice &lt;= #{dtfzying.price2} and 
+			</if>
+			<if test="dtfzying.updateTime1 != null and dtfzying.updateTime1 != ''">
+				DATE_FORMAT(Frs10,"%Y-%m-%d")  &gt;= #{dtfzying.updateTime1} and 
+			</if>
+			<if test="dtfzying.updateTime2 != null and dtfzying.updateTime2 != ''">
+				DATE_FORMAT(Frs10,"%Y-%m-%d") &lt;= #{dtfzying.updateTime2} and 
+			</if>
+			</trim>
+			
+		</where>
+		ORDER BY id DESC
+  </select>
+</mapper>

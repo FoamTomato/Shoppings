@@ -1,0 +1,1411 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@page session="true"%>
+<%	String path=request.getContextPath();
+	String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+	%>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="_csrf" content="${_csrf.token}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<title>商城后台</title>
+<jsp:include page="../commonCss.jsp" />
+<link rel='dns-prefetch' href='https://images-na.ssl-images-amazon.com'>
+</head>
+<body class="blank" style="margin: 0px; padding: 0px;">
+	<jsp:include page="../main/top.jsp" />
+	<jsp:include page="../main/left.jsp" />
+	<jsp:include page="../commonJs.jsp" />
+
+	<div id="wrapper" class="leftleft" style="float: left">
+		<div class="small-header transition" id="selectselect" style="">
+			<div class="content">
+				<div class="hpanel">
+					<div class="panel-body">
+						<div class="row">
+							<div id="error_div" class="text-left"></div>
+
+							<form:form modelAttribute="product" id="form_productInfo"
+								name="form_productInfo" method="POST">
+								<div class="form-group col-lg-6">
+									<label>其它搜索</label> <input type="text" id="fname" name="names"
+										class="form-control" maxlength="50" placeholder="其它搜索" />
+								</div>
+								<div class="form-group col-lg-6">
+									<label>产品编号/SKU</label> <input type="text" id="fids"
+										name="name" class="form-control" maxlength="50"
+										placeholder="产品编号/SKU" />
+								</div>
+								<div class="form-group col-lg-1">
+									<label>最低价</label>
+									<div class="input-group">
+										<input id="fprice1" name="updateTimeFrom" type="number"
+											class="form-control" min="0">
+									</div>
+								</div>
+								<div class="form-group col-lg-1">
+									<label>最高价</label>
+									<div class="input-group">
+										<input id="fprice2" name="updateTimeTo" type="number"
+											class="form-control">
+									</div>
+								</div>
+								<div class="form-group col-lg-4">
+									<label>产品分类</label>
+									<form:select id="fcateid" path="categoryId"
+										items="${categoryMap}" cssClass="form-control" />
+								</div>
+
+								<div class="form-group col-lg-2">
+									<label>审核状态</label> <select id="fselect" name="productStatus"
+										class="form-control">
+										<option value="0" selected="selected">全部</option>
+										<option value="1">通过</option>
+										<option value="2">待审核</option>
+										<option value="3">过滤</option>
+										<option value="4">侵权</option>
+										<option value="5">禁止上传</option>
+										<option value="6">屏蔽</option>
+									</select>
+								</div>
+								<div class="form-group col-lg-2">
+									<label>产品状态</label> <select id="fproduct" name="productStatus"
+										class="form-control">
+										<option value="0" selected="selected">全部</option>
+										<option value="1">已上架</option>
+										<option value="2">已下架</option>
+										<option value="3">失效</option>
+									</select>
+								</div>
+								<div class="form-group col-lg-2">
+									<label>分级及图案</label> <select id="flevel" name="productStatus"
+										class="form-control">
+										<option value="0" selected="selected">全部</option>
+										<option value="1">未分级</option>
+										<option value="2">图案设计</option>
+										<option value="3">有图案设计</option>
+										<option value="4">国内品牌</option>
+										<option value="5">高风险</option>
+									</select>
+								</div>
+
+								<div class="form-group col-lg-2">
+									<label>更新日期</label>
+									<div class="input-group date">
+										<input name="updateTimeFrom" type="date" id="fdate1"
+											class="form-control">
+
+									</div>
+								</div>
+								<div class="form-group col-lg-2">
+									<label>截至日期</label>
+									<div class="input-group date">
+										<input name="updateTimeTo" type="date" id="fdate2"
+											class="form-control">
+
+									</div>
+								</div>
+								
+								<div class="form-group col-lg-2">
+									<label>业务员</label> <select name="productStatus" id="ywys"
+										class="form-control">
+										<option value="0" selected="selected">全部</option>
+										<option value="1">超级管理员</option>
+										<option value="2">管理员</option>
+										<option value="3">普通用户</option>
+									</select>
+								</div>
+								<div class="form-group col-lg-2">
+									<label>特殊状态</label> <select name="productStatus" id="fban"
+										class="form-control">
+										<option value="0" selected="selected">全部</option>
+										<option value="1">重点</option>
+										<option value="2">原创</option>
+										<option value="3">海外</option>
+										<option value="4">抓取</option>
+										<option value="5">导入</option>
+									</select>
+								</div>
+								<div class="form-group col-lg-2">
+									<label>分销状态</label> <select name="productStatus" id="ffx"
+										class="form-control">
+										<option value="0" selected="selected">全部</option>
+										<option value="1">分销</option>
+										<option value="2">不分销</option>
+										<option value="3">没运费</option>
+										<option value="4">无挂号</option>
+										<option value="5">未分类</option>
+										<option value="6">零库存</option>
+									</select>
+								</div>
+								<div class="form-group col-lg-2">
+									<label>日期</label> <select name="productStatus" id="fdates"
+										class="form-control">
+										<option value="0" selected="selected">全部</option>
+										<option value="1">七天内</option>
+										<option value="2">一周前</option>
+										<option value="3">一月前</option>
+										<option value="4">三月前</option>
+										<option value="5">半年前</option>
+										<option value="6">一年前</option>
+										<option value="7">未出单</option>
+									</select>
+								</div>
+
+								<!-- <div class="form-group col-lg-3">
+									<label>热门商品</label> <br> <input type="radio" value="0"
+										class="i-checks" name="hot">&nbsp;&nbsp;非热门商品
+									&nbsp;&nbsp;<input type="radio" value="1" class="i-checks"
+										name="hot">&nbsp;&nbsp;热门商品 &nbsp;&nbsp;<input
+										type="radio" value="2" class="i-checks" name="hot" checked>&nbsp;&nbsp;全部
+								</div> -->
+								<div class="form-group col-lg-1 i-checkss-font">
+									&nbsp;&nbsp; <input type="checkbox" id="checkedAll1"
+										class="i-checkss" name="checkedAllse" onclick="checkedAlls()">&nbsp;&nbsp;全选
+								</div>
+								<div class="form-group col-lg-12">
+									<div class="text-right m-t-xs">
+										<!-- <button id="add" class="btn btn-success" type="button">
+														<strong>添加</strong>
+												</button> -->
+										<button id="searchd" class="btn btn-success" type="button">
+											<strong>查询</strong>
+										</button>
+										<button id="reset" class="btn btn-success" type="reset">
+											<strong>重置</strong>
+										</button>
+
+										<button id="unfold" class="btn btn-success" type="reset">
+											<strong>展开</strong>
+										</button>
+									</div>
+								</div>
+
+							</form:form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="content">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="hpanel">
+						<div class="panel-body">
+							<!-- 
+						表格式展示
+						<table id="productInfoList" style="width: 100%;" class="table table-striped table-bordered table-hover"></table>
+					 -->
+							<!-- 图片式展示 -->
+							<div class="productImageList">
+
+								<ul class="productUlListLi" id="productListType">
+									<c:forEach items="${dTfzyingList}" var="dTfzyingLists">
+
+										<li class="productLiStyle" style="list-style-type: none">
+											<input class="productCheckbox" type="checkbox" name="ids"
+											value=""> <a
+											onclick="addPanel('${dTfzyingLists.id }')"<%-- href="product/addEdit${productLists.id}"  onclick="editProductInfo('${productLists.id}')" --%>>
+												<div class="productListImages">
+												
+													<input id="img${dTfzyingLists.id }" type="hidden"
+														value="/Shopping${dTfzyingLists.fpic}"> <img
+														id="imgs${dTfzyingLists.id }" class="productListImageStyle"
+														src="/Shopping/resources/uploads/${dTfzyingLists.fpic}">
+												</div>
+												<div class="productShopPrice">
+													成本单价：${dTfzyingLists.fprice}￥
+													
+													<div class="productPrice">差价：${dTfzyingLists.fcost}￥</div>
+												</div>
+												<div class="productNames" id="productNamesFen">
+												<c:set var="string1" value="${dTfzyingLists.fen}"/>
+												<c:set value="${fn:split(string1,'毰毸')}" var="st1"/>
+												${st1[0]}
+												</div>
+										</a>
+										</li>
+									</c:forEach>
+									<%--<c:forEach items="${productList.aaData }" var="productLists">
+
+										<c:forEach items="${fproducty}" var="fproductys">
+											<c:if test="${fproductys.id==productLists.id}">
+												<!--  特殊状态 -->
+												<input type="hidden" id="backUpCopy4T${fproductys.id}"
+													name="backUpCopy4T" value="${fproductys.backUpCopy4}">
+
+												<!-- 分销状态 -->
+												<input type="hidden" id="backUpCopy5T${fproductys.id}"
+													name="backUpCopy5T" value="${fproductys.backUpCopy5}">
+
+												<!-- 日期 -->
+												<input type="hidden" id="backUpCopy6T${fproductys.id}"
+													name="backUpCopy6T" value="${fproductys.backUpCopy6}">
+
+												<!-- 审核状态 -->
+												<input type="hidden" id="backUpCopy1T${fproductys.id}"
+													name="backUpCopy1T" value="${fproductys.backUpCopy1}">
+
+												<!-- 产品状态 -->
+												<input type="hidden" id="backUpCopy2T${fproductys.id}"
+													name="backUpCopy2T" value="${fproductys.backUpCopy2}">
+
+												<!-- 分级及图案 -->
+												<input type="hidden" id="backUpCopy3T${fproductys.id}"
+													name="backUpCopy3T" value="${fproductys.backUpCopy3}">
+
+												<!-- 创建者id -->
+												<input type="hidden" id="createUserIdT${fproductys.id}"
+													name="createUserIdT" value="${fproductys.createUserId}">
+
+												<!-- 原产地区 -->
+												<input type="hidden" id="originAreaT${fproductys.id}"
+													name="originAreaT" value="${fproductys.originArea}">
+
+												<!-- 英文简称 -->
+												<input type="hidden" id="englishShortT${fproductys.id}"
+													name="englishShortT" value="${fproductys.englishShort}">
+
+												<!-- 中文简称 -->
+												<input type="hidden" id="chinaShortT${fproductys.id}"
+													name="chinaShortT" value="${fproductys.chinaShort}">
+
+												<!-- 产品毛重 -->
+												<input type="hidden"
+													id="productGrossWeightT${fproductys.id}"
+													name="productGrossWeightT"
+													value="${fproductys.productGrossWeight}">
+
+												<!-- 产品尺寸 -->
+												<input type="hidden" id="productSizeT${fproductys.id}"
+													name="productSizeT" value="${fproductys.productSize}">
+
+												<!-- 产品币种 -->
+												<input type="hidden" id="productCurrencyT${fproductys.id}"
+													name="productCurrencyT"
+													value="${fproductys.productCurrency}">
+
+												<!-- 分销单价 -->
+												<input type="hidden" id="priceT${fproductys.id}"
+													name="priceT" value="${fproductys.price}">
+
+												<!-- 成本单价 -->
+												<input type="hidden" id="shopPriceT${fproductys.id}"
+													name="shopPriceT" value="${fproductys.shopPrice}">
+
+												<!-- 运费 -->
+												<input type="hidden" id="discountT${fproductys.id}"
+													name="discountT" value="${fproductys.discount}">
+
+												<!-- 适用人群 -->
+												<input type="hidden" id="generalExplainT${fproductys.id}"
+													name="generalExplainT" value="${fproductys.generalExplain}">
+
+												<!-- 采购链接（来源网址） -->
+												<input type="hidden" id="sourceUrlT${fproductys.id}"
+													name="sourceUrlT" value="${fproductys.sourceUrl}">
+
+												<!-- 产品材料 -->
+												<input type="hidden" id="backUpCopy7T${fproductys.id}"
+													name="backUpCopy7T" value="${fproductys.backUpCopy7}">
+
+												<!-- 内部sku -->
+												<input type="hidden" id="externalIdT${fproductys.id}"
+													name="externalIdT" value="${fproductys.externalId}">
+											</c:if>
+
+										</c:forEach>
+										 <li class="productLiStyle"><input
+											id="zc${productLists.id }" type="hidden"
+											value="${productLists.name }"> <input
+											id="ids${productLists.id }" type="hidden"
+											value="${productLists.id }">
+											<div style="display: none">
+												<form:form modelAttribute="product" id="form_productInfo"
+													name="form_productInfo" method="POST">
+													<form:select id="fcateid${productLists.id }"
+														path="categoryId" items="${categoryMap}"
+														cssClass="form-control"></form:select>
+												</form:form>
+											</div> <input id="fcateid${productLists.id }1" type="hidden"
+											value="${productLists.categoryId }"> <input
+											id="tszt${productLists.id }" type="hidden"
+											value="${productLists}"> <input
+											class="productCheckbox" type="checkbox" name="ids" value="">
+											<a onclick="addPanel('${productLists.id }')"href="product/addEdit${productLists.id}"  onclick="editProductInfo('${productLists.id}')">
+												<div class="productListImages">
+													<input id="img${productLists.id }" type="hidden"
+														value="/Shopping${productLists.defaultImg}"> <img
+														id="img${productLists.id }" class="productListImageStyle"
+														src="/Shopping${productLists.defaultImg}">
+												</div>
+												<div class="productShopPrice">
+													成本单价：${productLists.shopPrice/100}￥
+													<div class="productPrice">差价：${productLists.price/100-productLists.shopPrice/100}￥</div>
+												</div>
+												<div class="productNames">${productLists.name }</div>
+										</a></li> 
+
+									</c:forEach>--%>
+								</ul>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div id="rightright"
+		style="float: right; width: 42%; position: fixed; right: 0px; display: none">
+		<div class="row"
+			style="top: 0; bottom: 0; position: fixed; overflow-y: scroll; overflow-x: hidden;">
+			<div class="">
+				<div class="hpanel">
+					<div class="panel-body" style="height: 920px;">
+						<!-- 
+						表格式展示
+						<table id="productInfoList" style="width: 100%;" class="table table-striped table-bordered table-hover"></table>
+					 -->
+						<!-- 图片式展示 -->
+						<div class="productImageList">
+							<div id="openopen"
+								style="float: right; margin-bottom: 5px; margin-top: -5px; margin-right: 5px; display: none"
+								class="btn btn-success">展开</div>
+							<div id="panel-bodys" class="panel-body" style="">
+								<div class="row">
+									<div id="error_div" class="text-left"></div>
+									<form id="form_productInfo" name="form_productInfo"
+										action="/Shopping/admin/productList" method="POST">
+										<div class="form-group col-lg-6">
+											<label>其它搜索</label> <input type="text" id="name1" name="name"
+												class="form-control" maxlength="50" placeholder="其它搜索">
+										</div>
+										<div class="form-group col-lg-6">
+											<label>产品编号/SKU</label> <input type="text" id="externalId1"
+												name="name" class="form-control" maxlength="50"
+												placeholder="产品编号/SKU">
+										</div>
+										<div class="form-group col-lg-2">
+											<label>最低价</label>
+											<div class="input-group">
+												<input id="price1" name="money1" type="number"
+													class="form-control" min="0">
+											</div>
+										</div>
+										<div class="form-group col-lg-2">
+											<label>最高价</label>
+											<div class="input-group">
+												<input id="price2" name="money2" type="number"
+													class="form-control" min="0">
+											</div>
+										</div>
+										<div class="form-group col-lg-2">
+											<label>产品分类</label>
+											<form:form modelAttribute="product" id="form_productInfo"
+												name="form_productInfo" method="POST">
+												<form:select id="fcateid" path="categoryId"
+													items="${categoryMap}" cssClass="form-control" />
+											</form:form>
+										</div>
+
+										<div class="form-group col-lg-2">
+											<label>审核状态</label> <select id="backUpCopy1"
+												name="productStatus" class="form-control">
+												<option value="0" selected="selected">全部</option>
+												<option value="1">通过</option>
+												<option value="2">待审核</option>
+												<option value="3">过滤</option>
+												<option value="4">侵权</option>
+												<option value="5">禁止上传</option>
+												<option value="6">屏蔽</option>
+											</select>
+										</div>
+										<div class="form-group col-lg-2">
+											<label>产品状态</label> <select id="productStatus1"
+												name="productStatus" class="form-control">
+												<option value="0" selected="selected">全部</option>
+												<option value="1">已上架</option>
+												<option value="2">已下架</option>
+												<option value="3">失效</option>
+											</select>
+										</div>
+										<div class="form-group col-lg-2">
+											<label>分级及图案</label> <select id="backUpCopy3"
+												name="productStatus" class="form-control">
+												<option value="0" selected="selected">全部</option>
+												<option value="1">为分级</option>
+												<option value="2">图案设计</option>
+												<option value="3">有图案设计</option>
+												<option value="4">国内品牌</option>
+												<option value="5">高风险</option>
+											</select>
+										</div>
+
+										<div class="form-group col-lg-3">
+											<label>更新日期</label>
+											<div id="updateTime1x" class="input-group date">
+												<input id="updateTime1" name="updateTimeFrom" type="date"
+													class="form-control" value="">
+											</div>
+										</div>
+										<div class="form-group col-lg-3">
+											<label>截至日期</label>
+											<div id="updateTime2x" class="input-group date">
+												<input id="updateTime2" name="updateTimeTo" type="date"
+													class="form-control" value="">
+											</div>
+										</div>
+
+										<div class="form-group col-lg-2">
+											<label>特殊状态</label> <select id="backUpCopy4"
+												name="productStatus" class="form-control">
+												<option value="0" selected="selected">全部</option>
+												<option value="1">重点</option>
+												<option value="2">原创</option>
+												<option value="3">海外</option>
+												<option value="4">抓取</option>
+												<option value="5">导入</option>
+											</select>
+										</div>
+										<div class="form-group col-lg-2">
+											<label>分销状态</label> <select id="backUpCopy5"
+												name="productStatus" class="form-control">
+												<option value="0" selected="selected">全部</option>
+												<option value="1">分销</option>
+												<option value="2">不分销</option>
+												<option value="3">没运费</option>
+												<option value="4">无挂号</option>
+												<option value="5">未分类</option>
+												<option value="6">零库存</option>
+											</select>
+										</div>
+										<div class="form-group col-lg-2">
+											<label>日期</label> <select id="backUpCopy6"
+												name="productStatus" class="form-control">
+												<option value="0" selected="selected">全部</option>
+												<option value="1">七天内</option>
+												<option value="2">一周前</option>
+												<option value="3">一月前</option>
+												<option value="4">三月前</option>
+												<option value="5">半年前</option>
+												<option value="6">一年前</option>
+												<option value="7">未出单</option>
+											</select>
+										</div>
+										<div class="form-group col-lg-2" style="">
+											<label>业务员</label> <select id="createUserId"
+												name="categoryId" class="form-control">
+												<option value="0" selected="selected">全部</option>
+												<option value="1">超级管理员</option>
+												<option value="2">管理员</option>
+												<option value="3">普通用户</option>
+											</select>
+										</div>
+
+
+										<div class="form-group col-lg-5" style="margin-top: 20px;">
+											<div class="text-right m-t-xs">
+												<!-- <button id="adds" class="btn btn-success" type="button">
+														<strong>添加</strong>
+												</button> -->
+												<button id="searchs" class="btn btn-success" type="button">
+													<strong>查询</strong>
+												</button>
+												<button id="resets" class="btn btn-success" type="reset">
+													<strong>重置</strong>
+												</button>
+												<button id="selectAlly" class="btn btn-success"
+													type="button">
+													<strong>查询所有</strong>
+												</button>
+
+												<button id="closeclose" class="btn btn-success"
+													type="button">
+													<strong>关闭</strong>
+												</button>
+
+											</div>
+										</div>
+										<div class="form-group col-lg-3 i-checkss-font"
+											style="margin-left: 35px; margin-top: 22px; font-size: 14px;">
+											<input type="checkbox" id="checkedAllys" class="i-checkss"
+												name="checkedAllsddd" onclick="checkedAllss()"
+												style="margin-left: -30px; float: left; position: relative;">全选
+										</div>
+
+										<div>
+											<input type="hidden" name="_csrf"
+												value="84151bb0-bdee-4743-ae7a-4efd7322cb50">
+										</div>
+									</form>
+								</div>
+							</div>
+
+							<div style="margin: 20px 0;"></div>
+							<div id="tt" class="easyui-tabs"
+								data-options="tools:'#tab-tools'"
+								style="width: 775px; height: 1764px;"></div>
+							<div id="tab-tools">
+
+								<a href="javascript:void(0)" class="easyui-linkbutton"
+									style="background: #62cb31; border: 1px solid #62cb31; color: white;"
+									onclick="removePanels()">清空其他</a> <a href="javascript:void(0)"
+									class="easyui-linkbutton"
+									style="color: white; background: black; border: 1px solid black;"
+									onclick="closePanelsY()">关闭</a> <a href="javascript:void(0)"
+									class="easyui-linkbutton"
+									style="color: white; background: #ee4747; border: 1px solid #ee4747;"
+									onclick="closePanels()">关闭并清空</a>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<form id="forwordform"
+		action='<c:url value="/admin/product/add?${_csrf.parameterName}=${_csrf.token}" />'
+		method='POST'>
+		<input type="hidden" name="productId" id="productId" />
+	</form>
+	<script type="text/javascript">
+										function checkedAlls(){
+											checkedAlle();
+										}
+										
+										function checkedAlle(){
+											if($("#checkedAll1").is(':checked')==true){
+												//全选
+												$("input[name='ids']:checkbox").prop('checked',true);
+												//另外一个框也选上
+												$("input[name='checkedAllsddd']:checkbox").prop('checked',true);
+											}else{
+												//取消全选
+												$("input[name='ids']").removeAttr("checked");
+												//另一个框取消
+												$("input[name='checkedAllsddd']").removeAttr("checked");
+											}
+										}
+										function checkedAllss(){
+											checkedAllsy();
+										}
+										
+										function checkedAllsy(){
+											if($("#checkedAllys").is(':checked')==true){
+												//全选
+												$("input[name='ids']:checkbox").prop('checked',true);
+												//另外一个框也选上
+												$("input[name='checkedAllse']:checkbox").prop('checked',true);
+											}else{
+												//取消全选#6B6B6B#3f5872
+												$("input[name='ids']").removeAttr("checked");
+												//另外一个框取消
+												$("input[name='checkedAllse']").removeAttr("checked");
+											}
+										}
+var oTable;
+var header = $("meta[name='_csrf_header']").attr("content");  
+var token = $("meta[name='_csrf']").attr("content"); 
+var contextPath = '${pageContext.request.contextPath}';
+/* $(function() {
+	$('.date').datepicker();
+	$(document).ajaxSend(function(e, xhr, options) {
+        xhr.setRequestHeader(header, token);
+    });
+	productInfoListData()
+}); */
+
+$('#add').click(function() {
+	addProductInfo();
+});
+
+$('#searchs').click(function() {
+	productInfoListDatas();
+});
+
+$('#searchd').click(function() {
+	productInfoListDatasd();
+});
+//收起右边的查询栏
+$('#closeclose').click(function() {
+	var right=document.getElementById("panel-bodys");
+	var openopen=document.getElementById("openopen");
+	var tt=document.getElementById("tt");
+	var tabspanels=document.getElementsByClassName("tabs-panels");
+	var panelbody=document.getElementsByClassName("panel-body");
+	tabspanels.height="100%";
+	panelbody.height="100%";
+	tt.height="100%";
+	openopen.style.display="block";
+	right.style.display="none";
+});
+//展开右边的查询栏
+$('#openopen').click(function() {
+	var right=document.getElementById("panel-bodys");
+	var openopen=document.getElementById("openopen");
+	openopen.style.display="none";
+	right.style.display="block";
+});
+
+//查询所有
+$('#selectAlly').click(function() {
+	productInfoListDatastwo();
+});
+//右边栏筛选内容
+function productInfoListDatas(){
+	var  name1= document.getElementById('name1').value;
+	 var  externalId1= document.getElementById('externalId1').value;
+	var  price1= document.getElementById('price1').value;
+	var  price2= document.getElementById('price2').value;
+	var  categoryId=  $("#fcateid").val();
+	var  createUserId=  $("#createUserId").val();
+	var  backUpCopy1= document.getElementById('backUpCopy1').value;
+	//var  backUpCopy2= document.getElementById('backUpCopy2').value;
+	var  backUpCopy3= document.getElementById('backUpCopy3').value;
+	var  productStatus1= document.getElementById('productStatus1').value;
+	var  backUpCopy4= document.getElementById('backUpCopy4').value;
+	var  backUpCopy5= document.getElementById('backUpCopy5').value;
+	var  backUpCopy6= document.getElementById('backUpCopy6').value;
+	var  backUpCopy7= document.getElementById('createUserId').value;
+	var  hot= $("input[name='hots']:checked").val();
+	var  updateTime1 = document.getElementById('updateTime1').value;
+	var  updateTime2 = document.getElementById('updateTime2').value; 
+	
+	$("#productListType").empty();
+	
+
+	
+	$.ajax({
+		type : "get",
+		contentType : "application/json;charset=utf-8", 
+		url :'${pageContext.request.contextPath}/admin/productListAtAll',
+		/* 其他搜索：name，产品编号：externalId，最低价格：price1，最高价格：price2，产品分类：categoryId，审核状态： backUpCopy1
+		产品状态：backUpCopy2，分级及图案：backUpCopy3，产品状态：productStatus，特殊状态：backUpCopy4，分销状态：backUpCopy5，
+		日期：backUpCopy6，热门商品：hot，业务员：createUserId，更新日期：updateTime1，截止日期：updateTime2*/
+		 data:{"fen":name1,"fsku":externalId1,"price1":price1,"price2":price2,"fkind":categoryId
+				,"frs1":backUpCopy1, "frs2":productStatus1,  "frs3":backUpCopy3, 
+				"fintro":createUserId,"frs4":backUpCopy4,"frs5":backUpCopy5,"frs6":backUpCopy6/* ,"hot":hot */
+				,"updateTime1":updateTime1,"updateTime2":updateTime2,"frs7":createUserId}, 
+		dataType : 'json',
+		success : function(data) {
+			if(data==null|data==""){
+				$("#productListType").append('没有搜索到符合条件的商品')
+			}
+			/* 
+			$("#productListType").append("新商品"); */
+			//console.log(data);
+			for(var i=0;i<data.length;i++){
+				$("#productListType").append('<li class="productLiStyle">'
+	 				+'<input id="zc'+data[i].id+'" type="text" value="'+data[i].fen+'">'
+	 				+'<input id="ids'+data[i].id+'" type="text" value="'+data[i].id+'">'
+	 				+'<input class="productCheckbox"  type="checkbox" name="ids" value="">'
+	 				+'<a onclick="addPanel('+data[i].id+')">'
+	 				+'<div class="productListImages"><img class="productListImageStyle" src="'+data[i].fpic+'"></div>'
+	 				 +'<div class="productShopPrice">成本单价：'+data[i].fcost+'￥' 
+	 				+'	<div class="productPrice">差价：'+(data[i].fprice-data[i].fcost)+'￥</div>'
+	 			+	'</div>'
+	 			+	'<div class="productNames">'+data[i].fen+'</div>'
+	 			+'	</a>'
+	 			+'</li>')
+	 			
+			}
+			
+		
+			
+		},
+		error : function(json) {
+			alert("失败"+json);
+		}
+	});
+	
+	
+}
+
+
+//查询所有内容
+function productInfoListDatastwo(){
+	var  name1= "";
+	 var  externalId1= "";
+	var  price1= "";
+	var  price2= "";
+	var  categoryId= "";
+	var  createUserId= "";
+	var  backUpCopy1= "";
+	var  backUpCopy2= "";
+	var  backUpCopy3= "";
+	var  productStatus1= "";
+	var  backUpCopy4= "";
+	var  backUpCopy5= "";
+	var  backUpCopy6= "";
+	var  hot= "";
+	var  updateTime1 = "";
+	var  updateTime2 = "";
+	
+	$("#productListType").empty();
+	
+
+	
+	$.ajax({
+		type : "get",
+		async:true,
+		contentType : "application/json;charset=utf-8", 
+		url :'${pageContext.request.contextPath}/admin/productListAtAll',
+		/* 其他搜索：name，产品编号：externalId，最低价格：price1，最高价格：price2，产品分类：categoryId，审核状态： backUpCopy1
+		产品状态：backUpCopy2，分级及图案：backUpCopy3，产品状态：productStatus，特殊状态：backUpCopy4，分销状态：backUpCopy5，
+		日期：backUpCopy6，热门商品：hot，业务员：createUserId，更新日期：updateTime1，截止日期：updateTime2*/
+		 data:{"fen":name1,"fsku":externalId1,"price1":price1,"price2":price2,"fkind":categoryId
+				,"frs1":backUpCopy1,"frs2":backUpCopy2, "frs3":backUpCopy3, 
+				"fintro":productStatus1,"frs4":backUpCopy4,"frs5":backUpCopy5,"frs6":backUpCopy6/* ,"hot":hot */
+				,"updateTime1":updateTime1,"updateTime2":updateTime2,"frs7":createUserId}, 
+		dataType : 'json',
+		success : function(data) {
+			if(data==null|data==""){
+				$("#productListType").append('没有搜索到符合条件的商品')
+			}
+			/* 
+			$("#productListType").append("新商品"); */
+			//console.log(data);
+			for(var i=0;i<data.length;i++){
+				$("#productListType").append('<li class="productLiStyle">'
+	 				+'<input id="zc'+data[i].id+'" type="hidden" value="'+data[i].fen+'">'
+	 				+'<input id="ids'+data[i].id+'" type="hidden" value="'+data[i].id+'">'
+	 				+'<input class="productCheckbox"  type="checkbox" name="ids" value="">'
+	 				+'<a onclick="addPanel('+data[i].id+')">'
+	 				+'<div class="productListImages"><img class="productListImageStyle" src="'+data[i].fpic+'"></div>'
+	 				 +'<div class="productShopPrice">成本单价：'+data[i].fcost+'￥' 
+	 				+'	<div class="productPrice">差价：'+(data[i].fprice-data[i].fcost)+'￥</div>'
+	 			+	'</div>'
+	 			+	'<div class="productNames">'+data[i].fen+'</div>'
+	 			+'	</a>'
+	 			+'</li>')
+	 			
+			}
+			
+		
+			
+		},
+		error : function(json) {
+			alert("失败"+json);
+		}
+	});
+	
+	
+}
+//上边栏筛选内容
+function productInfoListDatasd(){
+	var  name1= document.getElementById('fname').value;
+	 var  externalId1= document.getElementById('fids').value;
+	var  price1= document.getElementById('fprice1').value;
+	var  price2= document.getElementById('fprice2').value;
+	var  categoryId=  $("#fcateid").val();
+	var  createUserId=  $("#ywys").val();
+	var  backUpCopy1= document.getElementById('fselect').value;
+	//var  backUpCopy2= document.getElementById('backUpCopy2').value;
+	var  backUpCopy3= document.getElementById('fproduct').value;
+	var  productStatus1= document.getElementById('flevel').value;
+	var  backUpCopy4= document.getElementById('ywys').value;
+	var  backUpCopy5= document.getElementById('fban').value;
+	var  backUpCopy6= document.getElementById('ffx').value;
+	var  backUpCopy7= document.getElementById('fdates').value;
+	var  hot= $("input[name='hots']:checked").val();
+	var  updateTime1 = document.getElementById('fdate1').value;
+	var  updateTime2 = document.getElementById('fdate2').value; 
+	
+	$("#productListType").empty();
+	
+	
+	$.ajax({
+		type : "get",
+		contentType : "application/json;charset=utf-8", 
+		url :'${pageContext.request.contextPath}/admin/productListAtAll',
+		/* 其他搜索：name，产品编号：externalId，最低价格：price1，最高价格：price2，产品分类：categoryId，审核状态： backUpCopy1
+		产品状态：backUpCopy2，分级及图案：backUpCopy3，产品状态：productStatus，特殊状态：backUpCopy4，分销状态：backUpCopy5，
+		日期：backUpCopy6，热门商品：hot，业务员：createUserId，更新日期：updateTime1，截止日期：updateTime2*/
+		 data:{"fen":name1,"fsku":externalId1,"price1":price1,"price2":price2,"fkind":categoryId
+				,"frs1":backUpCopy1, "frs2":backUpCopy3,  "frs3":productStatus1, 
+				"fintro":backUpCopy4,"frs4":backUpCopy5,"frs5":backUpCopy6,"frs6":backUpCopy7/* ,"hot":hot */
+				,"updateTime1":updateTime1,"updateTime2":updateTime2,"frs7":createUserId}, 
+		dataType : 'json',
+		success : function(data) {
+			if(data==null|data==""){
+				$("#productListType").append('没有搜索到符合条件的商品')
+			}
+			/* 
+			$("#productListType").append("新商品"); */
+			//console.log(data);
+				for(var i=0;i<data.length;i++){
+					$("#productListType").append('<li class="productLiStyle">'
+		 				+'<input id="zc'+data[i].id+'" type="hidden" value="'+data[i].fen+'">'
+		 				+'<input id="ids'+data[i].id+'" type="hidden" value="'+data[i].id+'">'
+		 				+'<input class="productCheckbox"  type="checkbox" name="ids" value="">'
+		 				+'<a onclick="addPanel('+data[i].id+')">'
+		 				+'<div class="productListImages"><img class="productListImageStyle" src="'+data[i].fpic+'"></div>'
+		 				 +'<div class="productShopPrice">成本单价：'+data[i].fcost+'￥' 
+		 				+'	<div class="productPrice">差价：'+(data[i].fprice-data[i].fcost)+'￥</div>'
+		 			+	'</div>'
+		 			+	'<div class="productNames">'+data[i].fen+'</div>'
+		 			+'	</a>'
+		 			+'</li>')
+		 			
+				}
+			
+		
+			
+		},
+		error : function(json) {
+			alert("失败"+json);
+		}
+	});
+	
+	
+}
+function checkedAll(){
+	if($("#checkedAll").is(':checked')==true){
+		//全选
+		$("input[name='ids']:checkbox").prop('checked',true);
+	}else{
+		//取消全选
+		$("input[name='ids']").removeAttr("checked");
+	}
+}
+
+function editProductInfo(productId){	
+	$("#productId").val(productId);
+	$("#forwordform").attr('action','<c:url value="/admin/product/addEdit?${_csrf.parameterName}=${_csrf.token}" />')
+	$("#forwordform").submit();
+}
+
+function addProductInfo(){	
+	$("#forwordform").attr('action','<c:url value="/admin/product/addEdit?${_csrf.parameterName}=${_csrf.token}" />')
+	$("#forwordform").submit();
+}
+</script>
+<SCRIPT type="text/javascript">
+		var setting = {
+			check: {
+				enable: true,
+				chkStyle: "radio",
+				radioType: "all"
+			},
+			view: {
+				dblClickExpand: false
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			},
+			callback: {
+				onClick: onClick,
+				onCheck: onCheck
+			}
+		};
+		function zTreeOnClick(event, treeId, treeNode) {       //第二步
+
+			
+            var treeObj = $.fn.zTree.getZTreeObj("treeDemo"),
+                nodes = treeObj.getCheckedNodes(true),
+                v = "";
+            for (var i = 0; i < nodes.length; i++) {
+                v += nodes[i].name + ",";
+            }
+        }
+		var zNodes =[{id:0,pId:0,name:"总目录"}
+		 ];
+
+		function onClick(e, treeId, treeNode,d) {
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+			zTree.checkNode(treeNode, !treeNode.checked, null, true);
+			return false;
+		}
+
+		function onCheck(e, treeId, treeNode) {
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
+			nodes = zTree.getCheckedNodes(true),
+			v = "";
+			for (var i=0, l=nodes.length; i<l; i++) {
+				v += nodes[i].name + ",";
+			}
+			 
+			if (v.length > 0 ) v = v.substring(0, v.length-1);
+			var cityObj = $("#citySel");
+
+			var cityObj1 = $("#citySel1");
+			for (var i = 0; i < nodes.length; i++) {
+                cityObj1.attr("value", nodes[i].id);
+            } 
+            cityObj.innerHTML="第"+v+"次 ";
+			cityObj.attr("value", v);
+		}
+
+		function showMenu() {
+			var cityObj = $("#citySel");
+			var cityOffset = $("#citySel").offset();
+			$("#menuContent").css({left:cityOffset.left + "px", top:cityOffset.top + cityObj.outerHeight() + "px"}).slideDown("fast");
+
+			$("body").bind("mousedown", onBodyDown);
+		}
+		function hideMenu() {
+			$("#menuContent").fadeOut("fast");
+			$("body").unbind("mousedown", onBodyDown);
+		}
+		function onBodyDown(event) {
+			if (!(event.target.id == "menuBtn" || event.target.id == "citySel" || event.target.id == "menuContent" || $(event.target).parents("#menuContent").length>0)) {
+				hideMenu();
+			}
+		}
+		
+		$(document).ready(function(){
+			
+		});
+		/** 选择  */
+		$("#menuBtn").bind("click",function(){
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		});
+		
+	</SCRIPT>
+								<script type="text/javascript">
+								 //给后台添加数据
+								   /*   var saveData={
+    "id": "411241224",
+    "sku": "NMC54394",
+    "brand": "1",
+    "kind": "Camera & Photo › Surveillance Cameras › Dome Cameras",
+    "cur": "CNY",
+    "price": 8.9,
+    "cost": 11.2,
+    "freight": 0,
+    "declare": 2.3,
+    "shipid": 0,
+    "quantity": 5,
+    "items": 1,
+    "weight": "4.54",
+    "length": "1",
+    "width": "1",
+    "height": "1",
+    "battery": "1",
+    "pic": [{
+    	"pic":"https://images-na.ssl-images-amazon.com/images/I/515Hv6ihZsL._SL1024_.jpg"
+    },{
+    	"pic":"https://images-na.ssl-images-amazon.com/images/I/51z5YjC9nhL._SL1024_.jpg"
+    },{
+    	"pic":"https://images-na.ssl-images-amazon.com/images/I/515Hv6ihZsL._SL1024_.jpg"
+    },{
+    	"pic":"https://images-na.ssl-images-amazon.com/images/I/515Hv6ihZsL._SL1024_.jpg"
+    },{
+    	"pic":"https://images-na.ssl-images-amazon.com/images/I/515Hv6ihZsL._SL1024_.jpg"
+    },{
+    	"pic":"https://images-na.ssl-images-amazon.com/images/I/515Hv6ihZsL._SL1024_.jpg"
+    },{
+    	"pic":"https://images-na.ssl-images-amazon.com/images/I/515Hv6ihZsL._SL1024_.jpg"
+    }
+       
+    ],
+    "special": 10010,
+    "y": [
+        {
+            "color": "64GB",
+            "size": "1",
+            "no": "1",
+            "add": "1",
+            "num": 30,
+            "img": "https://images-na.ssl-images-amazon.com/images/I/515Hv6ihZsL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/516aSQL9pHL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51CiTNrg5TL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61oDBjeWYqL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61nL2aEbToL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51uMswpSQxL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51z5YjC9nhL._SL1024_.jpg"
+        },
+        {
+            "color": "16GB",
+            "size": "1",
+            "no": "1",
+            "add": "1",
+            "num": 30,
+            "img": "https://images-na.ssl-images-amazon.com/images/I/515Hv6ihZsL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/516aSQL9pHL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51CiTNrg5TL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61oDBjeWYqL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61nL2aEbToL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51uMswpSQxL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51z5YjC9nhL._SL1024_.jpg"
+        },
+        {
+            "color": "32GB",
+            "size": "1",
+            "no": "1",
+            "add": "1",
+            "num": 30,
+            "img": "https://images-na.ssl-images-amazon.com/images/I/515Hv6ihZsL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/516aSQL9pHL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51CiTNrg5TL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61oDBjeWYqL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61nL2aEbToL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51uMswpSQxL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51z5YjC9nhL._SL1024_.jpg"
+        },
+        {
+            "color": "32GB",
+            "size": "1",
+            "no": "1",
+            "add": "1",
+            "num": 30,
+            "img": "https://images-na.ssl-images-amazon.com/images/I/515Hv6ihZsL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/516aSQL9pHL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51CiTNrg5TL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61oDBjeWYqL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61nL2aEbToL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51uMswpSQxL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51z5YjC9nhL._SL1024_.jpg"
+        },
+        {
+            "color": "32GB",
+            "size": "1",
+            "no": "1",
+            "add": "1",
+            "num": 30,
+            "img": "https://images-na.ssl-images-amazon.com/images/I/515Hv6ihZsL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/516aSQL9pHL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51CiTNrg5TL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61oDBjeWYqL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61nL2aEbToL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51uMswpSQxL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51z5YjC9nhL._SL1024_.jpg"
+        },
+        {
+            "color": "32GB",
+            "size": "1",
+            "no": "1",
+            "add": "1",
+            "num": 30,
+            "img": "https://images-na.ssl-images-amazon.com/images/I/515Hv6ihZsL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/516aSQL9pHL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51CiTNrg5TL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61oDBjeWYqL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61nL2aEbToL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51uMswpSQxL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51z5YjC9nhL._SL1024_.jpg"
+        },
+        {
+            "color": "32GB",
+            "size": "1",
+            "no": "1",
+            "add": "1",
+            "num": 30,
+            "img": "https://images-na.ssl-images-amazon.com/images/I/515Hv6ihZsL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/516aSQL9pHL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51CiTNrg5TL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61oDBjeWYqL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61nL2aEbToL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51uMswpSQxL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51z5YjC9nhL._SL1024_.jpg"
+        },
+        {
+            "color": "332GB",
+            "size": "1",
+            "no": "1",
+            "add": "1",
+            "num": 30,
+            "img": "https://images-na.ssl-images-amazon.com/images/I/515Hv6ihZsL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/516aSQL9pHL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51CiTNrg5TL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61oDBjeWYqL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61nL2aEbToL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51uMswpSQxL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51z5YjC9nhL._SL1024_.jpg"
+        },
+        {
+            "color": "3e32GB",
+            "size": "1",
+            "no": "1",
+            "add": "1",
+            "num": 30,
+            "img": "https://images-na.ssl-images-amazon.com/images/I/515Hv6ihZsL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/516aSQL9pHL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51CiTNrg5TL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61oDBjeWYqL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61nL2aEbToL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51uMswpSQxL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51z5YjC9nhL._SL1024_.jpg"
+        },
+        {
+            "color": "3s2GB",
+            "size": "1",
+            "no": "1",
+            "add": "1",
+            "num": 30,
+            "img": "https://images-na.ssl-images-amazon.com/images/I/515Hv6ihZsL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/516aSQL9pHL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51CiTNrg5TL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61oDBjeWYqL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/61nL2aEbToL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51uMswpSQxL._SL1024_.jpg,https://images-na.ssl-images-amazon.com/images/I/51z5YjC9nhL._SL1024_.jpg"
+        }
+    ],
+    "origin": "1",
+    "facturer": "1",
+    "number": "1",
+    "department": "s",
+    "material": "1",
+    "metal": "1",
+    "gem": "1",
+    "package": "1",
+    "hscode": "1",
+    "english": "Dome camera",
+    "chinese": "圆顶摄像机",
+    "source": "1",
+    "memo": "1",
+    "packages": "1",
+    "frs1": "1",
+    "frs2": "1",
+    "frs3": "1",
+    "frs4": "1",
+    "frs5": "1",
+    "frs6": "1",
+    "frs7": "1",
+    "frs8": "1",
+    "frs9": "1",
+    "stock": "1",
+    "fitems": "1",
+    "keys": "1",
+    "bullet": "1",
+    "intro": "1",
+    "ru": "s",
+    "en": "Lamp love Webcam HD 1080P Home Security IP Camera Two Way Audio Wireless Mini Camera 1MP Night Vision CCTV WiFi Camera Baby Monitor Monitoring Equipment (Size : 16GB)his is a product you need, it will make your life more colorful\n★ One-click configuration: One-click WiFi configuration makes setting up quick and easy. Simply plug in the power cord, download the free app app and set it via iPhone or Android phone, remotely access the wireless security camera on your iPhone / iPad / Android phone / PC, pay close attention to your love and belong anytime, anywhere.\n★ Night Vision and Two-Way Audio: Night Vision is up to 32.8 feet, and you won't miss an instant during the day or night, with a visibility of up to 20 feet in total darkness. Communicate with family, friends and pets on mobile devices. Talk to the camera or listen to the camera, no distance to communicate with anyone.\n★ ONVIF and motion detection: support ONVIF protocol 2.1 or higher. Motion detection of email or push alert notifications based on motion sensing technology. You can adjust the motion detection sensitivity yourself. When the camera detects an abnormality or triggers an alarm, the instant alarm picture will be sent via email and FTP.\n★ Advanced Video Recording: Record, store and view the lens directly from your mobile device using a Micro SD card (supporting up to 64G), you can play videos on your phone. Loop recording: When the memory is full, it will automatically overwrite the oldest video file.\nf you like other styles, please click on our store above to purchase.\n4, I wish you a happy life.\n3. Welcome to our store, we are always ready to provide you with quality products, welcome to follow us | HUANGDA | store.\n2. If you have any questions, please feel free to contact us.\n1, please note that due to the intensity of the light, there may be a little color difference.\nReference procedure\ndegree\nPTZ control level: 355°, straight 90\nWorking temperature: 10%-90%\nNetwork WF Day: Support WF, network broadcast line\nWorking temperature: 0°C+55°C\nWorking voltage: DC5V0.3\nVideo save: TF card\nUse environment: indoor use\nRecording mode: manual recording, mobile recording, same recording, three recording\nZhisi P address: static P address, dynamic P address\nMobile phone monitoring: 1OS6.1 version and above, Android 42 and above audio, built-in 8,15 mutual sound\nAudio input: built-in 450 microphone\nCapture function: support\nSupport users: support up to 4 users to watch at the same time\nMotion detection: support\nCMOS performance: support white flat, backlight complement, increase\nVideo quality: 25FPS\nNight vision effect: double filter automatically switch, night vision within 20 meters\nVideo standard: PAL\nImage adjustment: automatic white flat\nImage Transmitter: CMOS\nRate: 1920 ° 1080\nOperating system: NUX system\nPixel: 2 million (1080P)\nProduct Name: Monitor\nWelcome to my shop, where you will feel different life fun.\n",
+    "fr": "Lampe amour Webcam HD 1080P Accueil caméra de sécurité IP Audio bi-directionnelle Mini caméra sans fil 1MP vision nocturne CCTV WiFi caméra Surveillance de bébé Equipement (Surveillance: Taille: 16 Go)eci est un produit dont vous avez besoin, il rendra votre vie plus colorée \n ★ Configuration en un clic: La configuration WiFi en un clic facilite et accélère la configuration. Il suffit de brancher le cordon d'alimentation, de télécharger l'application gratuite et de la configurer via un téléphone iPhone ou Android, d'accéder à distance à la caméra de sécurité sans fil sur votre iPhone / iPad / téléphone / ordinateur Android, de porter une attention particulière à votre amour et d'appartenir à tout moment, n'importe où. \n ★ Vision nocturne et audio bidirectionnel: La vision nocturne mesure jusqu'à 13 mètres et vous ne manquerez rien un instant, jour et nuit, avec une visibilité maximale de 20 mètres dans l'obscurité totale. Communiquez avec votre famille, vos amis et vos animaux domestiques sur des appareils mobiles. Parlez à la caméra ou écoutez la caméra, pas de distance pour communiquer avec qui que ce soit. \n ★ ONVIF et détection de mouvement: supportez le protocole ONVIF version 2.1 ou supérieure. Détection de mouvement des notifications par e-mail ou par alertes basées sur la technologie de détection de mouvement. Vous pouvez régler vous-même la sensibilité de la détection de mouvement. Lorsque la caméra détecte une anomalie ou déclenche une alarme, l'image de l'alarme instantanée est envoyée par courrier électronique et FTP. \n ★ Enregistrement vidéo avancé: enregistrez, stockez et visualisez l'objectif directement depuis votre appareil mobile à l'aide d'une carte Micro SD (prenant en charge jusqu'à 64G), vous pouvez lire des vidéos sur votre téléphone. Enregistrement en boucle: lorsque la mémoire est saturée, le fichier vidéo le plus ancien est automatiquement écrasé. \n vous aimez les autres styles, veuillez cliquer sur notre magasin ci-dessus pour acheter.\n4, je vous souhaite une vie heureuse.\n3. Bienvenue dans notre magasin, nous sommes toujours prêts à vous fournir des produits de qualité, bienvenue à nous suivre | HUANGDA | le magasin.\n2. Si vous avez des questions, n'hésitez pas à nous contacter.\n1, veuillez noter qu'en raison de l'intensité de la lumière, il peut y avoir une petite différence de couleur.\nProcédure de référence\ndiplôme\nNiveau de contrôle PTZ: 355 °, droit 90\nTempérature de travail: 10% -90%\nJournée réseau WF: soutien WF, ligne de diffusion réseau\nTempérature de travail: 0 ° C 55 ° C\nTension de travail: DC5V0.3\nSauvegarde vidéo: carte TF\nEnvironnement d'utilisation: utilisation à l'intérieur\nMode d'enregistrement: enregistrement manuel, enregistrement mobile, même enregistrement, trois enregistrements\nZhisi P\nadresse: adresse statique, adresse dynamique\nSurveillance du téléphone mobile: version 1OS6.1 et supérieure, Android 42 et supérieur, audio intégré 8,15\nEntrée audio: microphone intégré 450\nFonction de capture: support\nSupport utilisateurs: supporte jusqu'à 4 utilisateurs à regarder en même temps\nDétection de mouvement: support\nPerformances CMOS: soutien blanc à plat, complément de rétroéclairage, augmentation\nQualité vidéo: 25 images par seconde\nEffet de vision nocturne: double filtre commute automatiquement, vision nocturne à moins de 20 mètres\nNorme vidéo: PAL\nRéglage de l'image: blanc plat automatique\nTransmetteur d'image: CMOS\nTarif: 1920 ° 1080\nSystème d'exploitation: système NUX\nPixel: 2 millions (1080p)\nNom du produit: moniteur\nBienvenue dans ma boutique où vous vous sentirez différent de la vie.\n",
+    "de": "Lampe Liebe Webcam HD 1080 P Home Security IP-Kamera Zwei-Wege-Audio Wireless Mini-Kamera 1MP Nachtsicht CCTV WiFi-Kamera Baby Monitor Monitoring Equipment (Größe: 16 GB)Dies ist ein Produkt, das Sie brauchen. Es wird Ihr Leben bunter machen. \n ★ Konfiguration mit einem Klick: Die Konfiguration mit einem Klick über WLAN macht das Einrichten schnell und einfach. Stecken Sie einfach das Netzkabel ein, laden Sie die kostenlose App herunter und stellen Sie sie über iPhone oder Android-Handy ein, greifen Sie per Fernzugriff auf die drahtlose Überwachungskamera auf Ihrem iPhone / iPad / Android-Handy / PC zu, achten Sie genau auf Ihre Liebe und gehören Sie jederzeit und überall hin. \n ★ Nachtsicht und Zwei-Wege-Audio: Nachtsicht ist bis zu 30 m groß, und Sie werden bei Tag und Nacht keinen Augenblick verpassen. Bei völliger Dunkelheit sind Sichtweiten von bis zu 30 m möglich. Kommunizieren Sie mit Familie, Freunden und Haustieren auf Mobilgeräten. Sprechen Sie mit der Kamera oder hören Sie mit der Kamera, ohne Abstand, um mit jemandem zu kommunizieren. \n ★ ONVIF und Bewegungserkennung: Unterstützung für ONVIF-Protokoll 2.1 oder höher. Bewegungserkennung von E-Mail- oder Push-Alert-Benachrichtigungen basierend auf Motion-Sensing-Technologie. Sie können die Empfindlichkeit der Bewegungserkennung selbst einstellen. Wenn die Kamera eine Abnormalität erkennt oder einen Alarm auslöst, wird das Sofortalarmbild per E - Mail und FTP gesendet. \n ★ Erweiterte Videoaufnahme: Aufzeichnen, Speichern und Anzeigen des Objektivs direkt von Ihrem Mobilgerät aus mit einer Micro SD - Karte (unterstützt bis zu 64G) können Sie Videos auf Ihrem Telefon abspielen. Loop-Aufnahme: Wenn der Speicher voll ist, wird die älteste Videodatei automatisch überschriebenWenn Sie andere Stile mögen, klicken Sie bitte auf unseren Shop oben, um zu kaufen.\n4, ich wünsche Ihnen ein glückliches Leben.\n3. Willkommen in unserem Shop, wir sind immer bereit, Sie mit hochwertigen Produkten zu versorgen, willkommen, uns zu folgen HUANGDA | Geschäft.\n2. Bei Fragen können Sie sich gerne an uns wenden.\n1, bitte beachten Sie, dass es aufgrund der Intensität des Lichts zu einem geringen Farbunterschied kommen kann.\nReferenzverfahren\nGrad\nPTZ-Steuerebene: 355 °, gerade 90 °\nArbeitstemperatur: 10% -90%\nNetwork WF Day: Unterstützt WF, Network Broadcast Line\nArbeitstemperatur: 0 ° C 55 ° C\nArbeitsspannung: DC5V0.3\nVideo speichern: TF-Karte\nVerwenden Sie Umwelt: Innengebrauch\nAufnahmemodus: manuelle Aufnahme, mobile Aufnahme, gleiche Aufnahme, drei Aufnahme\nZhisi P\nAdresse: statische P-Adresse, dynamische P-Adresse\nHandyüberwachung: 1OS6.1 Version und höher, Android 42 und höher Audio, eingebauter 8,15 gegenseitiger Ton\nAudioeingang: eingebautes 450 Mikrofon\nCapture-Funktion: Unterstützung\nBenutzer unterstützen: Unterstützt bis zu 4 Benutzer gleichzeitig\nBewegungserkennung: Unterstützung\nCMOS-Leistung: Unterstützung weiß flach, Hintergrundbeleuchtung ergänzen, erhöhen\nVideoqualität: 25FPS\nNachtsichteffekt: Doppelfilter schaltet automatisch, Nachtsicht innerhalb 20 Meter\nVideostandard: PAL\nBildanpassung: automatische weiße Fläche\nBildtransmitter: CMOS\nRate: 1920 ° 1080\nBetriebssystem: NUX-System\nPixel: 2 Millionen (1080P)\nProduktname: Überwachen\nWillkommen in meinem Shop, wo Sie verschiedene Lebensfreude spüren werden.\n",
+    "it": "Lampada amore Webcam HD 1080P Sicurezza domestica Telecamera IP Audio bidirezionale Wireless Mini telecamera 1MP Visione notturna CCTV WiFi Telecamera Baby Monitor Attrezzature di monitoraggio (Dimensioni: 16GB)Questo è un prodotto di cui hai bisogno, renderà la tua vita più colorata \n ★ Configurazione con un clic: la configurazione WiFi con un clic rende la configurazione semplice e veloce. Basta collegare il cavo di alimentazione, scaricare l'app gratuita e impostarla tramite iPhone o telefono Android, accedere in remoto alla videocamera di sicurezza wireless sul tuo iPhone / iPad / telefono / PC Android, prestare molta attenzione al tuo amore e appartenere sempre e ovunque. \n ★ Visione notturna e audio a due vie: la visione notturna è fino a 32,8 piedi e non ti perderai un istante durante il giorno o la notte, con una visibilità fino a 20 piedi nell'oscurità totale. Comunicare con la famiglia, gli amici e gli animali domestici sui dispositivi mobili. Parla con la videocamera o ascolta la videocamera, nessuna distanza per comunicare con nessuno. \n ★ ONVIF e rilevamento del movimento: supporta il protocollo ONVIF 2.1 o versione successiva. Rilevamento del movimento di e-mail o notifiche di avviso push basate sulla tecnologia di rilevamento del movimento. Puoi regolare tu stesso la sensibilità del rilevamento del movimento. Quando la fotocamera rileva un'anomalia o attiva un allarme, l'immagine dell'allarme istantaneo verrà inviata via e-mail e FTP. \n ★ Registrazione video avanzata: registra, archivia e visualizza l'obiettivo direttamente dal tuo dispositivo mobile utilizzando una scheda Micro SD (che supporta fino a 64G), è possibile riprodurre video sul telefono. Registrazione in loop: quando la memoria è piena, sovrascriverà automaticamente il file video più vecchioSe ti piacciono gli altri stili, fai clic sul nostro negozio qui sopra per acquistare.\n4, ti auguro una vita felice.\n3. Benvenuto nel nostro negozio, siamo sempre pronti a fornirti prodotti di qualità, benvenuti a seguirci | HUANGDA | memorizzare.\n2. Se avete domande, non esitate a contattarci.\n1, si noti che a causa dell'intensità della luce, potrebbe esserci una piccola differenza di colore.\nProcedura di riferimento\ngrado\nLivello di controllo PTZ: 355 °, diritto 90\nTemperatura di lavoro: 10% -90%\nNetwork WF Day: supporto WF, linea di trasmissione di rete\nTemperatura di lavoro: 0 ° C 55 ° C\nTensione di funzionamento: DC5V0.3\nSalvataggio video: scheda TF\nAmbiente d'uso: uso interno\nModalità di registrazione: registrazione manuale, registrazione mobile, stessa registrazione, tre registrazioni\nZhisi P\nindirizzo: indirizzo P statico, indirizzo P dinamico\nMonitoraggio cellulare: versione 1OS6.1 e successive, audio Android 42 e versioni successive, suono reciproco incorporato 8,15\nIngresso audio: microfono 450 incorporato\nFunzione di acquisizione: supporto\nSupporto utenti: supporta fino a 4 utenti da guardare contemporaneamente\nRilevazione del movimento: supporto\nPrestazioni CMOS: supporto bianco piatto, complemento retroilluminazione, aumento\nQualità video: 25FPS\nEffetto di visione notturna: doppio filtro si accende automaticamente, visione notturna entro 20 metri\nStandard video: PAL\nRegolazione dell'immagine: piatto bianco automatico\nTrasmettitore di immagini: CMOS\nTasso: 1920 ° 1080\nSistema operativo: sistema NUX\nPixel: 2 milioni (1080P)\nNome prodotto: Monitor\nBenvenuto nel mio negozio, dove ti sentirai divertente in modo diverso.\n",
+    "es": "Lámpara love Webcam HD 1080P Cámara de seguridad para el hogar IP Cámara bidireccional de audio Mini cámara inalámbrica 1MP Visión nocturna CCTV Cámara WiFi Monitor de bebé Equipo de monitoreo (Tamaño: 16GB)Este es un producto que necesita, hará que su vida sea más colorida. ★ Configuración con un clic: la configuración WiFi con un clic hace que la configuración sea rápida y fácil. Simplemente conecte el cable de alimentación, descargue la aplicación de aplicación gratuita y configúrela a través del teléfono iPhone o Android, acceda de forma remota a la cámara de seguridad inalámbrica en su iPhone / iPad / teléfono Android / PC, preste mucha atención a su amor y pertenezca en cualquier momento y en cualquier lugar. \n ★ Visión nocturna y audio bidireccional: la visión nocturna es de hasta 32.8 pies, y no se perderá ni un instante durante el día o la noche, con una visibilidad de hasta 20 pies en la oscuridad total. Comuníquese con familiares, amigos y mascotas en dispositivos móviles. Hable con la cámara o escuche la cámara, no hay distancia para comunicarse con nadie. \n ★ ONVIF y detección de movimiento: admite el protocolo ONVIF 2.1 o superior. Detección de movimiento de notificaciones por correo electrónico o alertas automáticas basadas en tecnología de detección de movimiento. Puede ajustar la sensibilidad de detección de movimiento usted mismo. Cuando la cámara detecta una anormalidad o activa una alarma, la imagen de la alarma instantánea se enviará por correo electrónico y FTP. \n ★ Grabación avanzada de video: Grabe, almacene y vea la lente directamente desde su dispositivo móvil usando una tarjeta Micro SD (compatible con hasta 64G), puedes reproducir videos en tu teléfono. Grabación en bucle: cuando la memoria está llena, sobrescribirá automáticamente el archivo de video más antiguo.i le gustan otros estilos, haga clic en nuestra tienda arriba para comprar.\n4, te deseo una vida feliz.\n3. Bienvenido a nuestra tienda, siempre estamos listos para ofrecerle productos de calidad, bienvenido a seguirnos | HUANGDA | almacenar.\n2. Si tiene alguna pregunta, no dude en contactarnos.\n1, tenga en cuenta que debido a la intensidad de la luz, puede haber una pequeña diferencia de color.\nProcedimiento de referencia\nla licenciatura\nNivel de control PTZ: 355 °, recto 90\nTemperatura de trabajo: 10% -90%\nNetwork WF Day: admite WF, línea de transmisión de red\nTemperatura de trabajo: 0 ° C 55 ° C\nVoltaje de trabajo: DC5V0.3\nGuardar video: tarjeta TF\nAmbiente de uso: uso en interiores\nModo de grabación: grabación manual, grabación móvil, misma grabación, tres grabaciones\nZhisi P\ndirección: dirección P estática, dirección P dinámica\nMonitoreo de teléfonos móviles: versión 1OS6.1 y superior, audio Android 42 y superior, sonido mutuo incorporado 8,15\nEntrada de audio: micrófono incorporado 450\nFunción de captura: soporte\nUsuarios de soporte: admite hasta 4 usuarios para ver al mismo tiempo\nDetección de movimiento: soporte\nRendimiento CMOS: soporte plano blanco, complemento de luz de fondo, aumento\nCalidad de video: 25FPS\nEfecto de visión nocturna: el filtro doble cambia automáticamente, visión nocturna dentro de 20 metros\nEstándar de video: PAL\nAjuste de imagen: plano blanco automático\nTransmisor de imagen: CMOS\nVelocidad: 1920 ° 1080\nSistema operativo: sistema NUX\nPixel: 2 millones (1080P)\nNombre del producto: monitor\nBienvenido a mi tienda, donde te sentirás muy divertido.\n",
+    "jadf": "ランプ愛ウェブカメラHD 1080 PホームセキュリティIPカメラ双方向オーディオワイヤレスミニカメラ1MPナイトビジョンCCTV WiFiカメラベビーモニター監視機器（サイズ：16GB）これはあなたが必要とする製品であり、あなたの人生をよりカラフルにします\n★ワンクリック構成：ワンクリックWiFi構成はセットアップを迅速かつ簡単にします。電源コードを差し込んで、無料アプリアプリをダウンロードしてiPhoneまたはAndroidスマートフォンから設定し、iPhone / iPad / Androidスマートフォン/ PCのワイヤレスセキュリティカメラにリモートアクセスし、あなたの愛に細心の注意を払い、いつでも、どこにでも所属します。 \n★ナイトビジョンと双方向オーディオ：ナイトビジョンは最大32.8フィートであり、日中または夜間に瞬間を逃すことはありません。モバイルデバイスで家族、友人、ペットと通信します。カメラと話をするか、カメラを聞いてください。誰とも通信する距離はありません。\n★ONVIFおよびモーション検出：ONVIFプロトコル2.1以上をサポートします。モーションセンシングテクノロジーに基づく電子メールまたはプッシュアラート通知のモーション検出。モーション検知の感度は自分で調整できます。カメラが異常を検出するか、アラームをトリガーすると、インスタントアラーム画像がメールとFTPで送信されます。\n★高度なビデオ録画：マイクロSDカードを使用してモバイルデバイスからレンズを直接記録、保存、表示します64G）、携帯電話で動画を再生できます。ループ録画：メモリがいっぱいになると、最も古いビデオファイルが自動的に上書きされます。\nアドレス：スタティックPアドレス、ダイナミックPアドレス\n携帯電話の監視：1OS6.1バージョン以上、Android 42以上オーディオ、内蔵8、15相互音\n音声入力：内蔵450マイク\nキャプチャー機能：サポート\nユーザーをサポート：同時に視聴するために最大4人のユーザーをサポート\nモーション検知：サポート\nCMOS性能：ホワイトフラット、バックライト補完、増加をサポート\nビデオ品質：25FPS\n暗視効果：二重フィルターが自動的に切り替わり、20メートル以内の暗視\nビデオ規格：PAL\n画像調整：自動ホワイトフラット\nイメージトランスミッタ：CMOS\nレート：1920°1080\nオペレーティングシステム：NUXシステム\nピクセル：200万（1080P）\n製品名：モニター\nあなたが違う人生を楽しく感じるだろう私の店へようこそ。\nあなたが他のスタイルが好きならば、購入するために上の我々の店をクリックしてください。\n4、私はあなたに幸せな人生を祈ります。\n3.私達の店への歓迎、私達は良質品をあなたに提供する準備ができています、私達に続くことを歓迎します。ホンダ|格納。\nご質問があれば、お気軽にお問い合わせください。\n1、光の強さのため、色味が多少異なる場合がございますのでご了承ください。\n参照手続き\n度\nPTZ制御レベル：355°、ストレート90\n働く温度：10％-90％\nネットワークWFデー：サポートWF、ネットワーク放送ライン\n働く温度：0℃55℃\n動作電圧：DC5V0.3\nビデオ保存：TFカード\n使用環境：屋内用\n録画モード：手動録画、モバイル録画、同じ録画、3録画\nジシP\n",
+    "zh": "灯之爱网络摄像头高清1080P家庭安防IP摄像头双向音频无线迷你摄像头1MP夜视CCTV WiFi摄像头婴儿监视器监控设备（尺寸：16GB）这是您需要的产品，它将使您的生活更加丰富多彩\n★一键配置：一键式WiFi配置使设置快速简便。只需插入电源线，下载免费应用程序并通过iPhone或Android手机进行设置，远程访问iPhone / iPad / Android手机/ PC上的无线安全摄像头，随时随地密切关注您的爱情和属性。 \n★夜视和双向音频：夜视高达32.8英尺，您不会错过白天或夜晚的瞬间，在完全黑暗中可见距离高达20英尺。在移动设备上与家人，朋友和宠物沟通。与相机对话或收听相机，与任何人通信都没有距离。\n★ONVIF和运动检测：支持ONVIF协议2.1或更高版本。基于动作感应技术的电子邮件或推送警报通知的动作检测。您可以自己调整运动检测灵敏度。当摄像机检测到异常或触发警报时，即时报警图片将通过电子邮件和FTP发送。\n★高级视频录制：使用Micro SD卡直接从移动设备录制，存储和查看镜头（支持最多64G），您可以在手机上播放视频。循环录制：当内存已满时，它将自动覆盖最旧的视频文件如果您喜欢其他款式，请点击我们上面的商店购买。\n4，祝你生活愉快。\n3.欢迎光临本店，我们随时准备为您提供优质的产品，欢迎关注我们|黄达|商店。\n2.如果您有任何疑问，请随时与我们联系。\n1，请注意，由于光线的强弱，可能会有一点色差。\n参考程序\n学位\nPTZ控制水平：355°，直90\n工作温度：10％-90％\n网络WF日：支持WF，网络广播线\n工作温度：0°C 55°C\n工作电压：DC5V0.3\n视频保存：TF卡\n使用环境：室内使用\n录音模式：手动录音，移动录音，同录音，三录音\n智思P.\n地址：静态P地址，动态P地址\n手机监控：1OS6.1及以上版本，Android 42及以上音频，内置8,15互音\n音频输入：内置450麦克风\n捕获功能：支持\n支持用户：最多支持4个用户同时观看\n动作检测：支持\nCMOS性能：支持白色扁平，背光补充，增加\n视频质量：25FPS\n夜视效果：双滤镜自动切换，夜视20米以内\n视频标准：PAL\n图像调整：自动白平\n图像发送器：CMOS\n速度：1920°1080\n操作系统：NUX系统\n像素：200万（1080P）\n产品名称：显示器\n欢迎来到我的商店，在那里您将感受到不同的生活乐趣。\n"
+};
+								$(document).ready(function(){
+									$.ajax({
+										type : "post",
+										contentType: "application/json;charset=utf-8",
+										url :'${pageContext.request.contextPath}/api/v1/api/saddsproducts',//?${_csrf.parameterName}=${_csrf.token}
+										data: JSON.stringify(saveData),
+										dataType : 'json',
+										traditional: true,
+										success : function(data) {
+											alert("成功"+data)
+											 
+										
+										},
+										error : function(json) {
+											alert("失败"+json);
+										}
+									});
+								});       
+								
+								*/
+					 		/* $(document).ready(function(){
+								$.ajax({
+									type : "GET",
+									contentType : "application/json;charset=utf-8", 
+									url :'${pageContext.request.contextPath}/admin/addCategorys',
+									dataType : 'json',
+									success : function(data) {
+										
+										for(var i=0;i<data.length;i++){
+											//alert("成功"+data[i].id);
+											 //zNodes.push({"id":data[i].id,"name":data[i].name,"pId":data[i].pId});
+
+											zNodes.push(data[i]);
+											
+										
+											
+										}
+										$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+									
+									},
+									error : function(json) {
+										alert("失败"+json);
+									}
+								});
+							});  */
+							
+									var index = 0;
+									function addPanel(ids){
+										var right=document.getElementById("rightright");
+										var select=document.getElementById("selectselect");
+										var left=document.getElementById("wrapper");
+										select.style.display="none";
+										right.style.display="block";
+										left.style.width="49%";
+										var psel = document.getElementById("zc"+ids);
+										var idq = document.getElementById("ids"+ids);
+										var fcateid = document.getElementById("fcateid"+ids+"1");
+										var imgs = document.getElementById("img"+ids);
+										var tszt = document.getElementById("tszt"+ids);
+										//特殊状态backUpCopy4T${fproductys.id}
+										var backUpCopy4T = document.getElementById("backUpCopy4T"+ids);
+										//分销状态backUpCopy5T${fproductys.id}
+										var backUpCopy5T = document.getElementById("backUpCopy5T"+ids);
+										//日期backUpCopy6T${fproductys.id}
+										var backUpCopy6T = document.getElementById("backUpCopy6T"+ids);
+										//审核状态backUpCopy1T${fproductys.id}
+										var backUpCopy1T = document.getElementById("backUpCopy1T"+ids);
+										//产品状态backUpCopy2T${fproductys.id}
+										var backUpCopy2T = document.getElementById("backUpCopy2T"+ids);
+										//分级及图案backUpCopy3T${fproductys.id}
+										var backUpCopy3T = document.getElementById("backUpCopy3T"+ids);
+										//创建者id  createUserIdT${fproductys.id}
+										var createUserIdT = document.getElementById("createUserIdT"+ids);
+										//原产地区originAreaT${fproductys.id}
+										var originAreaT = document.getElementById("originAreaT"+ids);
+										//英文简称englishShortT${fproductys.id}
+										var englishShortT = document.getElementById("englishShortT"+ids);
+										//中文简称chinaShortT${fproductys.id}
+										var chinaShortT = document.getElementById("chinaShortT"+ids);
+										//产品毛重productGrossWeightT${fproductys.id}
+										var productGrossWeightT = document.getElementById("productGrossWeightT"+ids);
+										//产品尺寸productSizeT${fproductys.id}
+										var productSizeT = document.getElementById("productSizeT"+ids);
+										//产品币种productCurrencyT${fproductys.id}
+										var productCurrencyT = document.getElementById("productCurrencyT"+ids);
+										//分销单价priceT${fproductys.id}
+										var priceT = document.getElementById("priceT"+ids);
+										//成本单价shopPriceT${fproductys.id}
+										var shopPriceT = document.getElementById("shopPriceT"+ids);
+										//运费discountT${fproductys.id}
+										var discountT = document.getElementById("discountT"+ids);
+										//适用人群generalExplainT${fproductys.id}
+										var generalExplainT = document.getElementById("generalExplainT"+ids);
+										//采购链接sourceUrlT${fproductys.id}
+										var sourceUrlT = document.getElementById("sourceUrlT"+ids);
+										//产品材料backUpCopy7T${fproductys.id}
+										var backUpCopy7T = document.getElementById("backUpCopy7T"+ids);
+										//内部sku externalIdT${fproductys.id}
+										var externalIdT = document.getElementById("externalIdT"+ids);
+										
+   
+										
+										var cf=0;
+										
+										 
+										//后台查询商品详情
+										var tab = $('#tt').tabs('getSelected');
+										//alert(ids);
+										// console.log(idqs);
+										//后台查询商品详情
+										// 获取选中的标签页面板（tab panel）和它的标签页（tab）对象
+											//获取选项卡的总长度
+											/* var tabsws=$('#tt').tabs('tabs');
+											 var t=tabss.length;
+											console.log(tab);
+											if (pp){
+											//获取选中值
+											var index = $('#tt').tabs('getTabIndex', pp);
+											var y=0;
+											for(var cd=0;cd<t;cd++){
+												if(cd<(index)){
+													$('#tt').tabs('close', 0);
+													y++;
+												}else if(cd>(index)){
+													$('#tt').tabs('close', 1);
+													y++;
+												}
+											} */
+											// console.log(tabsws);
+											
+										 $.ajax({
+												type : "get",
+												async:true,
+												contentType : "application/json;charset=utf-8", 
+												url :'${pageContext.request.contextPath}/admin/productListAtAll',
+												/* 其他搜索：name，产品编号：externalId，最低价格：price1，最高价格：price2，产品分类：categoryId，审核状态： backUpCopy1
+												产品状态：backUpCopy2，分级及图案：backUpCopy3，产品状态：productStatus，特殊状态：backUpCopy4，分销状态：backUpCopy5，
+												日期：backUpCopy6，热门商品：hot，业务员：createUserId，更新日期：updateTime1，截止日期：updateTime2*/
+												 data:{"id":ids,"price1":"","price2":"","updateTime1":""
+													,"updateTime2":""},  
+												dataType : 'json',
+												success : function(data) {
+													var idqs = document.getElementsByClassName("tabs-title");
+													var z;
+													if(idqs.length != 0){
+														
+														for(var c=0;c<idqs.length;c++){
+														//控制台进行对比	
+															if(idqs[c].innerText==ids){
+																//selected.classList.remove("tabs-selected");
+																//alert("重复了");
+																//console.log(idqs[c].innerText);
+																z=idqs[c].innerText;
+																cf++;
+															}
+															
+													}}
+													//判断选项卡是否重复打开等于0则未重复，不等于0则重复
+													 if (cf==0) {
+
+														 $('#tt').tabs('add',{
+																title: ids,
+																content:'<iframe scrolling="yes" id="mainiframe" name="mainiframe" width="105.5%" height="100%" frameborder="0px" style="margin:-20px;padding-top:20px;overflow:hidden" src="/Shopping/admin/productFright?id='+ids+'"></iframe>',
+																closable: true
+															});
+															
+															
+														} else {
+												        	$('#tt').tabs('select', z);//选中并刷新
+												        } 
+												},
+												error : function(json) {
+													alert("失败"+json);
+												}
+											});
+								}	
+										
+									
+									//清空其他
+									function removePanels(){
+										// 获取选中的标签页面板（tab panel）和它的标签页（tab）对象
+										var pp = $('#tt').tabs('getSelected');
+										var tab = pp.panel('options').tab; // 相应的标签页（tab）对象 
+										//获取选项卡的总长度
+										var tabss=$('#tt').tabs('tabs');
+										var t=tabss.length;
+										if (pp){
+										//获取选中值
+										var index = $('#tt').tabs('getTabIndex', pp);
+										var y=0;
+										for(var cd=0;cd<t;cd++){
+											if(cd<(index)){
+												$('#tt').tabs('close', 0);
+												y++;
+											}else if(cd>(index)){
+												$('#tt').tabs('close', 1);
+												y++;
+											}
+										}
+										}
+									}
+									
+									
+									$("#unfold").bind("click",function(){
+										var tab = $('#tt').tabs('getSelected');
+										
+										var right=document.getElementById("rightright");
+										var left=document.getElementById("wrapper");
+										//右边商品少于一个删除并隐藏
+										var right=document.getElementById("rightright");
+										var select=document.getElementById("selectselect");
+										var left=document.getElementById("wrapper");
+										if(tab!=null&&tab!=""){
+											select.style.display="none";
+											left.style.width="49%";
+											right.style.display="block";
+										}else{
+											alert("您还未选择商品");
+										}
+									});
+									//隐藏
+									function closePanelsY(){
+										var tab = $('#tt').tabs('getSelected');
+										
+										var right=document.getElementById("rightright");
+										var left=document.getElementById("wrapper");
+										//右边商品少于一个删除并隐藏
+										var right=document.getElementById("rightright");
+										var select=document.getElementById("selectselect");
+										var left=document.getElementById("wrapper");
+										select.style.display="block";
+										left.style.width="";
+										right.style.display="none";
+										}
+										
+									
+									//关闭清空
+									function closePanels(){
+										// 获取选中的标签页面板（tab panel）和它的标签页（tab）对象
+										var pp = $('#tt').tabs('getSelected');
+										var tab = pp.panel('options').tab; // 相应的标签页（tab）对象 
+										//获取选项卡的总长度
+										var tabss=$('#tt').tabs('tabs');
+										var t=tabss.length;
+										console.log(tab);
+										if (pp){
+										//获取选中值
+										var index = $('#tt').tabs('getTabIndex', pp);
+										var y=0;
+										for(var cd=0;cd<t;cd++){
+											if(cd<(index)){
+												$('#tt').tabs('close', 0);
+												y++;
+											}else if(cd>(index)){
+												$('#tt').tabs('close', 1);
+												y++;
+											}
+										}
+
+										var right=document.getElementById("rightright");
+										var left=document.getElementById("wrapper");
+										//右边商品少于一个删除并隐藏
+										var right=document.getElementById("rightright");
+										var select=document.getElementById("selectselect");
+										var left=document.getElementById("wrapper");
+										select.style.display="block";
+										left.style.width="";
+										right.style.display="none";
+										}
+										
+										
+										
+										}
+								</script>
+</body>
+</html>
