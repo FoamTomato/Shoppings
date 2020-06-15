@@ -927,6 +927,7 @@ public class FLogisticsController{
             Gson gson=new Gson();
             //添加水印
             TestwaterMark.waterMark(filePath, path+uuid+map.get("fileName")+"1.pdf", "P001",map.get("metho").toString());
+    		System.out.println(filePath);
             return gson.toJson(relativePath);
         } catch (IOException e) {
             e.printStackTrace();

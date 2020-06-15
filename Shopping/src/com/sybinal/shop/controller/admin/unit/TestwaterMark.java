@@ -30,6 +30,7 @@ public class TestwaterMark {
 				deleteIfExists(new File(outputFile));
 			}
 			PdfReader reader = new PdfReader(inputFile);
+			System.out.println(inputFile);
 			PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(new File(outputFile)));
 			BaseFont base = BaseFont.createFont("STSong-Light", "UniGB-UCS2-H", BaseFont.EMBEDDED);
 			//BaseFont base = BaseFont.createFont("STSong-Light", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);

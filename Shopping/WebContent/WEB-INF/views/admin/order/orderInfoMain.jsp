@@ -2704,13 +2704,13 @@ function dowEdit(){
 					day["lableKey"]=value
 					this.$http.post("Logistics/setLableKey?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(day),{emulateJSON:true}).then(result=>{
 						let data=result.body
-						console.log(data)
 						if(data.result.status=="1"){
 							let days={}
 							days["bytes"]=data.result.lableData
 							days["metho"]=metho
 							days["fileName"]=data.result.lableKey
 							this.$http.post("Logistics/conserveFile?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(days),{emulateJSON:true}).then(result1=>{
+								console.log(result1)
 								window.open("${pageContext.request.contextPath}/"+result1.body,"_blank")
 								let zs={}
 								zs["hjStandy8"]=val23
