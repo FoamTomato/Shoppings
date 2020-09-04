@@ -7,13 +7,11 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.http.HttpRequest;
 import org.apache.log4j.Logger;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,6 +88,41 @@ public class ExcelController {
 			map.put("data", 500); // 数据
         }
         return 0;
+    }
+	/**
+	 * 导出lazada分类
+	 */
+	@RequestMapping(value= "/admin/lazada", method = RequestMethod.POST)
+	@ResponseBody
+    public void lazada(HttpServletResponse response) {
+        response.setContentType("application/vnd.ms-excel");
+        System.out.println("-----------------------------------------------------");
+        Calendar cal=Calendar.getInstance();      
+        int y=cal.get(Calendar.YEAR);      
+        int m=cal.get(Calendar.MONTH);      
+        int d=cal.get(Calendar.DATE);      
+        int h=cal.get(Calendar.HOUR_OF_DAY);
+        int mi=cal.get(Calendar.MINUTE);      
+        int s=cal.get(Calendar.SECOND);   
+        String fileName = "";
+        try {
+        	fileName = new String(fileName.getBytes(),"ISO8859-1");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        fileName +=y+m+d+h+mi+s;
+        response.setHeader("Content-disposition", "attachment;filename=FoamOrderBase-"+fileName+".xlsx;charset=UTF-8");
+        XSSFWorkbook workbook = excelService.lazada();//idList
+        try {
+            OutputStream output  = response.getOutputStream();
+            BufferedOutputStream bufferedOutPut = new BufferedOutputStream(output);
+            workbook.write(bufferedOutPut);
+            bufferedOutPut.flush();
+            bufferedOutPut.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 	/**
 	 * 导入产品

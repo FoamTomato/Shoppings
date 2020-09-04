@@ -209,8 +209,9 @@ head.appendChild(l1);
 			  <a @click="selectOrder_HJ(item.id,'0')">查看</a>|
 			  <a @click="geteveryone(item.hjStandy5,item.hjShippingmethod,'0')">打印</a>|
 			  <a @click="delete_HJ(item.id,item.hjShipperhawbcode,'0')">删除</a></el-col>
-			  <el-col :span="12">物流:<nobr style="color:black">{{hjShippingmethods(item.hjShippingmethod)}}</nobr></el-col>
-			  <el-col :span="12">跟踪:<nobr style="color:black">{{item.hjStandy7}}</nobr></el-col>
+			  <el-col :span="24">物流:<nobr style="color:black">{{hjShippingmethods(item.hjShippingmethod)}}</nobr></el-col>
+			  <el-col :span="12">跟踪1:<nobr style="color:black">{{item.hjStandy7}}</nobr></el-col>
+			  <el-col :span="12">跟踪2:<nobr style="color:black">{{item.hjStandy8}}</nobr></el-col> 
 			  <el-col :span="12">参考号:<nobr style="color:black">{{item.hjReferenceno}}</nobr></el-col>
 			  <el-col :span="12">创建日期:<nobr style="color:black">{{getDate(item.hjStandy1)}}</nobr></el-col>
 			</el-row>

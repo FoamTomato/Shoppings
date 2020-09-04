@@ -78,6 +78,71 @@
     from fzying
     where id = #{id,jdbcType=INTEGER} 
   </select>
+  <!-- selectByListId根据list的id查询，加map的条件 -->
+   <select id="selectByListId"  resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from fzying
+    <where> 
+    	Frs1="1" and Frs2="1"
+    	<if test="lists!=''  and map.checked==true">
+	    	and id in 
+		    <foreach collection="lists" item="ide" separator="," open="(" close=")">
+		    	 #{ide}
+		    </foreach>
+	    </if>
+	    <if test="map.security.size!=0">
+	    	and Frs3 in
+		    <foreach collection="map.security" item="ide" separator="," open="(" close=")">
+		    	 #{ide}
+		    </foreach>
+	    </if>
+	    <if test="map.level.size!=0">
+	    	and Frs4 in
+		    <foreach collection="map.level" item="ide" separator="," open="(" close=")">
+		    	 #{ide}
+		    </foreach>
+	    </if>
+	    <if test="map.date.length!=0">
+	    	and Frs10 BETWEEN #{map.date[0]} AND #{map.date[1]}
+	    </if>
+	    <if test="map.value1!=''">
+	    	and Frs7 = #{map.value1}
+	    </if>
+	    <if test="map.fcateid!=''">
+	    	and Fkind = #{map.fcateid}
+	    </if>
+	    
+	    
+    	<if test="map.checkAll2==0">
+    		ORDER BY id asc
+    	</if>
+    	<if test="map.checkAll2==1">
+    		ORDER BY id desc
+    	</if>
+    	<if test="map.checkAll2==2">
+    		ORDER BY RAND()
+    	</if>
+	    <if test="map.Limit!=0 and map.checked==false">
+	    	Limit 0,#{map.Limit}
+	    </if>
+    </where>
+  </select>
+  <!-- 根据id查询selectBYid -->
+  
+  <select id="selectBYid"  resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from fzying
+    where id in 
+    <foreach collection="lists" item="ide" separator="," open="(" close=")">
+    	 #{ide}
+    </foreach>
+  </select>
   <!-- 查询所有 -->
   <select id="selectAll" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
     select 
@@ -328,9 +393,7 @@
       <if test="frs9 != null">
         Frs9,
       </if>
-      <if test="frs10 != null">
         Frs10,
-      </if>
       <if test="fen != null">
         Fen,
       </if>
@@ -495,9 +558,7 @@
       <if test="frs9 != null">
         #{frs9,jdbcType=VARCHAR},
       </if>
-      <if test="frs10 != null">
-        #{frs10,jdbcType=TIMESTAMP},
-      </if>
+        now(),
       <if test="fen != null">
         #{fen,jdbcType=LONGVARCHAR},
       </if>
@@ -818,7 +879,7 @@
 			<if test="dtfzying.fsku != null and dtfzying.fsku != ''">
 				Fsku = #{dtfzying.fsku} and
 			</if>
-			<if test="dtfzying.fkind != null and dtfzying.fkind != 0 and dtfzying.fkind!=''">
+			<if test="dtfzying.fkind != null and  dtfzying.fkind!=''">
 				Fkind like concat('%','${dtfzying.fkind}','%') and 
 			</if>
 			<if test="dtfzying.frs1 != null and dtfzying.frs1 != 0">

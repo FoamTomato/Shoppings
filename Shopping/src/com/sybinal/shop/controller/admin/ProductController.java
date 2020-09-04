@@ -208,7 +208,7 @@ public class ProductController {
 			dTfzying.setPrice2(Integer.valueOf(map.get("price2")));
 		}
 		String fen=map.get("fen");
-		dTfzying.setFkind(map.get("fkind"));
+		//dTfzying.setFkind(map.get("fkind"));
 		dTfzying.setFrs1(map.get("frs1"));
 		dTfzying.setFrs2(map.get("frs2"));
 		dTfzying.setFrs3(map.get("frs3"));
@@ -219,6 +219,7 @@ public class ProductController {
 		dTfzying.setUpdateTime1(map.get("updateTime1"));
 		dTfzying.setUpdateTime2(map.get("updateTime2"));
 		dTfzying.setFrs7(map.get("frs7"));
+		dTfzying.setFkind(map.get("fcateid"));
 		//logger.info(dTfzying.getUpdateTime1());
 		//logger.info(dTfzying.getUpdateTime2());
 		List<DTfzyingsWithBLOBs> s = dTfzyingsService.selectdTstockAtAll(dTfzying,fen);

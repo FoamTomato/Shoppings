@@ -322,14 +322,15 @@ function lgfg(value){
  				}
  				break;
  			}
- 			
- 			for(let p in arr){
+
+ 			/* for(let p in arr){
  				if(!obj[p]){
  					//存储不重复值，利用对象的属性不会重复
  					result.push(p);
  					obj[p]=1;
  				}
- 			}
+ 			} */
+ 			result=unique(arr)
  			//获取所有已经存在的值
  			let Fdragtarget=$('.model-cate-list');
  			switch(c){
@@ -548,6 +549,12 @@ function lgfg(value){
 		$("#"+vaol).val($("#myModalLabelpLast nobr").html());
 		$("#myModalp").modal('hide');
 	}
+	//数组去重
+	function unique (arr) {
+		  return Array.from(new Set(arr))
+	}
+
+
 	/*
 	商品管理详情页的分类选择
 	*/

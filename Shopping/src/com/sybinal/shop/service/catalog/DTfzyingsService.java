@@ -1,6 +1,7 @@
 package com.sybinal.shop.service.catalog;
 
 import java.util.List;
+import java.util.Map;
 
 import com.sybinal.shop.common.AjaxResult;
 import com.sybinal.shop.model.DTfzyings;
@@ -46,4 +47,11 @@ public interface DTfzyingsService {
 	* @version
 	 */
 	int deleteProductList(List<String> map);
+	//根据id查询
+	List<DTfzyingsWithBLOBs> selectBYid(List<Integer> list);
+
+	//数据库根据id条件查询产品
+	List<DTfzyingsWithBLOBs> selectByListId(List<Integer> list, Map<String, Object> map);
+	//根据分类查询
+	List<DTfzyingsWithBLOBs> selectByCate(Map<String, Object> map);
 }

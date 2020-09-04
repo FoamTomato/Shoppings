@@ -1431,7 +1431,8 @@ and hj_standy5 != ""
   	<foreach collection="Liste" item="lists" separator=";">
 	    update hj_base
 	    set
-	        hj_standy7 = #{lists.trackNum1,jdbcType=VARCHAR}
+	        hj_standy7 = #{lists.trackNum1,jdbcType=VARCHAR},
+	        hj_standy8 = #{lists.trackNum2,jdbcType=VARCHAR}
 	      where hj_referenceNo = #{lists.referenceNo,jdbcType=VARCHAR} and hj_standy2 = "1"
 	      <if test="username != 'admin'">
 	      and  hj_standy9 = #{username,jdbcType=VARCHAR}

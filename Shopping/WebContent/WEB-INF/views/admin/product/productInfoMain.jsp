@@ -346,6 +346,13 @@ element-loading-background="rgba(0, 0, 0, 0.8)">
 												<el-button size="mini" type="primary" @click="exports_price">导出选择</el-button>
 											</form>
 										  </el-col>
+										  <el-col :span="3">
+										  	
+											<%-- <form id="exports_price2" method="post" action="${pageContext.request.contextPath}/admin/lazada?${_csrf.parameterName}=${_csrf.token}" enctype="multipart/form-data">
+												<el-button size="mini" @click="exports_price2" >导出分类</el-button>
+											</form> --%>
+										  	<el-button size="mini" @click="shops=true">上传店铺</el-button>
+										  </el-col>
 										</el-row>
 										<%-- <div class="text-right m-t-xs">
 											<!-- <button id="allInner" class="btn btn-primary" 
@@ -516,7 +523,7 @@ element-loading-background="rgba(0, 0, 0, 0.8)">
 									    </el-option>
 									  </el-select>
 								  </el-col>
-								  <el-col :span="6">产品状态{{itemc.content.pro.frs2}}
+								  <el-col :span="6">产品状态
 								  	  <el-select v-model="itemc.content.pro.frs2" style="width:100%" placeholder="请选择"  size="mini">
 									    <el-option
 									      v-for="itemw in fproducts"
@@ -853,6 +860,16 @@ element-loading-background="rgba(0, 0, 0, 0.8)">
 	<el-button  style="float:left;margin-left: 10px;" @click="pl(stock)" v-if="btn=='update'" size="mini">修改</el-button>
   </div>
 </el-dialog>
+<el-dialog
+  title="上传店铺"
+  :visible.sync="shops"
+  width="30%"
+  :before-close="handleClose">
+  <el-button  @click="uploadShop('lazada')">lazada</el-button>
+  <span slot="footer" class="dialog-footer">
+    <el-button type="primary" @click="shops = false">确 定</el-button>
+  </span>
+</el-dialog>
 <!-- <el-dialog
   title="选择分类"
   :visible.sync="catesOrder"
@@ -938,6 +955,7 @@ element-loading-background="rgba(0, 0, 0, 0.8)">
 	        //cities: cityOptions,//所有选项
 	        isIndeterminate: true,
 	        isIndeterminate3:true,
+	        shops:false,//上传店铺弹窗
 	        itemcc:{},
 	        loading:false,//加载圈
 	        contents:{},
@@ -1042,7 +1060,7 @@ element-loading-background="rgba(0, 0, 0, 0.8)">
 	    	         id:"1"
 	    	        },
 	            	{
-	    	         logisticsName:"图案设计",
+	    	         logisticsName:"没图案设计",
 	    	         shortName:"2",
 	    	         id:"2"
 	    	        },
@@ -1230,6 +1248,10 @@ element-loading-background="rgba(0, 0, 0, 0.8)">
 					this.ywyss=result.body
 				})
 			},
+			updated(){
+				//this.fcateid=$("#fcateid").val()
+				//console.log($("#fcateid").val())
+			},
 			methods:{
 				productLists(){
 					//创建方法
@@ -1247,6 +1269,8 @@ element-loading-background="rgba(0, 0, 0, 0.8)">
 					datas["frs4"]=this.fban
 					datas["frs5"]=this.ffx
 					datas["frs6"]=this.fdates
+					this.fcateid=$("#fcateid").val()
+					datas["fcateid"]=this.fcateid
 					datas["updateTime1"]=this.value6[0]
 					datas["updateTime2"]=this.value6[1]
 					datas["frs7"]=this.ywys
@@ -1662,6 +1686,9 @@ element-loading-background="rgba(0, 0, 0, 0.8)">
 	         		 $("#exports_price").submit()
 	         	 }
 	          },
+	          exports_price2(){
+	        	  $("#exports_price2").submit()
+	          },
 	          load (val,val2) {
 	              val += val2
 	          },
@@ -1969,9 +1996,9 @@ element-loading-background="rgba(0, 0, 0, 0.8)">
 					f_kind_selects("3",vm.editableTabsValue)
 				},
 				delcz(){
-					if(this.checkedCities.length>0){
+					if(this.checkedCities.length==0){
 						this.$message.error("请选择产品")
-						return
+						return false
 					}else{
 						this.$confirm("是否删除这"+this.checkedCities.length+"条？请谨慎操作!!!").then(_ => {
 							//删除
@@ -1980,6 +2007,22 @@ element-loading-background="rgba(0, 0, 0, 0.8)">
 								this.productLists()
 							})
 						})
+					}
+				},
+				async uploadShop(row){
+					//上传店铺
+					if(this.checkedCities.length==0){
+						this.$message.error("请选择产品")
+						return false
+					}
+					this.loading=true
+					if(row=="lazada"){
+						//lazada
+						// this.$http.post("lazada/uploadShop?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(this.checkedCities),{emulateJSON:true}).then(result=>{
+						//	console.log(result.body.msg)
+						//	})
+						 window.location.href="${pageContext.request.contextPath}/lazada/postProduct/"+this.checkedCities
+						this.loading=false
 					}
 				}
 			}

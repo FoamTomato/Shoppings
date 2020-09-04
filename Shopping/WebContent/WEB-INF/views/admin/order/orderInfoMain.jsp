@@ -416,7 +416,9 @@
 											  <a @click="geteveryone(items.hjStandy5,items.hjShippingmethod,'0',item.title)">打印</a>|
 											  <a @click="delete_HJ(items.id,items.hjShipperhawbcode,'0',indexs,index)">删除</a></el-col>
 											  <el-col :span="12">物流:<nobr style="color:black">{{hjShippingmethods(items.hjShippingmethod)}}</nobr></el-col>
-											  <el-col :span="12">跟踪:<nobr style="color:black">{{items.hjStandy7}}</nobr></el-col>
+			 								  <el-col :span="12"><nobr style="color:black">{{items.hjStandy5}}</nobr></el-col>
+											  <el-col :span="12">跟踪1:<nobr style="color:black">{{items.hjStandy7}}</nobr></el-col>
+											  <el-col :span="12">跟踪2:<nobr style="color:black">{{items.hjStandy8}}</nobr></el-col>
 											  <el-col :span="12">参考号:<nobr style="color:black">{{items.hjReferenceno}}</nobr></el-col>
 											  <el-col :span="12">创建日期:<nobr style="color:black">{{getDate(items.hjStandy1)}}</nobr></el-col>
 										</el-row>
@@ -531,7 +533,7 @@
 	</el-row>
 
   	<el-row :gutter="20">
-	  <el-col :span="12">总价:<el-input v-model="hjOr.hjInvoiceunitcharge" size="mini" placeholder="请输入总价"></el-input></el-col>
+	  <el-col :span="12">单价:<el-input v-model="hjOr.hjInvoiceunitcharge" size="mini" placeholder="请输入总价"></el-input></el-col>
 	  <el-col :span="12">币种:<el-input v-model="hjOr.hjInvoicecurrencycode" size="mini" placeholder="请输入币种"></el-input></el-col>
 	</el-row>
 

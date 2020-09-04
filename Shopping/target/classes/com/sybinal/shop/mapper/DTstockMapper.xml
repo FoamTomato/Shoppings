@@ -20,6 +20,22 @@
       #{fadd,jdbcType=VARCHAR}, #{fnum,jdbcType=INTEGER}, #{fimg,jdbcType=VARCHAR}, #{fid,jdbcType=VARCHAR}, 
       #{fsize,jdbcType=VARCHAR})
   </insert>
+  
+  <sql id="Base_Column_List">
+    id, fcolor, fno, fadd, fnum, fid, fsize
+  </sql>
+  <sql id="Blob_Column_List">
+    fimg
+  </sql>
+  <!-- 根据sku查询 -->
+  <select id="selectBystockSku" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from stock
+    where fid = #{fskus}
+  </select>
   <!-- insertall批量添加变体 -->
   <insert id="insertall" parameterType="java.util.List">
     insert into stock (id, fcolor, fno, 

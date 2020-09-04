@@ -2,6 +2,7 @@ package com.sybinal.shop.service.catalog;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -77,5 +78,24 @@ public class DTfzyingsServiceImpl implements DTfzyingsService {
 	public int deleteProductList(List<String> map) {
 		// TODO Auto-generated method stub
 		return dTfzyingsMapper.deleteProductList(map);
+	}
+
+	@Override
+	public List<DTfzyingsWithBLOBs> selectBYid(List<Integer> list) {
+		// TODO Auto-generated method stub
+		return dTfzyingsMapper.selectBYid(list);
+	}
+
+	//数据库根据id条件查询产品
+	@Override
+	public List<DTfzyingsWithBLOBs> selectByListId(List<Integer> list, Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return dTfzyingsMapper.selectByListId(list,map);
+	}
+
+	@Override
+	public List<DTfzyingsWithBLOBs> selectByCate(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return dTfzyingsMapper.selectByCate(map);
 	}
 }

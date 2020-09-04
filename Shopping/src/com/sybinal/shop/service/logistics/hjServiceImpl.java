@@ -1,6 +1,5 @@
 package com.sybinal.shop.service.logistics;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -32,12 +31,12 @@ public class hjServiceImpl implements hjService {
 	@Override
 	public int addHJLogistics(hjBase hjBases) {
 		// TODO Auto-generated method stub
-		try {
+		/*try {
 			hjBases.setHjStandy14(Calculations.los(hjBases.getHjInvoiceweight(),hjBases.getHjCountrycode(), hjBases.getHjShippingmethod()));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		return hjBasesMapper.insertSelective(hjBases);
 	}
 
@@ -169,9 +168,9 @@ public class hjServiceImpl implements hjService {
 	}
 
 	@Override
-	public int insertSelective2Plus(List<hjBase> hjList) {
+	public int insertSelective2Plus(List<hjBase> ALLbatch) {
 		// TODO Auto-generated method stub
-		List<hjBase> hjList2=new ArrayList<hjBase>();
+		/*List<hjBase> hjList2=new ArrayList<hjBase>();
 		hjList.forEach(x->{
 			try {
 				x.setHjStandy14(Calculations.los(x.getHjInvoiceweight(),x.getHjCountrycode(), x.getHjShippingmethod()));
@@ -183,8 +182,8 @@ public class hjServiceImpl implements hjService {
 			logger.info(x);
 			hjList2.add(x);
 		});
-		logger.info("添加");
-		return hjBasesMapper.insertSelective2Plus(hjList2);
+		logger.info("添加");*/
+		return hjBasesMapper.insertSelective2Plus(ALLbatch);
 	}
 
 	@Override

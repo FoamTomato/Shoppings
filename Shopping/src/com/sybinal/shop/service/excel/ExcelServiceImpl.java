@@ -1,13 +1,17 @@
 package com.sybinal.shop.service.excel;
 
+import java.beans.IntrospectionException;
 import java.io.File;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,11 +30,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.lazada.lazop.api.LazopClient;
+import com.lazada.lazop.api.LazopRequest;
+import com.lazada.lazop.api.LazopResponse;
+import com.lazada.lazop.util.ApiException;
 import com.sybinal.shop.common.Calculations;
 import com.sybinal.shop.common.ExcelUtil;
 import com.sybinal.shop.common.Task;
 import com.sybinal.shop.common.logisticsChange;
 import com.sybinal.shop.controller.admin.FLogisticsController;
+import com.sybinal.shop.controller.admin.LazadaController;
 import com.sybinal.shop.mapper.DTfzyingsMapper;
 import com.sybinal.shop.mapper.DTstockMapper;
 import com.sybinal.shop.mapper.DTstocksMapper;
@@ -50,6 +61,7 @@ import com.sybinal.shop.model.ExcelBean;
 import com.sybinal.shop.model.Exportstock;
 import com.sybinal.shop.model.FLogistics;
 import com.sybinal.shop.model.Glogistics;
+import com.sybinal.shop.model.LazadaCate;
 import com.sybinal.shop.model.freightPreview;
 import com.sybinal.shop.model.hjBase;
 import com.sybinal.shop.model.jpOrder;
@@ -128,15 +140,15 @@ public class ExcelServiceImpl implements ExcelService{
                 /*
                                           * 旧单号
                  */
-                FLogisticsInfo.setfOldOrder(String.valueOf(listob.get(i).get(1)));
+                //FLogisticsInfo.setfOldOrder(String.valueOf(listob.get(i).get(1)));
                 /*
 				 * 旧采购
 				*/
-				FLogisticsInfo.setfOldPurchase(String.valueOf(listob.get(i).get(2)));
+				//FLogisticsInfo.setfOldPurchase(String.valueOf(listob.get(i).get(2)));
                 /*
 				* ClientOrderCode
 				*/
-				FLogisticsInfo.setfClientOrderCode(String.valueOf(listob.get(i).get(3)));
+				FLogisticsInfo.setfClientOrderCode(String.valueOf(listob.get(i).get(1)));
                 /*
 				* 店铺
 				*/
@@ -146,29 +158,29 @@ public class ExcelServiceImpl implements ExcelService{
 				*/
 				DateFormat format = new SimpleDateFormat("yyyy/MM/dd"); 
 				//FLogisticsInfo.setfPayTime(format.parse(String.valueOf(listob.get(i).get(6))));
-				if(String.valueOf(listob.get(i).get(6))!=""&&String.valueOf(listob.get(i).get(6))!=null) {
-					FLogisticsInfo.setfPayTime(format.parse(String.valueOf(listob.get(i).get(6))));
+				if(String.valueOf(listob.get(i).get(2))!=""&&String.valueOf(listob.get(i).get(2))!=null) {
+					FLogisticsInfo.setfPayTime(format.parse(String.valueOf(listob.get(i).get(2))));
 				}
                 /*
 				* Currency
 				*/
-				FLogisticsInfo.setfCurrency(String.valueOf(listob.get(i).get(7)));
+				FLogisticsInfo.setfCurrency(String.valueOf(listob.get(i).get(5)));
                 /*
 				* TotalPrice
 				*/
-				FLogisticsInfo.setfTotalPrice(String.valueOf(listob.get(i).get(8)));
+				FLogisticsInfo.setfTotalPrice(String.valueOf(listob.get(i).get(6)));
                 /*
 				* 中文简称
 				*/
-				FLogisticsInfo.setfChinaShort(String.valueOf(listob.get(i).get(18)));
+				FLogisticsInfo.setfChinaShort(String.valueOf(listob.get(i).get(15)));
                 /*
 				* FirstName
 				*/
-				FLogisticsInfo.setfFirstName(String.valueOf(listob.get(i).get(23)));
+				FLogisticsInfo.setfFirstName(String.valueOf(listob.get(i).get(26)));
                 /*
 				* LastName
 				*/
-				FLogisticsInfo.setfLastName(String.valueOf(listob.get(i).get(24)));
+				FLogisticsInfo.setfLastName("");//String.valueOf(listob.get(i).get(24))
                 /*
 				* Country
 				*/
@@ -176,71 +188,75 @@ public class ExcelServiceImpl implements ExcelService{
                 /*
 				* Province
 				*/
-				FLogisticsInfo.setfProvince(String.valueOf(listob.get(i).get(26)));
+				FLogisticsInfo.setfProvince(String.valueOf(listob.get(i).get(30)));
                 /*
 				* City
 				*/
-				FLogisticsInfo.setfCity(String.valueOf(listob.get(i).get(27)));
+				FLogisticsInfo.setfCity(String.valueOf(listob.get(i).get(29)));
                 /*
 				* PostCode
 				*/
-				FLogisticsInfo.setfPostCode(String.valueOf(listob.get(i).get(28)));
+				FLogisticsInfo.setfPostCode(String.valueOf(listob.get(i).get(31)));
                 /*
 				* Email
 				*/
-				FLogisticsInfo.setfEmail(String.valueOf(listob.get(i).get(29)));
+				FLogisticsInfo.setfEmail(String.valueOf(listob.get(i).get(27)));
                 /*
 				* Telephone
 				*/
-				FLogisticsInfo.setfTelephone(String.valueOf(listob.get(i).get(30)));
+				FLogisticsInfo.setfTelephone(String.valueOf(listob.get(i).get(28)));
                 /*
 				* Address1
 				*/
-				FLogisticsInfo.setfAddress1(String.valueOf(listob.get(i).get(31)));
+				FLogisticsInfo.setfAddress1(String.valueOf(listob.get(i).get(32)));
                 /*
 				* Address2
 				*/
-				FLogisticsInfo.setfAddress2(String.valueOf(listob.get(i).get(32)));
+				FLogisticsInfo.setfAddress2("");//String.valueOf(listob.get(i).get(34))
                 /*
 				* Address3
 				*/
-				FLogisticsInfo.setfAddress3(String.valueOf(listob.get(i).get(33)));
+				FLogisticsInfo.setfAddress3("");//String.valueOf(listob.get(i).get(35))
                 /*
 				* 物流
 				*/
-				FLogisticsInfo.setfLogistics(String.valueOf(listob.get(i).get(34)));
+				FLogisticsInfo.setfLogistics(String.valueOf(listob.get(i).get(19)));
                 /*
 				* 渠道
 				*/
-				FLogisticsInfo.setfChannel(String.valueOf(listob.get(i).get(35)));
+				FLogisticsInfo.setfChannel(String.valueOf(listob.get(i).get(20)));
                 /*
 				* 运单号
 				*/
-				FLogisticsInfo.setfSheet(String.valueOf(listob.get(i).get(36)));
+				FLogisticsInfo.setfSheet(String.valueOf(listob.get(i).get(21)));
                 /*
 				* Fee
 				*/
-				FLogisticsInfo.setStandby1(String.valueOf(listob.get(i).get(9)));
+				FLogisticsInfo.setStandby1(String.valueOf(listob.get(i).get(7)));
                 /*
 				* Money
 				*/
-				FLogisticsInfo.setStandby2(String.valueOf(listob.get(i).get(12)));
+				FLogisticsInfo.setStandby2(String.valueOf(listob.get(i).get(6)));
                 /*
 				* Cost
 				*/
-				FLogisticsInfo.setStandby3(String.valueOf(listob.get(i).get(13)));
+				FLogisticsInfo.setStandby3(String.valueOf(listob.get(i).get(9)));
                 /*
 				* Profile
 				*/
-				FLogisticsInfo.setStandby4(String.valueOf(listob.get(i).get(14)));
+				FLogisticsInfo.setStandby4(String.valueOf(listob.get(i).get(10)));
                 /*
 				* 追踪号
 				*/
-				FLogisticsInfo.setStandby7(String.valueOf(listob.get(i).get(37)));
+				FLogisticsInfo.setStandby7(String.valueOf(listob.get(i).get(22)));
+                /*
+				* 备注
+				*/
+				FLogisticsInfo.setfRemark(String.valueOf(listob.get(i).get(24)));
                 /*
 				* sku
 				*/
-				FLogisticsInfo.setStandby8(String.valueOf(listob.get(i).get(16)));
+				FLogisticsInfo.setStandby8(String.valueOf(listob.get(i).get(14)));
 				/*
 				 * 导入的用户username
 				 */
@@ -511,7 +527,7 @@ public class ExcelServiceImpl implements ExcelService{
             Map<Integer,List<ExcelBean>> map=new LinkedHashMap<>();
             //设置标题栏
             excel.add(new ExcelBean("物流渠道","hjShippingmethod",0));
-            excel.add(new ExcelBean("客户订单号","hjReferenceno",0));
+            excel.add(new ExcelBean("客户订单号","hjStandy5",0));
             excel.add(new ExcelBean("物流跟踪号","hjStandy7",0));
             excel.add(new ExcelBean("收货国家","hjCountrycode",0));
             excel.add(new ExcelBean("集拼单号","hjStandy4",0));
@@ -1218,4 +1234,80 @@ public class ExcelServiceImpl implements ExcelService{
 	        }
 	        return xssfWorkbook;
 	    }
+	/**
+	 * 导出lazada分类
+	 */
+	@Override
+	public XSSFWorkbook lazada() {
+		// TODO Auto-generated method stub
+        XSSFWorkbook xssfWorkbook=null;
+        /*
+         * *************************************************************************获取分类
+         */
+        LazopClient client = new LazopClient("	https://api.lazada.com.my/rest", LazadaController.appkey, LazadaController.appSecret);
+        LazopRequest request = new LazopRequest();
+        request.setApiName("/category/tree/get");
+        request.setHttpMethod("GET");
+        LazopResponse response = null;
+		try {
+			response = client.execute(request);
+			
+		} catch (ApiException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        /**
+         * **********************************************************************************创建表格
+         */
+        List<LazadaCate> exportstock = new ArrayList<LazadaCate>();
+        Gson gson=new Gson();
+        Map<String,Object> maps=gson.fromJson(response.getBody(), new TypeToken<HashMap<String,Object>>() {}.getType());
+        List<LazadaCate> ids=gson.fromJson(gson.toJson(maps.get("data")),new TypeToken<List<LazadaCate>>() {}.getType());
+        System.out.println("================"+gson.toJson(ids.get(0)));
+        /**
+         * *********************************************************************************************迭代
+         */
+        
+        exportstock.addAll(LazadaController.analysisJson(ids));
+        /**
+         * ****************************************************************************************存入表格
+         */
+        System.out.println("*****************"+gson.toJson(exportstock));
+        Map<Integer,List<ExcelBean>> map=new LinkedHashMap<>();
+        List<ExcelBean> excel=new ArrayList<>();
+        excel.add(new ExcelBean("var","var",0));
+        excel.add(new ExcelBean("名称","name",0));
+        excel.add(new ExcelBean("leaf","leaf",0));
+        excel.add(new ExcelBean("category_id","category_id",0));
+        map.put(0, excel);
+
+        try {
+			xssfWorkbook = ExcelUtil.createExcelFile(LazadaCate.class, exportstock, map, "product");
+		} catch (IllegalArgumentException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InvocationTargetException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IntrospectionException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        try {
+			Thread.sleep(10);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return xssfWorkbook;
+	}
 }

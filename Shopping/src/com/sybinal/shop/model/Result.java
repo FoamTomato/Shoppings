@@ -2,15 +2,15 @@ package com.sybinal.shop.model;
 
 public class Result {
 	
-	private String msg;
+	private Object msg;
 	
 	private int statue;
 
-	public String getMsg() {
+	public Object getMsg() {
 		return msg;
 	}
 
-	public void setMsg(String msg) {
+	public void setMsg(Object msg) {
 		this.msg = msg;
 	}
 
@@ -20,6 +20,21 @@ public class Result {
 
 	public void setStatue(int statue) {
 		this.statue = statue;
+	}
+
+	@Override
+	public String toString() {
+		return "Result [msg=" + msg + ", statue=" + statue + "]";
+	}
+
+	public Result(Object msg, int statue) {
+		super();
+		this.msg = msg;
+		this.statue = statue;
+	}
+
+	public Result() {
+		super();
 	}
 	
 	

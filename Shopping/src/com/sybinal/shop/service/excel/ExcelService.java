@@ -4,7 +4,6 @@ import java.io.InputStream;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.http.HttpRequest;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -62,5 +61,15 @@ public interface ExcelService {
 	 * @return: XSSFWorkbook    返回类型  
 	 * @throws  
 	 */
-	public XSSFWorkbook productExport(String idList); 
+	public XSSFWorkbook productExport(String idList);
+	/**
+	 * 导出lazada分类
+	*    
+	* 项目名称：Shopping   
+	* 类描述：   
+	* 创建人：PC1   
+	* 创建时间：2020年6月20日 下午6:34:12   
+	* @version
+	 */
+	public XSSFWorkbook lazada(); 
 }

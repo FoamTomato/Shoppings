@@ -16,8 +16,7 @@
 
 
 	<!-- 扫描 -->
-	<context:component-scan base-package="com.sybinal.shop" />
-
+	<context:component-scan base-package="com.sybinal.shop.*" />
 
 	<!-- 属性文件 -->
 	<context:property-placeholder location="classpath:jdbc.properties,classpath:config.properties" />
@@ -35,7 +34,7 @@
 		<property name="minIdle" value="${cp.minIdle}" />
 		<property name="maxWait" value="${cp.maxWait}" />
 	</bean>
-
+	<!-- 配置mongodb -->
 	<!-- sql日志用 -->
 	<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
 		<constructor-arg index="0" ref="realDataSource" />
@@ -132,4 +131,5 @@
 		</property>
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
+	
 </beans>

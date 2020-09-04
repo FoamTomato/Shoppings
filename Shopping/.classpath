@@ -23,5 +23,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/lazop-api-sdk-1.2.0-sources.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/lazop-api-sdk-1.2.0.jar" sourcepath="WebContent/WEB-INF/lib/lazop-api-sdk-1.2.0-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

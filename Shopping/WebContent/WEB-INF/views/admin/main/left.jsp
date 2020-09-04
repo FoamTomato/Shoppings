@@ -13,7 +13,7 @@
             </a>
         </div>
         <ul class="nav" id="side-menu">
-        
+        		<c:if test="${fn:contains(jurisdiction.jurisdiction,'qx')}">
 	            <li id="leftMenuProduct" class="sidebar-search">
 	                <a href="#"><span class="nav-label">商品管理</span><span class="fa arrow"></span> </a>
 	                <ul class="nav nav-second-level">
@@ -54,6 +54,29 @@
 		                    <li><a href="${pageContext.request.contextPath}/amazon/postProduct">上传产品</a></li>
 	                </ul>
             	</li>
+            	</c:if>
+            	<c:if test="${fn:contains(jurisdiction.jurisdiction,'lazada')}">
+	            <li id="leftMenuArticle">
+	                <a href="#"><span class="nav-label">Lazada</span><span class="fa arrow"></span> </a>
+	                <ul class="nav nav-second-level">
+		                    <li><a href="${pageContext.request.contextPath}/lazada/account">账户授权</a></li>
+		                    <%-- <li><a href="${pageContext.request.contextPath}/lazada/postProduct">上传产品</a></li> --%>
+		                    <li><a href="${pageContext.request.contextPath}/lazada/postProduct2/1">上传产品</a></li>
+		                    <li><a href="${pageContext.request.contextPath}/lazada/orderList">订单列表</a></li>
+		                    <li><a href="${pageContext.request.contextPath}/lazada/productList">商品列表</a></li>
+	                </ul>
+            	</li>
+            	</c:if>
+            	<c:if test="${fn:contains(jurisdiction.jurisdiction,'case')}">
+	            <li id="leftMenuArticle">
+	                <a href="#"><span class="nav-label">手机壳</span><span class="fa arrow"></span> </a>
+	                <ul class="nav nav-second-level">
+		                    <li><a href="${pageContext.request.contextPath}/phoneCases/classification">品类管理</a></li>
+		                    <li><a href="${pageContext.request.contextPath}/phoneCases/customization">定制壳</a></li>
+		                    <li><a href="${pageContext.request.contextPath}/phoneCases/historyCustomization">历史定制</a></li>
+	                </ul>
+            	</li>
+            	</c:if>
             <%--<li>
                 <a href="${pageContext.request.contextPath}/admin/comments"><span class="nav-label">关键词替换</span></a>
             </li>

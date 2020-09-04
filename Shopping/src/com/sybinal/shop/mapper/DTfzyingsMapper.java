@@ -1,6 +1,7 @@
 package com.sybinal.shop.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -59,4 +60,11 @@ public interface DTfzyingsMapper {
 	* @version
 	 */
 	int deleteProductList(@Param("lists")List<String> map);
+	//根据id查询
+	List<DTfzyingsWithBLOBs> selectBYid(@Param("lists")List<Integer> list);
+
+	//数据库根据id条件查询产品
+	List<DTfzyingsWithBLOBs> selectByListId(@Param("lists")List<Integer> list,@Param("map") Map<String, Object> map);
+	//根据分类查询
+	List<DTfzyingsWithBLOBs> selectByCate(Map<String, Object> map);
 }
