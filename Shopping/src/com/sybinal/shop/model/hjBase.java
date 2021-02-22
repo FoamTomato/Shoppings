@@ -3,7 +3,92 @@ package com.sybinal.shop.model;
 import java.util.Date;
 
 public class hjBase {
-    @Override
+	
+    public hjBase() {
+		super();
+	}
+
+	public hjBase(Integer id, String hjReferenceno, String hjShipperhawbcode, String hjShippingmethod,
+			String hjCountrycode, String hjShipzip, String hjOrderweight, String hjOrderpieces, String hjTotalprice,
+			String hjMailcargotype, String hjLength, String hjWidth, String hjHeight, String hjIsreturn,
+			String hjIsbattery, String hjConsignee, String hjConsigneecompany, String hjConsigneeprovince,
+			String hjConsigneecity, String hjConsigneestreet, String hjConsigneestreet2, String hjConsigneestreet3,
+			String hjConsigneepostcode, String hjConsigneename, String hjConsigneetelephone, String hjConsigneemobile,
+			String hjConsigneeemail, String hjConsigneecountryename, String hjConsigneecountrycname, String hjItemarr,
+			String hjInvoiceenname, String hjInvoicecnname, String hjInvoiceweight, String hjInvoicequantity,
+			String hjUnitcode, String hjInvoiceunitcharge, String hjInvoicecurrencycode, String hjHscode,
+			String hjInvoicenote, String hjSku, String hjIscontainsbattery, String hjIsaneroidmarkup,
+			String hjIsonlybattery, String hjIsbreakable, String hjIscharged, String hjSaleprice, String hjSalecurrency,
+			String hjCategoryname, String hjParentenname, Date hjStandy1, String hjStandy2, String hjStandy3,
+			String hjStandy4, String hjStandy5, String hjStandy6, String hjStandy7, String hjStandy8, String hjStandy9,
+			String hjStandy10, String hjStandy11, String hjStandy12, String hjStandy13, String hjStandy14) {
+		super();
+		this.id = id;
+		this.hjReferenceno = hjReferenceno;
+		this.hjShipperhawbcode = hjShipperhawbcode;
+		this.hjShippingmethod = hjShippingmethod;
+		this.hjCountrycode = hjCountrycode;
+		this.hjShipzip = hjShipzip;
+		this.hjOrderweight = hjOrderweight;
+		this.hjOrderpieces = hjOrderpieces;
+		this.hjTotalprice = hjTotalprice;
+		this.hjMailcargotype = hjMailcargotype;
+		this.hjLength = hjLength;
+		this.hjWidth = hjWidth;
+		this.hjHeight = hjHeight;
+		this.hjIsreturn = hjIsreturn;
+		this.hjIsbattery = hjIsbattery;
+		this.hjConsignee = hjConsignee;
+		this.hjConsigneecompany = hjConsigneecompany;
+		this.hjConsigneeprovince = hjConsigneeprovince;
+		this.hjConsigneecity = hjConsigneecity;
+		this.hjConsigneestreet = hjConsigneestreet;
+		this.hjConsigneestreet2 = hjConsigneestreet2;
+		this.hjConsigneestreet3 = hjConsigneestreet3;
+		this.hjConsigneepostcode = hjConsigneepostcode;
+		this.hjConsigneename = hjConsigneename;
+		this.hjConsigneetelephone = hjConsigneetelephone;
+		this.hjConsigneemobile = hjConsigneemobile;
+		this.hjConsigneeemail = hjConsigneeemail;
+		this.hjConsigneecountryename = hjConsigneecountryename;
+		this.hjConsigneecountrycname = hjConsigneecountrycname;
+		this.hjItemarr = hjItemarr;
+		this.hjInvoiceenname = hjInvoiceenname;
+		this.hjInvoicecnname = hjInvoicecnname;
+		this.hjInvoiceweight = hjInvoiceweight;
+		this.hjInvoicequantity = hjInvoicequantity;
+		this.hjUnitcode = hjUnitcode;
+		this.hjInvoiceunitcharge = hjInvoiceunitcharge;
+		this.hjInvoicecurrencycode = hjInvoicecurrencycode;
+		this.hjHscode = hjHscode;
+		this.hjInvoicenote = hjInvoicenote;
+		this.hjSku = hjSku;
+		this.hjIscontainsbattery = hjIscontainsbattery;
+		this.hjIsaneroidmarkup = hjIsaneroidmarkup;
+		this.hjIsonlybattery = hjIsonlybattery;
+		this.hjIsbreakable = hjIsbreakable;
+		this.hjIscharged = hjIscharged;
+		this.hjSaleprice = hjSaleprice;
+		this.hjSalecurrency = hjSalecurrency;
+		this.hjCategoryname = hjCategoryname;
+		this.hjParentenname = hjParentenname;
+		this.hjStandy1 = hjStandy1;
+		this.hjStandy2 = hjStandy2;
+		this.hjStandy3 = hjStandy3;
+		this.hjStandy4 = hjStandy4;
+		this.hjStandy5 = hjStandy5;
+		this.hjStandy6 = hjStandy6;
+		this.hjStandy7 = hjStandy7;
+		this.hjStandy8 = hjStandy8;
+		this.hjStandy9 = hjStandy9;
+		this.hjStandy10 = hjStandy10;
+		this.hjStandy11 = hjStandy11;
+		this.hjStandy12 = hjStandy12;
+		this.hjStandy13 = hjStandy13;
+		this.hjStandy14 = hjStandy14;
+	}
+
+	@Override
 	public String toString() {
 		return "hjBase [id=" + id + ", hjReferenceno=" + hjReferenceno + ", hjShipperhawbcode=" + hjShipperhawbcode
 				+ ", hjShippingmethod=" + hjShippingmethod + ", hjCountrycode=" + hjCountrycode + ", hjShipzip="

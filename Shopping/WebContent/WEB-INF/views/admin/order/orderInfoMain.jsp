@@ -108,9 +108,20 @@
 								<div>
 										<div class="form-group col-lg-2">
 											<label>查询内容</label>
-											<el-input v-model="orderNum" id="orderNum" style="width:100%" size="mini" oninput="myFunction()" placeholder="订单/亚马逊编号,跟踪号/集拼号,id"></el-input>
+											<el-input v-model="orderNum" id="orderNum" @keypress.13.native="selectall()" style="width:100%" size="mini" oninput="myFunction()" placeholder="请用逗号分开"></el-input>
 										</div>
-										<div class="form-group col-lg-2">
+										<div class="form-group col-lg-1">
+											<label>查询类型</label>
+											<el-select v-model="StatusOrder2" placeholder="请选择" style="width:100%" size="mini">
+											    <el-option
+											      v-for="item in ztoptions2"
+											      :key="item.value"
+											      :label="item.name"
+											      :value="item.value">
+											    </el-option>
+											  </el-select>
+										</div>
+										<div class="form-group col-lg-1">
 											<label>订单状态</label>
 											<el-select v-model="StatusOrder" placeholder="请选择" style="width:100%" size="mini">
 											    <el-option
@@ -121,14 +132,25 @@
 											    </el-option>
 											  </el-select>
 										</div>
-										<div class="form-group col-lg-2">
+										<div class="form-group col-lg-1">
 											<label>物流方式</label>
-											<el-select v-model="hj_shippingMethods" style="width:100%" placeholder="请选择"  size="mini">
+											<el-select v-model="hj_shippingMethods" filterable style="width:100%" placeholder="请选择"  size="mini">
 											    <el-option
 											      v-for="item in logoutlist"
 											      :key="item.id"
 											      :label="item.logisticsName"
 											      :value="item.shortName">
+											    </el-option>
+											  </el-select>
+										</div>
+										<div class="form-group col-lg-1">
+											<label>跟踪状态</label>
+											<el-select v-model="StatusOrder3" filterable style="width:100%" placeholder="请选择"  size="mini">
+											    <el-option
+											      v-for="item in ztoptions3"
+											      :key="item.value"
+											      :label="item.name"
+											      :value="item.value">
 											    </el-option>
 											  </el-select>
 										</div>
@@ -212,7 +234,7 @@
 								    <el-button style="float: right; padding: 3px 0;color:white" type="text" @click="addTab(editableTabsValue,item.fIds,item.id)">查看</el-button>
 								  </div>
 								  <div class="text item">
-								    {{ellipsis(item.fStore,15)}}
+								    {{ellipsis(item.fStore,15)+"&nbsp;"}}
 								  </div>
 								  <div class="text item">
 								    物流：{{ellipsis(changeLogis(item.standby12),10)}}
@@ -413,7 +435,7 @@
 											  	运单号:<nobr style="color:red;font-weight:900">{{items.hjShipperhawbcode}}</nobr></el-col>
 											  <el-col :span="12" style="line-height:22px;font-weight: 900;">
 											  <a @click="selectOrder_HJ(items.id,'0')">查看</a>|
-											  <a @click="geteveryone(items.hjStandy5,items.hjShippingmethod,'0',item.title)">打印</a>|
+											  <a @click="geteveryone(items.hjStandy5==null?items.hjStandy8:items.hjStandy5,items.hjShippingmethod,'0',item.title)">打印</a>|
 											  <a @click="delete_HJ(items.id,items.hjShipperhawbcode,'0',indexs,index)">删除</a></el-col>
 											  <el-col :span="12">物流:<nobr style="color:black">{{hjShippingmethods(items.hjShippingmethod)}}</nobr></el-col>
 			 								  <el-col :span="12"><nobr style="color:black">{{items.hjStandy5}}</nobr></el-col>
@@ -429,12 +451,12 @@
 											     运单号:<nobr style="color:red;font-weight:900">{{itemy.ydStandy3}}</nobr></el-col>
 											  <el-col :span="12" style="line-height:22px;font-weight: 900;">
 											  <a @click="selectOrder_HJ(itemy.id,'2')">查看</a>|
-											  <a @click="geteveryone(itemy.ydReferenceNo,'','1',item.title)">打印</a>|
+											  <a @click="geteveryone(itemy.ydReferenceNo,'','1',item.title)">打印</a>
 											  <a @click="delete_HJ(itemy.id,itemy.ydReferenceNo,'1',indexs,index)">删除</a></el-col>
 											  <el-col :span="12">物流:<nobr style="color:black">{{hjShippingmethods(itemy.ydShippingMethod)}}</nobr></el-col>
 											  <el-col :span="12">跟踪:<nobr style="color:black">{{itemy.ydShippingMethodNo}}</nobr></el-col>
 											  <el-col :span="12">参考号:<nobr style="color:black">{{itemy.ydReferenceNo}}</nobr></el-col>
-											  <el-col :span="12">创建日期:<nobr style="color:black">{{itemy.ydStandy5}}</nobr></el-col>
+											  <el-col :span="12">创建日期:<nobr style="color:black">{{getDate(itemy.ydStandy5)}}</nobr></el-col>
 										</el-row>
 										<el-row :gutter="20" v-for="(itemy,indexs) in item.content.list.cz" :key="indexs+'cz'">
 											  <el-col :span="12">
@@ -449,6 +471,52 @@
 											  <el-col :span="12">跟踪:<nobr style="color:black">{{itemy.fsr4}}</nobr></el-col>
 											  <el-col :span="12">参考号:<nobr style="color:black">{{itemy.clientReference}}</nobr></el-col>
 											  <el-col :span="12">创建日期:<nobr style="color:black">{{getDate(itemy.fsr1)}}</nobr></el-col>
+										</el-row>
+										<!-- EUB展示 -->
+										<el-row :gutter="20" v-for="(itemy,indexs) in item.content.list.eub" :key="indexs+'eub'">
+											  <el-col :span="12">
+											  <input type="radio" :name="'hjor'+item.name" v-if="itemy.standby3=='1'" value="6" checked  @click="radioslo('6',itemy.clno,itemy.standby4,item.content.fIds,itemy.hubInCode,index)" > 
+											  <input type="radio" :name="'hjor'+item.name" v-if="itemy.standby3!='1'" value="6"  @click="radioslo('6',itemy.clno,itemy.standby4,item.content.fIds,itemy.hubInCode,index)" > 
+											     运单号:<nobr style="color:red;font-weight:900">{{itemy.fId}}</nobr></el-col>
+											  <el-col :span="12" style="line-height:22px;font-weight: 900;">
+											  <a @click="selectOrder_HJ(itemy.id,'6')">查看</a>|
+											  <a @click="eubPrint(item.content.id)">打印</a>|
+											  <a @click="delete_HJ(itemy.id,itemy.clno,'6',indexs,index)">删除</a></el-col>
+											  <el-col :span="12">物流:<nobr style="color:black">{{hjShippingmethods(itemy.hubInCode)}}</nobr></el-col>
+											  <el-col :span="12">跟踪:<nobr style="color:black">{{itemy.standby4}}</nobr></el-col>
+											  <el-col :span="12">参考号:<nobr style="color:black">{{itemy.clno}}</nobr></el-col>
+											  <el-col :span="12">创建日期:<nobr style="color:black">{{getDate(itemy.standby7)}}</nobr></el-col>
+										</el-row>
+										<!-- 顺丰展示 -->
+										<el-row :gutter="20" v-for="(itemy,indexs) in item.content.list.sf" :key="indexs+'sf'">
+											  <el-col :span="12">
+											  <input type="radio" :name="'hjor'+item.name" v-if="itemy.status=='1'" value="4" checked  @click="radioslo('4',itemy.platformOrderId,itemy.mailno,item.content.fIds,itemy.expressType,index)" > 
+											  <input type="radio" :name="'hjor'+item.name" v-if="itemy.status!='1'" value="4"  @click="radioslo('4',itemy.platformOrderId,itemy.mailno,item.content.fIds,itemy.expressType,index)" > 
+											     运单号:<nobr style="color:red;font-weight:900">{{itemy.orderid}}</nobr></el-col>
+											  <el-col :span="12" style="line-height:22px;font-weight: 900;">
+											  <a @click="selectOrder_HJ(itemy.id,'4')">查看</a>|
+											  <a @click="sfPrint(item.content.id)">打印</a>|
+											  <a @click="delete_HJ(itemy.id,itemy.platformOrderId,'4',indexs,index)">删除</a></el-col>
+											  <el-col :span="12">物流:<nobr style="color:black">{{hjShippingmethods(itemy.expressType)}}</nobr></el-col>
+											  <el-col :span="12">跟踪:<nobr style="color:black">{{itemy.mailno}}</nobr></el-col>
+											  <el-col :span="12">参考号:<nobr style="color:black">{{itemy.platformOrderId}}</nobr></el-col>
+											  <el-col :span="12">创建日期:<nobr style="color:black">{{getDate(itemy.sendstarttime)}}</nobr></el-col>
+											  <el-col :span="12">代理运单号:<nobr style="color:black">{{itemy.agentMailno}}</nobr></el-col>
+										</el-row>
+										<!-- 黑猫展示 -->
+										<el-row :gutter="20" v-for="(itemy,indexs) in item.content.list.hm" :key="indexs+'hm'">
+											  <el-col :span="12">
+											  <input type="radio" :name="'hjor'+item.name" v-if="itemy.backup3=='1'" value="7" checked  @click="radioslo('7',itemy.referenceNo,itemy.backup5,item.content.fIds,itemy.shippingMethod,index)" > 
+											  <input type="radio" :name="'hjor'+item.name" v-if="itemy.backup3!='1'" value="7"  @click="radioslo('7',itemy.referenceNo,itemy.backup5,item.content.fIds,itemy.shippingMethod,index)" > 
+											     运单号:<nobr style="color:red;font-weight:900">{{itemy.buyerId}}</nobr></el-col>
+											  <el-col :span="12" style="line-height:22px;font-weight: 900;">
+											  <a @click="selectOrder_HJ(itemy.id,'7')">查看</a>|
+											  <a @click="hmPrint(item.content.id)">打印</a>|
+											  <a @click="delete_HJ(itemy.id,itemy.referenceNo,'7',indexs,index)">删除</a></el-col>
+											  <el-col :span="12">物流:<nobr style="color:black">{{hjShippingmethods(itemy.shippingMethod)}}</nobr></el-col>
+											  <el-col :span="12">跟踪:<nobr style="color:black">{{itemy.backup5}}</nobr></el-col>
+											  <el-col :span="12">参考号:<nobr style="color:black">{{itemy.referenceNo}}</nobr></el-col>
+											  <el-col :span="12">创建日期:<nobr style="color:black">{{getDate(itemy.createTime)}}</nobr></el-col>
 										</el-row>
 									</div>
 								  </el-tab-pane>
@@ -486,6 +554,19 @@
 				<el-button  size="mini" @click="czs2()">创志物流</el-button>
 		  </el-col>
 		  
+		  <el-col :span="4">
+				<el-button  size="mini" @click="sfs2()">顺丰物流</el-button>
+		  </el-col>
+		  
+		  <el-col :span="4">
+				<el-button  size="mini" @click="eub2()">EUB物流</el-button>
+		  </el-col>
+		  
+		  <el-col :span="4">
+				<el-button  size="mini" @click="hm2()">黑猫物流</el-button>
+		  </el-col>
+		  </el-row>
+		  <el-row :gutter="20">
 		  <el-col :span="4">
 			<c:if test="${fn:contains(jurisdiction.jurisdiction,'order_right_post')}">
 				<el-button type="primary" size="mini" @click="submitOrderOnes">发送运单</el-button>
@@ -653,9 +734,15 @@
 		</c:if>
 	 </el-col>
 	 
-	 <el-col :span="4">
+	<%--  <el-col :span="4">
 	 	<c:if test="${fn:contains(jurisdiction.jurisdiction,'order_post')}">
 			<el-button size="small" type="primary" @click="syncOrder()" icon="el-icon-upload2">环金异步</el-button>
+		</c:if>
+	 </el-col> --%>
+	 
+	 <el-col :span="4">
+	 	<c:if test="${fn:contains(jurisdiction.jurisdiction,'order_post')}">
+			<el-button size="small" type="primary" @click="syncWeight()" icon="el-icon-upload2">重量同步</el-button>
 		</c:if>
 	 </el-col>
 	 
@@ -680,6 +767,19 @@
 	 <el-col :span="4">
 	  	   <c:if test="${fn:contains(jurisdiction.jurisdiction,'order_outof_pdf')}">
 		   	<el-button type="warning" size="small" @click="edit_summart()" icon="el-icon-menu">环金集拼</el-button>
+		   </c:if>	
+	 </el-col>
+	</el-row>
+	
+  	<el-row :gutter="20">
+	 <el-col :span="4">
+	  	   <c:if test="${fn:contains(jurisdiction.jurisdiction,'order_outof_pdf')}">
+		   	<el-button type="warning" size="small" @click="prin_summary()" icon="el-icon-menu">打印集拼</el-button>
+		   </c:if>	
+	 </el-col>
+	 <el-col :span="4">
+	  	   <c:if test="${fn:contains(jurisdiction.jurisdiction,'order_outof_pdf')}">
+		   	<el-button type="warning" size="small" @click="HJ_Order_Sales()" icon="el-icon-menu">环金分销</el-button>
 		   </c:if>	
 	 </el-col>
 	</el-row>
@@ -737,6 +837,15 @@
 			</form>
 		</c:if>	
 	  </el-col>
+	  
+	  <el-col :span="4">
+	  	<c:if test="${fn:contains(jurisdiction.jurisdiction,'order_out')}">
+			<form id="formtyw5" method="post" action="${pageContext.request.contextPath}/admin/export/Tracking?${_csrf.parameterName}=${_csrf.token}" enctype="multipart/form-data">
+			   <input id="idList5" name="idList5" type="text" value="" style="display:none"/>
+			   <el-button size="small" @click="list5" type="danger" icon="el-icon-download">导出跟踪</el-button>
+			</form>
+		</c:if>	
+	  </el-col>
 
 	  <!-- <el-col :span="4">
 		   	<el-button type="primary" size="small" @click="ydlabel" icon="el-icon-upload2">义达标签</el-button>
@@ -788,6 +897,53 @@
 	 </el-col>
 	</el-row>
 	
+	<el-row :gutter="20">
+	 <el-col :span="4">
+			<el-button size="small" type="primary" @click="sfCreated();" icon="el-icon-plus">顺丰添加</el-button>
+	 </el-col>
+	 
+	 <el-col :span="4">
+			<el-button size="small" type="primary" @click="sfPost('0');" icon="el-icon-upload2">顺丰发送</el-button>
+	 </el-col>
+	 
+	 <el-col :span="4">
+			<el-button size="small" type="primary" @click="sfPrint(null);"  icon="el-icon-printer">顺丰打印</el-button>
+	 </el-col>
+	</el-row>
+	
+	<el-row :gutter="20">
+	 <el-col :span="4">
+			<el-button size="small" type="primary" @click="eubCreated();" icon="el-icon-plus">EUB添加</el-button>
+	 </el-col>
+	 
+	 <el-col :span="4">
+			<el-button size="small" type="primary" @click="eubPost('0');" icon="el-icon-upload2">EUB发送</el-button>
+	 </el-col>
+	 
+	 <el-col :span="4">
+			<el-button size="small" type="primary" @click="eubPrint(null);"  icon="el-icon-printer">EUB打印</el-button>
+	 </el-col>
+	</el-row>
+	
+	
+	<el-row :gutter="20">
+	 <el-col :span="4">
+			<el-button size="small" type="primary" @click="hmCreated();" icon="el-icon-plus">黑猫添加</el-button>
+	 </el-col>
+	 
+	 <el-col :span="4">
+			<el-button size="small" type="primary" @click="hmPost('0');" icon="el-icon-upload2">黑猫发送</el-button>
+	 </el-col>
+	 
+	 <el-col :span="4">
+		<c:if test="${fn:contains(jurisdiction.jurisdiction,'order_add')}">
+			<el-button size="small" type="primary" @click="HJCreated();" icon="el-icon-plus">环金分销</el-button>
+		</c:if>
+	 </el-col>
+	 <el-col :span="4">
+			<el-button size="small" type="primary" @click="hmPrint(null);"  icon="el-icon-printer">黑猫打印</el-button>
+	 </el-col>
+	</el-row>
 </el-dialog>
 
 <!-- 创志添加修改弹窗 -->
@@ -849,6 +1005,229 @@
     <el-button type="primary" v-if="czType=='3'" @click="czViewAdd('3')">添加</el-button>
   </span>
 </el-dialog>
+
+<!-- 顺丰添加修改弹窗 -->
+<el-dialog
+  title="顺丰操作区"
+  :visible.sync="sfView"
+  width="40%"
+  :before-close="handleClose">
+  
+  	<el-row :gutter="20">
+	  <el-col :span="24">快件产品类别:
+	  <el-select v-model="sfOr.expressType" style="width:100%" size="mini" placeholder="请选择快件类别">
+	    <el-option
+	      v-for="item in logoutlist" v-if="item.status=='5'"
+	      :key="item.id"
+	      :label="item.logisticsName"
+	      :value="item.shortName">
+	    </el-option>
+	  </el-select>
+	  </el-col>
+	</el-row>
+	
+  	<el-row :gutter="20">
+	  <el-col :span="12">包裹数:<el-input type="number" v-model.number="sfOr.parcelQuantity" size="mini" placeholder="请输入包裹数"></el-input></el-col>
+	  <el-col :span="12">付款方式:<el-input type="number" v-model.number="sfOr.payMethod" size="mini" placeholder="请输入付款方式"></el-input></el-col>
+	</el-row>
+
+  	<el-row :gutter="20">
+	  <el-col :span="12">申报币种:<el-input v-model="sfOr.declaredValueCurrency" size="mini" placeholder="请输入申报币种"></el-input></el-col>
+	  <el-col :span="12">申报价值:<el-input type="number" v-model.number="sfOr.declaredValue" size="mini" placeholder="不超过2USD"></el-input></el-col>
+	</el-row>
+	
+  	<el-row :gutter="20">
+	  <!-- <el-col :span="12">货物重量:<el-input type="number" v-model.number="sfOr.cargoTotalWeight" size="mini" placeholder="单位G，必须大于0且不能超过2KG"></el-input></el-col> -->
+	  <el-col :span="12">是否带电:<el-input type="number" v-model.number="sfOr.isbat" size="mini" placeholder="0：不带电 ;1 带电"></el-input></el-col>
+	</el-row>
+	
+  	<el-row :gutter="20">
+	  <el-col :span="8">长:<el-input type="number" v-model.number="sfOr.cargoLength" size="mini" placeholder="请输入长"></el-input></el-col>
+	  <el-col :span="8">宽:<el-input type="number" v-model.number="sfOr.cargoWidth" size="mini" placeholder="请输入宽"></el-input></el-col>
+	  <el-col :span="8">高:<el-input type="number" v-model.number="sfOr.cargoHeight" size="mini" placeholder="请输入高"></el-input></el-col>
+	</el-row>
+	
+  	<el-row :gutter="20">
+	  <el-col :span="12">英文名称:<el-input v-model="sfOr.sfgood[0].name" size="mini" placeholder="商品（英文）报关品名"></el-input></el-col>
+	  <el-col :span="12">中文名称:<el-input v-model="sfOr.sfgood[0].cname" size="mini" placeholder="商品（中文）报关品名"></el-input></el-col>
+	</el-row>
+	
+  	<el-row :gutter="20">
+	  <el-col :span="12">货物数量:<el-input type="number" v-model.number="sfOr.sfgood[0].count" size="mini" placeholder="货物数量"></el-input></el-col>
+	  <el-col :span="12">货物单位:<el-input v-model="sfOr.sfgood[0].unit" size="mini" placeholder="货物单位（英文）如：piece"></el-input></el-col>
+	</el-row>
+	
+  	<el-row :gutter="20">
+	  <el-col :span="12">单位重量:<el-input type="number" v-model.number="sfOr.sfgood[0].weight" size="mini" placeholder="货物单位重量（不能小于0, 单位G）"></el-input></el-col>
+	  <el-col :span="12">货物单价:<el-input type="number" v-model.number="sfOr.sfgood[0].amount" size="mini" placeholder="货物单价（不能小于0）"></el-input></el-col>
+	</el-row>
+	
+  	<el-row :gutter="20">
+	  <el-col :span="12">货物币种:<el-input v-model="sfOr.sfgood[0].currency" size="mini" placeholder="货物单价的币别：USD: 美元"></el-input></el-col>
+	  <el-col :span="12">货物描述:<el-input v-model="sfOr.sfgood[0].cargoDesc" size="mini" placeholder="货物描述"></el-input></el-col>
+	</el-row>
+  </span>
+  
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="sfView = false">取 消</el-button>
+    <el-button type="primary" v-if="sfType=='1'" @click="sfViewAdd('1')">批量添加</el-button>
+    <el-button type="primary" v-if="sfType=='2'" @click="sfViewAdd('2')">修改</el-button>
+    <el-button type="primary" v-if="sfType=='3'" @click="sfViewAdd('3')">添加</el-button>
+  </span>
+</el-dialog>
+<!-- 环金分销弹窗saleView -->
+
+<el-dialog
+  title="环金分销"
+  :visible.sync="saleView"
+  width="40%"
+  :before-close="handleClose">
+  
+  	<el-row :gutter="20">
+	  <el-col :span="24">物流方式:
+	  <el-select v-model="eubOr.hubInCode" style="width:100%" size="mini" placeholder="请选择物流">
+	    <el-option
+	      v-for="item in logoutlist" v-if="item.status=='6'"
+	      :key="item.id"
+	      :label="item.logisticsName"
+	      :value="item.shortName">
+	    </el-option>
+	  </el-select>
+	  </el-col>
+	</el-row>
+	
+  	<el-row :gutter="20">
+	  <el-col :span="12">英文:<el-input v-model="eubOr.contents" size="mini" placeholder="请输入英文"></el-input></el-col>
+	  <el-col :span="12">中文:<el-input v-model="eubOr.contentsCn" size="mini" placeholder="请输入中文"></el-input></el-col>
+	</el-row>
+<!-- 
+  	<el-row :gutter="20">
+	  <el-col :span="12">包装类型:<el-input v-model="eubOr.packing" size="mini" placeholder="请输入英文"></el-input></el-col>
+	  <el-col :span="12">货物类型:<el-input v-model="eubOr.descrType" size="mini" placeholder="请输入中文"></el-input></el-col>
+	</el-row> -->
+  	<el-row :gutter="20">
+	  <el-col :span="12">单价:<el-input v-model="eubOr.invoice[0].price" size="mini" placeholder="请输入价格"></el-input></el-col>
+	  <el-col :span="12">数量:<el-input v-model="eubOr.invoice[0].qty" size="mini" placeholder="请输入申报数量"></el-input></el-col>
+	</el-row>
+
+  	<el-row :gutter="20">
+	  <el-col :span="12">毛重:<el-input v-model="eubOr.invoice[0].nWeig" size="mini" placeholder="请输入重量"></el-input></el-col>
+	  <el-col :span="12">备注:<el-input v-model="eubOr.remark" size="mini" placeholder="请输入单位"></el-input></el-col>
+	</el-row>
+	
+  </span>
+  
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="eubView = false">取 消</el-button>
+    <el-button type="primary" v-if="eubType=='1'" @click="eubViewAdd('1')">批量添加</el-button>
+    <el-button type="primary" v-if="eubType=='2'" @click="eubViewAdd('2')">修改</el-button>
+    <el-button type="primary" v-if="eubType=='3'" @click="eubViewAdd('3')">添加</el-button>
+  </span>
+</el-dialog>
+
+
+
+<!-- EUB添加修改弹窗 -->
+<el-dialog
+  title="EUB操作区"
+  :visible.sync="eubView"
+  width="40%"
+  :before-close="handleClose">
+  
+  	<el-row :gutter="20">
+	  <el-col :span="24">物流方式:
+	  <el-select v-model="eubOr.hubInCode" style="width:100%" size="mini" placeholder="请选择物流">
+	    <el-option
+	      v-for="item in logoutlist" v-if="item.status=='6'"
+	      :key="item.id"
+	      :label="item.logisticsName"
+	      :value="item.shortName">
+	    </el-option>
+	  </el-select>
+	  </el-col>
+	</el-row>
+	
+  	<el-row :gutter="20">
+	  <el-col :span="12">英文:<el-input v-model="eubOr.contents" size="mini" placeholder="请输入英文"></el-input></el-col>
+	  <el-col :span="12">中文:<el-input v-model="eubOr.contentsCn" size="mini" placeholder="请输入中文"></el-input></el-col>
+	</el-row>
+<!-- 
+  	<el-row :gutter="20">
+	  <el-col :span="12">包装类型:<el-input v-model="eubOr.packing" size="mini" placeholder="请输入英文"></el-input></el-col>
+	  <el-col :span="12">货物类型:<el-input v-model="eubOr.descrType" size="mini" placeholder="请输入中文"></el-input></el-col>
+	</el-row> -->
+  	<el-row :gutter="20">
+	  <el-col :span="12">单价:<el-input v-model="eubOr.invoice[0].price" size="mini" placeholder="请输入价格"></el-input></el-col>
+	  <el-col :span="12">数量:<el-input v-model="eubOr.invoice[0].qty" size="mini" placeholder="请输入申报数量"></el-input></el-col>
+	</el-row>
+
+  	<el-row :gutter="20">
+	  <el-col :span="12">毛重:<el-input v-model="eubOr.invoice[0].nWeig" size="mini" placeholder="请输入重量"></el-input></el-col>
+	  <el-col :span="12">备注:<el-input v-model="eubOr.remark" size="mini" placeholder="请输入单位"></el-input></el-col>
+	</el-row>
+	
+  </span>
+  
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="eubView = false">取 消</el-button>
+    <el-button type="primary" v-if="eubType=='1'" @click="eubViewAdd('1')">批量添加</el-button>
+    <el-button type="primary" v-if="eubType=='2'" @click="eubViewAdd('2')">修改</el-button>
+    <el-button type="primary" v-if="eubType=='3'" @click="eubViewAdd('3')">添加</el-button>
+  </span>
+</el-dialog>
+
+
+<!-- 黑猫添加修改弹窗 -->
+<el-dialog
+  title="黑猫操作区"
+  :visible.sync="hmView"
+  width="40%"
+  :before-close="handleClose">
+  
+  	<el-row :gutter="20">
+	  <el-col :span="24">物流方式:
+	  <el-select v-model="hmOr.shippingMethod" style="width:100%" size="mini" placeholder="请选择物流">
+	    <el-option
+	      v-for="item in logoutlist" v-if="item.status=='7'"
+	      :key="item.id"
+	      :label="item.logisticsName"
+	      :value="item.shortName">
+	    </el-option>
+	  </el-select>
+	  </el-col>
+	</el-row>
+	
+  	<el-row :gutter="20">
+	  <el-col :span="12">英文:<el-input v-model="hmOr.invoice.invoiceEnname" size="mini" placeholder="请输入英文"></el-input></el-col>
+	  <el-col :span="12">中文:<el-input v-model="hmOr.invoice.invoiceCnname" size="mini" placeholder="请输入中文"></el-input></el-col>
+	</el-row>
+<!-- 
+  	<el-row :gutter="20">
+	  <el-col :span="12">包装类型:<el-input v-model="eubOr.packing" size="mini" placeholder="请输入英文"></el-input></el-col>
+	  <el-col :span="12">货物类型:<el-input v-model="eubOr.descrType" size="mini" placeholder="请输入中文"></el-input></el-col>
+	</el-row> -->
+  	<el-row :gutter="20">
+	  <el-col :span="12">单价:<el-input v-model="hmOr.invoice.invoiceUnitcharge" size="mini" placeholder="请输入价格"></el-input></el-col>
+	  <el-col :span="12">数量:<el-input v-model="hmOr.orderPieces" size="mini" placeholder="请输入申报数量"></el-input></el-col>
+	</el-row>
+  	<el-row :gutter="20">
+	  <el-col :span="12">海关:<el-input v-model="hmOr.invoice.hsCode" size="mini" placeholder="请输入海关编码"></el-input></el-col>
+	</el-row>
+
+  	<el-row :gutter="20">
+	  <el-col :span="12">毛重:<el-input v-model="hmOr.orderWeight" size="mini" placeholder="请输入重量"></el-input></el-col>
+	  <el-col :span="12">备注:<el-input v-model="hmOr.orderInfo" size="mini" placeholder="请输入单位"></el-input></el-col>
+	</el-row>
+	
+  </span>
+  
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="hmView = false">取 消</el-button>
+    <el-button type="primary" v-if="hmType=='1'" @click="hmViewAdd('1')">批量添加</el-button>
+    <el-button type="primary" v-if="hmType=='2'" @click="hmViewAdd('2')">修改</el-button>
+    <el-button type="primary" v-if="hmType=='3'" @click="hmViewAdd('3')">添加</el-button>
+  </span>
+</el-dialog>
 </div>
 
 <script type="text/javascript">
@@ -899,8 +1278,6 @@ function dowEdit(){
 	}
 	$("#orderNum").val(y);
 }
-
-	
 	
 	Vue.http.options.root="${pageContext.request.contextPath}";
 	var vm=new Vue({
@@ -912,6 +1289,8 @@ function dowEdit(){
 				logoutlist:[],//物流列表
 				orderNum:"",//查询内容
 				StatusOrder:"",//订单状态
+				StatusOrder2:"0",// 查询方式
+				StatusOrder3:"0",// 跟踪号状态
 				hj_shippingMethods:"",//物流方式
 				startDatas:"",//开始日期
 				endDatas:"",//结束日期
@@ -980,6 +1359,35 @@ function dowEdit(){
 		          }, {
 		            value: '3',
 		            name: '问题件'
+		          }],
+		          ztoptions2: [{
+		            value: '0',
+		            name: '编号'
+		          }, {
+		            value: '1',
+		            name: '亚马逊编号'
+		          }, {
+		            value: '2',
+		            name: '跟踪号'
+		          }, {
+		            value: '3',
+		            name: 'id'
+		          }, {
+		            value: '4',
+		            name: '集拼号'
+		          }, {
+		            value: '5',
+		            name: '标签号'
+		          }],
+		          ztoptions3: [{
+		            value: '0',
+		            name: '全部'
+		          }, {
+		            value: '1',
+		            name: '有跟踪号'
+		          }, {
+		            value: '2',
+		            name: '无跟踪号'
 		          }],
 		          pickerOptions2: {
 		              shortcuts: [{
@@ -1072,6 +1480,13 @@ function dowEdit(){
 			   		editId:"",//被编辑的id
 			   		listOrderNum:"",//列表id
 			   		hjWindow:false,//环金弹窗
+			   		eubView:false,// eub弹窗
+			   		saleView:false, // 分销弹窗
+			   		saleType:"1", // 分销状态
+			   		hmView:false, // 黑猫弹窗
+			   		saleOr:{
+			   			
+			   		},
 			   		hjOr:{
 			   			id: "",//环金id
 			   			hjReferenceno: "",
@@ -1280,6 +1695,243 @@ function dowEdit(){
 			   			width:""
 			   		},
 			   		czType:"",//创志状态
+			   		sfView: false, // 顺丰弹窗
+			   		sfType: "1",// 顺丰添加状态
+			   		eubType: "1",// eub状态
+			   		hmType: "1", // 黑猫状态
+			   		efid:null,
+			   		hmOr:{
+			   		    invoice: {
+			   		        id: null,
+			   		        fIds: null,
+			   		        sku: null,
+			   		        invoiceEnname: null,
+			   		        invoiceCnname: null,
+			   		        invoiceQuantity: null,
+			   		        unitCode: null,
+			   		        invoiceUnitcharge: null,
+			   		        netWeight: null,
+			   		        hsCode: null,
+			   		        invoiceNote: null,
+			   		        invoiceUrl: null,
+			   		        invoiceInfo: null,
+			   		        invoiceMaterial: null,
+			   		        invoiceSpec: null,
+			   		        invoiceUse: null,
+			   		        invoiceBrand: null,
+			   		        posttaxNum: null,
+			   		        childNumber: null,
+			   		        involumeLength: null,
+			   		        involumeWidth: null,
+			   		        involumeHeight: null,
+			   		        involumeGrossweight: null,
+			   		        extraServicecode: null,
+			   		        extraServicevalue: null,
+			   		        extraServicenote: null,
+			   		        backup1: null,
+			   		        backup2: null,
+			   		        backup3: null,
+			   		        backup4: null,
+			   		        backup5: null
+			   		    },
+			   		    id: null,
+			   		    referenceNo: null,
+			   		    shippingMethod: null,
+			   		    shippingMethodNo: null,
+			   		    orderWeight: null,
+			   		    orderPieces: "1",
+			   		    cargotype: null,
+			   		    orderStatus: null,
+			   		    mailCargoType: null,
+			   		    buyerId: null,
+			   		    orderInfo: null,
+			   		    platformId: null,
+			   		    customHawbcode: null,
+			   		    shipperName: null,
+			   		    shipperCompany: null,
+			   		    shipperCountrycode: null,
+			   		    shipperProvince: null,
+			   		    shipperCity: null,
+			   		    shipperDistrict: null,
+			   		    shipperStreet: null,
+			   		    shipperPostcode: null,
+			   		    shipperAreacode: null,
+			   		    shipperTelephone: null,
+			   		    shipperMobile: null,
+			   		    shipperEmail: null,
+			   		    shipperFax: null,
+			   		    consigneeName: null,
+			   		    consigneeCompany: null,
+			   		    consigneeCountrycode: null,
+			   		    consigneeProvince: null,
+			   		    consigneeCity: null,
+			   		    consigneeDistrict: null,
+			   		    consigneeStreet: null,
+			   		    consigneePostcode: null,
+			   		    consigneeDoorplate: null,
+			   		    consigneeAreacode: null,
+			   		    consigneeTelephone: null,
+			   		    consigneeMobile: null,
+			   		    consigneeEmail: null,
+			   		    consigneeFax: null,
+			   		    consigneeCertificatetype: null,
+			   		    consigneeCertificatecode: null,
+			   		    consigneeCredentialsPeriod: null,
+			   		    consigneeTariff: null,
+			   		    fIds: null,
+			   		    createTime: null,
+			   		    updateTime: null,
+			   		    version: null,
+			   		    backup1: null,
+			   		    backup2: null,
+			   		    backup3: null,
+			   		    backup4: null,
+			   		    backup5: null,
+			   		    backup6: null,
+			   		    backup7: null,
+			   		    backup8: null
+			   		},
+			   		eubOr:{
+			   			clno: null,
+		   				codCharge: null,
+		   				coid: null,
+		   				contents: null,
+		   				contents2: null,
+		   				contents3: null,
+		   				contentsCn: null,
+		   				decValue: null,
+		   				descrType: null,
+		   				fId: null,
+		   				hubInCode: null,
+		   				id: null,
+		   				invoice: [{
+			   				descrName: null,
+			   				eDescrNamee: null,
+			   				fId: null,
+			   				gWeig: null,
+			   				hjCode: null,
+			   				id: null,
+			   				nWeig: null,
+			   				origin: null,
+			   				price: null,
+			   				qty: "1",
+			   				standby1: null,
+			   				standby2: null,
+			   				standby3: null,
+			   				standby4: null,
+			   				standby5: null,
+			   				totalPrice: null,
+			   				unit: null
+		   				}],
+		   				jobno: null,
+		   				packagingType: null,
+		   				packing: null,
+		   				pcs: null,
+		   				randAppendJobno: null,
+		   				reAddr: null,
+		   				reAddr2: null,
+		   				reAddr3: null,
+		   				reCctaxNo: null,
+		   				reCity: null,
+		   				reCompany: null,
+		   				reConsinee: null,
+		   				reCountry: null,
+		   				reCountryCode: null,
+		   				reState: null,
+		   				reTel: null,
+		   				reZip: null,
+		   				remark: null,
+		   				sdAddr: null,
+		   				sdAddr2: null,
+		   				sdAddr3: null,
+		   				sdCity: null,
+		   				sdCompany: null,
+		   				sdCountry: null,
+		   				sdCountryCode: null,
+		   				sdName: null,
+		   				sdState: null,
+		   				sdTel: null,
+		   				sdZip: null,
+		   				shipWeig: null,
+		   				standby1: null,
+		   				standby2: null,
+		   				standby3: null,
+		   				standby4: null,
+		   				standby5: null,
+		   				standby6: null,
+		   				standby7: null,
+		   				standby8: null
+			   		},
+			   		sfOr:{ // 顺丰订单
+			   			id: null, 
+			   			orderid: null,
+			   			platformOrderId: null,
+			   			platformCode: null,
+			   			erpCode: 1,
+			   			platformMerchantId: null,
+			   			expressType: null,
+			   			jCompany: null,
+			   			jContact: null,
+			   			jTel: null,
+			   			jMobile: null,
+			   			jProvince: null,
+			   			jCity: null,
+			   			jAddress: null,
+			   			dCompany: null,
+			   			dContact: null,
+			   			dTel: null,
+			   			dMobile: null,
+			   			dProvince: null,
+			   			dCity: null,
+			   			dAddress: null,
+			   			parcelQuantity: 1,
+			   			payMethod: 1,
+			   			declaredValue: 1,
+			   			declaredValueCurrency: "USD",
+			   			custid: null,
+			   			jCountry: null,
+			   			jCounty: null,
+			   			jPostCode: null,
+			   			dCountry: null,
+			   			dCounty: null,
+			   			dPostCode: null,
+			   			cargoTotalWeight: null,
+			   			sendstarttime: null,
+			   			operateFlag: null,
+			   			isbat: null,
+			   			cargoLength: null,
+			   			cargoWidth: null,
+			   			cargoHeight: null,
+			   			category: null,
+			   			remark: null,
+			   			taxNumber: null,
+			   			abn: 1,
+			   			gstExemptionCode: null,
+			   			dEmail: null,
+			   			passportId: null,
+			   			sfgood: [{
+			   				id: null,
+			   				fIds: null,
+			   				name: null,
+			   				count: 1,
+			   				unit: "piece",
+			   				weight: null,
+			   				amount: "1",
+			   				cargoDesc: null,
+			   				currency: "USD",
+			   				cname: null,
+			   				hscode: null,
+			   				orderUrl: null,
+			   			}],
+			   			extra: {
+			   				id: null,
+			   				dEmail: null,
+			   				orderWebsite: null,
+			   				orderShopname: null,
+			   				dContactFamilyName: null,
+			   				dContactMiddleName: null,
+			   			},
+			   		}
 				}
 			},
 			created(){
@@ -1305,6 +1957,8 @@ function dowEdit(){
 					    let datas={}
 						datas["orderNum"]=this.orderNum
 						datas["StatusOrder"]=this.StatusOrder
+						datas["StatusOrder2"]=this.StatusOrder2
+						datas["StatusOrder3"]=this.StatusOrder3
 						datas["startDatas"]=this.value6[0]
 						datas["endDatas"]=this.value6[1]
 						datas["pagsNums"]=this.pagsNums
@@ -1322,6 +1976,9 @@ function dowEdit(){
 						this.loading=true
 						//查询物流
 						this.$http.post("Logistics/checkTheOrder?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(datas),{emulateJSON:true}).then(result=>{
+							if(result.body.list==null){
+								this.$message.error("查询失败，检查是否有字母或者中文")
+							}
 							this.lists=result.body
 							this.total=result.body.total
 							this.checkedCities=[]
@@ -1471,6 +2128,9 @@ function dowEdit(){
 		          resetYd(){
 		        	  Object.assign(this.$data.ydOr, this.$options.data().ydOr)
 		          },
+		          resetsf(){
+		        	  Object.assign(this.$data.sfOr, this.$options.data().sfOr)
+		          },
 		          async submitOrder(){
 		        	 this.operator=false
 		        	 //同步发送
@@ -1492,21 +2152,21 @@ function dowEdit(){
 							return false
 						}
 						let data2=""
-   						this.$http.post("Logistics/getPostYu?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(data),{emulateJSON:true}).then(result1=>{
+   						this.$http.post("hj_new_api/order_sync?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(data),{emulateJSON:true}).then(result1=>{
    							let data1=result1.body
-   							console.log(data1)
    							for(let da in data1){
    								if(data1[da].data!=""){
    	   								let data3=JSON.parse(data1[da].data)
-	   								if(data3.status=="1"){
-	   									if(data3.result.trackNum1!=null){
+	   								if(data3.retCode=="0000"){
+	   									if(data3.body.trackNum1!=null){
 											let labls={};
-											labls["methosd"]=data1[da].orderId.shippingMethod
+											labls["method"]=data1[da].orderId.shippingMethod
 											labls["id2"]=data1[da].orderId.shipperHawbcode
 											labls["id"]=data1[da].orderId.referenceNo
-											labls["lab"]=data3.result.lableKey
-											labls["num1"]=data3.result.trackNum1
-											labls["num2"]=data3.result.trackNum2
+											labls["lab"]=data3.body.lableKey
+											labls["referenceNo"]=data3.body.referenceNo
+											labls["num1"]=data3.body.trackNum1
+											labls["num2"]=data3.body.trackNum2
 											if(JSON.stringify(labls) === '{}'){
 												
 											}else{
@@ -1514,15 +2174,15 @@ function dowEdit(){
 											}
 										}else{
 											this.sun+=1
-		   									this.resultHJ+=data1[da].orderId.shipperHawbcode+"   "+data3.result.errorMessage+"\n"+"*****************"+"\n"
+		   									this.resultHJ+=data1[da].orderId.shipperHawbcode+"   "+data3.body.errorMessage+"  "+data1[da].data+"\n"+"*****************"+"\n"
 										}
 	   								}else{
 	   									this.sun+=1
-	   									this.resultHJ+=data1[da].orderId.shipperHawbcode+"   "+data3.errormsg+"\n"+"*****************"+"\n"
+	   									this.resultHJ+=data1[da].orderId.shipperHawbcode+"   "+data3.body.errorMessage+"  "+data1[da].data+"\n"+"*****************"+"\n"
 	   								}
    								}else{
    									this.sun+=1
-   									this.resultHJ+=data1[da].orderId.shipperHawbcode+"   "+data1[da].message+"\n"+"*****************"+"\n"
+   									this.resultHJ+=data1[da].orderId.shipperHawbcode+"   "+data1[da].message+"  "+data1[da].data+"\n"+"*****************"+"\n"
    								}
    							}
    							if(JSON.stringify(lists)!="[]"){
@@ -1532,7 +2192,7 @@ function dowEdit(){
 	   	   							PostTrack()
 		   							this.selectall()
 					        		this.$forceUpdate()
-	   	   					  this.loading=false
+	   	   					  		this.loading=false
    	   							})
    	   						}else{
 	   	   						$("#conHJ").html("已发送"+this.checkedCities.length+"条，其中"+lists.length+"条发送成功，"+this.sun+"条发送失败，"+(this.checkedCities.length-lists.length-this.sun)+"条不是环金的默认")
@@ -1570,6 +2230,7 @@ function dowEdit(){
         		      this.sun=0
 					  this.suns=0
 		        	  this.resultHJ=""
+					  var lists=[]
 		        	  //异步发送产品
 		        	  await this.$http.post("Logistics/getPostId?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(this.checkedCities),{emulateJSON:true}).then(result=>{
 		        		    let data=result.body
@@ -1580,31 +2241,52 @@ function dowEdit(){
 								return false
 							}
 		        		    let data2=""
-	        		    	this.$http.post("Logistics/asyncPostYu?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(data),{emulateJSON:true}).then(result1=>{
+	        		    	this.$http.post("hj_new_api/order?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(data),{emulateJSON:true}).then(result1=>{
 	        		    		let data1=result1.body
 	        		    		for(let da in data1){
 	   								if(data1[da].data!=""){
 	   	   								let data3=JSON.parse(data1[da].data)
-		   								if(data3.status=="1"){
+		   								if(data3.retCode=="0000"){
 		   								    this.suns+=1
-		   									this.resultHJ+=data1[da].orderId.shipperHawbcode+"   "+data3.errormsg+"\n"+"*****************"+"\n"
+		   									let labls={};
+											labls["method"]=data1[da].orderId.shippingMethod
+											labls["id2"]=data1[da].orderId.shipperHawbcode
+											labls["id"]=data1[da].orderId.referenceNo
+											labls["referenceNo"]=data1[da].orderId.referenceNo
+											if(JSON.stringify(labls) === '{}'){
+												
+											}else{
+												lists.push(labls)
+											}
+		   									//this.resultHJ+=data1[da].orderId.shipperHawbcode+"   "+data3.errormsg+"\n"+"*****************"+"\n"
 		   								}else{
 		   									this.sun+=1
-		   									this.resultHJ+=data1[da].orderId.shipperHawbcode+"   "+data3.errormsg+"\n"+"*****************"+"\n"
+		   									this.resultHJ+=data1[da].orderId.shipperHawbcode+"   "+data3.retMsg+"  跟踪id:"+data3.traceId+"\n"+"*****************"+"\n"
 		   								}
 	   								}else{
 	   									this.sun+=1
 	   									this.resultHJ+=data1[da].orderId.shipperHawbcode+"   "+data1[da].message+"\n"+"*****************"+"\n"
 	   								}
 	   							}
-	        		    		$("#conHJ").html("已发送"+this.checkedCities.length+"条，其中"+this.suns+"条发送成功，"+this.sun+"条发送失败，"+(this.checkedCities.length-this.suns-this.sun)+"条不是环金的默认")
-	   							$("#postHj").val(this.resultHJ)
-	   							PostTrack()
+	      		        	  	if(JSON.stringify(lists)!="[]"){
+		   							this.$http.post("Logistics/setLableid?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(lists),{emulateJSON:true}).then(result2=>{
+	 	   							$("#conHJ").html("已发送"+this.checkedCities.length+"条，其中"+lists.length+"条发送成功，"+this.sun+"条发送失败，"+(this.checkedCities.length-lists.length-this.sun)+"条不是环金的默认")
+	 	   							$("#postHj").val(this.resultHJ)
+	 	   							PostTrack()
+		   							this.selectall()
+					        		this.$forceUpdate()
+	 	   					  		this.loading=false
+		   							})
+		   						}else{
+	 	   						$("#conHJ").html("已发送"+this.checkedCities.length+"条，其中"+lists.length+"条发送成功，"+this.sun+"条发送失败，"+(this.checkedCities.length-lists.length-this.sun)+"条不是环金的默认")
+	 							$("#postHj").val(this.resultHJ)
+	 							PostTrack()
+	 							this.selectall()
 				        		this.$forceUpdate()
-	   	 	   					this.loading=false
+	 						  	this.loading=false
+		   				}
 	        		    	})
 		        	  })
-
 		          },
 		          async traceNumber(){
 		        	  this.operator=false
@@ -1632,22 +2314,25 @@ function dowEdit(){
 						}
 						let resultD={}
 						resultD["referenceNoList"]=refe
-						this.$http.post("Logistics/traceNumber?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(resultD),{emulateJSON:true}).then(result1=>{
+						this.$http.post("hj_new_api/lastnum?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(resultD),{emulateJSON:true}).then(result1=>{
 							//获取到所有的编号集合
-							let c1=result1.body.result
-							console.log(result1)
-							//迭代传后台
-							this.$http.post("Logistics/setTrack?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(c1),{emulateJSON:true}).then(result1=>{
-								let data1s=result1.body
-								if(data1s.hj!="0"&&data1s.lo!="0"){
-					        		this.$message.success("成功获取跟踪号")
-					        		this.$forceUpdate()
-									this.loading=false
-								}else{
-					        		this.$forceUpdate()
-					        		this.$message.error("获取跟踪号失败")
-								}
-							})
+							if(result1.body.retCode!="0000"){
+								this.$message.error("获取尾程单号失败，请联系环金")
+							}else{
+								let c1=result1.body.body
+								//迭代传后台
+								this.$http.post("Logistics/setTrack?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(c1),{emulateJSON:true}).then(result1=>{
+									let data1s=result1.body
+									if(data1s.hj!="0"&&data1s.lo!="0"){
+						        		this.$message.success("成功获取跟踪号")
+						        		this.$forceUpdate()
+										this.loading=false
+									}else{
+						        		this.$forceUpdate()
+						        		this.$message.error("获取跟踪号失败")
+									}
+								})
+							}
 						})
 						this.loading=false
 		          	})
@@ -1711,18 +2396,39 @@ function dowEdit(){
 							for(let gi=0;gi<this.checkedCities.length;gi++){
 								reno+=this.checkedCities[gi]+","
 							}
-							datas["referenceNoList"]=reno.substr(0,reno.length-1)
-							datas["S_channel"]=this.S_logistic
-							datas["S_weights"]=this.S_weights
-							datas["S_weight2"]=this.S_weight2
-							datas["S_admin"]=this.sadmin
-							datas["S_time"]=this.S_time
-							datas["S_pack"]=this.S_pack
-							datas["S_num"]=this.checkedCities.length
 							this.loading=true
-							await this.$http.post("Logistics/dropinfo?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(datas),{emulateJSON:true}).then(result=>{
+							await this.$http.get("hj_new_api/dropinfo?${_csrf.parameterName}=${_csrf.token}",{emulateJSON:true}).then(result=>{
 								let y=result.body
-								this.loading=false
+								if(y.retCode=="0000"){
+
+									datas["referenceNoList"]=reno.substr(0,reno.length-1)
+									datas["dropNo"]=y.body
+									datas["grossWeight"]=this.S_weights
+									datas["shippingMethod"]=this.S_logistic
+									datas["S_channel"]=this.S_logistic
+									datas["S_weights"]=this.S_weights
+									datas["S_weight2"]=this.S_weight2
+									datas["S_admin"]=this.sadmin
+									datas["S_time"]=this.S_time
+									datas["S_pack"]=this.S_pack
+									datas["S_num"]=this.checkedCities.length
+									this.$http.post("hj_new_api/summary?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(datas),{emulateJSON:true}).then(results=>{
+										if(results.body.retCode=="0000"){
+											this.$message.success("集拼成功")
+											$("#myModal_summary").modal("hide");
+											this.loading=false
+										}else{
+											this.loading=false
+											this.$message.error("集拼失败："+results.body)
+										}
+									})
+								}else{
+									this.$message.error("获取集拼失败："+y.body)
+									this.loading=false
+									return false
+								}
+								
+								/* this.loading=false
 								if(y.length>1){
 									this.$message.error(result.body)
 									return false
@@ -1734,7 +2440,7 @@ function dowEdit(){
 								}else{
 									this.$message.error("未找到集拼单号")
 								}
-								this.loading=false
+								this.loading=false */
 							})
 					 },
 					 print2(){
@@ -1758,7 +2464,6 @@ function dowEdit(){
 							}else if(result.body.success=="1"){
 								this.loading=false
 								//添加运单
-								console.log(result.body)
 								let listOrder=result.body.data
 								for(let li=0;li<listOrder.length;li++){
 									//hj_logistics_post
@@ -1769,7 +2474,108 @@ function dowEdit(){
 								}
 							}
 						}).catch(error =>{
-							this.$message.error("未找到需要打印的环金产品");
+							this.$message.error("未找到需要打印的义达产品");
+						})
+					 },
+					 async eubPrint(val){
+							//eub打印
+							this.operator=false
+							let data=[]
+							if(val==null){
+								//打印
+								if(this.checkedCities.length=="0"){
+									this.loading=false
+					        		this.$message.error("请选择需要打印的产品");
+									return false;
+					        	}
+								data=this.checkedCities
+							}else{
+								data.push(parseInt(val))
+							}
+							
+							//this.loading=true
+							await this.$http.post("hualei/print?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(data),{emulateJSON:true,_timeout:10000}).then(result=>{
+								if(result.bodyText!=""){
+									window.open(result.bodyText,"_blank")
+									this.$message.success("已发件")
+									/* for(let d=0;d<result.body.ids.length;d++){
+										let zs={}
+										zs["hjStandy8"]=result.body.ids[d]
+										this.$http.post("Logistics/hj_logistics_post?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(zs),{emulateJSON:true}).then(result2=>{
+											
+										})
+									} */
+								}else{
+									this.$message.error("联系管理员："+result.body)
+								}
+								this.$forceUpdate()
+								this.selectall()
+							}).catch(error =>{
+								this.$message.error("未找到需要打印的EUB产品");
+							})
+					 },
+					 async hmPrint(val){
+							//eub打印
+							this.operator=false
+							let data=[]
+							if(val==null){
+								//打印
+								if(this.checkedCities.length=="0"){
+									this.loading=false
+					        		this.$message.error("请选择需要打印的产品");
+									return false;
+					        	}
+								data=this.checkedCities
+							}else{
+								data.push(parseInt(val))
+							}
+							
+							//this.loading=true
+							await this.$http.post("hm/print?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(data),{emulateJSON:true,_timeout:10000}).then(result=>{
+								let data2=result.body.data
+								for(let i=0;i<data2.length;i++){
+									window.open(data2[i].lable_file,"_blank")
+								}
+								this.$message.success("已发件")
+								this.$forceUpdate()
+								this.selectall()
+							}).catch(error =>{
+								this.$message.error("未找到需要打印的黑猫产品");
+							})
+					 },
+					 async sfPrint(val){
+						//顺丰打印
+						this.operator=false
+						let data=[]
+						if(val==null){
+							//打印
+							if(this.checkedCities.length=="0"){
+								this.loading=false
+				        		 this.$message.error("请选择需要打印的产品");
+								 return false;
+				        	}
+							data=this.checkedCities
+						}else{
+							data.push(parseInt(val))
+						}
+						
+						//this.loading=true
+						await this.$http.post("sf/print?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(data),{emulateJSON:true,_timeout:10000}).then(result=>{
+							for(let i=0;i<result.body.length;i++){
+								window.open(JSON.parse(result.body[i].result).url,"_blank")
+								for(let d=0;d<result.body[i].id.length;d++){
+									let zs={}
+									zs["hjStandy8"]=result.body[i].id[d]
+									this.$http.post("Logistics/hj_logistics_post?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(zs),{emulateJSON:true}).then(result2=>{
+										
+									})
+								}
+							}
+							this.$message.success("已发件")
+							this.$forceUpdate()
+							this.selectall()
+						}).catch(error =>{
+							this.$message.error("未找到需要打印的顺丰产品");
 						})
 					 },
 					 myModalBatchAdd(){
@@ -1929,7 +2735,6 @@ function dowEdit(){
 								this.$message.error("有值为空");
 								return false;
 							}
-							console.log(datas)
 							this.loading=true
 							//批量添加运单
 							this.$http.post("Logistics/ALLbatch?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(datas),{emulateJSON:true}).then(result=>{
@@ -2011,6 +2816,22 @@ function dowEdit(){
 							this.$message.error("请选择需要导出的产品");
 						}
 					},
+					async prin_summary(){
+						let datas={}
+						await this.$http.post("hj_new_api/summary/lable?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(this.checkedCities),{emulateJSON:true}).then(result=>{
+							if(result.body!=null){
+								window.open("${pageContext.request.contextPath}/"+result.body)
+							}else{
+								this.$message.error("获取集拼标签失败："+result.body);
+							}
+						})
+					},
+					// 环金分销
+					async HJ_Order_Sales(){
+						await this.$http.post("hj_new_api/Sales?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(this.checkedCities),{emulateJSON:true}).then(result=>{
+							
+						})
+					},
 					list4(){
 						this.operator=false
 						this.loading=true
@@ -2026,6 +2847,23 @@ function dowEdit(){
 						}else{
 							this.loading=false
 							this.$message.error("请选择需要预估的产品");
+						}
+					},
+					list5(){
+						this.operator=false
+						this.loading=true
+						//导出预估
+						if(this.checkedCities.length>0){
+							let reno=""
+							for(let gi=0;gi<this.checkedCities.length;gi++){
+								reno+=this.checkedCities[gi]+","
+							}
+							this.loading=false
+							$("#idList5").val(reno);
+							$("#formtyw5").submit();
+						}else{
+							this.loading=false
+							this.$message.error("请选择需要跟踪的产品");
 						}
 					},
 					colors(val){
@@ -2070,6 +2908,13 @@ function dowEdit(){
 				    async submit(){
 				    	//批量添加义达
 				    	this.operator=false
+			    		if(this.ydOr.ydOrderWeight==""||
+				    		 this.ydOr.ydInvoiceEnname==""||
+				    		 this.ydOr.ydInvoiceCnname==""||
+				    		 this.ydOr.ydShippingMethod==""){
+				    		 this.$message.error("有值为空")
+				    	  return false
+			    	  	}
 				    	if(this.checkedCities.length>0){
 							let datas={}
 							datas["invoiceEnname"]=this.ydOr.ydInvoiceEnname
@@ -2235,7 +3080,7 @@ function dowEdit(){
 		        	  	this.operator=false
 		        	  	this.loading=true
 	    				//义达
-	    				this.$http.post("Logistics/postYds?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(this.checkedCities),{emulateJSON:true}).then(result=>{
+	    				this.$http.post("Logistics/postYds?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(this.checkedCities),{emulateJSON:true,timeout: 1000000}).then(result=>{
 							let results=result.body
 							if(results.length == 0){
 								this.loading=false
@@ -2254,13 +3099,11 @@ function dowEdit(){
 									//添加运单
 									this.$message.success(JSON.parse(results[i].data).cnmessage)
 									let datas1={}
-									console.log(results[i])
 									datas1["ydStandy7"]=results[i].method
 									datas1["ydStandy6"]=JSON.parse(results[i].data).data.order_id+""
 									datas1["ydStandy3"]=results[i].fid+""
 									datas1["ydReferenceNo"]=JSON.parse(results[i].data).data.refrence_no
 									datas1["ydShippingMethodNo"]=JSON.parse(results[i].data).data.shipping_method_no
-									console.log(datas1)
 									this.$http.post("Logistics/updateYd?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(datas1),{emulateJSON:true}).then(result1=>{
 										
 										
@@ -2301,6 +3144,16 @@ function dowEdit(){
 		                let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
 		                return Y + M + D + h + m + s;
 		            },
+				    formatDate2(row) {
+		                let date = new Date(row);
+		                let Y = date.getFullYear() + '-';
+		                let M = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) + '-' : date.getMonth() + 1 + '-';
+		                let D = date.getDate() < 10 ? '0' + date.getDate() + ' ' : date.getDate() + ' ';
+		                let h = date.getHours() < 10 ? '0' + date.getHours() + ':' : date.getHours() + ':';
+		                let m = date.getMinutes()  < 10 ? '0' + date.getMinutes() + ':' : date.getMinutes() + ':';
+		                let s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+		                return Y + M + D + h + m + s;
+		            },
 		            async addTab(targetName,fid,ids) {
 
 		            	this.left="52%"
@@ -2316,6 +3169,7 @@ function dowEdit(){
 		                		return false
 		                	}
 		                }) 
+		                this.efid=fid
 		                if(i==0){
 			                let newTabName = ++this.tabIndex + '';
 			                await this.shows(fid,ids)
@@ -2467,6 +3321,7 @@ function dowEdit(){
 						this.$http.post("Logistics/defaultHj?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(datas),{emulateJSON:true}).then(result=>{
 							this.selectall()
 							this.$message.success("默认修改成功")
+							this.$forceUpdate()
 						})
 					},
 		    	  	orderSave(val){
@@ -2480,9 +3335,11 @@ function dowEdit(){
 							let results=result.body
 							if(results=="0"){
 								this.$message.error("保存失败")
+								this.$forceUpdate()
 							}else{
 								//添加运单
 								this.$message.success("保存成功")
+								this.$forceUpdate()
 							}
 						})
 		    	  	},
@@ -2552,7 +3409,6 @@ function dowEdit(){
 							this.hjOr.hjTotalprice=prices
 							this.hjOr.hjConsignee="1"
 							this.hjOr.hjStandby10=this.editableTabsValue
-							console.log(results)
 							//判断分类
 							this.caDia=false
 							this.hjWindow=true
@@ -2601,6 +3457,44 @@ function dowEdit(){
 				    		  this.czType="2"
 				    		  this.czView=true
 				    	  })
+					}else if(val2=="4"){
+						//查看顺丰
+						//查询订单列表
+				    	  await this.$http.post("sf/selectOne?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(value),{emulateJSON:true}).then(result=>{
+				    		  let list=result.body
+				    		  this.sfView=true
+				    		  for(let y=0;y<list.sfgood.length;y++){
+				    			  list.sfgood[y].weight=list.sfgood[y].weight*1000
+				    		  }
+				    		  list.cargoTotalWeight=list.cargoTotalWeight*1000
+				    		  this.sfOr=list
+				    		  this.sfType="2"
+				    	  })
+					}else if(val2=="6"){
+						//查看EUB
+						//查询订单列表
+				    	  await this.$http.post("eub/selectOne?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(value),{emulateJSON:true}).then(result=>{
+				    		  let list=result.body
+				    		  this.eubView=true
+				    		  for(let y=0;y<list.invoice.length;y++){
+				    			  list.invoice[y].nWeig=list.invoice[y].nWeig*1000
+				    		  }
+				    		  this.eubOr=list
+				    		  this.eubType="2"
+				    	  })
+					}else if(val2=="7"){
+						//查看EUB
+						//查询订单列表
+				    	  await this.$http.post("hm/selectOne?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(value),{emulateJSON:true}).then(result=>{
+				    		  let list=result.body
+				    		  this.hmView=true
+				    		  for(let y=0;y<list.invoice.length;y++){
+				    			  list.invoice[y].netWeight=list.invoice[y].netWeight*1000
+				    		  }
+				    		  list.orderWeight=list.orderWeight*1000
+				    		  this.hmOr=list
+				    		  this.hmType="2"
+				    	  })
 					}
 			    },
 			    generateMixed(n) {
@@ -2641,6 +3535,7 @@ function dowEdit(){
 			    		this.$message.error("重量不能以0开头");
 			    		return false;
 			    	}
+					this.hjOr.hjStandby10=this.editableTabsValue
 			    	//需要添加的运单id  赋值为商品id
 					/* this.hjIsreturn=this.hjIsreturn==false?"0":"1"
 					this.hjIscontainsbattery=this.hjIscontainsbattery==false?"0":"1"//是否包含电池
@@ -2704,15 +3599,14 @@ function dowEdit(){
 					}
 					let day={};
 					day["lableKey"]=value
-					this.$http.post("Logistics/setLableKey?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(day),{emulateJSON:true}).then(result=>{
+					this.$http.post("hj_new_api/order/lable?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(day),{emulateJSON:true}).then(result=>{
 						let data=result.body
-						if(data.result.status=="1"){
+						if(data.retCode=="0000"){
 							let days={}
-							days["bytes"]=data.result.lableData
+							days["bytes"]=data.body.data
 							days["metho"]=metho
-							days["fileName"]=data.result.lableKey
+							days["fileName"]=data.body.lableKey
 							this.$http.post("Logistics/conserveFile?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(days),{emulateJSON:true}).then(result1=>{
-								console.log(result1)
 								window.open("${pageContext.request.contextPath}/"+result1.body,"_blank")
 								let zs={}
 								zs["hjStandy8"]=val23
@@ -2785,7 +3679,6 @@ function dowEdit(){
 			    		this.$message.success("后台批量拼接中，很慢!请耐心等待")
 			    		this.operator=false
 			    		this.$http.post("Logistics/cz/label?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(data),{emulateJSON:true}).then(result=>{
-			    			console.log(result.body)
 			    			window.open("${pageContext.request.contextPath}/resources/upload/"+result.body)
 			    			
 			    		})
@@ -2813,10 +3706,9 @@ function dowEdit(){
 						data1["ydReferenceNo"]=values
 						this.$http.post("${pageContext.request.contextPath}/Logistics/ydDelOrder?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(data1),{emulateJSON:true}).then(result=>{
 							let results=result.body
-							console.log(results)
-							if(results.success=="0"){
+							if(results=="0"){
 								this.$message.error("删除失败")
-							}else if(results.success=="1"){
+							}else if(results=="1"){
 								//添加运单
 								this.editableTabs[val3].content.list.yd.splice(val2, 1)
 								this.$forceUpdate()
@@ -2851,6 +3743,55 @@ function dowEdit(){
 								}
 							})
 							})
+						}else if(val1=="4"){
+							this.$confirm("是否删除顺丰  '"+value+"'请谨慎操作!!!").then(_ => {
+								let data1={}
+								data1["id"]=value
+								data1["platformOrderId"]=values
+								this.$http.post("sf/deleteId?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(data1),{emulateJSON:true}).then(result=>{
+									let results=result.body
+									if(results==false){
+										this.$message.error("删除失败")
+									}else if(results==true){
+										//添加运单
+										this.editableTabs[val3].content.list.sf.splice(val2, 1)
+										this.$forceUpdate()
+										this.$message.success("删除成功")
+									}
+								})
+								})
+						}else if(val1=="6"){
+							this.$confirm("是否删除EUB  '"+value+"'请谨慎操作!!!").then(_ => {
+								let data1={}
+								data1["id"]=value
+								data1["fId"]=values
+								this.$http.post("eub/deleteId?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(data1),{emulateJSON:true}).then(result=>{
+									let results=result.body
+									if(results==false){
+										this.$message.error("删除失败")
+									}else if(results==true){
+										this.editableTabs[val3].content.list.eub.splice(val2, 1)
+										this.$forceUpdate()
+										this.$message.success("删除成功")
+									}
+								})
+								})
+						}else if(val1=="7"){
+							this.$confirm("是否删除黑猫  '"+value+"'请谨慎操作!!!").then(_ => {
+								let data1={}
+								data1["id"]=value
+								data1["referenceNo"]=values
+								this.$http.post("hm/deleteId?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(data1),{emulateJSON:true}).then(result=>{
+									let results=result.body
+									if(results==false){
+										this.$message.error("删除失败")
+									}else if(results==true){
+										this.editableTabs[val3].content.list.hm.splice(val2, 1)
+										this.$forceUpdate()
+										this.$message.success("删除成功")
+									}
+								})
+								})
 						}
 				},
 				async submitOrderOnes(){
@@ -2871,7 +3812,6 @@ function dowEdit(){
 	    				//义达
 	    				await this.$http.post("${pageContext.request.contextPath}/Logistics/postYd?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(datas),{emulateJSON:true}).then(result=>{
 							let results=result.body
-							console.log(results)
 							for(let i=0;i<results.length;i++){
 								if(JSON.parse(results[i].data).success=="0"){
       								this.loading=false
@@ -2879,7 +3819,6 @@ function dowEdit(){
 								}else if(JSON.parse(results[i].data).success=="1"){
 									//添加运单
 									this.$message.success(JSON.parse(results[i].data).cnmessage)
-									console.log(JSON.parse(results[i].data))
 									let datas1={}
 									datas1["ydStandy7"]=results[i].method
 									datas1["ydStandy6"]=JSON.parse(results[i].data).data.order_id
@@ -2908,6 +3847,15 @@ function dowEdit(){
 	    			}else if($("input[name='hjor"+this.editableTabsValue+"']:checked").val()=="3"){
 	    				this.caDia=false
 	    				this.czPost("1")
+	    			}else if($("input[name='hjor"+this.editableTabsValue+"']:checked").val()=="4"){
+	    				this.caDia=false
+	    				this.sfPost("1")
+	    			}else if($("input[name='hjor"+this.editableTabsValue+"']:checked").val()=="6"){
+	    				this.caDia=false
+	    				this.eubPost("1")
+	    			}else if($("input[name='hjor"+this.editableTabsValue+"']:checked").val()=="7"){
+	    				this.caDia=false
+	    				this.hmPost("1")
 	    			}
 			    	
 			      },
@@ -2938,10 +3886,223 @@ function dowEdit(){
 			    	  this.czType="1"
 			    	  Object.assign(this.$data.czOr, this.$options.data().czOr)
 			      },
+			      sfCreated(){
+			    	  // 顺丰批量添加运单  
+			    	  if(this.checkedCities.length==0){
+			    		  this.$message.error("请选择需要添加的顺丰订单")
+			    		  return false
+			    	  }
+			    	  this.sfView=true
+			    	  this.sfType="1"
+			    	  Object.assign(this.$data.sfOr, this.$options.data().sfOr)
+			      },
+			      // eub批量添加运单
+			      eubCreated(){
+			    	  if(this.checkedCities.length==0){
+			    		  this.$message.error("请选择需要添加的EUB订单")
+			    		  return false
+			    	  }
+			    	  this.eubView=true
+			    	  this.eubType="1"
+			    	  Object.assign(this.$data.eubOr, this.$options.data().eubOr)
+			    	  this.eubOr.invoice[0].price=this.Iprice()
+			      },
+			      // 环金分销单
+			      HJCreated(){
+			    	  if(this.checkedCities.length==0){
+			    		  this.$message.error("请选择需要添加的分销订单")
+			    		  return false
+			    	  }
+			    	  this.saleView=true
+			    	  this.saleType="1"
+			    	  Object.assign(this.$data.saleOr, this.$options.data().saleOr)
+			      },
+			      // 黑猫批量添加运单
+			      hmCreated(){
+			    	  if(this.checkedCities.length==0){
+			    		  this.$message.error("请选择需要添加的黑猫订单")
+			    		  return false
+			    	  }
+			    	  this.hmView=true
+			    	  this.hmType="1"
+			    	  Object.assign(this.$data.hmOr, this.$options.data().hmOr)
+			    	  this.hmOr.invoice.invoiceUnitcharge=this.Iprice()
+			      },
 			      czs2(){
 			    	  this.czView=true
 			    	  this.czType="3"
 			    	  Object.assign(this.$data.czOr, this.$options.data().czOr)
+			      },
+			      sfs2(){
+			    	  this.sfView=true
+			    	  this.sfType="3"
+			    	  Object.assign(this.$data.sfOr, this.$options.data().sfOr)  
+			      },
+			      // eub单独添加
+			      eub2(){
+			    	  this.eubView=true
+			    	  this.eubType="3"
+			    	  Object.assign(this.$data.eubOr, this.$options.data().eubOr)
+			    	  this.eubOr.invoice[0].price=this.Iprice()
+			      },
+			      // 黑猫单独添加
+			      hm2(){
+			    	  this.hmView=true
+			    	  this.hmType="3"
+			    	  Object.assign(this.$data.hmOr, this.$options.data().hmOr)
+			    	  this.hmOr.invoice.invoiceUnitcharge=this.Iprice()
+			      },
+			      // eub批量添加修改
+			      async eubViewAdd(val){
+			    	let data={}
+		    		// 1.判断空值
+			    	if(this.eubOr.hubInCode==""||
+			    			this.eubOr.contents==""||
+			    			this.eubOr.contentsCn==""||
+			    			this.eubOr.invoice[0].price==""||
+			    			this.eubOr.invoice[0].qty==""||
+			    			this.eubOr.invoice[0].nWeig==""||
+			    			this.eubOr.remark==""
+			    	){
+			    		this.$message.error("有值为空")
+			    		return false
+			    	}
+			    	// 2.g转kg
+			    	this.eubOr.invoice[0].nWeig=this.eubOr.invoice[0].nWeig/1000
+			    	data["type"]=val
+			    	// 3.状态区分
+			    	if(val=="1"){
+		    		  //批量添加
+			    	  data["ids"]=this.checkedCities
+			    	}else if(val=="2"||val=="3"){
+		    		  //eub修改||eub单独添加
+		    		  let dat=[]
+		    		  dat.push(this.editableTabsValue)
+			    	  data["ids"]=dat
+		    	    }
+			    	data["eub"]=this.eubOr
+			    	this.operator=false
+    	  		    this.eubView=false
+    	  		    //this.loading=true
+	    	  		this.caDia=false
+	    	  		// 4.提交后台
+			    	await this.$http.post("eub/createdOrder?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(data),{emulateJSON:true}).then(result=>{
+			    	   if(result.body==true){
+			    		   this.$message.success("操作成功")
+				    	   this.selectall()
+				    	   if(val=="2"||val=="3"){
+					    	    //查询订单列表
+				  	    	  	let datae={}
+				  	    	  	datae["id"]=this.editableTabsValue
+				  	    	  	datae["fid"]=this.efid
+				  	    	    this.$http.post("${pageContext.request.contextPath}/Logistics/orderlist?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(datae),{emulateJSON:true}).then(result1=>{
+					  	    	 	for(let ise=0;ise<this.editableTabs.length;ise++){
+					  	    	 		if(this.editableTabs[ise].name==this.editableTabsValue){
+					  	    	 			this.editableTabs[ise].content.list=result1.body
+								    		this.$forceUpdate()
+					  	    	 		}
+					  	    	 	}
+				  	    	 	})
+				    	   }
+						   this.$forceUpdate()
+			    	   }else{
+			    		   this.$message.error("操作失败")
+			    	   }
+			    	})
+	    	  		
+			      },
+			      // 黑猫批量添加修改
+			      async hmViewAdd(val){
+			    	  
+			    	// 1.判断空值
+			    	if(this.hmOr.invoice.invoiceEnname==""||this.hmOr.invoice.invoiceEnname==null||
+			    			this.hmOr.invoice.invoiceCnname==""||this.hmOr.invoice.invoiceCnname==null||
+			    			this.hmOr.invoice.invoiceUnitcharge==""||this.hmOr.invoice.invoiceUnitcharge==null||
+			    			this.hmOr.orderPieces==""||this.hmOr.orderPieces==null||
+			    			this.hmOr.orderWeight==""||this.hmOr.orderWeight==null||
+			    			this.hmOr.shippingMethod==""||this.hmOr.shippingMethod==null
+			    	){
+			    		this.$message.error("有值为空")
+			    		return false
+			    	}
+			    	let data={}
+			    	if(val=="1"){
+			    		  //批量添加
+			    	  data["ids"]=this.checkedCities
+			    	}else if(val=="2"||val=="3"){
+		    		  //eub修改||eub单独添加
+		    		  let dat=[]
+		    		  dat.push(this.editableTabsValue)
+			    	  data["ids"]=dat
+		    	    }
+			    	data["type"]=val
+			    	data["hm"]=this.hmOr
+			    	
+			    	this.operator=false
+    	  		    this.hmView=false
+    	  		    this.loading=true
+	    	  		this.caDia=false
+	    	  		// 4.提交后台
+			    	await this.$http.post("hm/createdOrder?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(data),{emulateJSON:true}).then(result=>{
+			    		this.$message.success("操作成功")
+			    		this.loading=false
+			    	})
+	    	  		
+			      },
+			      async sfViewAdd(val){
+			    	// 顺丰添加  
+			    	let data={}
+			    	// 1.判断空值
+			    	if(this.sfOr.expressType==""||
+			    			this.sfOr.parcelQuantity==""||
+			    			this.sfOr.payMethod==""||
+			    			this.sfOr.declaredValueCurrency==""||
+			    			this.sfOr.declaredValue==""||
+			    			this.sfOr.cargoLength==""||
+			    			this.sfOr.cargoWidth==""||
+			    			this.sfOr.cargoHeight==""||
+			    			this.sfOr.sfgood[0].name==""||
+			    			this.sfOr.sfgood[0].cname==""||
+			    			this.sfOr.sfgood[0].count==""||
+			    			this.sfOr.sfgood[0].unit==""||
+			    			this.sfOr.sfgood[0].weight==""||
+			    			this.sfOr.sfgood[0].amount==""||
+			    			this.sfOr.sfgood[0].currency==""
+			    	){
+			    		this.$message.error("有值为空")
+			    		  return false
+			    	}
+			    	this.sfOr.cargoTotalWeight=this.sfOr.sfgood[0].weight
+			    	// 2.g转kg
+			    	//this.sfOr.cargoTotalWeight=this.sfOr.cargoTotalWeight/1000
+			    	//this.sfOr.sfgood[0].weight=this.sfOr.sfgood[0].weight/1000
+			    	data["type"]=val
+			    	// 3.状态区分
+			    	if(val=="1"){
+		    		  //批量添加
+			    	  data["ids"]=this.checkedCities
+			    	}else if(val=="2"||val=="3"){
+		    		  //顺丰修改||顺丰单独添加
+		    		  let dat=[]
+		    		  dat.push(this.editableTabsValue)
+			    	  data["ids"]=dat
+		    	    }
+			    	this.sfOr.sendstarttime=this.formatDate2(this.sfOr.sendstarttime)
+			    	data["sf"]=this.sfOr
+			    	this.operator=false
+    	  		    this.sfView=false
+    	  		    //this.loading=true
+	    	  		this.caDia=false
+			    	// 4.提交后台
+			    	await this.$http.post("sf/createdOrder?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(data),{emulateJSON:true}).then(result=>{
+			    	   if(result.body==true){
+			    		   this.$message.success("操作成功")
+				    	   this.selectall()
+						   this.$forceUpdate()
+			    	   }else{
+			    		   this.$message.error("操作失败")
+			    	   }
+			    	})
 			      },
 			      async czViewAdd(val){
 			    	  //创志添加
@@ -3019,6 +4180,173 @@ function dowEdit(){
 			          let ss =new Date(timeStamp).getSeconds() < 10? "0" + new Date(timeStamp).getSeconds(): new Date(timeStamp).getSeconds();
 			          this.nowTime = year + "-" + month + "-" + date +"-"+" "+hh+":"+mm+':'+ss ;
 			        },
+			        // 黑猫发送
+			        hmPost(bal){
+			        	this.operator=false
+		        	  	this.loading=true
+		        	  	let das=[]
+		        	  	if(bal=="0"){
+		        	  		das=this.checkedCities
+		        	  	}else if(bal=="1"){
+		        	  		das.push(this.editableTabsValue)
+		        	  	}else{
+		        	  		this.loading==false
+		        	  		this.$message.error("发送异常")
+		        	  		return false
+		        	  	}
+		        	  	this.eubView=false //eub/postOrder
+			    	  	let lists=[]
+	    				this.$http.post("hm/post?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(das),{emulateJSON:true}).then(result=>{
+	    					// 总数
+	    					this.sun=0
+	    					// 成功
+	      					this.suns=0
+	      					this.resultHJ=""
+							this.loading=false
+							let data1=result.body
+							for(let i=0;i<data1.length;i++){
+								if(data1[i].success==1){
+									this.suns++;
+								}else{
+									this.resultHJ+=data1[i].id+" "+data1[i].cnmessage+"\n"
+								}
+							}
+	    					$("#conHJ").html("已发送"+data1.length+"条，其中"+this.suns+"条发送成功，"+(data1.length-this.suns)+"条发送失败");
+	    					$("#postHj").val(this.resultHJ);
+	    					PostTrack();
+	    					this.selectall()
+	    				})
+			        },
+			        // eub批量发送
+			        eubPost(bal){
+			        	  	this.operator=false
+			        	  	this.loading=true
+			        	  	let das=[]
+			        	  	if(bal=="0"){
+			        	  		das=this.checkedCities
+			        	  	}else if(bal=="1"){
+			        	  		das.push(this.editableTabsValue)
+			        	  	}else{
+			        	  		this.loading==false
+			        	  		this.$message.error("发送异常")
+			        	  		return false
+			        	  	}
+			        	  	this.eubView=false //eub/postOrder
+				    	  	let lists=[]
+		    				this.$http.post("hualei/post?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(das),{emulateJSON:true}).then(result=>{
+		    					this.sun=0
+		      					this.suns=0
+		      					this.resultHJ=""
+								this.loading=false
+								if(result.body.code==200){
+									this.resultHJ+=result.body.message
+									$("#conHJ").html("已发送"+das.length+"条，其中"+das.length+"条发送成功，0条发送失败");
+			    					$("#postHj").val(this.resultHJ);
+			    					PostTrack();
+								}else if(result.body.code==201){
+									this.resultHJ+=result.body.message+"\n"
+									for(let ors=0;ors<result.body.data.length;ors++){
+										this.resultHJ+="发送失败   "+result.body.data[ors].orderId +" 消息"+result.body.data[ors].message+"\n"+"*****************"+"\n"
+									}
+									$("#conHJ").html("已发送"+das.length+"条，其中"+(das.length-result.body.data.length)+"条发送成功，"+result.body.data.length+"条发送失败");
+			    					$("#postHj").val(this.resultHJ);
+			    					PostTrack();
+								}else if(result.body.code==400){
+    								// 发送失败
+									this.resultHJ+="发送失败     消息：:"+result.body.message+"\n"+"*****************"+"\n"
+			    					$("#postHj").val(this.resultHJ);
+			    					PostTrack();
+								}
+		    					this.selectall()
+		    				})
+				      },
+			        sfPost(bal){
+				    	  //顺丰批量发送
+			        	  	this.operator=false
+			        	  	this.loading=true
+			        	  	this.sfView=false
+			        	  	let das=[]
+			        	  	if(bal=="0"){
+			        	  		das=this.checkedCities
+			        	  	}else if(bal=="1"){
+			        	  		das.push(this.editableTabsValue)
+			        	  	}else{
+			        	  		this.loading==false
+			        	  		this.$message.error("发送异常")
+			        	  		return
+			        	  	}
+				    	  	let lists=[]
+		    				//顺丰
+		    				this.$http.post("sf/postOrder?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(das),{emulateJSON:true}).then(result=>{
+		    					this.sun=0
+		      					this.suns=0
+		      					this.resultHJ=""
+		    					for(let a=0;a<result.body.length;a++){
+		    						let ers=null;
+		    						try{ 
+		    							ers=JSON.parse(result.body[a].result)
+	    							} catch(e) { 
+										// 发送失败
+										this.resultHJ+="发送失败   "+result.body[a].orderid+"  消息：:"+result.body[a].result+"\n"+"*****************"+"\n"
+										$("#postHj").val(this.resultHJ);
+										PostTrack();
+										continue;
+	    							}
+			      					this.sun+=1;
+									if(ers.Head=="ok"||ers.Head=="OK"){
+										// 发送成功
+										this.resultHJ+="发送成功   "+result.body[a].orderid+"\n"+"*****************"+"\n"
+										this.suns+=1;
+										$("#conHJ").html("已发送"+this.sun+"条，其中"+this.suns+"条发送成功，"+(this.sun-this.suns)+"条发送失败");
+										$("#postHj").val(this.resultHJ);
+										PostTrack();
+										// 存储为列表
+										// 1.获取单号
+										let order={}
+										order["idd"]=result.body[a].orderid
+										order["expressType"]=result.body[a].expressType
+										order["orderid"]=ers.Body.OrderResponse.orderid
+										order["mailno"]=ers.Body.OrderResponse.mailno
+										order["agent_mailno"]=ers.Body.OrderResponse.agent_mailno
+										order["direction_code"]=ers.Body.OrderResponse.direction_code
+										lists.push(order)
+										
+									}else if(ers.ERROR.code=="8016"){
+										// 发送成功
+										this.resultHJ+="发送成功   "+result.body[a].orderid+"\n"+"*****************"+"\n"
+										this.suns+=1;
+										$("#conHJ").html("已发送"+this.sun+"条，其中"+this.suns+"条发送成功，"+(this.sun-this.suns)+"条发送失败");
+										$("#postHj").val(this.resultHJ);
+										PostTrack();
+										// 1.获取单号
+										let order={}
+										order["idd"]=result.body[a].orderid
+										order["expressType"]=result.body[a].expressType
+										order["orderid"]=ers.ERROR.text.match("orderid=[A-Z]*[0-9]*[A-Z]*[^]{3}[ ]")[0].split("=")[1].split(" ")[0]
+										order["mailno"]=ers.ERROR.text.match("mailno=[A-Z]*[0-9]*[ ]")[0].split("=")[1].split(" ")[0]
+										order["agent_mailno"]=ers.ERROR.text.match("agent_mailno=[A-Z]*[0-9]*[A-Z]*[ ]")[0].split("=")[1].split(" ")[0]
+										order["direction_code"]=ers.ERROR.text.match("direction_code=[^]*")[0].split("=")[1].split(" ")[0]
+										lists.push(order)
+									}
+									else{
+										// 弹窗打印失败
+										// 发送失败
+										this.resultHJ+="发送失败   "+result.body[a].orderid+"  消息：:"+ers.ERROR.text+"\n"+"*****************"+"\n"
+										$("#postHj").val(this.resultHJ);
+										PostTrack();
+									}
+								}
+								this.loading=false
+		    					// 如果有成功的则发送
+								if(this.suns!=0){
+									this.$http.post("sf/addMailNo?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(lists),{emulateJSON:true}).then(result=>{
+										this.selectall()
+									})
+								}
+							})
+							
+							
+				      },
 			      czPost(bal){
 			    	  //创志批量发送
 		        	  	this.operator=false
@@ -3054,7 +4382,6 @@ function dowEdit(){
 									//添加运单
 									let datas1={}
 									datas1["service"]=results[i].map.shipment.service
-									console.log(JSON.parse(results[i].data))
 									datas1["fsr4"]=JSON.parse(results[i].data).data.shipment.shipment_id
 									datas1["fsr2"]=results[i].fid
 									this.$http.post("Logistics/cz/tarack?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(datas1),{emulateJSON:true}).then(result1=>{
@@ -3076,6 +4403,15 @@ function dowEdit(){
 							}
 							this.loading=false
 						})
+			      },
+			      // 重量二次同步
+			      syncWeight(){
+			    	this.$http.post("hj_new_api/order-weight?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(this.checkedCities),{emulateJSON:true}).then(result=>{
+						 if(result.body!=null){
+							 this.$message.success("二次同步已提交")
+							 console.log(result.body)
+						 }
+				    })
 			      }
 				},
 				updated(){
@@ -3083,6 +4419,26 @@ function dowEdit(){
 				}
 				
 	})
+	
+	function dateFormat(fmt, date) {
+	    let ret;
+	    const opt = {
+	        "Y+": date.getFullYear().toString(),        // 年
+	        "m+": (date.getMonth() + 1).toString(),     // 月
+	        "d+": date.getDate().toString(),            // 日
+	        "H+": date.getHours().toString(),           // 时
+	        "M+": date.getMinutes().toString(),         // 分
+	        "S+": date.getSeconds().toString()          // 秒
+	        // 有其他格式化字符需求可以继续添加，必须转化成字符串
+	    };
+	    for (let k in opt) {
+	        ret = new RegExp("(" + k + ")").exec(fmt);
+	        if (ret) {
+	            fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+	        };
+	    };
+	    return fmt;
+	}
 </script>
 
 </body>

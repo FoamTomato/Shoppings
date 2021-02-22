@@ -5,6 +5,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
 
 import javax.crypto.Mac;
@@ -12,6 +13,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.Maps;
+import com.google.gson.Gson;
+import com.sybinal.shop.controller.admin.unit.Md5;
 
 public class SignDemo {
 
@@ -54,10 +57,14 @@ public class SignDemo {
 	 */
 	public static String getSign(String url,String token, String content,String method) {
 		final StringBuilder sbuilder = new StringBuilder();
+		//如果请求为post则进行签名
 		if (method.equals("POST")) {
+			//请求的内容不能为空
 			if (null != content && content.length() > 0) {
 				try {
+					//获取所有的key值
 					final JsonNode jnode = JsonH.toObject(content, JsonNode.class);
+					//如果jnode是数组
 					if (jnode.isArray()) {
 						int i=0;
 						Iterator<JsonNode> iters = jnode.iterator();
@@ -65,8 +72,10 @@ public class SignDemo {
 							sbuilder.append(i+iters.next().toString());
 							i++;
 						}
+					//如果jnode不为数组
 					} else {
 						Map bodymap = JsonH.toObject(content, Map.class);
+						//把其遍历为map并且迭代排序
 						bodymap.keySet().stream().sorted().forEach(new Consumer<Object>() {
 							@Override
 							public void accept(Object p) {
@@ -92,8 +101,67 @@ public class SignDemo {
 		String urlpath = url.substring(url.indexOf("/api") + 1);
 		return hmacSha1ToHexStr(urlpath + sbuilder.toString(), token);
 	}
-	
-	
+	/**
+	 * 签名
+	 * @param url　　httpＵＲＬ
+	 * @param token token
+	 * @param content json 签名字符串
+	 * @param method　　http　请求方法类型
+	 * @return
+	 */
+	public static String getSign2(String date,Map<String,Object> requestBodys,String method,String secretKeys) {//String url,String token, String content,String method
+		final StringBuilder sbuilder = new StringBuilder();
+		Gson gson=new Gson();
+		//如果请求为post则进行签名
+		if (method.equals("POST")) {
+			//请求的内容不能为空
+			if (null != requestBodys && requestBodys.toString().length() > 0) {
+				try {
+					sbuilder.append(secretKeys);
+					sbuilder.append("Timestamp"+date);
+					sbuilder.append(gson.toJson(requestBodys));
+					sbuilder.append(secretKeys);
+				} catch (Exception ex) {
+					sbuilder.append(requestBodys);
+				}
+			}
+		}else if(method.equals("GET")) {
+			//请求的内容不能为空
+			if (null != requestBodys && requestBodys.toString().length() > 0) {
+				try {
+					sbuilder.append(secretKeys);
+					sbuilder.append("Timestamp"+date);
+					for (Entry<String, Object> entry : requestBodys.entrySet()) {
+						sbuilder.append(entry.getKey()+entry.getValue());
+					}   
+					sbuilder.append(secretKeys);
+				} catch (Exception ex) {
+					sbuilder.append(requestBodys);
+				}
+			}else {
+				sbuilder.append(secretKeys);
+				sbuilder.append("Timestamp"+date);
+				sbuilder.append(secretKeys);
+			}
+		}
+		System.err.println(sbuilder.toString());
+        return Md5.md5Encode(sbuilder.toString());
+	}
+	/** 
+     * 字符串转换为16进制字符串 
+     *  
+     * @param s 
+     * @return 
+     */  
+    public static String stringToHexString(String s) {  
+        String str = "";  
+        for (int i = 0; i < s.length(); i++) {  
+            int ch = s.charAt(i);  
+            String s4 = Integer.toHexString(ch);  
+            str = str + s4;  
+        }  
+        return str;  
+    } 
 
 	public static String hmacSha1ToHexStr(String str, String key) {
 		try {

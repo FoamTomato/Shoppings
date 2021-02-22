@@ -952,14 +952,14 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   <!-- 批量清空创志defaultHj0Plus -->
-  <update id="defaultHj0Plus">
+  <!-- <update id="defaultHj0Plus">
   	update cz_base
     set fsr3 = "0"
     where fsr2 in 
     <foreach collection="hjList" open="(" close=")" item="list" separator=",">
     #{list.hjShipperhawbcode,jdbcType=VARCHAR}
     </foreach>
-  </update>
+  </update> -->
   
   <!-- 批量清空创志default2cz -->
   <update id="default2cz" parameterType="com.sybinal.shop.model.czBase">

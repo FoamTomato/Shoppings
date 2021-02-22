@@ -235,10 +235,10 @@
     </trim>
   </insert>
   <!-- 默认default -->
-  <update id="default0" parameterType="com.sybinal.shop.model.Xlogistics">
+  <!-- <update id="default0" parameterType="com.sybinal.shop.model.Xlogistics">
     update x_logistics
     set  x_standby1 = 0 where x_f_ids = #{xp,jdbcType=VARCHAR}
-  </update>
+  </update> -->
   <!-- 批量修改默认default0Plus -->
   <update id="default0Plus" parameterType="com.sybinal.shop.model.Xlogistics">
     update x_logistics

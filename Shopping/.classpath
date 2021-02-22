@@ -25,5 +25,7 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/lazop-api-sdk-1.2.0-sources.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/lazop-api-sdk-1.2.0.jar" sourcepath="WebContent/WEB-INF/lib/lazop-api-sdk-1.2.0-sources.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/MWSClientJavaRuntime-1.0.jar"/>
+	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/MWSOrders_2013-09-01_v2020-09-29.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

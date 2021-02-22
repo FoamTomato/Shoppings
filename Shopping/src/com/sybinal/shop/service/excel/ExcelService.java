@@ -71,5 +71,15 @@ public interface ExcelService {
 	* 创建时间：2020年6月20日 下午6:34:12   
 	* @version
 	 */
-	public XSSFWorkbook lazada(); 
+	public XSSFWorkbook lazada();
+	/**
+	 * 
+	* @Title Shopping   
+	* @Package com.sybinal.shop.service.excel
+	* @Description: TODO 导出跟踪号
+	* @author PC1  
+	* @date 2021年2月20日 上午10:42:31   
+	* @version V1.0
+	 */
+	public XSSFWorkbook Tracking(String idList4); 
 }

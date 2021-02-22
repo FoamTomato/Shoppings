@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.sybinal.shop.mapper.czBaseMapper;
 import com.sybinal.shop.model.czBase;
 import com.sybinal.shop.model.czBaseWithBLOBs;
-import com.sybinal.shop.model.hjBase;
 
 @Service
 public class czServiceImpl implements czService {
@@ -34,11 +33,11 @@ public class czServiceImpl implements czService {
 	/**
 	 * 批量清空默认
 	 */
-	@Override
+	/*@Override
 	public int defaultHj0Plus(List<hjBase> cz) {
 		// TODO Auto-generated method stub
 		return czBasesMapper.defaultHj0Plus(cz);
-	}
+	}*/
 	/**
 	 * 批量根据id查找
 	 */

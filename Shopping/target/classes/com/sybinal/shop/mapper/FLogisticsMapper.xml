@@ -103,21 +103,48 @@
 	    <include refid="Base_Column_List" />
 	    from logistics 
 	    <where>
-		     <if test="list.username != 'admin'">
+		    <if test="list.username != 'admin'">
 		    and standby_9=#{list.username}
 		    </if>
-		    <if test="content != ''">
-		    and
-				<foreach collection="content" item="items" close=")" open="(" separator="or">
-			        f_ids like concat('%','${items}','%')
-			        or f_client_order_code like concat('%','${items}','%')
-			        or standby_11 like concat('%','${items}','%')
-			        or id like concat('%','${items}','%')
-			        or standby_14 like concat('%','${items}','%')
-			        or standby_10 like concat('%','${items}','%')
-			     </foreach>
-		     </if>
-		     <if test="list.StatusOrder != null and list.StatusOrder != ''">
+		    <if test="content != null">
+		    	<if test="list.StatusOrder2 == 0">
+			    	and f_ids IN
+					<foreach collection="content" item="items" close=")" open="(" separator=",">
+				          #{items}
+				    </foreach>
+		    	</if>
+		    	<if test="list.StatusOrder2 == 1">
+			    	and f_client_order_code IN
+					<foreach collection="content" item="items" close=")" open="(" separator=",">
+				          #{items}
+				    </foreach>
+		    	</if>
+		    	<if test="list.StatusOrder2 == 2">
+			    	and standby_11 IN
+					<foreach collection="content" item="items" close=")" open="(" separator=",">
+				          #{items}
+				    </foreach>
+		    	</if>
+		    	<if test="list.StatusOrder2 == 3">
+			    	and id IN
+					<foreach collection="content" item="items" close=")" open="(" separator=",">
+				          #{items}
+				    </foreach>
+		    	</if>
+		    	<if test="list.StatusOrder2 == 4">
+			    	and standby_14 IN
+					<foreach collection="content" item="items" close=")" open="(" separator=",">
+				          #{items}
+				    </foreach>
+		    	</if>
+		    	<if test="list.StatusOrder2 == 5">
+			    	and standby_10 IN
+					<foreach collection="content" item="items" close=")" open="(" separator=",">
+				          #{items}
+				    </foreach>
+		    	</if>
+		    </if>
+		    <if test="list.StatusOrder != null and list.StatusOrder != ''">
 		        and standby_6 = #{list.StatusOrder,jdbcType=VARCHAR}
 		     </if>
 		     <if test="list.startDatas != null and list.startDatas != ''">
@@ -138,9 +165,11 @@
 		      <if test="list.hj_shippingMethods == '10'">
 		      	and  standby_12 is null
 		      </if>
-		      	and standby_17 != "1"
-		      </where> 
-		      order by f_pay_time    desc
+		    and standby_17 != "1" <if test="content != null and list.StatusOrder2 == 0"> and f_ids > (#{content[0],jdbcType=INTEGER}-1)</if>
+		    <if test="list.StatusOrder3 == 1"> and standby_11 is not null</if>
+		    <if test="list.StatusOrder3 == 2"> and standby_11 is null</if>
+		</where> 
+		 order by id desc 
 	</select>
 	<!--  根据id查询fid -->
 	<select id="selectIDs" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -160,8 +189,41 @@
 	    <foreach collection="list" separator="," item="id" open="(" close=")">
 	 	#{id}
 	 	</foreach>
-	    and standby_17 != "1"
+	    and standby_17 != "1" and id > (#{list[0],jdbcType=INTEGER}-1)
 	</select>
+	<!-- selectOutOfList  去重查找 -->
+	<select id="selectOutOfList" resultType="java.lang.String">
+		select 
+	    distinct standby_14
+	    from logistics where id in
+	    <foreach collection="list" separator="," item="id" open="(" close=")">
+	 	#{id}
+	 	</foreach>
+	</select>
+	
+	<!-- selectAll 查找所有用户信息 -->
+	<select id="selectAlls" resultMap="BaseResultMap">
+		select 
+   		<include refid="Base_Column_List" />
+   		from logistics
+   		where id in
+	    <foreach collection="ids" separator="," item="id" open="(" close=")">
+	 	#{id}
+	 	</foreach>
+		
+	</select>
+	
+	<!-- selectOutOfList  去重查找 -->
+	<select id="findWeight" resultType="com.sybinal.shop.model.WeightUpdate">
+		select hj_invoiceWeight as weight,hj_width as width,hj_height as height,hj_length as length,hj_referenceNo as referenceNo,hj_standy5 as labelKey FROM hj_base where hj_shipperHawbcode in (select f_ids FROM logistics where id 
+		in
+	    <foreach collection="list" separator="," item="id" open="(" close=")">
+	 	#{id}
+	 	</foreach>
+		) and hj_standy2 = 1
+	</select>
+	
+	
 	<!-- 批量查找id selectListid -->
 	<select id="selectListid"  resultMap="BaseResultMap">
 		select f.logistics_name as z,l.id, f_ids, f_old_order, f_old_purchase, f_client_order_code, f_store, f_pay_time, f_currency, f_total_price, f_china_short, f_first_name, f_last_name, f_country, 
@@ -173,6 +235,20 @@ standby_13,standby_14,standby_15,standby_16,update_time from logistics l LEFT JO
 			 #{id}
 		</foreach>
 	</select>
+	<!-- 批量查找跟踪号 -->
+	<select id="Tracking" resultType="java.util.Map">
+		select l.f_ids,l.id,y.yd_reference_no,y.yd_standy2,s.platform_order_id,s.`status`,h.reference_no,h.backup3,e.clno,e.standby3,j.hj_referenceNo,j.hj_standy2 from logistics l 
+		LEFT JOIN yd_base y on l.f_ids = y.yd_standy3
+		LEFT JOIN hm_logistics h on l.f_ids = h.buyer_id
+		LEFT JOIN sf_info s on l.f_ids = s.orderid 
+		LEFT JOIN eub e on l.f_ids = e.f_id
+		LEFT JOIN hj_base j on l.f_ids = j.hj_shipperHawbcode where l.id 
+		in
+		<foreach collection="ids" item="id" open="(" close=")" separator=",">
+			 #{id}
+		</foreach>
+	</select>
+	
 	<!-- 根据亚马逊编号查找stream postman-->
 	<select id="stream"  resultMap="BaseResultMap">
 		select <include refid="Base_Column_List" /> from logistics
@@ -816,6 +892,7 @@ standby_13,standby_14,standby_15,standby_16,update_time from logistics l LEFT JO
         standby_10 = #{labs,jdbcType=VARCHAR},
         standby_11 = #{num1,jdbcType=VARCHAR},
         standby_12 = #{method,jdbcType=VARCHAR}
+      <!--  standby_15 = #{referenceNo,jdbcType=VARCHAR} -->
       where f_ids = #{ids,jdbcType=INTEGER}  
       <if test="username != 'admin'">
      and standby_9 =  #{username,jdbcType=VARCHAR}
@@ -829,7 +906,8 @@ standby_13,standby_14,standby_15,standby_16,update_time from logistics l LEFT JO
 	    set
 	        standby_10 = #{idse.lab,jdbcType=VARCHAR},
 	        standby_11 = #{idse.num1,jdbcType=VARCHAR},
-	        standby_12 = #{idse.methosd,jdbcType=VARCHAR}
+	        standby_12 = #{idse.method,jdbcType=VARCHAR},
+        	standby_15 = #{idse.referenceNo,jdbcType=VARCHAR}
 	      where f_ids = #{idse.id2,jdbcType=INTEGER}  
 	      <if test="username != 'admin'">
 	     and standby_9 =  #{username,jdbcType=VARCHAR}
@@ -889,7 +967,7 @@ standby_13,standby_14,standby_15,standby_16,update_time from logistics l LEFT JO
   	<foreach collection="Lists" item="lists" separator=";">
 	    update logistics 
 	    set
-	        standby_11 = #{lists.trackNum1}
+	        standby_11 = #{lists.lableKey}
 	      where standby_15 = #{lists.referenceNo} and standby_17 != 1
     </foreach>
   </update>

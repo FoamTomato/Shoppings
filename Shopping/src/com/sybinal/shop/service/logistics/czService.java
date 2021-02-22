@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.sybinal.shop.model.czBase;
 import com.sybinal.shop.model.czBaseWithBLOBs;
-import com.sybinal.shop.model.hjBase;
 
 public interface czService {
 	/**
@@ -30,7 +29,7 @@ public interface czService {
 	* 创建时间：2020年4月1日 下午4:38:15   
 	* @version
 	 */
-	int defaultHj0Plus(List<hjBase> hjbasee);
+	/*int defaultHj0Plus(List<hjBase> hjbasee);*/
 	/**
 	 * 
 	*    

@@ -160,7 +160,7 @@ public class OutofController {
 	 */
 	@RequestMapping(value = "/Logistics/postOut",method=RequestMethod.POST)
 	@ResponseBody
-	public String postOut(@RequestBody Map <String,String> map) {
+	public List<Map<String, Object>> postOut(@RequestBody Map <String,String> map) {
 		return jpServices.postOut(map.get("idList").toString(), userService.Justiactions(FLogisticsController.username()).getStandby1());
 	}
 }

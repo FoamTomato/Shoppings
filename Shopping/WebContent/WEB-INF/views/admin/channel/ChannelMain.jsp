@@ -117,7 +117,7 @@ element-loading-background="rgba(0, 0, 0, 0.8)">
 							      prop="tag"
 							      label="标签"
 							      width="100"
-							      :filters="[{ text: '未激活', value: '1' }, { text: '环金', value: '2' }, { text: '义达', value: '3' }, { text: '创志', value: '4' }]"
+							      :filters="[{ text: '未激活', value: '1' }, { text: '环金', value: '2' }, { text: '义达', value: '3' }, { text: '创志', value: '4' }, { text: '顺丰', value: '5' }, { text: '广州EUB', value: '6' }, { text: '黑猫', value: '7' }]"
 							      :filter-method="filterTag"
 							      filter-placement="bottom-end">
 							     
@@ -214,6 +214,15 @@ element-loading-background="rgba(0, 0, 0, 0.8)">
 		        },{
 		        	lable:"创志",
 		        	value:"4"
+		        },{
+		        	lable:"顺丰",
+		        	value:"5"
+		        },{
+		        	lable:"EUB",
+		        	value:"6"
+		        },{
+		        	lable:"黑猫",
+		        	value:"7"
 		        }],//标签
 		      }
 		},
@@ -357,6 +366,12 @@ element-loading-background="rgba(0, 0, 0, 0.8)">
         		  return "义达"
         	  }else if(val=="4"){
         		  return "创志"
+        	  }else if(val=="5"){
+        		  return "顺丰"
+        	  }else if(val=="6"){
+        		  return "EUB"
+        	  }else if(val=="7"){
+        		  return "黑猫"
         	  }
           },
           changeColor(val){
@@ -367,6 +382,12 @@ element-loading-background="rgba(0, 0, 0, 0.8)">
         	  }else if(val=="3"){
         		  return "success"
         	  }else if(val=="4"){
+        		  return "warning"
+        	  }else if(val=="5"){
+        		  return "primary"
+        	  }else if(val=="6"){
+        		  return "success"
+        	  }else if(val=="7"){
         		  return "warning"
         	  }
         	  return "success"

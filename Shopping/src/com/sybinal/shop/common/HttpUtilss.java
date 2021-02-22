@@ -22,6 +22,8 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 
 import com.google.common.collect.Maps;
+import com.sybinal.shop.controller.HeiMao.Enums.HMConfig;
+import com.sybinal.shop.controller.HeiMao.Enums.HMEnumUrl;
 import com.sybinal.shop.controller.admin.EnumContentType;
 import com.sybinal.shop.controller.admin.SignDemo;
 
@@ -29,8 +31,8 @@ public class HttpUtilss {
 	private static int HTTP_TIMEOUT = 10000;
 	private static Logger logger=Logger.getLogger(HttpUtilss.class);
 	
-	public static void main(String[] args) {
-		StringBuilder sb = new StringBuilder();  
+	public static void main(String[] args) throws Exception {
+		/*StringBuilder sb = new StringBuilder();  
         sb.append("<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" + 
         		"    <s:Body>\n" + 
         		"        <GetLogisticsWay xmlns=\"http://tempuri.org/\"/>\n" + 
@@ -42,7 +44,7 @@ public class HttpUtilss {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.error("宝通达失败",e);
-		}
+		}*/
 	}
 	/**
 	 * 
@@ -68,8 +70,8 @@ public class HttpUtilss {
 	public static String doPost2(String urlPath, String params,
 			EnumContentType contentType) throws Exception {
 		Map<String, String> head = Maps.newHashMap();
-		head.put("SOAPAction", "http://tempuri.org/ILogisticsService/GetLogisticsWay");
-		head.put("Content-Type", "text/xml;charset=utf-8");
+		//head.put("SOAPAction", "http://tempuri.org/ILogisticsService/GetLogisticsWay");
+		head.put("Content-Type", "application/xml;charset=utf-8");
 		return doCall(urlPath, "POST", params, head, contentType, 30000);
 	}
 	
@@ -83,6 +85,20 @@ public class HttpUtilss {
 		head.put("Content-Type", "application/json");
 		String method = "POST";
 		return doCall(urlPath, "POST", params, head, contentType, timeout);
+	}
+	/**
+	* 黑猫物流
+	* @param 请求参数  请求方式
+	*/
+	public static String dohmPost(String params,HMEnumUrl enums
+			) throws Exception {
+		Map<String, String> head = Maps.newHashMap();
+		head.put("appToken", HMConfig.appToken);
+		head.put("appKey", HMConfig.appKey);
+		head.put("serviceMethod", enums.getUrl());
+		head.put("paramsJson", params);
+		String data=sendPost(HMConfig.url,head,"utf-8");
+		return data;
 	}
 	public static String doydPost(String urlPath, String params,
 			EnumContentType contentType, Integer timeout,String string) throws Exception {

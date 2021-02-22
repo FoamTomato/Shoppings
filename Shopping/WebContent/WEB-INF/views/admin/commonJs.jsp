@@ -45,7 +45,7 @@
 
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/admin/ztree/css/zTreeStyle/zTreeStyle.css">
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="${pageContext.request.contextPath}/resources/jss/vues.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/resources/admin/ztree/js/jquery.ztree.core.js"></script>
 <script type="text/javascript"

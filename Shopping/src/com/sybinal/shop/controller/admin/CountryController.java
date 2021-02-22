@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sybinal.shop.model.User;
 import com.sybinal.shop.model.countryCode;
 import com.sybinal.shop.service.country.CountryService;
+import com.sybinal.shop.service.user.UserService;
 /**
  * 添加渠道
 *    
@@ -28,7 +30,9 @@ import com.sybinal.shop.service.country.CountryService;
 public class CountryController {
 	
 	private static Logger logger=Logger.getLogger(CountryController.class);
-	
+
+	@Autowired
+	UserService userService;
 
 	@Autowired
 	CountryService country;
@@ -36,6 +40,9 @@ public class CountryController {
 	@RequestMapping(value = "transform", method = RequestMethod.GET)
 	public ModelAndView productList() {
 		ModelAndView model = new ModelAndView();
+		User user=new User();
+		user.setUserName(FLogisticsController.username());
+		model.addObject("jurisdiction", userService.jurisdiction(user));
 		model.setViewName("admin/country/CountryMain");
 		return model;
 	}

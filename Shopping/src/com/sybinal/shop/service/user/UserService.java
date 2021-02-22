@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
+import com.sybinal.shop.model.OrderIdentify;
 import com.sybinal.shop.model.User;
 
 /**
@@ -120,4 +121,16 @@ public interface UserService {
 	 * @return
 	 */
 	public List<User> user();
+	// 获取证明者
+	Map<String,Object> getCertifier(String string);
+	// 密钥比对
+	boolean passwordAuth(Map<String, Object> map, String username);
+	// 比对成功更改
+	boolean updateAuth(Map<String, Object> map, String username);
+	// 获取数量
+	Map<String,Object> getQuantitys(String username);
+	// 插入签名
+	void insertOrderIdentify(OrderIdentify order);
+	// 更新密钥
+	void updateSecrets(List<User> data);
 }

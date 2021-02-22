@@ -7,7 +7,6 @@
 
 	<http security="none" pattern="/api/v1/**" create-session="stateless" />
 	<http security="none" pattern="/api/v2/**" create-session="stateless" />
-	<http security="none" pattern="/amazon/**" create-session="stateless" />
 	<http security="none" pattern="/lazada/collback" create-session="stateless" />
 
 	<!-- enable use-expressions -->
@@ -17,10 +16,15 @@
 			<cache-control />
 		</headers>
 
+		<intercept-url pattern="/statistics/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/phoneCases/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/lazada/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/hj_new_api/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/order/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/test/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/hm/**" access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/eub/**" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/amazon/**" access="hasRole('ROLE_ADMIN')" />
 		
 		<!-- <intercept-url pattern="/swagger-ui.html" access="permitAll" />

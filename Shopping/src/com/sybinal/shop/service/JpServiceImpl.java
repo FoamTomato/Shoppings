@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
-import com.sybinal.shop.common.HttpUtilss;
 import com.sybinal.shop.controller.admin.EnumContentType;
-import com.sybinal.shop.controller.admin.FLogisticsController;
 import com.sybinal.shop.controller.admin.MapKeyComparator;
+import com.sybinal.shop.controller.admin.unit.HJ_API_CONNECT;
+import com.sybinal.shop.enums.HJApiEnum;
 import com.sybinal.shop.mapper.jpOrderMapper;
 import com.sybinal.shop.model.jpOrder;
 @Service
@@ -54,17 +54,49 @@ public class JpServiceImpl implements JpService {
 		return jpOrderMapper1.selectPrint(strings,map.get("usen"));
 	}
 	@Override
-	public String postOut(String string, String standby1) {
+	public List<Map<String, Object>> postOut(String string, String standby1) {
 		// TODO Auto-generated method stub
 		String[] split = string.split(",");
         List<String> strings = Arrays.asList(split);
-        String apiurl2=FLogisticsController.urls+"api/logistics/v1/track/dropinfo/summary";//http 请求路径
+       // String apiurl2=FLogisticsController.urls+"api/logistics/v1/track/dropinfo/summary";//http 请求路径
         Gson gson=new Gson();
         List<jpOrder> ordre=jpOrderMapper1.postOut(strings,standby1);
+        
+        List<Map<String,Object>> list=  new ArrayList<Map<String,Object>>();
+        
         //对map利用key排序
-        Map<String,Object> map2=new HashMap<>();
-
-        List<String> x=new ArrayList();
+        ordre.forEach(x->{
+            Map<String,Object> map2=new HashMap<>();
+    		map2.put("dropNo", x.getJpLaks());
+    		
+    		// 把所有的编号都进行截取
+    		String[] list_num2=x.getJpResult().split(",");
+    		
+    		// 数组进行list转换
+    		List<String> list_num = Arrays.asList(list_num2);
+    		
+    		map2.put("referenceNoList", list_num);
+    		map2.put("grossWeight", x.getJpRoughweight());
+    		map2.put("shippingMethod", x.getJpLogistic());
+    		list.add(map2);
+        });
+        System.err.println(list);
+        
+        // 结果存储
+        List<Map<String,Object>> result=new ArrayList<Map<String,Object>>();
+        list.forEach(y->{
+            Map<String,Object> map3=new HashMap<>();
+            try {
+				map3.put(y.get("dropNo").toString(),HJ_API_CONNECT.doPost(HJApiEnum.SUMMARY.getUri(), y,  EnumContentType.JSON, 30000));
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				map3.put(y.get("dropNo").toString(), e.getMessage());
+			}
+            result.add(map3);
+        });
+        
+        System.err.println(result);
+        /*List<String> x=new ArrayList();
         //集拼单号,从”生成集拼单号”接口中获取
 		 for(jpOrder result:ordre) {
 			map2.put("dropNo", result.getJpLaks());
@@ -86,8 +118,8 @@ public class JpServiceImpl implements JpService {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        }
-		return null;
+        }*/
+		return result;
 	}
 	/**
 	 * 让 Map按key进行排序

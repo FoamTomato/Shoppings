@@ -1,6 +1,7 @@
 package com.sybinal.shop.service.order;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,11 +33,11 @@ public class yidaServiceImpl implements yidaService {
 	/**
 	 * 修改默认
 	 */
-	@Override
+	/*@Override
 	public void defaultHj0(String hjShipperhawbcode) {
 		// TODO Auto-generated method stub
 		ydBases.defaultHj0(hjShipperhawbcode);
-	}
+	}*/
 	/**
 	 * 批量修改默认
 	 */
@@ -86,7 +87,14 @@ public class yidaServiceImpl implements yidaService {
 	@Override
 	public List<ydBase> selectYds(List<String> list) {
 		// TODO Auto-generated method stub
-		return ydBases.selectYds(list);
+		List<Integer> integerList1=null;
+		List<Integer> integerList2=null;
+		if(list.size()>0) {
+			integerList1=list.stream().map(Integer::valueOf).collect(Collectors.toList());
+			integerList2 =  integerList1.stream().sorted().filter(x -> !"".equals(x))
+            		.distinct().collect(Collectors.toList());
+		}
+		return ydBases.selectYds(integerList2);
 	}
 	@Override
 	public List<String> selectIDList(List<String> list) {

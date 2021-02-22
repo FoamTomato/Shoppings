@@ -30,7 +30,7 @@ public interface hjBaseMapper {
 
 	int delHJLogistics(hjBase hjBases);
 
-	int defaultHj0(@Param("hjStandy2") String hjStandy2,@Param("hjStandy9") String s);
+	/*int defaultHj0(@Param("hjStandy2") String hjStandy2,@Param("hjStandy9") String s);*/
 	
 	int defaultHj1(@Param("id") Integer id,@Param("hjStandy9") String s);
 

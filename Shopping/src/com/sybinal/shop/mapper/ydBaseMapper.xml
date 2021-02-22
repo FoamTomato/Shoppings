@@ -81,11 +81,27 @@
     yd_standy1, yd_standy2, yd_standy3, yd_standy4, yd_standy5, yd_standy6, yd_standy7, 
     yd_standy8, yd_standy9, yd_standy10, yd_standy11, yd_standy12
   </sql>
+  
+  <!-- 根据fid查询findIds -->
+  <select id="findIds" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yd_base
+    where yd_reference_no in (#{fids},(select standby_14 from logistics where f_ids=#{fids} and standby_14 is not null limit 0,1)) and yd_standy2 = "1" and  yd_standy7!="1" order by  yd_standy5 desc limit 0,1
+  </select>
+  
+  <!-- 根据fid查询findIds -->
+  <select id="findIds2" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from yd_base 
+    where yd_shipping_method_no = (select standby_11 from logistics where f_ids=#{fids} and standby_11 is not null limit 0,1) and yd_standy2 = "1" and  yd_standy7!="1" order by  yd_standy5 desc limit 0,1
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from yd_base
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and  yd_standy7!="1"
   </select>
   <!-- 查找 -->
   <select id="selectOrder" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -100,7 +116,7 @@
   <select id="selectAll"  resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from yd_base
+    from yd_base and  yd_standy7!="1"
   </select>
   
   <!-- selectYd查找默认 -->
@@ -119,7 +135,7 @@
  	<foreach collection="lists" separator="," item="list" open="(" close=")">
  	#{list}
  	</foreach>
-    and yd_standy2 = "1" and yd_standy7!="1"
+    and yd_standy2 = "1" and yd_standy7!="1" and yd_standy3 >(#{lists[0],jdbcType=INTEGER}-1)
   </select>
   <!-- 批量查询selectYdsId -->
   <select id="selectYdsId"  resultMap="BaseResultMap">
@@ -129,12 +145,12 @@
     where id in
  	<foreach collection="lists" separator="," item="list" open="(" close=")">
  	#{list}
- 	</foreach>
+ 	</foreach> and  yd_standy7!="1"
   </select>
   <!-- 批量查找参考号selectIDList -->
   <select id="selectIDList"  resultType="java.lang.String">
     select 
-    yd_reference_no
+    distinct yd_reference_no
     from yd_base
     where yd_standy3 in
  	<foreach collection="lists" separator="," item="list" open="(" close=")">
@@ -833,11 +849,11 @@
     </set>
     where yd_reference_no = #{ydReferenceNo,jdbcType=VARCHAR}
   </update>
-  <update id="defaultHj0" parameterType="com.sybinal.shop.model.ydBase">
+  <!-- <update id="defaultHj0" parameterType="com.sybinal.shop.model.ydBase">
   	update yd_base
     set yd_standy2 = "0"
     where yd_standy3=#{ids,jdbcType=VARCHAR}
-  </update>
+  </update> -->
   <!-- 批量修改默认 -->
   <update id="defaultHj0Plus" parameterType="com.sybinal.shop.model.ydBase">
   	update yd_base

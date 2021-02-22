@@ -33,5 +33,5 @@ public interface JpService {
 	 * @param standby1
 	 * @return
 	 */
-	String postOut(String string, String standby1);
+	List<Map<String, Object>> postOut(String string, String standby1);
 }

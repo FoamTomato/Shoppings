@@ -13,7 +13,7 @@
             </a>
         </div>
         <ul class="nav" id="side-menu">
-        		<c:if test="${fn:contains(jurisdiction.jurisdiction,'qx')}">
+        		<c:if test="${fn:contains(jurisdiction.jurisdiction,'classifys_product')}">
 	            <li id="leftMenuProduct" class="sidebar-search">
 	                <a href="#"><span class="nav-label">商品管理</span><span class="fa arrow"></span> </a>
 	                <ul class="nav nav-second-level">
@@ -22,6 +22,8 @@
 	                   <%-- <li><a href="${pageContext.request.contextPath}/admin/optionInfo">属性管理</a></li> --%>
 	                </ul>
 	            </li> 
+            	</c:if>
+        		<c:if test="${fn:contains(jurisdiction.jurisdiction,'orders')}">
 	            <li id="leftMenuProduct" >
 	                <a href="#"><span class="nav-label">订单管理</span><span class="fa arrow"></span> </a>
 	                <ul class="nav nav-second-level" >
@@ -31,8 +33,11 @@
 	                    <li><a href="${pageContext.request.contextPath}/Logistics/tail">查看跟踪</a></li>
 	                    <li><a href="${pageContext.request.contextPath}/Logistics/channel/add">渠道更改</a></li>
 	                    <li><a href="${pageContext.request.contextPath}/Logistics/country/transform">国家更改</a></li>
+	                    <li><a href="${pageContext.request.contextPath}/statistics/skip">订单统计</a></li>
 	                </ul>
 	            </li>
+	            </c:if>
+        		<c:if test="${fn:contains(jurisdiction.jurisdiction,'Users')}">
 				 <li id="leftMenuArticle">
 	                <a href="#"><span class="nav-label">用户管理</span><span class="fa arrow"></span> </a>
 	                <ul class="nav nav-second-level">
@@ -40,6 +45,9 @@
 		                   <li> <a href="${pageContext.request.contextPath}/admin/user"><span class="nav-label">用户列表</span></a></li>
 	                </ul>
 	            </li>
+	            </c:if>
+	            
+        		<c:if test="${fn:contains(jurisdiction.jurisdiction,'qx')}">
 	            <li id="leftMenuArticle">
 	                <a href="#"><span class="nav-label">邮件管理</span><span class="fa arrow"></span> </a>
 	                <ul class="nav nav-second-level">
@@ -52,6 +60,7 @@
 	                <a href="#"><span class="nav-label">亚马逊</span><span class="fa arrow"></span> </a>
 	                <ul class="nav nav-second-level">
 		                    <li><a href="${pageContext.request.contextPath}/amazon/postProduct">上传产品</a></li>
+		                    <li><a href="${pageContext.request.contextPath}/amazon/TransferAccountAuthorization">账户授权</a></li>
 	                </ul>
             	</li>
             	</c:if>
@@ -71,6 +80,7 @@
 	            <li id="leftMenuArticle">
 	                <a href="#"><span class="nav-label">手机壳</span><span class="fa arrow"></span> </a>
 	                <ul class="nav nav-second-level">
+		                    <li><a href="${pageContext.request.contextPath}/phoneCases/classAngles">角度管理</a></li>
 		                    <li><a href="${pageContext.request.contextPath}/phoneCases/classification">品类管理</a></li>
 		                    <li><a href="${pageContext.request.contextPath}/phoneCases/customization">定制壳</a></li>
 		                    <li><a href="${pageContext.request.contextPath}/phoneCases/historyCustomization">历史定制</a></li>

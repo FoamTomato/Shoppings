@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sybinal.shop.controller.admin.unit.SnowIdUtils;
 import com.sybinal.shop.service.logOutOfService;
 import com.sybinal.shop.service.excel.ExcelService;
 import com.sybinal.shop.service.user.UserService;
@@ -335,6 +336,26 @@ public class ExcelController {
 	                }
 	                System.out.println("---Sheet表"+i+"处理完毕---");
 	            }}*/
+	        try {
+	            OutputStream output  = response.getOutputStream();
+	            BufferedOutputStream bufferedOutPut = new BufferedOutputStream(output);
+	            workbook.write(bufferedOutPut);
+	            bufferedOutPut.flush();
+	            bufferedOutPut.close();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	}
+	/**
+	 * 导出跟踪号
+	 */
+	@RequestMapping(value = "/admin/export/Tracking",method=RequestMethod.POST)
+	@ResponseBody
+	public void Tracking(String idList5,HttpServletResponse response) {
+	        response.setContentType("application/vnd.ms-excel");  
+	        response.setHeader("Content-disposition", "attachment;filename=price-"+SnowIdUtils.uniqueLong()+".xlsx;charset=UTF-8");
+	        XSSFWorkbook workbook = excelService.Tracking(idList5);//idList
+	        
 	        try {
 	            OutputStream output  = response.getOutputStream();
 	            BufferedOutputStream bufferedOutPut = new BufferedOutputStream(output);

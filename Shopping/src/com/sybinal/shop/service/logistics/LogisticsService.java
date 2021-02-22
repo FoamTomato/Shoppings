@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.sybinal.shop.common.AjaxResult;
 import com.sybinal.shop.model.FLogistics;
+import com.sybinal.shop.model.WeightUpdate;
 import com.sybinal.shop.model.Xlogistics;
 import com.sybinal.shop.model.countryCode;
 import com.sybinal.shop.model.hjBase;
@@ -59,7 +60,7 @@ public interface LogisticsService {
 	/*
 	 * 默认状态
 	 */
-	int default0(String hjShipperhawbcode);
+	/*int default0(String hjShipperhawbcode);*/
 	/*
 	 * 默认状态
 	 */
@@ -162,7 +163,7 @@ public interface LogisticsService {
 	* 创建时间：2020年3月9日 下午5:46:37   
 	* @version
 	 */
-	List<String> selectIDList(List<String> list);
+	List<String> selectIDList(List<Integer> list);
 	/**
 	 * 查询详情（单个）
 	*    
@@ -243,5 +244,38 @@ public interface LogisticsService {
 	* @version
 	 */
 	List<countryCode> countryCodes() ;
+	/**
+	 * 查找集拼id去重！
+	*    
+	* 项目名称：Shopping   
+	* 类描述：   
+	* 创建人：PC1   
+	* 创建时间：2020年9月22日 下午4:50:51   
+	* @version
+	 */
+	List<String> selectOutOfList(List<String> list);
+	
+	/**
+	 *  查找选中商品的重量
+	*    
+	* 项目名称：Shopping   
+	* 类描述：   
+	* 创建人：PC1   
+	* 创建时间：2020年10月28日 下午4:57:50   
+	* @version
+	 */
+	List<WeightUpdate> findWeight(List<Integer> list);
+	/**
+	 * 查询选中的订单基本信息
+	*    
+	* 项目名称：Shopping   
+	* 类描述：   
+	* 创建人：PC1   
+	* 创建时间：2021年2月7日 下午3:50:34   
+	* @version
+	 */
+	List<FLogistics> detectOrder(List<Integer> list);
+	
+	
 
 }

@@ -24,7 +24,7 @@ public interface XlogisticsMapper {
 	
 	Xlogistics selLogisticsQuantity(Integer id);
 
-	int default0(@Param("xp") String s);
+	/*int default0(@Param("xp") String s);*/
 
 	int default1(@Param("id") Integer id);
 

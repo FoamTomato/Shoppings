@@ -1095,7 +1095,7 @@ $(function() {
 					dets+=content.word==undefined?"":content.word
 					datas["word"]=dets
 					//ajiox请求方式
-					this.$http.post("http://www.ec-sudo.com:8080/trans",datas).then(result=>{
+					this.$http.post("https://www.ec-sudo.com:8080/trans",datas).then(result=>{
 						let leng=result.body.message
 						this.languages.en=this.tile(leng.en)
 						this.languages.zh=this.tile(leng.zh)

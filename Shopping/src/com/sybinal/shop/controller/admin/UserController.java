@@ -50,6 +50,7 @@ public class UserController {
 		model.setViewName("admin/user/userInfoMain");
 		return model;
 	}
+	
 	/**
 	 * 查找角色名admin/username
 	 * @param userId

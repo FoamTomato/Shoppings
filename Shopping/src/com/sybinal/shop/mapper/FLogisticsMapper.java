@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.sybinal.shop.model.FLogistics;
+import com.sybinal.shop.model.WeightUpdate;
 import com.sybinal.shop.model.hjBase;
 
 
@@ -46,7 +47,7 @@ public interface FLogisticsMapper {
      * @return: List<FLogistics>    返回类型  
      * @throws
      */
-	List<FLogistics> selectAll(@Param("list") Map<String, String> map,@Param("content") List<String> strings);
+	List<FLogistics> selectAll(@Param("list") Map<String, String> map,@Param("content") Object strings);
 
 	List<FLogistics> selStatusOrder(@Param("flog")FLogistics fLogistics,@Param("let") List<String> strings,@Param("uks") String uks);
 	
@@ -59,7 +60,7 @@ public interface FLogisticsMapper {
 	int postLogistics(@Param("id")String id,@Param("username")String username);
 
 	int insertLableKey(@Param("ids") String id,@Param("labs") String lab,@Param("num1") String num1,@Param("method") String method,@Param("username") String username);//,@Param("num2") String num2
-
+	//@Param("referenceNo") String referenceNo,
 	int updatajp(@Param("jpResult") String jpResult,@Param("updatajp") String updatajp,@Param("nos") String nos,@Param("username") String username);
 
 	int batdel(@Param("lit") List<String> strings);
@@ -127,7 +128,7 @@ public interface FLogisticsMapper {
 	* 创建时间：2020年3月9日 下午5:47:26   
 	* @version
 	 */
-	List<String> selectIDList(@Param("list")List<String> list);
+	List<String> selectIDList(@Param("list")List<Integer> list);
 	/**
 	 * 批量添加标签
 	*    
@@ -158,5 +159,38 @@ public interface FLogisticsMapper {
 	* @version
 	 */
 	int postLogisticsList(@Param("hjBases")List<String> hjBases, String standby1);
+	/**&
+	 * 去重查询
+	*    
+	* 项目名称：Shopping   
+	* 类描述：   
+	* 创建人：PC1   
+	* 创建时间：2020年9月22日 下午4:51:51   
+	* @version
+	 */
+	List<String> selectOutOfList(@Param("list")List<String> list);
+	/**
+	 * 根据id查找所有的订单重量
+	*    
+	* 项目名称：Shopping   
+	* 类描述：   
+	* 创建人：PC1   
+	* 创建时间：2020年10月28日 下午4:59:13   
+	* @version
+	 */
+	List<WeightUpdate> findWeight(@Param("list") List<Integer> list);
+	
+	// 根据id查询所有订单信息
+	List<FLogistics> selectAlls(@Param("ids") List<Integer> ids);
+	/**
+	 * 
+	* @Title Shopping   
+	* @Package com.sybinal.shop.mapper
+	* @Description: TODO 查询跟踪号
+	* @author PC1  
+	* @date 2021年2月20日 上午11:19:47   
+	* @version V1.0
+	 */
+	List<Map<String,String>> Tracking(@Param("ids")List<String> strings);
  
 }

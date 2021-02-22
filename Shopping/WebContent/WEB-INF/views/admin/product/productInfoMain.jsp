@@ -820,7 +820,7 @@ element-loading-background="rgba(0, 0, 0, 0.8)">
   <div style="overflow: auto;height:600px">
   <span v-for="item in imglists">
   	<div style="width:20%"><img style="float: left;margin:3px;" :src="'${pageContext.request.contextPath}'+item" width="60px" height="60px"></div>
-  	<a style="float: right;height:60px;width:80%" @click="copys('localhost:11080${pageContext.request.contextPath}'+item)">{{"localhost:11080${pageContext.request.contextPath}"+item}}</a>
+  	<a style="float: right;height:60px;width:80%" @click="copys('${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}'+item)">{{"${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}"+item}}</a>
   </span>
   </div>
 </el-dialog>

@@ -1,6 +1,7 @@
 package com.sybinal.shop.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -109,5 +110,11 @@ public interface UserMapper {
 	 * @return
 	 */
 	List<User> user();
+
+	boolean updateByName(String username);
+	// 获取数量
+	Map<String, Object> getQuantitys(@Param("username")String username);
+	// 更新密钥
+	void updates(@Param("data")List<User> data);
 
 }

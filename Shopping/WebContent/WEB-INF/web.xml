@@ -22,7 +22,7 @@
   </listener>
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>/WEB-INF/spring-core-config.xml,/WEB-INF/spring-security.xml,/WEB-INF/spring-mongodb.xml,/WEB-INF/spring-redis-config.xml</param-value>
+    <param-value>/WEB-INF/spring-core-config.xml,/WEB-INF/spring-security.xml,/WEB-INF/spring-mongodb.xml</param-value><!-- ,/WEB-INF/spring-redis-config.xml -->
   </context-param>
   <filter>
     <filter-name>encodingFilter</filter-name>

@@ -41,10 +41,6 @@ public interface hjService {
 	  *删除运单
 	  */
 	int delHJLogistics(hjBase hjBases);
-	/*
-	 * 修改默认
-	 */
-	int defaultHj0(String hjStandy2);
 	/**
 	 * 批量修改默认
 	*    

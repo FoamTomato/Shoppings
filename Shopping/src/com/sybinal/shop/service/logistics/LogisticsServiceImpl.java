@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import com.sybinal.shop.mapper.countryCodeMapper;
 import com.sybinal.shop.mapper.hjBaseMapper;
 import com.sybinal.shop.mapper.logistictoidMapper;
 import com.sybinal.shop.model.FLogistics;
+import com.sybinal.shop.model.WeightUpdate;
 import com.sybinal.shop.model.Xlogistics;
 import com.sybinal.shop.model.countryCode;
 import com.sybinal.shop.model.hjBase;
@@ -45,10 +47,32 @@ public class LogisticsServiceImpl implements LogisticsService {
 	@Override
 	public List<FLogistics> checkTheOrder(Map<String,String>map) {
 		// TODO Auto-generated method stub
-
-		String[] split=map.get("orderNum").split(",");
-        List<String> strings = Arrays.asList(split);
-		return LogisticsMapper.selectAll(map,strings); 
+		
+		List<FLogistics> result=null;
+        if(!"".equals(map.get("orderNum"))) {
+        	String[] split=map.get("orderNum").replace(" ", ",").replace(" ", ",").replace("，", ",").replace("|", ",").split(",");
+            List<String> strings = Arrays.asList(split);
+            if("0".equals(map.get("StatusOrder2"))) {
+                List<Integer> integerList1=null;
+            	try {
+    				integerList1 = strings.stream().map(Integer::valueOf).collect(Collectors.toList());
+    			} catch (Exception e) {
+    				// TODO Auto-generated catch block
+    				return null;
+    			}
+            	// f_id查询
+                List<Integer> integerList2 =  integerList1.stream().sorted().filter(x -> !"".equals(x))
+                		.distinct().collect(Collectors.toList());
+                result = LogisticsMapper.selectAll(map,integerList2); 
+	        }else {
+	        	// 其他条件查询
+                result = LogisticsMapper.selectAll(map,strings); 
+	        }
+        }else{
+        	// 为空查询
+        	result = LogisticsMapper.selectAll(map,null); 
+        }
+        return result;
 	}
 	@Override
 	public List<FLogistics> selectListid(String stringss) {
@@ -143,11 +167,11 @@ public class LogisticsServiceImpl implements LogisticsService {
 		// TODO Auto-generated method stub
 		return LogisticsMapper.updateByPrimaryKeySelective(fLogistics);
 	}
-	@Override
+	/*@Override
 	public int default0(String hjShipperhawbcode) {
 		// TODO Auto-generated method stub
 		return xLogisticsMapper.default0(hjShipperhawbcode);
-	}
+	}*/
 	/**
 	 * 批量改默认
 	 */
@@ -363,7 +387,7 @@ public class LogisticsServiceImpl implements LogisticsService {
 		LogisticsMapper.defaulData(hjStandy1,username,integer,standy7,string8);
 	}
 	@Override
-	public List<String> selectIDList(List<String> list) {
+	public List<String> selectIDList(List<Integer> list) {
 		// TODO Auto-generated method stub
 		return LogisticsMapper.selectIDList(list);
 	}
@@ -396,6 +420,22 @@ public class LogisticsServiceImpl implements LogisticsService {
 	public List<countryCode> countryCodes() {
 		// TODO Auto-generated method stub
 		return countryCodes.selectAll();
+	}
+	@Override
+	public List<String> selectOutOfList(List<String> list) {
+		// TODO Auto-generated method stub
+		return LogisticsMapper.selectOutOfList(list);
+	}
+	
+	@Override
+	public List<WeightUpdate> findWeight(List<Integer> list) {
+		// TODO Auto-generated method stub
+		return LogisticsMapper.findWeight(list);
+	}
+	@Override
+	public List<FLogistics> detectOrder(List<Integer> list) {
+		// TODO Auto-generated method stub
+		return LogisticsMapper.selectAlls(list);
 	}
 	
 }

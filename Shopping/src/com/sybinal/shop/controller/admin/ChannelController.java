@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sybinal.shop.model.User;
 import com.sybinal.shop.model.logOutOf;
 import com.sybinal.shop.service.logOutOfService;
+import com.sybinal.shop.service.user.UserService;
 /**
  * 添加渠道
 *    
@@ -28,7 +30,9 @@ import com.sybinal.shop.service.logOutOfService;
 public class ChannelController {
 	
 	private static Logger logger=Logger.getLogger(ChannelController.class);
-	
+
+	@Autowired
+	UserService userService;
 
 	@Autowired
 	logOutOfService logout;
@@ -36,6 +40,9 @@ public class ChannelController {
 	@RequestMapping(value = "add", method = RequestMethod.GET)
 	public ModelAndView productList() {
 		ModelAndView model = new ModelAndView();
+		User user=new User();
+		user.setUserName(FLogisticsController.username());
+		model.addObject("jurisdiction", userService.jurisdiction(user));
 		model.setViewName("admin/channel/ChannelMain");
 		return model;
 	}

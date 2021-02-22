@@ -22,11 +22,18 @@ public class HttpClientToolImpl implements HttpClientTool {
 
 	private static final Log log = LogFactory.getLog(HttpClientToolImpl.class);
 
-	@Autowired
+	
 	private CloseableHttpClient httpClient;
-	@Autowired
+	
 	private RequestConfig requestConfig;
-
+	
+	
+    @Autowired
+    public void init(CloseableHttpClient httpClient,RequestConfig requestConfig) {
+        this.httpClient = httpClient;
+        this.requestConfig = requestConfig;
+    }
+	
 	@Value("${api.url}")
 	private String apiURL;
 

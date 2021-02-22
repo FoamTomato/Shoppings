@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Param;
 
 import com.sybinal.shop.model.czBase;
 import com.sybinal.shop.model.czBaseWithBLOBs;
-import com.sybinal.shop.model.hjBase;
 
 public interface czBaseMapper {
     int deleteByPrimaryKey(Integer id);
@@ -41,7 +40,7 @@ public interface czBaseMapper {
 	* 创建时间：2020年4月1日 下午4:39:42   
 	* @version
 	 */
-	int defaultHj0Plus(@Param("hjList")List<hjBase> cz);
+	/*int defaultHj0Plus(@Param("hjList")List<hjBase> cz);*/
 	/**
 	 * 批量清空默认
 	*    

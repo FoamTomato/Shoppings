@@ -11,7 +11,7 @@ public interface yidaService {
 
 	List<ydBase> selectOrder(String string, String standby1, String getfIds);
 	//修改为0
-	void defaultHj0(String hjShipperhawbcode);
+	/*void defaultHj0(String hjShipperhawbcode);*/
 	//修改为1
 	int default2(Integer valueOf);
 	//获取默认的

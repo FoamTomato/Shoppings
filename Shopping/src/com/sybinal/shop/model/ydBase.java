@@ -55,7 +55,13 @@ public class ydBase {
 
     private String ydConsigneeCompany;
 
-    @Override
+    
+    public ydBase() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
 	public String toString() {
 		return "ydBase [id=" + id + ", ydReferenceNo=" + ydReferenceNo + ", ydShippingMethod=" + ydShippingMethod
 				+ ", ydShippingMethodNo=" + ydShippingMethodNo + ", ydOrderWeight=" + ydOrderWeight + ", ydOrderPieces="

@@ -2,7 +2,7 @@
 <configuration>
 <!--<property name="log.base" value="${log_dir}/" />--><!--配置日志输出路径（测试配置）-->
 	<!-- 路径名称 -->
-<property name="log.base" value="F:/Foam番茄日志/logs/" />
+<property name="log.base" value="../logs/" />
 <!-- 保存的文件名 -->
 <!-- <property name="log.fileName" value="log" /> -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">

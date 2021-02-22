@@ -82,12 +82,6 @@ public class hjServiceImpl implements hjService {
 		return hjBasesMapper.deleteByPrimaryKey(hjBases.getId(),hjBases.getHjStandy9());
 	}
 
-	@Override
-	public int defaultHj0(String hjStandy2) {
-		// TODO Auto-generated method stub
-		String usernames=userService.Justiactions(FLogisticsController.username()).getStandby1();
-		return hjBasesMapper.defaultHj0(hjStandy2,usernames);
-	}
 	/**
 	 * 批量添加默认
 	 */

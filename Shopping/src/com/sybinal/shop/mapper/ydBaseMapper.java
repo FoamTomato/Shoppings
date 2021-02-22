@@ -22,7 +22,7 @@ public interface ydBaseMapper {
     //查找义达订单
 	List<ydBase> selectOrder(@Param("id")String id, @Param("standby1")String standby1, @Param("getfIds")String getfIds);
 	//修改默认未0
-	void defaultHj0(@Param("ids")String hjShipperhawbcode);
+	/*void defaultHj0(@Param("ids")String hjShipperhawbcode);*/
 	//修改默认未1
 	int default2(@Param("id")Integer valueOf);
 	//查找默认订单
@@ -60,7 +60,7 @@ public interface ydBaseMapper {
 	* 创建时间：2020年3月9日 下午5:34:22   
 	* @version
 	 */
-	List<ydBase> selectYds(@Param("lists")List<String> list);
+	List<ydBase> selectYds(@Param("lists")List<Integer> list);
 	/**
 	 * 查询参考号
 	*    
@@ -93,4 +93,7 @@ public interface ydBaseMapper {
 	* @version
 	 */
 	int defaultHj0Plus(@Param("hjList")List<hjBase> hjList);
+
+	ydBase findIds(@Param("fids") String fids);
+	ydBase findIds2(@Param("fids") String fids);
 }

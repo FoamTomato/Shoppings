@@ -17,7 +17,7 @@ public class LoginController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public ModelAndView login(@RequestParam(value = "error", required = false) String error,
-			@RequestParam(value = "logout", required = false) String logout) {
+			@RequestParam(value = "logout", required = false) String logout,@RequestParam(value = "trues", required = false) String trues) {
 
 		ModelAndView model = new ModelAndView();
 		if (error != null) {
@@ -26,6 +26,10 @@ public class LoginController {
 
 		if (logout != null) {
 			model.addObject("msg", "您已成功退出系统！");
+		}
+		
+		if (trues != null) {
+			model.addObject("error", "您没进行货物确认！");
 		}
 		model.setViewName("admin/login/login");
 		return model;
@@ -39,6 +43,14 @@ public class LoginController {
 		return "redirect:/login?logout";
 	}
 
+	@RequestMapping(value = "/trues", method = RequestMethod.GET)
+	public String trues(HttpServletRequest request, HttpServletResponse response) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null)
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+		return "redirect:/login?trues";
+	}
+	
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public ModelAndView login() {
 		ModelAndView model = new ModelAndView();

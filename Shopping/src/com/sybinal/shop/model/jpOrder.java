@@ -1,6 +1,5 @@
 package com.sybinal.shop.model;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class jpOrder {
@@ -153,4 +152,14 @@ public class jpOrder {
     public void setJpResult(String jpResult) {
         this.jpResult = jpResult == null ? null : jpResult.trim();
     }
+
+	@Override
+	public String toString() {
+		return "jpOrder [id=" + id + ", jpLaks=" + jpLaks + ", jpTime=" + jpTime + ", jpLogistic=" + jpLogistic
+				+ ", jpLength=" + jpLength + ", jpSuttle=" + jpSuttle + ", jpRoughweight=" + jpRoughweight
+				+ ", jpAdmin=" + jpAdmin + ", jpStandby1=" + jpStandby1 + ", jpStandby2=" + jpStandby2 + ", jpStandby3="
+				+ jpStandby3 + ", jpStandby4=" + jpStandby4 + ", jpStandby5=" + jpStandby5 + ", jpStandby6="
+				+ jpStandby6 + ", jpResult=" + jpResult + "]";
+	}
+    
 }

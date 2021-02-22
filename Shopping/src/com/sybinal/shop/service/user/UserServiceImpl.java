@@ -12,10 +12,12 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sybinal.shop.mapper.OrderIdentifyMapper;
 import com.sybinal.shop.mapper.UserMapper;
 import com.sybinal.shop.mapper.UserRolesMapper;
 import com.sybinal.shop.mapper.rolesMapper;
 import com.sybinal.shop.mapper.userShortRoleMapper;
+import com.sybinal.shop.model.OrderIdentify;
 import com.sybinal.shop.model.User;
 import com.sybinal.shop.model.UserExample;
 import com.sybinal.shop.model.UserRoles;
@@ -41,6 +43,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	rolesMapper rolw;
+
+	@Autowired
+	OrderIdentifyMapper orderIdentifyMapper;
 	@Override
 	@Transactional
 	public int saveUser(User user) throws IllegalAccessException, InvocationTargetException {
@@ -302,6 +307,51 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return userMapper.user();
 	}
+
+
+	@Override
+	public Map<String,Object> getCertifier(String user) {
+		// TODO Auto-generated method stub
+		return orderIdentifyMapper.getCertifier(user);
+	}
+
+
+	@Override
+	public boolean passwordAuth(Map<String, Object> map, String username) {
+		// TODO Auto-generated method stub
+		return orderIdentifyMapper.passwordAuth(map,username);
+	}
+
+
+	@Override
+	public boolean updateAuth(Map<String, Object> map, String username) {
+		// TODO Auto-generated method stub
+		if(userMapper.updateByName(username)&&orderIdentifyMapper.updateByName(map,username))
+			return true;
+		return false;
+	}
+
+
+	@Override
+	public Map<String, Object> getQuantitys(String username) {
+		// TODO Auto-generated method stub
+		return userMapper.getQuantitys(username);
+	}
+
+
+	@Override
+	public void insertOrderIdentify(OrderIdentify order) {
+		// TODO Auto-generated method stub
+		orderIdentifyMapper.insertSelective(order);
+	}
+
+
+	@Override
+	public void updateSecrets(List<User> data) {
+		// TODO Auto-generated method stub
+		userMapper.updates(data);
+	}
+
 
 	
 }

@@ -494,18 +494,20 @@
 					if(this.idList==""){
 						 toastr.error("请选择需要发送的集拼");
 						 return false;
-					 }
+					}
+					console.log(this.idList)
 					let datas={}
 					datas["idList"]=this.idList
 					this.$http.post("Logistics/postOut?${_csrf.parameterName}=${_csrf.token}",JSON.stringify(datas),{emulateJSON:true}).then(result=>{
-						if(result.body.status==1){
-							toastr.success("集拼成功")	
-						}else if(result.body.status==0){
-							toastr.error("集拼失败"+result.body.errormsg)	
-							console.log(result.body.errormsg)
-						}else{
-							toastr.warn("集拼发送未获取到结果")	
+						let results=""
+						for(let c=0;c<result.body.length;c++){
+							for(var key in result.body[c]){
+							  if(result.body[c].hasOwnProperty(key)){
+							  	results+="<p>"+key+":"+result.body[c][key]+'</p>';
+							　}
+							}
 						}
+						Swal.fire("结果", results, "success");
 					})
 				}
 			},

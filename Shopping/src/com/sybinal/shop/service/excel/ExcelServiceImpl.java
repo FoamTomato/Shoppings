@@ -4,6 +4,7 @@ import java.beans.IntrospectionException;
 import java.io.File;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,11 +43,15 @@ import com.sybinal.shop.common.Task;
 import com.sybinal.shop.common.logisticsChange;
 import com.sybinal.shop.controller.admin.FLogisticsController;
 import com.sybinal.shop.controller.admin.LazadaController;
+import com.sybinal.shop.controller.admin.unit.SnowIdUtils;
 import com.sybinal.shop.mapper.DTfzyingsMapper;
 import com.sybinal.shop.mapper.DTstockMapper;
 import com.sybinal.shop.mapper.DTstocksMapper;
+import com.sybinal.shop.mapper.EUBMapper;
+import com.sybinal.shop.mapper.EubInvoiceMapper;
 import com.sybinal.shop.mapper.FLogisticsMapper;
 import com.sybinal.shop.mapper.GlogisticsMapper;
+import com.sybinal.shop.mapper.HmLogisticsMapper;
 import com.sybinal.shop.mapper.OnlineDownloadMapper;
 import com.sybinal.shop.mapper.UserMapper;
 import com.sybinal.shop.mapper.countryCodeMapper;
@@ -55,18 +60,27 @@ import com.sybinal.shop.mapper.hjBaseMapper;
 import com.sybinal.shop.mapper.jpOrderMapper;
 import com.sybinal.shop.mapper.logOutOfMapper;
 import com.sybinal.shop.mapper.logistictoidMapper;
+import com.sybinal.shop.mapper.sfGoodsMapper;
+import com.sybinal.shop.mapper.sfInfoMapper;
+import com.sybinal.shop.mapper.ydBaseMapper;
 import com.sybinal.shop.model.DTfzyingsWithBLOBs;
 import com.sybinal.shop.model.DTstock;
+import com.sybinal.shop.model.EUB;
+import com.sybinal.shop.model.EubInvoice;
 import com.sybinal.shop.model.ExcelBean;
 import com.sybinal.shop.model.Exportstock;
 import com.sybinal.shop.model.FLogistics;
 import com.sybinal.shop.model.Glogistics;
+import com.sybinal.shop.model.HmLogistics;
 import com.sybinal.shop.model.LazadaCate;
 import com.sybinal.shop.model.freightPreview;
 import com.sybinal.shop.model.hjBase;
 import com.sybinal.shop.model.jpOrder;
 import com.sybinal.shop.model.logOutOf;
 import com.sybinal.shop.model.logistictoid;
+import com.sybinal.shop.model.sfGoods;
+import com.sybinal.shop.model.sfInfo;
+import com.sybinal.shop.model.ydBase;
 
 
 @Service
@@ -80,6 +94,13 @@ public class ExcelServiceImpl implements ExcelService{
 	
 	@Autowired
 	hjBaseMapper hjbaseMapper;
+
+	@Autowired
+	EUBMapper eubMapper;
+	
+
+	@Autowired
+	EubInvoiceMapper eubInvoiceMapper;
 	
 	@Autowired
 	jpOrderMapper jpMapper;
@@ -107,7 +128,19 @@ public class ExcelServiceImpl implements ExcelService{
 
 	@Autowired
 	logOutOfMapper logout;
-
+	
+	@Autowired
+	ydBaseMapper ydBase;
+	
+	@Autowired
+	sfInfoMapper sfBase;
+	
+	@Autowired
+	sfGoodsMapper sfGoodsBase;
+	
+	@Autowired
+	HmLogisticsMapper hmLogistics;
+	
 	@Autowired
 	countryCodeMapper codes;
 	private static Logger logger = Logger.getLogger(ExcelServiceImpl.class);
@@ -135,7 +168,11 @@ public class ExcelServiceImpl implements ExcelService{
                  * 4.前端添加运单进行物流调用*
                  *5
                  */
-                FLogisticsInfo.setfIds(String.valueOf(listob.get(i).get(0)));
+                //Number num = Float.parseFloat(String.valueOf(listob.get(i).get(0)));
+
+                BigDecimal db = new BigDecimal(listob.get(i).get(0)+"");
+                System.err.println(db.toPlainString());
+                FLogisticsInfo.setfIds(db.toPlainString());
                 
                 /*
                                           * 旧单号
@@ -158,7 +195,7 @@ public class ExcelServiceImpl implements ExcelService{
 				*/
 				DateFormat format = new SimpleDateFormat("yyyy/MM/dd"); 
 				//FLogisticsInfo.setfPayTime(format.parse(String.valueOf(listob.get(i).get(6))));
-				if(String.valueOf(listob.get(i).get(2))!=""&&String.valueOf(listob.get(i).get(2))!=null) {
+				if(!"".equals(String.valueOf(listob.get(i).get(2)))&&String.valueOf(listob.get(i).get(2))!=null) {
 					FLogisticsInfo.setfPayTime(format.parse(String.valueOf(listob.get(i).get(2))));
 				}
                 /*
@@ -425,8 +462,14 @@ public class ExcelServiceImpl implements ExcelService{
 	public XSSFWorkbook exportExcelInfo3(String idList) {//String idList
         XSSFWorkbook xssfWorkbook=null;
 
-        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd"); 
-        hjBase hjlist=new hjBase();
+        //DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd"); 
+        hjBase hjlist=null;
+        ydBase ydlist=null;
+        sfInfo sflist=null;
+        sfGoods goods=null;
+        EUB eub=null;
+        EubInvoice invoice=null;
+        HmLogistics hm=null;
         SimpleDateFormat ft=new SimpleDateFormat("yyyy/MM/dd");
 
         String username=userService.Justiactions(FLogisticsController.username()).getStandby1();
@@ -440,23 +483,147 @@ public class ExcelServiceImpl implements ExcelService{
             	
             	fLogisticsMapper.updateStatues(strings);
             	for(Glogistics s:fLogisticsInfoList) {
-            		hjlist=hjbaseMapper.selectByPrimaryKeyse(s.getFids(),username);
-
-            		if(hjlist!=null) {
-            		if(s.getStandby12()!=null){
-            		s.setStandby12(logisticsChange.pd2(s.getStandby12()));
-	            		if(hjlist.getHjTotalprice() != "") {
-	            		s.setFclientordercode(hjlist.getHjTotalprice());
+            		if(s.getFids()!=null) {
+	            		// 环金导出列表
+	            		hjlist=hjbaseMapper.selectByPrimaryKeyse(s.getFids(),username);
+	            		// 义达导出列表
+	            		ydlist=ydBase.findIds2(s.getFids());
+	            		// 顺丰导出列表
+	            		sflist=sfBase.selectOrders(s.getFids(),username);
+	            		// eub导出列表
+	            		eub=eubMapper.selectOrders(s.getFids(),username);
+	            		// 黑猫导出列表
+	            		hm=hmLogistics.detectOrder2(s.getFids(),username);
+	            		// 环金的导出邮政
+	            		if(hjlist!=null) {
+		            		if(s.getStandby12()!=null){
+		            			String c=s.getStandby12();
+		            		s.setStandby12(logisticsChange.pd2(c));
+			            		if(!"".equals(hjlist.getHjTotalprice())) {
+			            		s.setFclientordercode(hjlist.getHjTotalprice());
+			            		}
+			            		if(!"".equals(hjlist.getHjInvoiceweight() )) {
+			            		s.setStandby9(hjlist.getHjInvoiceweight());
+			            		}
+			            		s.setFsheet(c);
+			            		s.setFoldorder("");
+			            		s.setFfreight("");
+			            		if(!"".equals(hjlist.getHjStandy1()) && !hjlist.getHjStandy1().equals(null)) {
+			            		s.setUpdateTime(String.valueOf(ft.format(hjlist.getHjStandy1())));
+			            		}
+			            		fLogistics.add(s);
+		            		}
 	            		}
-	            		if(hjlist.getHjInvoiceweight() !="") {
-	            		s.setStandby9(hjlist.getHjInvoiceweight());
+	            		
+	            		// 义达的导出邮政
+	            		if(ydlist!=null) {
+		            		//if(s.getStandby12()!=null){
+		            		s.setStandby12("义达");
+			            		if(!"".equals(ydlist.getYdInvoiceUnitcharge())) {
+			            		s.setFclientordercode(ydlist.getYdInvoiceUnitcharge());
+			            		}
+			            		if(!"".equals(ydlist.getYdOrderWeight() )) {
+			            			Double d=Double.parseDouble(ydlist.getYdOrderWeight())*1000;
+			            		s.setStandby9(String.valueOf(d.intValue()));
+			            		}
+			            		if(!"".equals(ydlist.getYdShippingMethod())) {
+				            		s.setFsheet(ydlist.getYdShippingMethod());
+			            		}
+			            		if(!"".equals(ydlist.getYdStandy3())) {
+			            				s.setFids(ydlist.getYdStandy3());
+			            		}
+			            		s.setFoldorder("");
+			            		s.setFfreight("");
+			            		if(!"".equals(ydlist.getYdShippingMethodNo())) {
+			            			s.setStandby11(ydlist.getYdShippingMethodNo());
+			            		}
+			            		if(!"".equals(ydlist.getYdStandy5()) && !ydlist.getYdStandy5().equals(null)) {
+			            		s.setUpdateTime(String.valueOf(ft.format(ydlist.getYdStandy5())));
+			            		}
+			            		fLogistics.add(s);
+		            		//}
 	            		}
-            		s.setFsheet("");
-	            		if(!hjlist.getHjStandy1().equals("") && !hjlist.getHjStandy1().equals(null)) {
-	            		s.setUpdateTime(String.valueOf(ft.format(hjlist.getHjStandy1())));
+	            		// 顺丰的导出邮政
+	            		if(sflist!=null) {
+	                		goods=sfGoodsBase.selectByPrimaryKeys(sflist.getPlatformOrderId());
+	                		if(goods!=null) {
+		            		//if(s.getStandby12()!=null){
+		            		s.setStandby12("顺丰");
+			            		if(!"".equals(goods.getAmount())) {
+			            		s.setFclientordercode(goods.getAmount());
+			            		}
+			            		if(goods.getWeight() != null) {
+			            			Double d=goods.getWeight()*1000;
+			            		s.setStandby9(String.valueOf(d.intValue()));
+			            		}
+			            		if(!"".equals(sflist.getExpressType())) {
+				            		s.setFsheet(sflist.getExpressType());
+			            		}
+				            		s.setFids(sflist.getOrderid());
+			            		s.setFoldorder("");
+			            		s.setFfreight("");
+			            		if(!"".equals(sflist.getMailno())) {
+			            			s.setStandby11(sflist.getMailno());
+			            		}
+			            		if(!"".equals(sflist.getSendstarttime()) && !sflist.getSendstarttime().equals(null)) {
+			            		s.setUpdateTime(String.valueOf(ft.format(sflist.getSendstarttime())));
+			            		}
+			            		fLogistics.add(s);
+		            		}
 	            		}
-	            	fLogistics.add(s);
-            		}
+	            		
+	            		// EUB的导出邮政
+	            		if(eub!=null) {
+	            			invoice=eubInvoiceMapper.selectOrder(eub.getClno());
+	                		if(invoice!=null) {
+	                			s.setStandby12("广州EUB");
+			            		if(invoice.getPrice() != null) {
+			            			s.setFclientordercode(invoice.getPrice().toString());
+			            		}
+			            		if(invoice.getnWeig() != null) {
+			            			Double d=invoice.getnWeig()*1000;
+			            			s.setStandby9(String.valueOf(d.intValue()));
+			            		}
+			            		if(!"".equals(eub.getHubInCode())) {
+				            		s.setFsheet(eub.getHubInCode());
+			            		}
+				            		s.setFids(eub.getfId());
+			            		s.setFoldorder("");
+			            		s.setFfreight("");
+			            		if(!"".equals(eub.getStandby4())) {
+			            			s.setStandby11(eub.getStandby4());
+			            		}
+			            		if(!"".equals(eub.getStandby7()) && !eub.getStandby7().equals(null)) {
+			            			s.setUpdateTime(eub.getStandby7());
+			            		}
+			            		fLogistics.add(s);
+		            		}
+	            		}
+	            		
+	            		/*黑猫的导出邮政*/
+	            		if(hm!=null) {
+	                			s.setStandby12("黑猫物流");
+			            		if(hm.getInvoice().getInvoiceUnitcharge() != null) {
+			            			s.setFclientordercode(hm.getInvoice().getInvoiceUnitcharge());
+			            		}
+			            		if(hm.getInvoice().getNetWeight() != null) {
+			            			Double d=hm.getInvoice().getNetWeight()*1000;
+			            			s.setStandby9(String.valueOf(d.intValue()));
+			            		}
+			            		if(!"".equals(hm.getShippingMethod())) {
+				            		s.setFsheet(hm.getShippingMethod());
+			            		}
+				            	s.setFids(hm.getBuyerId());
+			            		s.setFoldorder(hm.getBackup5());
+			            		s.setFfreight("");
+			            		if(!"".equals(hm.getBackup6())) {
+			            			s.setStandby11(hm.getBackup6());
+			            		}
+			            		if(!"".equals(hm.getUpdateTime()) && !hm.getUpdateTime().equals(null)) {
+			            			s.setUpdateTime(String.valueOf(ft.format(hm.getUpdateTime())));
+			            		}
+			            		fLogistics.add(s);
+	            		}
             		}
             	}
            //}
@@ -467,11 +634,11 @@ public class ExcelServiceImpl implements ExcelService{
             excel.add(new ExcelBean("发货日期","updateTime",0));
             excel.add(new ExcelBean("承运商","standby12",0));
             excel.add(new ExcelBean("运输方式","fsheet",0));
-            excel.add(new ExcelBean("面单号","fsheet",0));
+            excel.add(new ExcelBean("面单号","foldorder",0));
             excel.add(new ExcelBean("追踪号","standby11",0));
             excel.add(new ExcelBean("申报(美元)","fclientordercode",0));
             excel.add(new ExcelBean("称重(克)","standby9",0));
-            excel.add(new ExcelBean("运费(人民币)","fsheet",0));
+            excel.add(new ExcelBean("运费(人民币)","ffreight",0));
             map.put(0, excel);
             Calendar cal=Calendar.getInstance();      
             int y=cal.get(Calendar.YEAR);      
@@ -500,7 +667,7 @@ public class ExcelServiceImpl implements ExcelService{
 		XSSFWorkbook xssfWorkbook=null;
 
 		String username=userService.Justiactions(FLogisticsController.username()).getStandby1();
-        Date date=new Date();
+        //Date date=new Date();
         SimpleDateFormat ft=new SimpleDateFormat("yyyy.MM.dd : hh:mm:ss a");
         try {
             //根据ID查找数据
@@ -561,7 +728,7 @@ public class ExcelServiceImpl implements ExcelService{
         try{
             List<List<Object>> listob = ExcelUtil.getBankListByExcel(in,file.getOriginalFilename());
             List<freightPreview> preivew = new ArrayList<freightPreview>();
-            Calculations cal=new Calculations();
+           // Calculations cal=new Calculations();
             String usname=FLogisticsController.username();
             //遍历listob数据，把数据放到List中listob.size()
             for (int i = 0; i < listob.size(); i++) { 
@@ -571,7 +738,7 @@ public class ExcelServiceImpl implements ExcelService{
                 /*
 				* 赋值
 				*/
-                if(ob.get(0).equals("")) {
+                if("".equals(ob.get(0))) {
                 	break;
                 }
 				SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -587,7 +754,7 @@ public class ExcelServiceImpl implements ExcelService{
                 datas.setSpare1(usname); 
                 hjBase base=hjbaseMapper.selres(datas.getTrackingSingleSign());
                 if(base!=null) {
-                if(base.getHjStandy14().equals("")) {
+                if("".equals(base.getHjStandy14())) {
                 	datas.setSpare2("");// 预算运费
                 	datas.setSpare2(Calculations.los(base.getHjInvoiceweight(), base.getHjCountrycode(), datas.getChannelCode()));// 预算运费
                 }else {
@@ -701,7 +868,7 @@ public class ExcelServiceImpl implements ExcelService{
 	public XSSFWorkbook Estimate(String lists) {
 		// TODO Auto-generated method stub
 		XSSFWorkbook xssfWorkbook=null;
-        SimpleDateFormat ft=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
+       // SimpleDateFormat ft=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
         try {
         	String[] split=lists.split(",");
         	List<String> strings = Arrays.asList(split);
@@ -712,7 +879,7 @@ public class ExcelServiceImpl implements ExcelService{
             	w.setFfids(w.getfIds());
             	w.setFfCountry(w.getfCountry());
             	System.out.println(w);
-            	if(w.getStandby16()!=null && w.getStandby16()!="") {
+            	if(w.getStandby16()!=null && !"".equals(w.getStandby16())) {
             		w.setP("");
             		w.setP(Calculations.los(w.getStandby16(), w.getfCountry(), w.getStandby12()));
             	}
@@ -726,7 +893,6 @@ public class ExcelServiceImpl implements ExcelService{
             excel.add(new ExcelBean("国家","ffCountry",0));
             excel.add(new ExcelBean("物流中文","z",0));
             excel.add(new ExcelBean("时间","T",0));
-            excel.add(new ExcelBean("跟踪号","standby11",0));
             excel.add(new ExcelBean("系统单号","standby15",0));
             excel.add(new ExcelBean("申报重量","standby16",0));
             excel.add(new ExcelBean("预估运费","P",0));
@@ -925,7 +1091,7 @@ public class ExcelServiceImpl implements ExcelService{
 	            if(!String.valueOf(listob.get(t).get(16)).equals("null")) {
 		            String[] ckg=listob.get(t).get(16).toString().split("\\*");
 		            
-		            if(!ckg[0].equals("")&&!ckg[0].equals("null")) {
+		            if(!"".equals(ckg[0])&&!ckg[0].equals("null")) {
 		            	logger.info(ckg[0]);
 		            	dTfzyings.setFlength(Double.valueOf(ckg[0]));
 		                
@@ -1309,5 +1475,53 @@ public class ExcelServiceImpl implements ExcelService{
 			e.printStackTrace();
 		}
         return xssfWorkbook;
+	}
+	@Override
+	public XSSFWorkbook Tracking(String idList4) {
+		// TODO Auto-generated method stub
+		if("".equals(idList4)) {
+			return null;
+		}
+				XSSFWorkbook xssfWorkbook=null;
+		       // SimpleDateFormat ft=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a");
+		        try {
+		        	String[] split=idList4.split(",");
+		        	List<String> strings = Arrays.asList(split);
+		            List<FLogistics> preview = new ArrayList<FLogistics>();
+		            List<Map<String,String>> result=fLogisticsMapper.Tracking(strings);
+		            result.forEach(x->{
+		            	FLogistics w=new FLogistics();
+		            	if("1".equals(x.get("yd_standy2"))&&!"".equals(x.get("yd_reference_no"))) {
+		            		w.setStandby11(x.get("yd_reference_no"));
+		            	}else if("1".equals(x.get("status"))&&!"".equals(x.get("platform_order_id"))) {
+		            		w.setStandby12(x.get("platform_order_id"));
+		            	}else if("1".equals(x.get("backup3"))&&!"".equals(x.get("reference_no"))) {
+		            		w.setStandby13(x.get("reference_no"));
+		            	}else if("1".equals(x.get("standby3"))&&!"".equals(x.get("clno"))) {
+		            		w.setStandby14(x.get("clno"));
+		            	}else if("1".equals(x.get("hj_standy2"))&&!"".equals(x.get("hj_referenceNo"))) {
+		            		w.setStandby15(x.get("hj_referenceNo"));
+		            	}
+		            	if(!"".equals(x.get("f_ids"))){
+			            	w.setFfids(x.get("f_ids"));
+		            	}
+		            	preview.add(w);
+		            });
+		            List<ExcelBean> excel=new ArrayList<>(); 
+		            Map<Integer,List<ExcelBean>> map=new LinkedHashMap<>();
+		            //设置标题栏   
+		            excel.add(new ExcelBean("erp订单编号","ffids",0));
+		            excel.add(new ExcelBean("义达","standby11",0));
+		            excel.add(new ExcelBean("顺丰","standby12",0));
+		            excel.add(new ExcelBean("黑猫","standby13",0));
+		            excel.add(new ExcelBean("eub","standby14",0));
+		            excel.add(new ExcelBean("环金","standby15",0));
+		            map.put(0, excel); 
+		            String sheetName ="Track "+SnowIdUtils.uniqueLong();
+		            xssfWorkbook = ExcelUtil.createExcelFile(FLogistics.class, preview, map, sheetName);
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		        }
+		        return xssfWorkbook;
 	}
 }
