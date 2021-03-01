@@ -37,6 +37,15 @@
 	                </ul>
 	            </li>
 	            </c:if>
+	            
+        		<c:if test="${fn:contains(jurisdiction.jurisdiction,'orders')}">
+	            <li id="leftMenuProduct" >
+	                <a href="#"><span class="nav-label">库存商品</span><span class="fa arrow"></span> </a>
+	                <ul class="nav nav-second-level" >
+	                    <li><a href="${pageContext.request.contextPath}/inventory/operation">库存操作</a></li>
+	                </ul>
+	            </li>
+	            </c:if>
         		<c:if test="${fn:contains(jurisdiction.jurisdiction,'Users')}">
 				 <li id="leftMenuArticle">
 	                <a href="#"><span class="nav-label">用户管理</span><span class="fa arrow"></span> </a>

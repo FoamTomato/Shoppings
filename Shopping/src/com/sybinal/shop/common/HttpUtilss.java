@@ -32,7 +32,7 @@ public class HttpUtilss {
 	private static Logger logger=Logger.getLogger(HttpUtilss.class);
 	
 	public static void main(String[] args) throws Exception {
-		/*StringBuilder sb = new StringBuilder();  
+		StringBuilder sb = new StringBuilder();  
         sb.append("<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\">\n" + 
         		"    <s:Body>\n" + 
         		"        <GetLogisticsWay xmlns=\"http://tempuri.org/\"/>\n" + 
@@ -40,11 +40,13 @@ public class HttpUtilss {
         		"</s:Envelope>");
 		try {
 			String doposte=doPost2("http://open.btdair.com:8099/LogisticsService.svc?wsdl",sb.toString(),EnumContentType.XML);
-			String dopso=doPost2("http://192.168.1.176:8000/parse",sb.toString(),EnumContentType.XML);
+			//String dopso=doPost2("http://192.168.1.176:8000/parse",sb.toString(),EnumContentType.XML);
+			System.out.println(doposte);
+			//System.out.println(dopso);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			logger.error("宝通达失败",e);
-		}*/
+		}
 	}
 	/**
 	 * 
