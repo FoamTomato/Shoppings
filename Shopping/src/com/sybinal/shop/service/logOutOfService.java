@@ -3,6 +3,7 @@ package com.sybinal.shop.service;
 import java.util.List;
 
 import com.sybinal.shop.model.Astrict;
+import com.sybinal.shop.model.ExcelExport;
 import com.sybinal.shop.model.logOutOf;
 
 public interface logOutOfService {
@@ -72,5 +73,45 @@ public interface logOutOfService {
 	* @version
 	 */
 	List<logOutOf> selectAlls();
+	/**
+	 * 
+	* @Title Shopping   
+	* @Package com.sybinal.shop.service
+	* @Description: TODO 查找导出
+	* @author PC1  
+	* @date 2021年3月1日 下午2:57:56   
+	* @version V1.0
+	 */
+	List<ExcelExport> selectExports();
+	/**
+	 * 
+	* @Title Shopping   
+	* @Package com.sybinal.shop.service
+	* @Description: TODO 添加导出分类
+	* @author PC1  
+	* @date 2021年3月1日 下午3:07:46   
+	* @version V1.0
+	 */
+	int addExpory(ExcelExport logof);
+	/**
+	 * 
+	* @Title Shopping   
+	* @Package com.sybinal.shop.service
+	* @Description: TODO 修改导出分类
+	* @author PC1  
+	* @date 2021年3月1日 下午3:07:46   
+	* @version V1.0
+	 */
+	int updateExport(ExcelExport logof);
+	/**
+	 * 
+	* @Title Shopping   
+	* @Package com.sybinal.shop.service
+	* @Description: TODO 批量删除
+	* @author PC1  
+	* @date 2021年3月1日 下午3:11:20   
+	* @version V1.0
+	 */
+	int deleteExport(List<ExcelExport> list);
 	
 }

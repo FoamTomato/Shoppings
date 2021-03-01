@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sybinal.shop.mapper.AstrictMapper;
+import com.sybinal.shop.mapper.ExcelExportMapper;
 import com.sybinal.shop.mapper.logOutOfMapper;
 import com.sybinal.shop.model.Astrict;
+import com.sybinal.shop.model.ExcelExport;
 import com.sybinal.shop.model.logOutOf;
 
 @Service
@@ -16,6 +18,9 @@ public class logOutOfServiceImpl implements logOutOfService {
 	logOutOfMapper logMapper;
 	
 
+	@Autowired
+	ExcelExportMapper excelExportMapper;
+	
 	@Autowired
 	AstrictMapper astrictMapper;
 	/**
@@ -79,6 +84,12 @@ public class logOutOfServiceImpl implements logOutOfService {
 		
 		return logMapper.deleteByPrimaryKeys(list);
 	}
+
+	@Override
+	public int deleteExport(List<ExcelExport> list) {
+		// TODO Auto-generated method stub
+		return excelExportMapper.deleteByPrimaryKeys(list);
+	}
 	/**
 	 * 修改渠道
 	 */
@@ -94,6 +105,21 @@ public class logOutOfServiceImpl implements logOutOfService {
 	public List<logOutOf> selectAlls() {
 		// TODO Auto-generated method stub
 		return logMapper.selectAlls();
+	}
+	@Override
+	public List<ExcelExport> selectExports() {
+		// TODO Auto-generated method stub
+		return excelExportMapper.selectAll();
+	}
+	@Override
+	public int addExpory(ExcelExport logof) {
+		// TODO Auto-generated method stub
+		return excelExportMapper.insertSelective(logof);
+	}
+	@Override
+	public int updateExport(ExcelExport logof) {
+		// TODO Auto-generated method stub
+		return excelExportMapper.updateByPrimaryKeySelective(logof);
 	}
 	
 }

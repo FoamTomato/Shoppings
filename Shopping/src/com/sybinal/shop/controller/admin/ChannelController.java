@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sybinal.shop.model.ExcelExport;
 import com.sybinal.shop.model.User;
 import com.sybinal.shop.model.logOutOf;
 import com.sybinal.shop.service.logOutOfService;
@@ -46,6 +47,23 @@ public class ChannelController {
 		model.setViewName("admin/channel/ChannelMain");
 		return model;
 	}
+
+	@RequestMapping(value = "export", method = RequestMethod.GET)
+	public ModelAndView export() {
+		ModelAndView model = new ModelAndView();
+		User user=new User();
+		user.setUserName(FLogisticsController.username());
+		model.addObject("jurisdiction", userService.jurisdiction(user));
+		model.setViewName("admin/channel/Exports");
+		return model;
+	}
+	
+	@RequestMapping(value = "selectExports", method = RequestMethod.POST)
+	@ResponseBody
+	public List<ExcelExport> selectExports() {
+		return logout.selectExports();
+	}
+	
 	
 	@RequestMapping(value = "selectChannel", method = RequestMethod.POST)
 	@ResponseBody
@@ -73,6 +91,11 @@ public class ChannelController {
 		return logout.adds(logof);
 	}
 	
+	@RequestMapping(value = "addExpory", method = RequestMethod.POST)
+	@ResponseBody
+	public int addExpory(@RequestBody ExcelExport logof) {
+		return logout.addExpory(logof);
+	}
 	/**
 	 * 删除渠道
 	 */
@@ -81,6 +104,13 @@ public class ChannelController {
 	public int deleteChannel(@RequestBody List<logOutOf> list) {
 		return logout.deleteChannel(list);
 	}
+	
+
+	@RequestMapping(value = "deleteExport", method = RequestMethod.POST)
+	@ResponseBody
+	public int deleteExport(@RequestBody List<ExcelExport> list) {
+		return logout.deleteExport(list);
+	}
 	/**
 	 * 修改渠道
 	 */
@@ -88,5 +118,11 @@ public class ChannelController {
 	@ResponseBody
 	public int updates(@RequestBody logOutOf logof) {
 		return logout.updates(logof);
+	}
+	
+	@RequestMapping(value = "updateExport", method = RequestMethod.POST)
+	@ResponseBody
+	public int updateExport(@RequestBody ExcelExport logof) {
+		return logout.updateExport(logof);
 	}
 }

@@ -32,6 +32,7 @@
 	                    <li><a href="${pageContext.request.contextPath}/preview/main">运费预览</a></li>
 	                    <li><a href="${pageContext.request.contextPath}/Logistics/tail">查看跟踪</a></li>
 	                    <li><a href="${pageContext.request.contextPath}/Logistics/channel/add">渠道更改</a></li>
+	                    <li><a href="${pageContext.request.contextPath}/Logistics/channel/export">导出渠道</a></li>
 	                    <li><a href="${pageContext.request.contextPath}/Logistics/country/transform">国家更改</a></li>
 	                    <li><a href="${pageContext.request.contextPath}/statistics/skip">订单统计</a></li>
 	                </ul>

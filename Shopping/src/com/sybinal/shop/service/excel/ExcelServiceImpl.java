@@ -21,6 +21,7 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,6 +50,7 @@ import com.sybinal.shop.mapper.DTstockMapper;
 import com.sybinal.shop.mapper.DTstocksMapper;
 import com.sybinal.shop.mapper.EUBMapper;
 import com.sybinal.shop.mapper.EubInvoiceMapper;
+import com.sybinal.shop.mapper.ExcelExportMapper;
 import com.sybinal.shop.mapper.FLogisticsMapper;
 import com.sybinal.shop.mapper.GlogisticsMapper;
 import com.sybinal.shop.mapper.HmLogisticsMapper;
@@ -68,6 +70,7 @@ import com.sybinal.shop.model.DTstock;
 import com.sybinal.shop.model.EUB;
 import com.sybinal.shop.model.EubInvoice;
 import com.sybinal.shop.model.ExcelBean;
+import com.sybinal.shop.model.ExcelExport;
 import com.sybinal.shop.model.Exportstock;
 import com.sybinal.shop.model.FLogistics;
 import com.sybinal.shop.model.Glogistics;
@@ -140,6 +143,9 @@ public class ExcelServiceImpl implements ExcelService{
 	
 	@Autowired
 	HmLogisticsMapper hmLogistics;
+
+	@Autowired
+	ExcelExportMapper excelExportMapper;
 	
 	@Autowired
 	countryCodeMapper codes;
@@ -470,8 +476,9 @@ public class ExcelServiceImpl implements ExcelService{
         EUB eub=null;
         EubInvoice invoice=null;
         HmLogistics hm=null;
+        ExcelExport excels=new ExcelExport();;
         SimpleDateFormat ft=new SimpleDateFormat("yyyy/MM/dd");
-
+        List<ExcelExport> Excel=excelExportMapper.selectAll();
         String username=userService.Justiactions(FLogisticsController.username()).getStandby1();
         try {
             //根据ID查找数据
@@ -497,15 +504,18 @@ public class ExcelServiceImpl implements ExcelService{
 	            		// 环金的导出邮政
 	            		if(hjlist!=null) {
 		            		if(s.getStandby12()!=null){
-		            			String c=s.getStandby12();
-		            		s.setStandby12(logisticsChange.pd2(c));
+		            		s.setStandby12(logisticsChange.pd2(s.getStandby12()));
 			            		if(!"".equals(hjlist.getHjTotalprice())) {
 			            		s.setFclientordercode(hjlist.getHjTotalprice());
 			            		}
 			            		if(!"".equals(hjlist.getHjInvoiceweight() )) {
 			            		s.setStandby9(hjlist.getHjInvoiceweight());
 			            		}
-			            		s.setFsheet(c);
+
+		            			excels.setChannl(s.getStandby12());
+		            			excels.setCountry(s.getFcountry());
+		            			excels.setLogistics("hj");
+			            		s.setFsheet(Exports(excels,Excel));
 			            		s.setFoldorder("");
 			            		s.setFfreight("");
 			            		if(!"".equals(hjlist.getHjStandy1()) && !hjlist.getHjStandy1().equals(null)) {
@@ -527,7 +537,10 @@ public class ExcelServiceImpl implements ExcelService{
 			            		s.setStandby9(String.valueOf(d.intValue()));
 			            		}
 			            		if(!"".equals(ydlist.getYdShippingMethod())) {
-				            		s.setFsheet(ydlist.getYdShippingMethod());
+			            			excels.setChannl(ydlist.getYdShippingMethod());
+			            			excels.setCountry(ydlist.getYdConsigneeCountrycode());
+			            			excels.setLogistics("yd");
+				            		s.setFsheet(Exports(excels,Excel));
 			            		}
 			            		if(!"".equals(ydlist.getYdStandy3())) {
 			            				s.setFids(ydlist.getYdStandy3());
@@ -557,7 +570,11 @@ public class ExcelServiceImpl implements ExcelService{
 			            		s.setStandby9(String.valueOf(d.intValue()));
 			            		}
 			            		if(!"".equals(sflist.getExpressType())) {
-				            		s.setFsheet(sflist.getExpressType());
+
+			            			excels.setChannl(sflist.getExpressType());
+			            			excels.setCountry(sflist.getdCountry());
+			            			excels.setLogistics("sf");
+				            		s.setFsheet(Exports(excels,Excel));
 			            		}
 				            		s.setFids(sflist.getOrderid());
 			            		s.setFoldorder("");
@@ -585,7 +602,10 @@ public class ExcelServiceImpl implements ExcelService{
 			            			s.setStandby9(String.valueOf(d.intValue()));
 			            		}
 			            		if(!"".equals(eub.getHubInCode())) {
-				            		s.setFsheet(eub.getHubInCode());
+			            			excels.setChannl(eub.getHubInCode());
+			            			excels.setCountry(eub.getReCountryCode());
+			            			excels.setLogistics("eub");
+				            		s.setFsheet(Exports(excels,Excel));
 			            		}
 				            		s.setFids(eub.getfId());
 			            		s.setFoldorder("");
@@ -611,7 +631,11 @@ public class ExcelServiceImpl implements ExcelService{
 			            			s.setStandby9(String.valueOf(d.intValue()));
 			            		}
 			            		if(!"".equals(hm.getShippingMethod())) {
-				            		s.setFsheet(hm.getShippingMethod());
+
+			            			excels.setChannl(hm.getShippingMethod());
+			            			excels.setCountry(hm.getConsigneeCountrycode());
+			            			excels.setLogistics("hm");
+				            		s.setFsheet(Exports(excels,Excel));
 			            		}
 				            	s.setFids(hm.getBuyerId());
 			            		s.setFoldorder(hm.getBackup5());
@@ -654,8 +678,29 @@ public class ExcelServiceImpl implements ExcelService{
         }
         return xssfWorkbook;
     }
-	
-	
+	/**
+	 * 
+	* @Title Shopping   
+	* @Package com.sybinal.shop.service.excel
+	* @Description: TODO 导出的方式转换工具
+	* @author PC1  
+	* @date 2021年3月1日 下午2:23:43   
+	* @version V1.0
+	 * @param excel2 
+	 */
+	private String Exports(ExcelExport excel, List<ExcelExport> excel2) {
+		List<ExcelExport> studentStream=excel2.stream().filter(ex->excel.getChannl().equals(ex.getChannl()))
+		.filter(ex->excel.getCountry().equals(ex.getCountry()))
+		.filter(ex->excel.getLogistics().equals(ex.getLogistics()))
+		.collect(Collectors.toList());
+		Gson gson=new Gson();
+		System.out.println(gson.toJson(studentStream));
+		if(studentStream.size()>0) {
+			return studentStream.get(0).getName();
+		}else {
+			return excel.getChannl();
+		}
+	}
     /*
      * 根据集拼id导出
      * (non-Javadoc)
