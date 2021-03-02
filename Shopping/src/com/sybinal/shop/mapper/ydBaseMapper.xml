@@ -87,7 +87,7 @@
     select 
     <include refid="Base_Column_List" />
     from yd_base
-    where yd_reference_no in (#{fids},(select standby_14 from logistics where f_ids=#{fids} and standby_14 is not null limit 0,1)) and yd_standy2 = "1" and  yd_standy7!="1" order by  yd_standy5 desc limit 0,1
+    where yd_reference_no in (#{fids},(select standby_14 from logistics where f_ids=#{fids} and standby_14 is not null ORDER BY update_time desc limit 0,1)) and yd_standy2 = "1" and  yd_standy7!="1" order by  yd_standy5 desc limit 0,1
   </select>
   
   <!-- 根据fid查询findIds -->
@@ -95,7 +95,7 @@
     select 
     <include refid="Base_Column_List" />
     from yd_base 
-    where yd_shipping_method_no = (select standby_11 from logistics where f_ids=#{fids} and standby_11 is not null limit 0,1) and yd_standy2 = "1" and  yd_standy7!="1" order by  yd_standy5 desc limit 0,1
+    where yd_shipping_method_no = (select standby_11 from logistics where f_ids=#{fids} and standby_11 is not null ORDER BY update_time desc limit 0,1) and yd_standy2 = "1" and  yd_standy7!="1" order by  yd_standy5 desc limit 0,1
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
